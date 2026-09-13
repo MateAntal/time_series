@@ -581,7 +581,7 @@ body.ov-on #overview{display:block}
     </figure>
     <p class="punch step wide">This is Session 3's scatterplot, with one change: both axes are the same series, one of them shifted. You are asking whether the series correlates with itself.</p>
   </div>
-  <aside class="notes">Left to itself, <code>gg_lag()</code> draws <code>geom = "path"</code> and colours the points by season, which produces a coloured tangle. The notebook passes <code>geom = "point"</code> to strip that back to a plain scatterplot, and that is the right call while you are learning to read the shape.<br><br>The faint diagonal in each panel is the 45-degree line y = x, drawn for reference. It is <i>not</i> a regression line, so do not read its slope as a strength &mdash; the strength is in how tightly the cloud hugs it.</aside>
+  <aside class="notes">Left to itself, <code>gg_lag()</code> draws <code>geom = "path"</code> and colors the points by season, which produces a colored tangle. The notebook passes <code>geom = "point"</code> to strip that back to a plain scatterplot, and that is the right call while you are learning to read the shape.<br><br>The faint diagonal in each panel is the 45-degree line y = x, drawn for reference. It is <i>not</i> a regression line, so do not read its slope as a strength &mdash; the strength is in how tightly the cloud hugs it.</aside>
 </section>
 
 <!-- ---------- 8 ---------- -->
@@ -590,7 +590,7 @@ body.ov-on #overview{display:block}
     <p class="kicker">04_C &nbsp;&middot;&nbsp; <code>gg_lag(y = Beer, geom = "point", lags = 1:12)</code></p>
     <h1 class="sowhat wide">Twelve scatterplots. They do not just get weaker &mdash; they alternate.</h1>
     <figure>
-      <svg viewBox="0 0 760 296" role="img" aria-label="A grid of twelve small scatterplot panels labelled lag 1 to lag 12 in order. Panels 4, 8 and 12 show tight upward diagonals; panels 2, 6 and 10 show tight downward diagonals; the odd-numbered panels show formless blobs">
+      <svg viewBox="0 0 760 296" role="img" aria-label="A grid of twelve small scatterplot panels labeled lag 1 to lag 12 in order. Panels 4, 8 and 12 show tight upward diagonals; panels 2, 6 and 10 show tight downward diagonals; the odd-numbered panels show formless blobs">
         <g stroke="#E4DFD5" stroke-width="1" fill="none">
           <rect x="20" y="18" width="168" height="66"/><rect x="204" y="18" width="168" height="66"/>
           <rect x="388" y="18" width="168" height="66"/><rect x="572" y="18" width="168" height="66"/>
@@ -740,12 +740,12 @@ body.ov-on #overview{display:block}
       </svg>
     </figure>
     <ul class="build">
-      <li class="step"><b>Pearson's r</b> is defined on a set of pairs, and normalises by the spread <i>of those pairs</i>. At lag 1 that is 41 pairs; at lag 16 it is 26.</li>
+      <li class="step"><b>Pearson's r</b> is defined on a set of pairs, and normalizes by the spread <i>of those pairs</i>. At lag 1 that is 41 pairs; at lag 16 it is 26.</li>
       <li class="step"><b>So the yardstick changes underneath you.</b> Sixteen coefficients, sixteen slightly different definitions of &ldquo;average&rdquo; and &ldquo;spread&rdquo;.</li>
     </ul>
     <p class="punch step wide">We want one ruler for all sixteen. So we fix the part that measures, and let only the part being measured shrink.</p>
   </div>
-  <aside class="notes">Why sixteen? <code>ACF()</code> picks its default <code>lag_max</code> as 10&nbsp;log&#8321;&#8320;(T), rounded down &mdash; here 10&nbsp;log&#8321;&#8320;(42) = 16.2, so sixteen lags, which is exactly the number of rows the printout has. For a keyed tsibble it uses the shortest series.<br><br>There is a deeper reason for the fixed denominator than tidiness, and it is the reason every statistics package does it this way. Dividing every lag by the same c&#8320; guarantees the resulting sequence is a valid autocorrelation function &mdash; positive semi-definite, in the jargon &mdash; which the pair-by-pair version does not. Models fitted to an invalid ACF can produce negative variances.</aside>
+  <aside class="notes">Why sixteen? <code>ACF()</code> picks its default <code>lag_max</code> as 10&nbsp;log&#8321;&#8320;(T), rounded down &mdash; here 10&nbsp;log&#8321;&#8320;(42) = 16.2, so sixteen lags, which is exactly the number of rows the printout has. For a keyed tsibble it uses the shortest series.<br><br>If the room wants a picture: autocorrelation measures every lag against one yardstick, nailed to the wall. Pearson's r hands each lag its own yardstick, cut to fit whichever room it happens to be standing in. Only the nailed one lets you say who is taller.<br><br>There is a deeper reason for the fixed denominator than tidiness, and it is the reason every statistics package does it this way. Dividing every lag by the same c&#8320; guarantees the resulting sequence is a valid autocorrelation function &mdash; positive semi-definite, in the jargon &mdash; which the pair-by-pair version does not. Models fitted to an invalid ACF can produce negative variances.</aside>
 </section>
 
 <!-- ---------- 11 ---------- -->
@@ -754,14 +754,14 @@ body.ov-on #overview{display:block}
     <p class="kicker">The formula, and the one difference that matters</p>
     <h1 class="sowhat wide">Same numerator. Different denominator.</h1>
     <div class="console tight">
-<span class="dim"># Pearson's r  —  normalises by the spread of the pairs it used</span>
+<span class="dim"># Pearson's r  —  normalizes by the spread of the pairs it used</span>
 
 r_k  =        sum (y_t - ybar)(y_{t-k} - ybar)
        ------------------------------------------------
        sqrt[ sum (y_t - ybar)^2  *  sum (y_{t-k} - ybar)^2 ]
 
 
-<span class="dim"># Autocorrelation  —  normalises by the spread of the whole series</span>
+<span class="dim"># Autocorrelation  —  normalizes by the spread of the whole series</span>
 
 r_k  =  <span class="hl">sum_{t=k+1}^{T}</span> (y_t - ybar)(y_{t-k} - ybar)
        ------------------------------------------------
@@ -901,7 +901,7 @@ r_k  =  <span class="hl">sum_{t=k+1}^{T}</span> (y_t - ybar)(y_{t-k} - ybar)
     </figure>
     <p class="punch step wide">Both the spikes and the troughs shrink as you move right &mdash; 0.80, 0.71, 0.63, 0.50. That is the distance penalty, not fading seasonality.</p>
   </div>
-  <aside class="notes">These are the numbers <code>ACF()</code> actually prints for <code>recent_beer</code>, so you can check every bar against your own console.<br><br>The sign pattern generalises: for a season of length m, expect positive spikes at multiples of m and negative ones near odd multiples of m/2. Monthly data with m = 12 therefore dips near lags 6, 18 and 30. If the negative dips are missing and everything sits above zero, a trend is holding the whole correlogram up &mdash; which is the case on the next two slides.</aside>
+  <aside class="notes">These are the numbers <code>ACF()</code> actually prints for <code>recent_beer</code>, so you can check every bar against your own console.<br><br>The sign pattern generalizes: for a season of length m, expect positive spikes at multiples of m and negative ones near odd multiples of m/2. Monthly data with m = 12 therefore dips near lags 6, 18 and 30. If the negative dips are missing and everything sits above zero, a trend is holding the whole correlogram up &mdash; which is the case on the next two slides.</aside>
 </section>
 
 <!-- ---------- 16 ---------- -->
@@ -910,7 +910,7 @@ r_k  =  <span class="hl">sum_{t=k+1}^{T}</span> (y_t - ybar)(y_{t-k} - ybar)
     <p class="kicker">Pattern 3 of 3 &nbsp;&middot;&nbsp; both, of comparable strength</p>
     <h1 class="sowhat wide">Both present: a wave riding on a slope.</h1>
     <figure>
-      <svg viewBox="0 0 760 200" role="img" aria-label="A correlogram of a series with both trend and seasonality. All bars are positive and decay from left to right, but ripple up and down with peaks at lags 12 and 24. A dashed grey curve traces the underlying decay">
+      <svg viewBox="0 0 760 200" role="img" aria-label="A correlogram of a series with both trend and seasonality. All bars are positive and decay from left to right, but ripple up and down with peaks at lags 12 and 24. A dashed gray curve traces the underlying decay">
         <g stroke="#E4DFD5" stroke-width="1.2" fill="none"><path d="M36 26 V170"/></g>
         <path d="M36 170 H730" stroke="#6B665E" stroke-width="1.2" fill="none"/>
         <g fill="#1F3A4D">
@@ -955,7 +955,7 @@ r_k  =  <span class="hl">sum_{t=k+1}^{T}</span> (y_t - ybar)(y_{t-k} - ybar)
     <p class="kicker">04_C &nbsp;&middot;&nbsp; Australian antidiabetic drug sales (<code>a10</code>)</p>
     <h1 class="sowhat wide">Same series, two tools, two different answers.</h1>
     <figure>
-      <svg viewBox="0 0 760 196" role="img" aria-label="A correlogram of a strongly trended seasonal series. All bars are positive and decay smoothly; the bumps at lags 12 and 24 are barely higher than their neighbours">
+      <svg viewBox="0 0 760 196" role="img" aria-label="A correlogram of a strongly trended seasonal series. All bars are positive and decay smoothly; the bumps at lags 12 and 24 are barely higher than their neighbors">
         <g stroke="#E4DFD5" stroke-width="1.2" fill="none"><path d="M36 26 V170"/></g>
         <path d="M36 170 H730" stroke="#6B665E" stroke-width="1.2" fill="none"/>
         <g fill="#1F3A4D">
@@ -987,7 +987,7 @@ r_k  =  <span class="hl">sum_{t=k+1}^{T}</span> (y_t - ybar)(y_{t-k} - ybar)
     </figure>
     <p class="punch step wide">A loud instrument does not delete a quiet one, it masks it. The seasonality is still in the data; it is missing from this summary of the data.</p>
   </div>
-  <aside class="notes">Precision matters in how you state this. It is not that the ACF shows nothing seasonal &mdash; the notebook's phrasing is that the waves can be seen but &ldquo;the ACF alone does not reveal the actual seasonal period&rdquo;, because lag 12 is not clearly higher than its neighbours. What is lost is the <i>period</i>, not the existence of a pattern.<br><br>Push the trend harder still and even the ripple disappears, leaving a correlogram indistinguishable from a pure trend. That is the fourth row of the table on the next slide, and Session 5 is the fix: strip the trend out first, then run the ACF on what is left.</aside>
+  <aside class="notes">Precision matters in how you state this. It is not that the ACF shows nothing seasonal &mdash; the notebook's phrasing is that the waves can be seen but &ldquo;the ACF alone does not reveal the actual seasonal period&rdquo;, because lag 12 is not clearly higher than its neighbors. What is lost is the <i>period</i>, not the existence of a pattern.<br><br>Push the trend harder still and even the ripple disappears, leaving a correlogram indistinguishable from a pure trend. That is the fourth row of the table on the next slide, and Session 5 is the fix: strip the trend out first, then run the ACF on what is left.</aside>
 </section>
 
 <!-- ---------- 18 ---------- -->
