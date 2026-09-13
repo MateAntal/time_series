@@ -12,7 +12,7 @@ Argentinian exports — then compare against `fable` and discuss why they differ
 
 **R:** user-defined functions, `optim()`
 
-**Homework:** `06_1_E_SES_Exercise` in full (timeplot, fit, interpret `α`, residual standard
+**Homework:** `16_E_SES_Exercise` in full (timeplot, fit, interpret `α`, residual standard
 deviation, manual 95% interval, compare to R's).
 
 **Outcome:** Student can explain what `ETS()` is doing numerically, because they have done it.

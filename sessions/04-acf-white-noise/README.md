@@ -12,7 +12,7 @@ seasonality show up in an ACF; white noise as the reference case.
 
 **R:** `gg_lag()`, `ACF() |> autoplot()`
 
-**Homework:** `03_C` Exercises 1–4, then all of `03_D_TSGraphs_MoreExercises` (Beijing pollution
+**Homework:** `04_C` Exercises 1–4, then all of `04_D_TSGraphs_MoreExercises` (Beijing pollution
 weekly/monthly aggregation; fuel prices quarterly aggregation).
 
 **Outcome:** Student reads an ACF, connects it back to trend/seasonality, and recognizes white noise.

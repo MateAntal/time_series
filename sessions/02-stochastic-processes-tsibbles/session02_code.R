@@ -287,6 +287,8 @@ flights_ts <-
 flights_ts
 
 # ---- cell 7 ----
+# This cell intentionally errors: key=flight alone is insufficient.
+tryCatch({
 flights_ts <-
 
   flights |>
@@ -303,6 +305,7 @@ flights_ts <-
   #Create a tsibble,
   #NOTE: flight and carrier are both required to uniquely identify observations
   as_tsibble(key=flight, index = time)
+}, error = function(e) cat("Expected error:", conditionMessage(e), "\n"))
 
 # ---- cell 8 ----
 # Refuses to drop time information. Column time is selected implicitly

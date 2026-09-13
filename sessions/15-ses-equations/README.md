@@ -12,7 +12,7 @@ values by hand from `α` and `ℓ₀`, and forecast.
 
 **R:** `ETS(y ~ error("A") + trend("N") + season("N"))`, `tidy()`, `augment()`
 
-**Homework:** `06_1_C_SES_excel_fittedvals_exercise.xlsx` — compute the SES fitted values by hand in
+**Homework:** `15_C_SES_excel_fittedvals_exercise.xlsx` — compute the SES fitted values by hand in
 Excel.
 
 **Outcome:** Student writes the SES recursion, interprets `α`, and reproduces `fable`'s fitted values

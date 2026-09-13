@@ -11,7 +11,7 @@ letting `ETS()` choose.
 
 **R:** `ETS(y ~ error("A") + trend("A"/"Ad") + season("N"))`, `components()`, `augment()`
 
-**Homework:** `06_2_B` Excel workbook, plus `06_2_A` Exercise 1 (internet usage — fit, compare
+**Homework:** `17_B` Excel workbook, plus `17_A` Exercise 1 (internet usage — fit, compare
 residuals of Holt vs damped Holt, qq-plot and boxplot).
 
 **Outcome:** Student fits Holt and damped Holt and reads `α`, `β*` and `φ`.

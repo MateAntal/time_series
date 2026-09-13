@@ -11,7 +11,7 @@ testing, and hence portmanteau tests; Ljung–Box.
 
 **R:** `gg_tsresiduals()`, `features(.resid, ljung_box)`
 
-**Homework:** `05_2_B` Exercise 1. Then revise for the midterm.
+**Homework:** `09_B` Exercise 1. Then revise for the midterm.
 
 **Outcome:** Student runs a full residual diagnosis and judges whether a model has captured the
 signal.

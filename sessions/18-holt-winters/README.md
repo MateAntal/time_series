@@ -11,7 +11,7 @@ daily-data example.
 
 **R:** `ETS()` with `season("A")` / `season("M")`, damped variants
 
-**Homework:** `06_3_B` Excel workbook, plus the notebook's Seasonal Exp Smoothing exercise (timeplot,
+**Homework:** `18_B` Excel workbook, plus the notebook's Seasonal Exp Smoothing exercise (timeplot,
 fit on a training set, forecast 8 ahead, plot, then the point-accuracy and cross-validation questions).
 
 **Outcome:** Student chooses and fits the right Holt–Winters variant and justifies it.

@@ -11,7 +11,7 @@ the manual recomputation of MAE and RMSE checked against `accuracy()`.
 
 **R:** `filter()`, `slice()`, `accuracy()`
 
-**Homework:** `05_5` train/test exercises, plus the `05_6_A` manual computation of MAE and RMSE for
+**Homework:** `13_Train_Test` train/test exercises, plus the `13_A_PointAccuracy` manual computation of MAE and RMSE for
 the drift model on both sets.
 
 **Outcome:** Student sets up an honest train/test split and reads all six metrics, knowing which is
