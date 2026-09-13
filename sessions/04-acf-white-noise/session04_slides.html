@@ -409,7 +409,7 @@ body.ov-on #overview{display:block}
     </ul>
     <p class="punch step wide">One question, asked at increasing distances. Everything on the next twenty-five slides is a different way of asking it.</p>
   </div>
-  <aside class="notes">This session is fpp3 sections 2.7 to 2.9, and notebook <code>03_C</code> covers them in the same order.<br><br>Two names for one picture: the book and the notebook both say <b>correlogram</b> and <b>ACF plot</b>, and they mean exactly the same graph. The notebook also calls it a &ldquo;lagplot&rdquo; once in the correlogram section, which is a slip &mdash; a lag plot is the grid of scatterplots, a correlogram is the bar chart.</aside>
+  <aside class="notes">This session is fpp3 sections 2.7 to 2.9, and notebook <code>04_C</code> covers them in the same order.<br><br>Two names for one picture: the book and the notebook both say <b>correlogram</b> and <b>ACF plot</b>, and they mean exactly the same graph. Keep that distinct from the <b>lag plot</b>, which the notebook writes as &ldquo;lagplot&rdquo;: the lag plot is the grid of scatterplots, the correlogram is the bar chart.</aside>
 </section>
 
 <!-- ---------- 3 ---------- -->
@@ -511,7 +511,7 @@ body.ov-on #overview{display:block}
 <section class="slide" data-section="2" data-title="Switch: lags on time plots">
   <div class="inner">
     <p class="kicker">Now we plot</p>
-    <h1 class="sowhat">Open <code>03_C</code></h1>
+    <h1 class="sowhat">Open <code>04_C</code></h1>
     <ul class="build plain" style="margin-top:1.8rem">
       <li>Filter <code>aus_production</code> to 2000 onwards &rarr; <code>recent_beer</code></li>
       <li>Build four lags with the <code>for</code> loop</li>
@@ -526,7 +526,7 @@ body.ov-on #overview{display:block}
 <!-- ---------- 6 ---------- -->
 <section class="slide" data-section="2" data-title="Change n_lag and watch the phase break">
   <div class="inner">
-    <p class="kicker">03_C &nbsp;&middot;&nbsp; on the RStudio screen</p>
+    <p class="kicker">04_C &nbsp;&middot;&nbsp; on the RStudio screen</p>
     <h1 class="sowhat wide">Change one number. The alignment appears and disappears.</h1>
     <ul class="build">
       <li class="step"><b><code>n_lag = 1</code>, then 3.</b> The red line drifts off the dark one. Peaks land on slopes. No alignment.</li>
@@ -541,7 +541,7 @@ body.ov-on #overview{display:block}
 <!-- ---------- 7 ---------- -->
 <section class="slide" data-section="3" data-title="Drop the time axis">
   <div class="inner">
-    <p class="kicker">03_C &nbsp;&middot;&nbsp; <code>gg_lag(y = Beer, geom = "point", lags = 4)</code></p>
+    <p class="kicker">04_C &nbsp;&middot;&nbsp; <code>gg_lag(y = Beer, geom = "point", lags = 4)</code></p>
     <h1 class="sowhat">Forget time. Plot the series against its own past.</h1>
     <figure>
       <svg viewBox="0 0 760 215" role="img" aria-label="On the left, a time plot with a lag overlaid. An arrow leads to a scatterplot on the right where each quarter becomes one point, the cloud forming a tight upward diagonal">
@@ -587,7 +587,7 @@ body.ov-on #overview{display:block}
 <!-- ---------- 8 ---------- -->
 <section class="slide" data-section="3" data-title="Twelve panels, and they alternate">
   <div class="inner">
-    <p class="kicker">03_C &nbsp;&middot;&nbsp; <code>gg_lag(y = Beer, geom = "point", lags = 1:12)</code></p>
+    <p class="kicker">04_C &nbsp;&middot;&nbsp; <code>gg_lag(y = Beer, geom = "point", lags = 1:12)</code></p>
     <h1 class="sowhat wide">Twelve scatterplots. They do not just get weaker &mdash; they alternate.</h1>
     <figure>
       <svg viewBox="0 0 760 296" role="img" aria-label="A grid of twelve small scatterplot panels labelled lag 1 to lag 12 in order. Panels 4, 8 and 12 show tight upward diagonals; panels 2, 6 and 10 show tight downward diagonals; the odd-numbered panels show formless blobs">
@@ -695,7 +695,7 @@ body.ov-on #overview{display:block}
 <!-- ---------- 9 ---------- -->
 <section class="slide" data-section="3" data-title="What the lag plot is for">
   <div class="inner">
-    <p class="kicker">03_C &nbsp;&middot;&nbsp; reading the grid</p>
+    <p class="kicker">04_C &nbsp;&middot;&nbsp; reading the grid</p>
     <h1 class="sowhat">The lag plot finds the period without a formula.</h1>
     <ul class="build">
       <li class="step"><b>Scan for tight panels, in either direction.</b> Note which lag numbers they sit at.</li>
@@ -952,7 +952,7 @@ r_k  =  <span class="hl">sum_{t=k+1}^{T}</span> (y_t - ybar)(y_{t-k} - ybar)
 <!-- ---------- 17 ---------- -->
 <section class="slide" data-section="5" data-title="When the trend drowns the season">
   <div class="inner">
-    <p class="kicker">03_C &nbsp;&middot;&nbsp; Australian antidiabetic drug sales (<code>a10</code>)</p>
+    <p class="kicker">04_C &nbsp;&middot;&nbsp; Australian antidiabetic drug sales (<code>a10</code>)</p>
     <h1 class="sowhat wide">Same series, two tools, two different answers.</h1>
     <figure>
       <svg viewBox="0 0 760 196" role="img" aria-label="A correlogram of a strongly trended seasonal series. All bars are positive and decay smoothly; the bumps at lags 12 and 24 are barely higher than their neighbours">
@@ -1115,7 +1115,7 @@ y |&gt; ACF(wn) |&gt; autoplot()</div>
 <!-- ---------- 24 ---------- -->
 <section class="slide" data-section="7" data-title="Lag k means k index units">
   <div class="inner">
-    <p class="kicker">Before the homework &nbsp;&middot;&nbsp; <code>03_D</code></p>
+    <p class="kicker">Before the homework &nbsp;&middot;&nbsp; <code>04_D</code></p>
     <h1 class="sowhat wide">A lag is one step of whatever your index happens to be.</h1>
     <figure>
       <svg viewBox="0 0 760 172" role="img" aria-label="Three rows showing the same underlying data indexed hourly, weekly and monthly. Under each, the number of lags needed to reach one year: 8760, 52 and 12">
@@ -1146,15 +1146,15 @@ y |&gt; ACF(wn) |&gt; autoplot()</div>
       <li class="step"><b>So <code>lag_max</code> is not a style choice.</b> A yearly season cannot appear in a correlogram that stops short of one full cycle in the units you are indexed by.</li>
       <li class="step"><b>Which makes aggregation part of the analysis.</b> <code>index_by()</code> plus <code>summarise()</code> changes the unit, and with it the lag you should be looking at &mdash; and T, and therefore the bounds.</li>
     </ul>
-    <p class="punch step wide">That is all <code>03_D</code> is: choosing the resolution at which the question can be asked. Do it before you reach for the ACF, not after.</p>
+    <p class="punch step wide">That is all <code>04_D</code> is: choosing the resolution at which the question can be asked. Do it before you reach for the ACF, not after.</p>
   </div>
-  <aside class="notes"><code>03_D</code> itself contains no ACF work &mdash; it is pure aggregation and time plots, taking hourly Beijing pollution up to weekly and monthly, and weekly fuel prices up to quarterly. Treat it as the setup step that the correlogram depends on.<br><br>One detail in the fuel-prices exercise repays attention: the notebook asks you to try <code>index_by()</code> with and without a preceding <code>group_by(fuel_type)</code>. Without it, petrol and diesel are averaged together into a single meaningless series. That is the same keyed-tsibble idea from Session 2, and it is the sort of silent wrong answer that no warning will catch for you.</aside>
+  <aside class="notes"><code>04_D</code> itself contains no ACF work &mdash; it is pure aggregation and time plots, taking hourly Beijing pollution up to weekly and monthly, and weekly fuel prices up to quarterly. Treat it as the setup step that the correlogram depends on.<br><br>One detail in the fuel-prices exercise repays attention: the notebook asks you to try <code>index_by()</code> with and without a preceding <code>group_by(fuel_type)</code>. Without it, petrol and diesel are averaged together into a single meaningless series. That is the same keyed-tsibble idea from Session 2, and it is the sort of silent wrong answer that no warning will catch for you.</aside>
 </section>
 
 <!-- ---------- 25 ---------- -->
 <section class="slide" data-section="7" data-title="Exercise 1 in class">
   <div class="inner">
-    <p class="kicker">03_C &nbsp;&middot;&nbsp; exercise 1 &mdash; start it here</p>
+    <p class="kicker">04_C &nbsp;&middot;&nbsp; exercise 1 &mdash; start it here</p>
     <h1 class="sowhat">Four series. Four correlograms. Work out the pairing.</h1>
     <ul class="build">
       <li class="step"><b>Look at the four correlograms first</b>, before the series. Classify each on its own: envelope, rhythm, sign, scale.</li>
@@ -1172,11 +1172,11 @@ y |&gt; ACF(wn) |&gt; autoplot()</div>
     <p class="kicker">Due before Session 5</p>
     <h1 class="sowhat">Homework.</h1>
     <ul class="build">
-      <li><code>03_C</code> Exercises 1 to 4 &mdash; correlogram matching, then <code>us_employment</code>, <code>PBS</code> H02 and <code>us_gasoline</code>.</li>
-      <li>All of <code>03_D</code> &mdash; Beijing pollution aggregated to weekly and to monthly, then fuel prices aggregated to quarterly.</li>
+      <li><code>04_C</code> Exercises 1 to 4 &mdash; correlogram matching, then <code>us_employment</code>, <code>PBS</code> H02 and <code>us_gasoline</code>.</li>
+      <li>All of <code>04_D</code> &mdash; Beijing pollution aggregated to weekly and to monthly, then fuel prices aggregated to quarterly.</li>
       <li>For every correlogram you produce, one sentence: which pattern dominates, and whether another could be hiding under it. One sentence, not a paragraph.</li>
     </ul>
-    <div class="callout slate"><b>Both data files are in the repo.</b> <code>data/Beijing_Pollution_TSeries.csv</code> and <code>data/Weekly Fuel Prices.xlsx</code>, referenced by relative path from the repository root. <code>03_D</code> also needs <code>readxl</code>.</div>
+    <div class="callout slate"><b>Both data files are in the repo.</b> <code>data/Beijing_Pollution_TSeries.csv</code> and <code>data/Weekly Fuel Prices.xlsx</code>, referenced by relative path from the repository root. <code>04_D</code> also needs <code>readxl</code>.</div>
   </div>
   <aside class="notes">Exercise 4 uses weekly data. Before you run anything, work out from slide 24 how many lags a yearly season would need in weekly units, then check what <code>ACF()</code> gives you by default. Decide whether those two numbers are compatible before you draw any conclusion about seasonality.<br><br>The one-sentence rule is the skill that transfers. Naming the dominant pattern is the easy half; the sentence only earns its keep when it also says what the correlogram might be hiding.</aside>
 </section>
