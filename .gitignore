@@ -4,6 +4,7 @@
 .RData
 .Ruserdata
 renv/library/
+Rplots.pdf
 
 # OS
 .DS_Store

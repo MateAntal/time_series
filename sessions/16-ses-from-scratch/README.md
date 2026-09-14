@@ -1,5 +1,7 @@
 # Session 16 — Fitting SES from scratch
 
+**Date:** Monday, 16 November 2026, 9:00–10:20 — IE Tower, room T-05.02
+
 **fpp3:** 8.1 (estimation)
 
 **Data:** `yhat_SES_test`
@@ -10,7 +12,7 @@ Argentinian exports — then compare against `fable` and discuss why they differ
 
 **R:** user-defined functions, `optim()`
 
-**Homework:** `06_1_E_SES_Exercise` in full (timeplot, fit, interpret `α`, residual standard
+**Homework:** `16_E_SES_Exercise` in full (timeplot, fit, interpret `α`, residual standard
 deviation, manual 95% interval, compare to R's).
 
 **Outcome:** Student can explain what `ETS()` is doing numerically, because they have done it.

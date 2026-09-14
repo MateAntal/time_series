@@ -318,13 +318,9 @@ soi_recruitment <-
 soi_recruitment
 
 # ---- cell 42 ----
-# Count number of columns
-ncols <- length(names(soi_recruitment))
-
-# Generate scatterplot matrix
-soi_recruitment |> 
-  GGally::ggpairs(columns = 2:ncols, lower = list(continuous = wrap("smooth_loess", color="lightblue", se=TRUE))) + 
-  theme(axis.text.x = element_text(angle = 90))
+# Exercise: generate the scatterplot matrix of recruitment against SOI
+# and its lags (SOI_l1 to SOI_l8). Do you detect any non-linear
+# relationship that the correlation coefficient does not capture?
 
 # ---- cell 43 ----
 PBS |>

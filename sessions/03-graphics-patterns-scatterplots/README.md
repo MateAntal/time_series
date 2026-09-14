@@ -1,5 +1,7 @@
 # Session 03 — Time series graphics: plots, patterns, scatterplots
 
+**Date:** Wednesday, 9 September 2026, 9:00–10:20 — IE Tower, room T-05.02
+
 **fpp3:** 2.2–2.6
 
 **Data:** `soi_recruitment.csv`

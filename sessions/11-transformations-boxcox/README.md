@@ -1,5 +1,7 @@
 # Session 11 — Transformations: logs, power, Box–Cox
 
+**Date:** Monday, 19 October 2026, 9:00–10:20 — IE Tower, room T-05.02
+
 **fpp3:** 3.1
 
 **Data:** `australian_imports_japan.csv`, `private_housing_US.csv` (homework)

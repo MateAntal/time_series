@@ -1,5 +1,7 @@
 # Session 04 — Lag plots, autocorrelation, white noise
 
+**Date:** Monday, 14 September 2026, 9:00–10:20 — IE Tower, room T-05.02
+
 **fpp3:** 2.7–2.9
 
 **Data:** `Beijing_Pollution_TSeries.csv`, `Weekly Fuel Prices.xlsx` (homework)
@@ -10,7 +12,7 @@ seasonality show up in an ACF; white noise as the reference case.
 
 **R:** `gg_lag()`, `ACF() |> autoplot()`
 
-**Homework:** `03_C` Exercises 1–4, then all of `03_D_TSGraphs_MoreExercises` (Beijing pollution
+**Homework:** `04_C` Exercises 1–4, then all of `04_D_TSGraphs_MoreExercises` (Beijing pollution
 weekly/monthly aggregation; fuel prices quarterly aggregation).
 
 **Outcome:** Student reads an ACF, connects it back to trend/seasonality, and recognizes white noise.

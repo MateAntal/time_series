@@ -1,0 +1,1358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Session 4 · Time Series Analysis · Fall 2026</title>
+<style>
+/* ============================================================
+   Session 04 slides. Same self-contained shell as Sessions 01,
+   02 and 03: no fonts, scripts or images are fetched from the
+   network, so this renders identically on a projector with no
+   internet.
+   ============================================================ */
+
+:root{
+  --paper:#FAF8F5;
+  --ink:#161513;
+  --muted:#6B665E;
+  --faint:#98928a;
+  --hair:#E4DFD5;
+  --slate:#1F3A4D;
+  --terra:#B5471E;
+  --sage:#6B7F5E;
+  --sand:#EFEAE1;
+
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif;
+  --mono:SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+
+  --fs-huge:clamp(3.4rem,9vw,10rem);
+  --fs-sowhat:clamp(2.1rem,4.3vw,4.8rem);
+  --fs-h2:clamp(1.5rem,2.6vw,2.9rem);
+  --fs-lead:clamp(1.05rem,1.62vw,1.95rem);
+  --fs-body:clamp(0.95rem,1.25vw,1.5rem);
+  --fs-small:clamp(0.82rem,0.98vw,1.15rem);
+  --fs-kicker:clamp(0.66rem,0.8vw,0.95rem);
+  --fs-mono:clamp(0.88rem,1.28vw,1.62rem);
+
+  --rail:266px;
+  --notes-h:0px;
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--sans);
+  -webkit-font-smoothing:antialiased;
+  display:flex;
+  overflow:hidden;
+}
+
+/* ---------------- left rail ---------------- */
+
+#rail{
+  width:var(--rail);
+  flex:0 0 var(--rail);
+  border-right:1px solid var(--hair);
+  background:var(--sand);
+  display:flex;
+  flex-direction:column;
+  padding:2.1rem 0 1.1rem;
+  transition:margin-left .25s ease;
+  z-index:5;
+}
+body.rail-hidden #rail{margin-left:calc(-1 * var(--rail))}
+
+#rail .brand{padding:0 1.6rem 1.5rem;border-bottom:1px solid var(--hair)}
+#rail .brand b{
+  display:block;font-family:var(--serif);font-size:1.18rem;
+  font-weight:500;line-height:1.15;letter-spacing:.005em;
+}
+#rail .brand span{
+  display:block;margin-top:.42rem;font-size:.7rem;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--muted);
+}
+
+#toc{list-style:none;margin:0;padding:1rem 0;flex:1;overflow:auto}
+#toc li{
+  display:flex;gap:.72rem;align-items:baseline;
+  padding:.52rem 1.6rem .52rem 1.25rem;
+  font-size:.83rem;line-height:1.3;color:var(--muted);
+  border-left:3px solid transparent;cursor:pointer;
+  transition:color .15s ease,border-color .15s ease;
+}
+#toc li .num{
+  font-variant-numeric:tabular-nums;font-size:.68rem;
+  color:var(--faint);min-width:.9rem;
+}
+#toc li:hover{color:var(--ink)}
+#toc li.on{color:var(--ink);border-left-color:var(--terra);font-weight:600}
+#toc li.on .num{color:var(--terra)}
+#toc li.done{color:var(--faint)}
+/* a dot marks the sections delivered from the RStudio screen */
+#toc li .live{
+  margin-left:auto;width:6px;height:6px;border-radius:50%;
+  background:var(--slate);opacity:.45;flex:0 0 6px;
+}
+#toc li.on .live{opacity:1}
+
+#rail .foot{padding:.9rem 1.6rem 0;border-top:1px solid var(--hair)}
+#bar{height:2px;background:var(--hair);border-radius:2px;overflow:hidden}
+#bar i{display:block;height:100%;width:0;background:var(--terra);transition:width .3s ease}
+#rail .foot .keys{
+  margin-top:.7rem;font-size:.63rem;color:var(--faint);
+  line-height:1.7;letter-spacing:.02em;
+}
+kbd{
+  font-family:var(--mono);font-size:.62rem;background:var(--paper);
+  border:1px solid var(--hair);border-radius:3px;padding:.05em .32em;color:var(--muted);
+}
+
+/* ---------------- stage ---------------- */
+
+#stage{position:relative;flex:1;min-width:0;overflow:hidden}
+
+.slide{
+  position:absolute;inset:0;bottom:var(--notes-h);
+  display:flex;overflow:auto;
+  padding:5vh 5.5vw 5vh 5vw;
+  opacity:0;visibility:hidden;
+  transition:opacity .26s ease;
+}
+.slide.active{opacity:1;visibility:visible}
+.slide > .inner{margin:auto;width:100%;max-width:1240px}
+
+/* ---------------- typography ---------------- */
+
+.kicker{
+  margin:0 0 1.15rem;font-size:var(--fs-kicker);letter-spacing:.19em;
+  text-transform:uppercase;color:var(--terra);font-weight:600;
+}
+.kicker.q{color:var(--muted)}
+
+h1.sowhat{
+  margin:0;font-family:var(--serif);font-weight:500;
+  font-size:var(--fs-sowhat);line-height:1.04;letter-spacing:-.012em;
+  max-width:19ch;
+}
+h1.sowhat.wide{max-width:26ch}
+h2.sub{
+  margin:1.5rem 0 0;font-family:var(--serif);font-weight:500;
+  font-size:var(--fs-h2);line-height:1.15;color:var(--slate);max-width:26ch;
+}
+.lead{font-size:var(--fs-lead);line-height:1.4;color:var(--muted);max-width:44ch;margin:1.3rem 0 0}
+.lead.wide{max-width:58ch}
+.small{font-size:var(--fs-small);color:var(--faint);line-height:1.55;margin:1.5rem 0 0;max-width:60ch}
+.hr{height:1px;background:var(--hair);border:0;margin:1.9rem 0 0}
+
+/* inline code sits inside serif headlines and sans body alike, so it is
+   sized relative to its parent rather than at a fixed size */
+code{
+  font-family:var(--mono);font-size:.86em;letter-spacing:-.01em;
+  background:#fff;border:1px solid var(--hair);border-radius:3px;
+  padding:.08em .34em;color:var(--slate);white-space:nowrap;
+}
+h1.sowhat code{font-size:.82em;padding:.05em .26em;color:var(--ink)}
+.callout code,ul.build code,table.traps code{background:var(--sand);border-color:#DCD5C8}
+
+.punch{
+  font-family:var(--serif);font-size:var(--fs-h2);line-height:1.16;
+  color:var(--terra);margin:1.7rem 0 0;max-width:24ch;font-weight:500;
+}
+.punch.ink{color:var(--ink)}
+.punch.slate{color:var(--slate)}
+.punch.wide{max-width:34ch}
+
+.huge{
+  font-family:var(--mono);font-size:var(--fs-huge);line-height:1;
+  letter-spacing:-.03em;margin:0;color:var(--ink);
+}
+.huge.long{font-size:clamp(2.1rem,5.4vw,5.8rem)}
+.url{
+  font-family:var(--mono);font-size:clamp(1.1rem,2.55vw,3rem);
+  line-height:1.2;color:var(--slate);margin:1.3rem 0 0;word-break:break-word;
+}
+
+/* ---------------- builds ---------------- */
+
+ul.build{list-style:none;margin:1.9rem 0 0;padding:0}
+ul.build li{
+  font-size:var(--fs-lead);line-height:1.34;margin:0 0 1.02rem;
+  padding-left:2.1rem;position:relative;max-width:46ch;
+}
+ul.build.wide li{max-width:58ch}
+ul.build li:last-child{margin-bottom:0}
+ul.build li::before{
+  content:counter(step);counter-increment:step;
+  position:absolute;left:0;top:.24em;
+  font-family:var(--mono);font-size:.62em;color:var(--terra);
+  font-weight:700;letter-spacing:.04em;
+}
+ul.build{counter-reset:step}
+ul.build.plain li::before{content:"·";font-size:1em;top:.02em;color:var(--terra)}
+ul.build li b{font-weight:600}
+
+.step{opacity:0;transform:translateY(6px);transition:opacity .3s ease,transform .3s ease}
+.step.on{opacity:1;transform:none}
+
+/* ---------------- blocks ---------------- */
+
+.console{
+  font-family:var(--mono);font-size:var(--fs-mono);line-height:1.62;
+  background:#fff;border:1px solid var(--hair);border-left:3px solid var(--slate);
+  border-radius:3px;padding:1.05rem 1.3rem;margin:1.7rem 0 0;
+  white-space:pre;overflow-x:auto;color:var(--slate);
+}
+.console .hl{color:var(--terra);font-weight:700}
+.console .dim{color:var(--faint)}
+.console.terra{border-left-color:var(--terra)}
+.console.tight{font-size:clamp(0.78rem,1.05vw,1.32rem);padding:.85rem 1.05rem}
+
+.callout{
+  margin:1.7rem 0 0;padding:.95rem 1.25rem;border-radius:3px;
+  background:#fff;border:1px solid var(--hair);border-left:3px solid var(--terra);
+  font-size:var(--fs-body);line-height:1.45;max-width:52ch;
+}
+.callout b{color:var(--terra)}
+.callout.slate{border-left-color:var(--slate)}
+.callout.slate b{color:var(--slate)}
+
+.cards{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem 1.5rem;margin:1.9rem 0 0}
+.cards.four{grid-template-columns:repeat(4,1fr);gap:1.2rem}
+.card{border-top:2px solid var(--slate);padding:.85rem 0 0}
+.card.terra{border-top-color:var(--terra)}
+.card.sage{border-top-color:var(--sage)}
+.card h3{
+  margin:0 0 .5rem;font-size:var(--fs-small);letter-spacing:.11em;
+  text-transform:uppercase;color:var(--slate);font-weight:700;
+}
+.card.terra h3{color:var(--terra)}
+.card.sage h3{color:var(--sage)}
+.card p{margin:0;font-size:var(--fs-body);line-height:1.38;color:var(--muted)}
+
+table.traps{border-collapse:collapse;margin:1.6rem 0 0;width:100%}
+table.traps td{
+  padding:.58rem .9rem .58rem 0;border-bottom:1px solid var(--hair);
+  font-size:var(--fs-body);line-height:1.35;vertical-align:top;
+}
+table.traps td.os{
+  white-space:nowrap;color:var(--slate);font-weight:700;
+  font-size:var(--fs-small);letter-spacing:.05em;text-transform:uppercase;padding-top:.72rem;
+}
+table.traps td.fix{color:var(--muted)}
+table.traps td code{white-space:nowrap}
+table.traps.compact td{padding:.42rem .9rem .42rem 0;font-size:var(--fs-small)}
+
+.chips{display:flex;flex-wrap:wrap;gap:.5rem;margin:1.5rem 0 0}
+.chip{
+  font-size:var(--fs-small);border:1px solid var(--hair);background:#fff;
+  border-radius:100px;padding:.34em .95em;color:var(--slate);letter-spacing:.02em;
+}
+
+figure{margin:1.7rem 0 0}
+figure svg{width:100%;height:auto;max-height:44vh;display:block}
+figcaption{
+  margin-top:1rem;font-size:var(--fs-body);color:var(--muted);
+  line-height:1.4;max-width:56ch;
+}
+.figrow{display:grid;grid-template-columns:1fr 1fr;gap:1.6rem;margin-top:.9rem}
+.figrow.three{grid-template-columns:repeat(3,1fr);gap:1.3rem}
+.figrow p{margin:0;font-size:var(--fs-body);line-height:1.38}
+.figrow p b{display:block;color:var(--slate);letter-spacing:.05em;font-size:.8em;text-transform:uppercase;margin-bottom:.3rem}
+.figrow p.t b{color:var(--terra)}
+.figrow p.g b{color:var(--sage)}
+
+.split{display:grid;grid-template-columns:1.05fr .95fr;gap:3rem;align-items:center}
+@media (max-width:1080px){.split{grid-template-columns:1fr;gap:1.5rem}.cards.four{grid-template-columns:repeat(2,1fr)}.figrow.three{grid-template-columns:1fr}}
+
+/* ---------------- title slide ---------------- */
+
+.title-slide .inner{max-width:none}
+.title-slide h1{
+  font-family:var(--serif);font-weight:500;margin:0;
+  font-size:clamp(2.6rem,6.4vw,7.2rem);line-height:1;letter-spacing:-.02em;
+}
+.title-slide .rule{width:84px;height:3px;background:var(--terra);margin:2rem 0}
+.title-slide .who{font-size:var(--fs-lead);line-height:1.5;color:var(--muted);margin:0}
+.title-slide .who b{color:var(--ink);font-weight:600}
+
+/* ---------------- HUD ---------------- */
+
+#hud{
+  position:fixed;right:1.1rem;bottom:.85rem;z-index:20;
+  display:flex;align-items:center;gap:.55rem;
+  font-family:var(--mono);font-size:.72rem;color:var(--faint);
+}
+#hud button{
+  font:inherit;border:1px solid var(--hair);background:var(--paper);
+  color:var(--muted);border-radius:3px;width:26px;height:24px;cursor:pointer;line-height:1;
+}
+#hud button:hover{color:var(--ink);border-color:var(--muted)}
+#count{font-variant-numeric:tabular-nums;letter-spacing:.05em}
+
+/* ---------------- notes ---------------- */
+
+.notes{display:none}
+#notepane{
+  position:absolute;left:0;right:0;bottom:0;height:212px;z-index:10;
+  background:#F3EFE7;border-top:1px solid var(--hair);
+  padding:1rem 1.6rem 1.1rem;overflow:auto;display:none;
+}
+body.notes-on #notepane{display:block}
+#notepane h4{
+  margin:0 0 .55rem;font-size:.63rem;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--terra);font-weight:700;
+}
+#notepane .body{font-size:.94rem;line-height:1.58;color:#3d3a35;max-width:96ch}
+#notepane .body em{color:var(--slate);font-style:normal;font-weight:600}
+#notepane .body .clock{
+  font-family:var(--mono);background:var(--paper);border:1px solid var(--hair);
+  border-radius:3px;padding:.05em .4em;font-size:.86em;color:var(--terra);font-weight:700;
+}
+/* screen-switch cue. Loud on purpose: it is the one instruction that costs
+   you the room if you miss it. */
+#notepane .body .switch{
+  display:inline-block;font-family:var(--mono);font-size:.78em;font-weight:700;
+  letter-spacing:.09em;text-transform:uppercase;
+  background:var(--slate);color:var(--paper);border-radius:3px;
+  padding:.18em .62em;margin:0 .5em .2em 0;
+}
+#notepane .body .switch.back{background:var(--terra)}
+
+/* ---------------- overview ---------------- */
+
+#overview{
+  position:fixed;inset:0;z-index:40;background:var(--paper);
+  padding:2.4rem 3vw;overflow:auto;display:none;
+}
+body.ov-on #overview{display:block}
+#overview h3{
+  margin:0 0 1.4rem;font-family:var(--serif);font-weight:500;font-size:1.5rem;
+}
+#ovlist{columns:3;column-gap:2.6rem;list-style:none;margin:0;padding:0}
+@media (max-width:1000px){#ovlist{columns:2}}
+#ovlist li{
+  break-inside:avoid;display:flex;gap:.7rem;padding:.28rem 0;
+  font-size:.86rem;line-height:1.35;color:var(--muted);cursor:pointer;
+}
+#ovlist li:hover{color:var(--ink)}
+#ovlist li.on{color:var(--terra);font-weight:600}
+#ovlist li .n{font-family:var(--mono);font-size:.72rem;color:var(--faint);min-width:1.6rem;text-align:right}
+#ovlist li.head{
+  margin-top:1.1rem;color:var(--slate);font-weight:700;font-size:.68rem;
+  letter-spacing:.16em;text-transform:uppercase;cursor:default;
+}
+#ovlist li.head:first-child{margin-top:0}
+
+/* ---------------- print ---------------- */
+
+@media print{
+  body{display:block;overflow:visible;background:#fff}
+  #rail,#hud,#notepane,#overview{display:none !important}
+  #stage{overflow:visible;position:static}
+  .slide{
+    position:static;visibility:visible;opacity:1;bottom:0;
+    height:auto;min-height:92vh;page-break-after:always;
+    border-bottom:1px solid #ddd;
+  }
+  .step{opacity:1 !important;transform:none !important}
+  figure svg{max-height:32vh}
+}
+</style>
+</head>
+<body>
+
+<!-- ============================== RAIL ============================== -->
+<nav id="rail">
+  <div class="brand">
+    <b>Time Series Analysis</b>
+    <span>Session 4 · Fall 2026</span>
+  </div>
+  <ul id="toc"></ul>
+  <div class="foot">
+    <div id="bar"><i></i></div>
+    <div class="keys">
+      <kbd>&rarr;</kbd> next &nbsp; <kbd>&larr;</kbd> back &nbsp; <kbd>N</kbd> detail<br>
+      <kbd>O</kbd> jump &nbsp; <kbd>F</kbd> full &nbsp; <kbd>[</kbd> hide this pane
+    </div>
+  </div>
+</nav>
+
+<!-- ============================== STAGE ============================== -->
+<main id="stage">
+
+<!-- ---------- 1 ---------- -->
+<section class="slide title-slide" data-section="1" data-title="Title">
+  <div class="inner">
+    <p class="kicker">IE University · Dual Degree BBA &amp; Data and Business Analytics</p>
+    <h1>Does it<br>remember<br>itself?</h1>
+    <div class="rule"></div>
+    <p class="who"><b>Session 4.</b> Lag plots, the autocorrelation function, and white noise.<br>
+    Alejandro Berrizbeitia · aberrizbeitia@faculty.ie.edu</p>
+  </div>
+  <aside class="notes">The deck is self-contained: press <b>N</b> at any time to open or close this panel, and <b>O</b> for a list of every slide.</aside>
+</section>
+
+<!-- ---------- 2 ---------- -->
+<section class="slide" data-section="1" data-title="One question, asked at every distance">
+  <div class="inner">
+    <p class="kicker">Where we are</p>
+    <h1 class="sowhat">Last session you named the patterns by eye. Today you measure them.</h1>
+    <ul class="build">
+      <li class="step">A lag plot asks the question with a scatterplot: does today look like <i>k</i> steps ago?</li>
+      <li class="step">The autocorrelation function compresses each of those scatterplots into one number.</li>
+      <li class="step">White noise is the reference case &mdash; the series that remembers nothing.</li>
+    </ul>
+    <p class="punch step wide">One question, asked at increasing distances. Everything on the next twenty-five slides is a different way of asking it.</p>
+  </div>
+  <aside class="notes">This session is fpp3 sections 2.7 to 2.9, and notebook <code>04_C</code> covers them in the same order.<br><br>Two names for one picture: the book and the notebook both say <b>correlogram</b> and <b>ACF plot</b>, and they mean exactly the same graph. Keep that distinct from the <b>lag plot</b>, which the notebook writes as &ldquo;lagplot&rdquo;: the lag plot is the grid of scatterplots, the correlogram is the bar chart.</aside>
+</section>
+
+<!-- ---------- 3 ---------- -->
+<section class="slide" data-section="1" data-title="A lag is the same column, moved down">
+  <div class="inner">
+    <p class="kicker">Recap from Session 3 &nbsp;&middot;&nbsp; <code>recent_beer</code></p>
+    <h1 class="sowhat">A lag is the same column, moved down.</h1>
+    <figure>
+      <svg viewBox="0 0 760 218" role="img" aria-label="The recent_beer tsibble printed with Beer and its first four lags. Each lag column starts one row lower than the last, and the top of each is filled with NA">
+        <g font-family="SFMono-Regular,Menlo,monospace" font-size="12.5" fill="#6B665E">
+          <text x="30" y="28">Quarter</text>
+          <text x="160" y="28">Beer</text>
+          <text x="268" y="28">Beer_lag1</text>
+          <text x="380" y="28">Beer_lag2</text>
+          <text x="492" y="28">Beer_lag3</text>
+          <text x="604" y="28">Beer_lag4</text>
+        </g>
+        <path d="M24 38 H716" stroke="#E4DFD5" stroke-width="1.2" fill="none"/>
+        <!-- the NA staircase, shaded so the diagonal edge reads as one shape -->
+        <path d="M262 44 H716 V74 H374 V104 H486 V134 H598 V164 H262 Z"
+              fill="#B5471E" opacity=".07"/>
+        <g font-family="SFMono-Regular,Menlo,monospace" font-size="12.5" fill="#161513">
+          <text x="30" y="62">2000 Q1</text><text x="160" y="62">421</text>
+          <text x="268" y="62" fill="#B5471E">NA</text><text x="380" y="62" fill="#B5471E">NA</text>
+          <text x="492" y="62" fill="#B5471E">NA</text><text x="604" y="62" fill="#B5471E">NA</text>
+
+          <text x="30" y="92">2000 Q2</text><text x="160" y="92">402</text>
+          <text x="268" y="92">421</text>
+          <text x="380" y="92" fill="#B5471E">NA</text><text x="492" y="92" fill="#B5471E">NA</text>
+          <text x="604" y="92" fill="#B5471E">NA</text>
+
+          <text x="30" y="122">2000 Q3</text><text x="160" y="122">414</text>
+          <text x="268" y="122">402</text><text x="380" y="122">421</text>
+          <text x="492" y="122" fill="#B5471E">NA</text><text x="604" y="122" fill="#B5471E">NA</text>
+
+          <text x="30" y="152">2000 Q4</text><text x="160" y="152">500</text>
+          <text x="268" y="152">414</text><text x="380" y="152">402</text><text x="492" y="152">421</text>
+          <text x="604" y="152" fill="#B5471E">NA</text>
+
+          <text x="30" y="182">2001 Q1</text><text x="160" y="182">451</text>
+          <text x="268" y="182">500</text><text x="380" y="182">414</text>
+          <text x="492" y="182">402</text><text x="604" y="182">421</text>
+
+          <text x="30" y="212">2001 Q2</text><text x="160" y="212">380</text>
+          <text x="268" y="212">451</text><text x="380" y="212">500</text>
+          <text x="492" y="212">414</text><text x="604" y="212">402</text>
+        </g>
+      </svg>
+      <div class="figrow">
+        <p class="step"><b>y<sub>t</sub></b>The <code>Beer</code> column as it stands. 421 is what was produced in 2000 Q1.</p>
+        <p class="step t"><b>y<sub>t&minus;k</sub></b>The same numbers, moved down k rows. Read across row 2001 Q1: 451 now, and 421 four quarters ago.</p>
+      </div>
+    </figure>
+    <p class="punch step wide">The shaded staircase is the whole difficulty of this session in one shape. Every lag costs you a row, and the lagged column is a shorter series than the one it came from.</p>
+  </div>
+  <aside class="notes">Two reasons lags matter, and the notebook lists both. The first is the one we spend today on: relating <code>y<sub>t</sub></code> to its own past. The second is relating <code>y<sub>t</sub></code> to the past of a <i>different</i> variable &mdash; marketing spend in March against sales in June, which is exactly the SOI-and-recruitment example that closed Session 3.<br><br>A trap worth knowing now: loading <code>fpp3</code> prints <code>dplyr::lag() masks stats::lag()</code>. That masking is what you want, because <code>stats::lag()</code> does not shift a column, it relabels a <code>ts</code> object's time attribute and will silently give you nonsense inside a <code>mutate()</code>. The opposite direction is <code>dplyr::lead()</code>.</aside>
+</section>
+
+<!-- ---------- 4 ---------- -->
+<section class="slide" data-section="2" data-title="In phase at the seasonal period">
+  <div class="inner">
+    <p class="kicker">Beer production, quarterly &nbsp;&middot;&nbsp; 2000 Q1 &ndash; 2002 Q2</p>
+    <h1 class="sowhat wide">Draw the lag on top of the original and watch the two lock together.</h1>
+    <figure>
+      <svg viewBox="0 0 760 205" role="img" aria-label="A time plot of quarterly beer production with its fourth lag overlaid as a red dashed line. The two lines rise and fall together, peaking at the same quarters">
+        <g stroke="#E4DFD5" stroke-width="1.2" fill="none">
+          <path d="M30 178 H740"/>
+        </g>
+        <g stroke="#E4DFD5" stroke-width="1" stroke-dasharray="3 5" fill="none" opacity=".8">
+          <path d="M260 40 V178 M553 40 V178"/>
+        </g>
+        <polyline fill="none" stroke="#1F3A4D" stroke-width="2.8" stroke-linejoin="round" stroke-linecap="round"
+          points="40,126 113,143 187,132 260,59 333,101 407,161 480,131 553,65 627,120 700,137"/>
+        <polyline fill="none" stroke="#B5471E" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"
+          stroke-dasharray="6 4" opacity=".9"
+          points="333,126 407,143 480,132 553,59 627,101 700,161"/>
+        <g fill="#1F3A4D"><circle cx="260" cy="59" r="3.6"/><circle cx="553" cy="65" r="3.6"/></g>
+        <g fill="#B5471E"><circle cx="553" cy="59" r="3.6"/></g>
+        <g font-family="SFMono-Regular,Menlo,monospace" font-size="11.5" fill="#6B665E">
+          <text x="260" y="196" text-anchor="middle">2000 Q4</text>
+          <text x="553" y="196" text-anchor="middle">2001 Q4</text>
+        </g>
+        <g font-family="SFMono-Regular,Menlo,monospace" font-size="12">
+          <text x="40" y="52" fill="#1F3A4D">Beer</text>
+          <text x="640" y="52" fill="#B5471E">Beer_lag4</text>
+        </g>
+      </svg>
+      <div class="figrow">
+        <p class="step"><b>The peaks coincide</b>At 2001 Q4 the dark line is at 492 and the red line is at 500 &mdash; the Q4 from a year earlier. Both are at the top of their year.</p>
+        <p class="step t"><b>That is what &ldquo;in phase&rdquo; means</b>The period is four quarters, so a four-quarter shift puts every Q1 above a Q1 and every Q4 above a Q4.</p>
+      </div>
+    </figure>
+    <p class="punch step wide">In phase means the scatterplot at that lag will be a tight diagonal. Out of phase means it will be a blob. The ACF is the number that says which.</p>
+  </div>
+  <aside class="notes">Phase language is borrowed from waves, and it is worth keeping because it also tells you what happens <i>half</i> a period out. Shift a four-quarter season by two quarters and the peaks land on the troughs: that is <b>anti-phase</b>, and it produces a strong <i>negative</i> relationship rather than no relationship at all. Slide 9 comes back to this.<br><br>The notebook says this series has &ldquo;simple seasonality&rdquo;, meaning the yearly cycle is the only one present. Sub-daily series, as Session 3's electricity example showed, can carry two or three at once, and their lag plots are correspondingly harder to read.</aside>
+</section>
+
+<!-- ---------- 5 ---------- -->
+<section class="slide" data-section="2" data-title="Switch: lags on time plots">
+  <div class="inner">
+    <p class="kicker">Now we plot</p>
+    <h1 class="sowhat">Open <code>04_C</code></h1>
+    <ul class="build plain" style="margin-top:1.8rem">
+      <li>Filter <code>aus_production</code> to 2000 onwards &rarr; <code>recent_beer</code></li>
+      <li>Build four lags with the <code>for</code> loop</li>
+      <li>Overlay <code>Beer_lag4</code> on the time plot</li>
+    </ul>
+    <div class="callout"><b>One library today.</b> <code>fpp3</code> and nothing else &mdash; no <code>GGally</code>, no <code>fma</code>, no <code>patchwork</code>.</div>
+    <div class="callout slate"><b>Two warnings are expected.</b> <code>aes_string() was deprecated</code>, and <code>Removed 4 rows containing missing values</code>. Neither is a bug. The second one is the NA staircase.</div>
+  </div>
+  <aside class="notes">The four removed rows are the four NAs at the top of <code>Beer_lag4</code>. <code>geom_line()</code> cannot draw a point it does not have, so it drops them and says so. Session 3's fourth question &mdash; what will break a model? &mdash; has just answered itself.<br><br>On <code>aes_string()</code>: it was deprecated in ggplot2 3.0.0 and the notebook keeps it on purpose, with a comment, because it is how you inject a column name held in a variable. The modern idiom for the same job is <code>aes(x = Quarter, y = .data[[lag_name]])</code>. Both work today; only one will still work in a few years.</aside>
+</section>
+
+<!-- ---------- 6 ---------- -->
+<section class="slide" data-section="2" data-title="Change n_lag and watch the phase break">
+  <div class="inner">
+    <p class="kicker">04_C &nbsp;&middot;&nbsp; on the RStudio screen</p>
+    <h1 class="sowhat wide">Change one number. The alignment appears and disappears.</h1>
+    <ul class="build">
+      <li class="step"><b><code>n_lag = 1</code>, then 3.</b> The red line drifts off the dark one. Peaks land on slopes. No alignment.</li>
+      <li class="step"><b><code>n_lag = 2</code>.</b> Something different: the peaks land on the <i>troughs</i>. That is not &ldquo;no relationship&rdquo;, it is an upside-down one.</li>
+      <li class="step"><b><code>n_lag = 4</code>.</b> The lines snap back into phase.</li>
+    </ul>
+    <p class="punch step wide">You found this period by eye last week with <code>gg_season()</code>. The same fact is now visible on an ordinary time plot, and in a moment it will be a number.</p>
+  </div>
+  <aside class="notes">The loop only built four lags, so <code>n_lag = 5</code> throws an error rather than drawing anything. Widen <code>seq(1, 4)</code> if you want to go further.<br><br>Worth noticing while the plot is on screen: the red line is the dark line translated to the <i>right</i>, not to the left. <code>lag()</code> moves a value forward in time so that it can sit beside a later observation. If you find yourself drawing it the other way, you have written <code>lead()</code>.</aside>
+</section>
+
+<!-- ---------- 7 ---------- -->
+<section class="slide" data-section="3" data-title="Drop the time axis">
+  <div class="inner">
+    <p class="kicker">04_C &nbsp;&middot;&nbsp; <code>gg_lag(y = Beer, geom = "point", lags = 4)</code></p>
+    <h1 class="sowhat">Forget time. Plot the series against its own past.</h1>
+    <figure>
+      <svg viewBox="0 0 760 215" role="img" aria-label="On the left, a time plot with a lag overlaid. An arrow leads to a scatterplot on the right where each quarter becomes one point, the cloud forming a tight upward diagonal">
+        <g stroke="#E4DFD5" stroke-width="1.3" fill="none">
+          <path d="M26 176 H312 M26 176 V26"/>
+        </g>
+        <polyline fill="none" stroke="#1F3A4D" stroke-width="2.4" stroke-linejoin="round"
+          points="34,124 66,140 98,130 130,62 162,100 194,156 226,129 258,66 290,118"/>
+        <polyline fill="none" stroke="#B5471E" stroke-width="2" stroke-linejoin="round" stroke-dasharray="5 4" opacity=".85"
+          points="162,124 194,140 226,130 258,62 290,100"/>
+        <text x="169" y="200" text-anchor="middle" fill="#6B665E"
+              font-family="SFMono-Regular,Menlo,monospace" font-size="12">time plot</text>
+        <g stroke="#B5471E" stroke-width="2.4" fill="none">
+          <path d="M330 100 C352 80 360 80 374 100"/>
+          <path d="M366 92 L374 101 L365 106"/>
+        </g>
+        <text x="352" y="72" text-anchor="middle" fill="#B5471E"
+              font-family="SFMono-Regular,Menlo,monospace" font-size="12">drop t</text>
+        <g stroke="#E4DFD5" stroke-width="1.3" fill="none">
+          <path d="M412 176 H740 M412 176 V26"/>
+        </g>
+        <line x1="422" y1="166" x2="726" y2="40" stroke="#E4DFD5" stroke-width="1.6" stroke-dasharray="5 4"/>
+        <g fill="#1F3A4D">
+          <circle cx="440" cy="150" r="4"/><circle cx="466" cy="140" r="4"/><circle cx="492" cy="132" r="4"/>
+          <circle cx="516" cy="118" r="4"/><circle cx="540" cy="112" r="4"/><circle cx="566" cy="98" r="4"/>
+          <circle cx="590" cy="94" r="4"/><circle cx="614" cy="80" r="4"/><circle cx="640" cy="76" r="4"/>
+          <circle cx="664" cy="64" r="4"/><circle cx="688" cy="58" r="4"/><circle cx="712" cy="48" r="4"/>
+          <circle cx="478" cy="126" r="4"/><circle cx="552" cy="104" r="4"/><circle cx="626" cy="86" r="4"/>
+        </g>
+        <text x="576" y="200" text-anchor="middle" fill="#6B665E"
+              font-family="SFMono-Regular,Menlo,monospace" font-size="12">Beer_lag4 (x)  vs  Beer (y)</text>
+      </svg>
+      <div class="figrow">
+        <p class="step"><b>What each point is</b>One quarter. Its y-coordinate is production that quarter; its x-coordinate is production four quarters earlier.</p>
+        <p class="step t"><b>What the shape says</b>A tight upward diagonal: when last year's Q3 was high, this year's Q3 is high. The dashed line is y = x, not a fitted line.</p>
+      </div>
+    </figure>
+    <p class="punch step wide">This is Session 3's scatterplot, with one change: both axes are the same series, one of them shifted. You are asking whether the series correlates with itself.</p>
+  </div>
+  <aside class="notes">Left to itself, <code>gg_lag()</code> draws <code>geom = "path"</code> and colors the points by season, which produces a colored tangle. The notebook passes <code>geom = "point"</code> to strip that back to a plain scatterplot, and that is the right call while you are learning to read the shape.<br><br>The faint diagonal in each panel is the 45-degree line y = x, drawn for reference. It is <i>not</i> a regression line, so do not read its slope as a strength &mdash; the strength is in how tightly the cloud hugs it.</aside>
+</section>
+
+<!-- ---------- 8 ---------- -->
+<section class="slide" data-section="3" data-title="Twelve panels, and they alternate">
+  <div class="inner">
+    <p class="kicker">04_C &nbsp;&middot;&nbsp; <code>gg_lag(y = Beer, geom = "point", lags = 1:12)</code></p>
+    <h1 class="sowhat wide">Twelve scatterplots. They do not just get weaker &mdash; they alternate.</h1>
+    <figure>
+      <svg viewBox="0 0 760 296" role="img" aria-label="A grid of twelve small scatterplot panels labeled lag 1 to lag 12 in order. Panels 4, 8 and 12 show tight upward diagonals; panels 2, 6 and 10 show tight downward diagonals; the odd-numbered panels show formless blobs">
+        <g stroke="#E4DFD5" stroke-width="1" fill="none">
+          <rect x="20" y="18" width="168" height="66"/><rect x="204" y="18" width="168" height="66"/>
+          <rect x="388" y="18" width="168" height="66"/><rect x="572" y="18" width="168" height="66"/>
+          <rect x="20" y="110" width="168" height="66"/><rect x="204" y="110" width="168" height="66"/>
+          <rect x="388" y="110" width="168" height="66"/><rect x="572" y="110" width="168" height="66"/>
+          <rect x="20" y="202" width="168" height="66"/><rect x="204" y="202" width="168" height="66"/>
+          <rect x="388" y="202" width="168" height="66"/><rect x="572" y="202" width="168" height="66"/>
+        </g>
+
+        <!-- row 1: lag 1 blob, lag 2 negative, lag 3 blob, lag 4 positive -->
+        <g fill="#98928a">
+          <circle cx="48" cy="58" r="2.8"/><circle cx="78" cy="38" r="2.8"/><circle cx="104" cy="66" r="2.8"/>
+          <circle cx="132" cy="44" r="2.8"/><circle cx="158" cy="60" r="2.8"/><circle cx="92" cy="52" r="2.8"/>
+          <circle cx="120" cy="70" r="2.8"/><circle cx="64" cy="72" r="2.8"/><circle cx="146" cy="34" r="2.8"/>
+        </g>
+        <g fill="#1F3A4D">
+          <circle cx="222" cy="34" r="2.8"/><circle cx="248" cy="42" r="2.8"/><circle cx="274" cy="48" r="2.8"/>
+          <circle cx="300" cy="56" r="2.8"/><circle cx="326" cy="62" r="2.8"/><circle cx="352" cy="70" r="2.8"/>
+          <circle cx="236" cy="40" r="2.8"/><circle cx="288" cy="50" r="2.8"/><circle cx="340" cy="64" r="2.8"/>
+        </g>
+        <line x1="218" y1="32" x2="358" y2="72" stroke="#B5471E" stroke-width="2"/>
+        <g fill="#98928a">
+          <circle cx="416" cy="60" r="2.8"/><circle cx="446" cy="38" r="2.8"/><circle cx="472" cy="68" r="2.8"/>
+          <circle cx="500" cy="42" r="2.8"/><circle cx="526" cy="58" r="2.8"/><circle cx="460" cy="52" r="2.8"/>
+          <circle cx="488" cy="70" r="2.8"/><circle cx="432" cy="70" r="2.8"/><circle cx="514" cy="34" r="2.8"/>
+        </g>
+        <g fill="#1F3A4D">
+          <circle cx="590" cy="72" r="2.8"/><circle cx="616" cy="64" r="2.8"/><circle cx="642" cy="56" r="2.8"/>
+          <circle cx="668" cy="46" r="2.8"/><circle cx="694" cy="38" r="2.8"/><circle cx="720" cy="30" r="2.8"/>
+          <circle cx="604" cy="66" r="2.8"/><circle cx="656" cy="50" r="2.8"/><circle cx="708" cy="34" r="2.8"/>
+        </g>
+        <line x1="586" y1="74" x2="726" y2="28" stroke="#B5471E" stroke-width="2"/>
+
+        <!-- row 2: lag 5 blob, lag 6 negative, lag 7 blob, lag 8 positive -->
+        <g fill="#98928a">
+          <circle cx="48" cy="150" r="2.8"/><circle cx="78" cy="130" r="2.8"/><circle cx="104" cy="158" r="2.8"/>
+          <circle cx="132" cy="136" r="2.8"/><circle cx="158" cy="152" r="2.8"/><circle cx="92" cy="144" r="2.8"/>
+          <circle cx="120" cy="162" r="2.8"/><circle cx="64" cy="164" r="2.8"/><circle cx="146" cy="126" r="2.8"/>
+        </g>
+        <g fill="#1F3A4D">
+          <circle cx="222" cy="128" r="2.8"/><circle cx="248" cy="136" r="2.8"/><circle cx="274" cy="142" r="2.8"/>
+          <circle cx="300" cy="148" r="2.8"/><circle cx="326" cy="154" r="2.8"/><circle cx="352" cy="162" r="2.8"/>
+          <circle cx="236" cy="140" r="2.8"/><circle cx="288" cy="138" r="2.8"/><circle cx="340" cy="156" r="2.8"/>
+        </g>
+        <line x1="218" y1="126" x2="358" y2="164" stroke="#B5471E" stroke-width="2"/>
+        <g fill="#98928a">
+          <circle cx="416" cy="152" r="2.8"/><circle cx="446" cy="130" r="2.8"/><circle cx="472" cy="160" r="2.8"/>
+          <circle cx="500" cy="134" r="2.8"/><circle cx="526" cy="150" r="2.8"/><circle cx="460" cy="144" r="2.8"/>
+          <circle cx="488" cy="162" r="2.8"/><circle cx="432" cy="162" r="2.8"/><circle cx="514" cy="126" r="2.8"/>
+        </g>
+        <g fill="#1F3A4D">
+          <circle cx="590" cy="164" r="2.8"/><circle cx="616" cy="156" r="2.8"/><circle cx="642" cy="148" r="2.8"/>
+          <circle cx="668" cy="140" r="2.8"/><circle cx="694" cy="132" r="2.8"/><circle cx="720" cy="124" r="2.8"/>
+          <circle cx="604" cy="160" r="2.8"/><circle cx="656" cy="142" r="2.8"/><circle cx="708" cy="130" r="2.8"/>
+        </g>
+        <line x1="586" y1="166" x2="726" y2="122" stroke="#B5471E" stroke-width="2"/>
+
+        <!-- row 3: lag 9 blob, lag 10 negative, lag 11 blob, lag 12 positive -->
+        <g fill="#98928a">
+          <circle cx="48" cy="242" r="2.8"/><circle cx="78" cy="222" r="2.8"/><circle cx="104" cy="250" r="2.8"/>
+          <circle cx="132" cy="228" r="2.8"/><circle cx="158" cy="244" r="2.8"/><circle cx="92" cy="236" r="2.8"/>
+          <circle cx="120" cy="254" r="2.8"/><circle cx="64" cy="256" r="2.8"/><circle cx="146" cy="218" r="2.8"/>
+        </g>
+        <g fill="#1F3A4D">
+          <circle cx="222" cy="222" r="2.8"/><circle cx="248" cy="230" r="2.8"/><circle cx="274" cy="234" r="2.8"/>
+          <circle cx="300" cy="242" r="2.8"/><circle cx="326" cy="246" r="2.8"/><circle cx="352" cy="254" r="2.8"/>
+          <circle cx="236" cy="234" r="2.8"/><circle cx="288" cy="232" r="2.8"/><circle cx="340" cy="250" r="2.8"/>
+        </g>
+        <line x1="218" y1="220" x2="358" y2="256" stroke="#B5471E" stroke-width="2"/>
+        <g fill="#98928a">
+          <circle cx="416" cy="244" r="2.8"/><circle cx="446" cy="222" r="2.8"/><circle cx="472" cy="252" r="2.8"/>
+          <circle cx="500" cy="226" r="2.8"/><circle cx="526" cy="242" r="2.8"/><circle cx="460" cy="236" r="2.8"/>
+          <circle cx="488" cy="254" r="2.8"/><circle cx="432" cy="254" r="2.8"/><circle cx="514" cy="218" r="2.8"/>
+        </g>
+        <g fill="#1F3A4D">
+          <circle cx="590" cy="254" r="2.8"/><circle cx="616" cy="248" r="2.8"/><circle cx="642" cy="240" r="2.8"/>
+          <circle cx="668" cy="234" r="2.8"/><circle cx="694" cy="226" r="2.8"/><circle cx="720" cy="220" r="2.8"/>
+          <circle cx="604" cy="250" r="2.8"/><circle cx="656" cy="236" r="2.8"/><circle cx="708" cy="224" r="2.8"/>
+        </g>
+        <line x1="586" y1="256" x2="726" y2="218" stroke="#B5471E" stroke-width="2"/>
+
+        <g font-family="SFMono-Regular,Menlo,monospace" font-size="11.5" text-anchor="middle">
+          <text x="104" y="98" fill="#98928a">lag 1</text><text x="288" y="98" fill="#1F3A4D">lag 2</text>
+          <text x="472" y="98" fill="#98928a">lag 3</text><text x="656" y="98" fill="#B5471E">lag 4</text>
+          <text x="104" y="190" fill="#98928a">lag 5</text><text x="288" y="190" fill="#1F3A4D">lag 6</text>
+          <text x="472" y="190" fill="#98928a">lag 7</text><text x="656" y="190" fill="#B5471E">lag 8</text>
+          <text x="104" y="282" fill="#98928a">lag 9</text><text x="288" y="282" fill="#1F3A4D">lag 10</text>
+          <text x="472" y="282" fill="#98928a">lag 11</text><text x="656" y="282" fill="#B5471E">lag 12</text>
+        </g>
+      </svg>
+      <div class="figrow three">
+        <p class="step t"><b>4, 8, 12 &mdash; in phase</b>Tight upward diagonals. A whole number of years back.</p>
+        <p class="step"><b>2, 6, 10 &mdash; anti-phase</b>Tight <i>downward</i> diagonals. Half a year back: peaks sit on troughs.</p>
+        <p class="step g"><b>1, 3, 5, 7&hellip; &mdash; blobs</b>Odd quarters land mid-slope. Nothing systematic to see.</p>
+      </div>
+    </figure>
+    <p class="punch step wide">Tight is what matters, not upward. A tight downward cloud is just as much memory as a tight upward one &mdash; the series remembers, and the answer is &ldquo;the opposite of now&rdquo;.</p>
+  </div>
+  <aside class="notes">This is the picture the beer data actually produces, and the alternation is not an accident. For a season of length m = 4, shifting by 2 &mdash; half a period &mdash; maps peaks onto troughs, which is the strongest possible negative relationship. Shifting by 1 or 3 lands you a quarter of the way round the cycle, where highs and lows are equally mixed and nothing survives averaging.<br><br>Any seasonal series does this. Monthly data with m = 12 has its negative panels near lags 6, 18, 30. If you ever see a lag plot where the tight panels are <i>only</i> upward, the series has a trend holding everything positive &mdash; which is slide 14.</aside>
+</section>
+
+<!-- ---------- 9 ---------- -->
+<section class="slide" data-section="3" data-title="What the lag plot is for">
+  <div class="inner">
+    <p class="kicker">04_C &nbsp;&middot;&nbsp; reading the grid</p>
+    <h1 class="sowhat">The lag plot finds the period without a formula.</h1>
+    <ul class="build">
+      <li class="step"><b>Scan for tight panels, in either direction.</b> Note which lag numbers they sit at.</li>
+      <li class="step"><b>If the tight upward panels are at multiples of m</b>, you have found the seasonal period. The tight downward ones will sit halfway between them.</li>
+      <li class="step"><b>If every panel is a blob</b>, the series may have no memory at all. That is the white-noise case, and the ACF settles it with a test.</li>
+    </ul>
+    <div class="callout"><b>It does not scale.</b> Twelve panels is readable. Weekly data needs fifty-two before a yearly season can show up, and a grid that size is unreadable. That limitation is why the ACF exists.</div>
+  </div>
+  <aside class="notes">The panel grid is also awkward for a second reason: each panel throws away the one thing the correlogram keeps, which is a common vertical scale. You are comparing tightness by eye across twelve separate axes.<br><br>So the lag plot is a teaching device and a first look, not a working tool. From here on you will reach for <code>ACF()</code> in practice and come back to <code>gg_lag()</code> only when a correlogram shows you something you want to see as a cloud.</aside>
+</section>
+
+<!-- ---------- 10 ---------- -->
+<section class="slide" data-section="4" data-title="Why not just use Pearson">
+  <div class="inner">
+    <p class="kicker">Autocorrelation vs Pearson's r</p>
+    <h1 class="sowhat">Each lag is computed from a different number of pairs.</h1>
+    <figure>
+      <svg viewBox="0 0 760 196" role="img" aria-label="Two diagrams. In the first, the series and its lag-1 copy overlap across 41 of 42 observations. In the second, the lag-16 copy overlaps across only 26 of 42, the shifted copy hanging off the right-hand end">
+        <!-- lag 1 -->
+        <rect x="70" y="34" width="380" height="20" rx="2" fill="#1F3A4D" opacity=".22"/>
+        <rect x="79" y="58" width="380" height="20" rx="2" fill="#B5471E" opacity=".22"/>
+        <rect x="79" y="34" width="371" height="44" rx="2" fill="#6B7F5E" opacity=".30"/>
+        <g font-family="SFMono-Regular,Menlo,monospace" font-size="12" fill="#6B665E">
+          <text x="474" y="47">y<tspan baseline-shift="sub" font-size="9">t</tspan></text>
+          <text x="474" y="71">y<tspan baseline-shift="sub" font-size="9">t-1</tspan></text>
+          <text x="560" y="60" fill="#6B7F5E">41 of 42 pairs</text>
+        </g>
+        <!-- lag 16 -->
+        <rect x="70" y="118" width="380" height="20" rx="2" fill="#1F3A4D" opacity=".22"/>
+        <rect x="215" y="142" width="380" height="20" rx="2" fill="#B5471E" opacity=".22"/>
+        <rect x="215" y="118" width="235" height="44" rx="2" fill="#6B7F5E" opacity=".30"/>
+        <g font-family="SFMono-Regular,Menlo,monospace" font-size="12" fill="#6B665E">
+          <text x="616" y="131">y<tspan baseline-shift="sub" font-size="9">t</tspan></text>
+          <text x="616" y="155">y<tspan baseline-shift="sub" font-size="9">t-16</tspan></text>
+          <text x="470" y="103" fill="#6B7F5E">26 of 42 pairs</text>
+        </g>
+        <g font-family="SFMono-Regular,Menlo,monospace" font-size="12" fill="#B5471E">
+          <text x="70" y="26">lag 1</text>
+          <text x="70" y="110">lag 16</text>
+        </g>
+        <text x="70" y="186" fill="#98928a" font-family="SFMono-Regular,Menlo,monospace" font-size="11.5">recent_beer: T = 42 quarters</text>
+      </svg>
+    </figure>
+    <ul class="build">
+      <li class="step"><b>Pearson's r</b> is defined on a set of pairs, and normalizes by the spread <i>of those pairs</i>. At lag 1 that is 41 pairs; at lag 16 it is 26.</li>
+      <li class="step"><b>So the yardstick changes underneath you.</b> Sixteen coefficients, sixteen slightly different definitions of &ldquo;average&rdquo; and &ldquo;spread&rdquo;.</li>
+    </ul>
+    <p class="punch step wide">We want one ruler for all sixteen. So we fix the part that measures, and let only the part being measured shrink.</p>
+  </div>
+  <aside class="notes">Why sixteen? <code>ACF()</code> picks its default <code>lag_max</code> as 10&nbsp;log&#8321;&#8320;(T), rounded down &mdash; here 10&nbsp;log&#8321;&#8320;(42) = 16.2, so sixteen lags, which is exactly the number of rows the printout has. For a keyed tsibble it uses the shortest series.<br><br>If the room wants a picture: autocorrelation measures every lag against one yardstick, nailed to the wall. Pearson's r hands each lag its own yardstick, cut to fit whichever room it happens to be standing in. Only the nailed one lets you say who is taller.<br><br>There is a deeper reason for the fixed denominator than tidiness, and it is the reason every statistics package does it this way. Dividing every lag by the same c&#8320; guarantees the resulting sequence is a valid autocorrelation function &mdash; positive semi-definite, in the jargon &mdash; which the pair-by-pair version does not. Models fitted to an invalid ACF can produce negative variances.</aside>
+</section>
+
+<!-- ---------- 11 ---------- -->
+<section class="slide" data-section="4" data-title="The autocorrelation coefficient">
+  <div class="inner">
+    <p class="kicker">The formula, and the one difference that matters</p>
+    <h1 class="sowhat wide">Same numerator. Different denominator.</h1>
+    <div class="console tight">
+<span class="dim"># Pearson's r  —  normalizes by the spread of the pairs it used</span>
+
+r_k  =        sum (y_t - ybar)(y_{t-k} - ybar)
+       ------------------------------------------------
+       sqrt[ sum (y_t - ybar)^2  *  sum (y_{t-k} - ybar)^2 ]
+
+
+<span class="dim"># Autocorrelation  —  normalizes by the spread of the whole series</span>
+
+r_k  =  <span class="hl">sum_{t=k+1}^{T}</span> (y_t - ybar)(y_{t-k} - ybar)
+       ------------------------------------------------
+              <span class="hl">sum_{t=1}^{T}</span> (y_t - ybar)^2</div>
+    <ul class="build">
+      <li class="step"><b>Bottom: t = 1 to T.</b> Every lag is divided by the same quantity &mdash; the total variation in the series. It does not depend on k.</li>
+      <li class="step"><b>Top: t = k+1 to T.</b> It cannot start earlier, because y<sub>t&minus;k</sub> is NA until row k+1. So the numerator loses a term for every step back.</li>
+    </ul>
+    <p class="punch step wide">Fixed ruler, shrinking thing being measured. The consequence is deliberate, and it is the whole point of the next slide.</p>
+  </div>
+  <aside class="notes">Written more compactly, r<sub>k</sub> = c<sub>k</sub> / c<sub>0</sub>, where c<sub>k</sub> is the sample autocovariance at lag k and c<sub>0</sub> is the sample variance. Every lag shares one c<sub>0</sub>. That is the entire content of the slide in five symbols, and it is the form you will meet again in Session 9 and in any ARIMA course.<br><br>Note the mean: <code>ybar</code> is the mean of the <i>whole</i> series in both sums, including in the y<sub>t&minus;k</sub> factor. It is not the mean of the lagged column. This is another small way the quantity refuses to let k change the yardstick.</aside>
+</section>
+
+<!-- ---------- 12 ---------- -->
+<section class="slide" data-section="4" data-title="The built-in distance penalty">
+  <div class="inner">
+    <p class="kicker">What the fixed denominator buys</p>
+    <h1 class="sowhat wide">Distant lags are charged a toll, on purpose.</h1>
+    <ul class="build">
+      <li class="step"><b>Fewer terms on top, the same number underneath.</b> So a relationship of identical strength scores lower at lag 12 than at lag 4.</li>
+      <li class="step"><b>This is the design, not a defect.</b> The notebook is explicit: the coefficient is built to say that the further back a lag is, the less influence it should be credited with.</li>
+      <li class="step"><b>It does not cap anything.</b> A distant lag can still be large &mdash; beer scores 0.632 at lag 12. The penalty tilts the scale; it does not impose a ceiling.</li>
+    </ul>
+    <p class="punch step wide">Think of a photograph rather than a jury: everything stays in frame, and things further away are drawn smaller. Nothing is excluded, and you can still tell a mountain from a pebble.</p>
+  </div>
+  <aside class="notes">The comparison to hold on to is that a correlogram is a picture with perspective, not a table of independent measurements. It is why the seasonal spikes at 4, 8, 12 and 16 step down &mdash; 0.802, 0.707, 0.632, 0.498 &mdash; even though the seasonality behind them is not weakening at all.<br><br>Do not over-read the arithmetic, though. The numerator loses only k terms out of T, so for a long series the penalty is gentle; for a short one it bites. A forty-two point series at lag 16 has lost nearly 40% of its terms, which is another argument for not reading the far right-hand end of a short correlogram too confidently.</aside>
+</section>
+
+<!-- ---------- 13 ---------- -->
+<section class="slide" data-section="5" data-title="Switch: ACF and the correlogram">
+  <div class="inner">
+    <p class="kicker">Now we compute</p>
+    <h1 class="sowhat"><code>ACF()</code>, then <code>autoplot()</code></h1>
+    <ul class="build plain" style="margin-top:1.8rem">
+      <li><code>recent_beer |&gt; ACF()</code> &mdash; sixteen rows of lag and coefficient</li>
+      <li><code>recent_beer |&gt; ACF() |&gt; autoplot()</code> &mdash; the same sixteen numbers as bars</li>
+      <li><code>ACF(lag_max = 24)</code> &mdash; ask for more</li>
+    </ul>
+    <div class="callout"><b>The output is a tsibble.</b> One column of lags, one of coefficients. You can <code>filter()</code> and <code>arrange()</code> it like any other &mdash; useful when you want the largest coefficient rather than a picture.</div>
+  </div>
+  <aside class="notes">The index column has type <code>&lt;cf_lag&gt;</code> and it prints as <code>4Q</code> rather than <code>4</code>, because it carries the interval of the original series. That is a feature: a correlogram of quarterly data and one of monthly data cannot be silently compared, and the unit on the axis is what stops you.<br><br>It also means <code>lag_max = 24</code> means twenty-four <i>quarters</i> here &mdash; six years, not two. How many lags is &ldquo;enough&rdquo; always depends on the index unit, which is the subject of slide 25.</aside>
+</section>
+
+<!-- ---------- 14 ---------- -->
+<section class="slide" data-section="5" data-title="Trend in the ACF">
+  <div class="inner">
+    <p class="kicker">Pattern 1 of 3 &nbsp;&middot;&nbsp; trend</p>
+    <h1 class="sowhat">Trend: large and positive at small lags, decaying slowly.</h1>
+    <figure>
+      <svg viewBox="0 0 760 196" role="img" aria-label="A correlogram of a trended series. Bars start near 0.95 and decay steadily, crossing zero around lag 15 and going slightly negative. A bracket marks lags 1 to 8 as the region to read">
+        <g stroke="#E4DFD5" stroke-width="1.2" fill="none"><path d="M40 40 V146"/></g>
+        <path d="M40 110 H730" stroke="#6B665E" stroke-width="1.2" fill="none"/>
+        <g fill="#1F3A4D">
+          <rect x="55" y="53" width="13" height="57"/><rect x="89" y="56.6" width="13" height="53.4"/>
+          <rect x="123" y="60.2" width="13" height="49.8"/><rect x="157" y="63.8" width="13" height="46.2"/>
+          <rect x="191" y="67.4" width="13" height="42.6"/><rect x="225" y="71.6" width="13" height="38.4"/>
+          <rect x="259" y="75.8" width="13" height="34.2"/><rect x="293" y="80" width="13" height="30"/>
+        </g>
+        <g fill="#1F3A4D" opacity=".45">
+          <rect x="327" y="84.2" width="13" height="25.8"/><rect x="361" y="88.4" width="13" height="21.6"/>
+          <rect x="395" y="92.6" width="13" height="17.4"/><rect x="429" y="96.8" width="13" height="13.2"/>
+          <rect x="463" y="101" width="13" height="9"/><rect x="497" y="105.2" width="13" height="4.8"/>
+          <rect x="531" y="109" width="13" height="1.4"/>
+          <rect x="565" y="110" width="13" height="3.6"/><rect x="599" y="110" width="13" height="7.8"/>
+          <rect x="633" y="110" width="13" height="12"/><rect x="667" y="110" width="13" height="15.6"/>
+          <rect x="701" y="110" width="13" height="19.2"/>
+        </g>
+        <g stroke="#B5471E" stroke-width="1.8" fill="none">
+          <path d="M52 44 V36 H309 V44"/>
+        </g>
+        <text x="180" y="28" text-anchor="middle" fill="#B5471E"
+              font-family="SFMono-Regular,Menlo,monospace" font-size="12">read this region</text>
+        <g font-family="SFMono-Regular,Menlo,monospace" font-size="11.5" fill="#98928a">
+          <text x="500" y="168" text-anchor="middle">the tail is just the decay continuing &mdash; not a second finding</text>
+        </g>
+        <text x="40" y="168" fill="#6B665E" font-family="SFMono-Regular,Menlo,monospace" font-size="11.5">lag 1</text>
+      </svg>
+      <div class="figrow">
+        <p class="step"><b>Why it looks like this</b>Observations close together in time are close together in value, because the trend has not had time to move far. So the first few coefficients are large.</p>
+        <p class="step t"><b>Why it fades</b>Further apart, the trend has carried the series somewhere else, and the resemblance weakens. The decay is gradual, never a cliff.</p>
+      </div>
+    </figure>
+    <p class="punch step wide">Read the positive, slowly decreasing bars at the left. Where the ACF drifts below zero is the same decay continuing, and it tells you nothing extra.</p>
+  </div>
+  <aside class="notes">A negative trend gives the identical picture. The coefficients stay positive, because adjacent observations still resemble each other; which way the series is heading does not enter into it. If you expect a downward trend to produce negative bars, you are confusing the ACF with a slope.<br><br>The extreme case is a random walk, where the ACF stays near 1 for a very long stretch and decays almost imperceptibly. That near-flat, near-one correlogram is the classic fingerprint of a series with no stable mean, and it is the first thing an ARIMA course teaches you to look for.</aside>
+</section>
+
+<!-- ---------- 15 ---------- -->
+<section class="slide" data-section="5" data-title="Seasonality in the ACF">
+  <div class="inner">
+    <p class="kicker">Pattern 2 of 3 &nbsp;&middot;&nbsp; seasonality &nbsp;&middot;&nbsp; <code>recent_beer</code>, the real output</p>
+    <h1 class="sowhat wide">Seasonality: a spike every m lags, and a trough halfway between.</h1>
+    <figure>
+      <svg viewBox="0 0 760 208" role="img" aria-label="The actual correlogram of recent_beer. Tall positive bars at lags 4, 8, 12 and 16 stepping down from 0.80 to 0.50; deep negative bars at lags 2, 6, 10 and 14; near-zero bars at every odd lag">
+        <g stroke="#E4DFD5" stroke-width="1.2" fill="none"><path d="M40 36 V172"/></g>
+        <path d="M40 110 H734" stroke="#6B665E" stroke-width="1.2" fill="none"/>
+        <g stroke="#B5471E" stroke-width="1.4" stroke-dasharray="6 4" fill="none" opacity=".8">
+          <path d="M40 88.4 H734"/><path d="M40 131.6 H734"/>
+        </g>
+        <g fill="#1F3A4D">
+          <rect x="55"    y="110"  width="14" height="3.7"/>
+          <rect x="97.7"  y="110"  width="14" height="53.1"/>
+          <rect x="140.3" y="110"  width="14" height="1.8"/>
+          <rect x="183"   y="53.9" width="14" height="56.1"/>
+          <rect x="225.7" y="110"  width="14" height="5.4"/>
+          <rect x="268.3" y="110"  width="14" height="46"/>
+          <rect x="311"   y="109"  width="14" height="1"/>
+          <rect x="353.7" y="60.5" width="14" height="49.5"/>
+          <rect x="396.3" y="110"  width="14" height="6.2"/>
+          <rect x="439"   y="110"  width="14" height="41.2"/>
+          <rect x="481.7" y="108.3" width="14" height="1.7"/>
+          <rect x="524.3" y="65.8" width="14" height="44.2"/>
+          <rect x="567"   y="110"  width="14" height="4.6"/>
+          <rect x="609.7" y="110"  width="14" height="35.4"/>
+          <rect x="652.3" y="109"  width="14" height="1"/>
+          <rect x="695"   y="75.1" width="14" height="34.9"/>
+        </g>
+        <g font-family="SFMono-Regular,Menlo,monospace" font-size="11.5" text-anchor="middle">
+          <text x="190" y="48" fill="#B5471E">.80</text><text x="360.7" y="54" fill="#B5471E">.71</text>
+          <text x="531.3" y="59" fill="#B5471E">.63</text><text x="702" y="68" fill="#B5471E">.50</text>
+          <text x="104.7" y="176" fill="#1F3A4D">-.76</text><text x="275.3" y="176" fill="#1F3A4D">-.66</text>
+          <text x="446" y="165" fill="#1F3A4D">-.59</text><text x="616.7" y="159" fill="#1F3A4D">-.51</text>
+        </g>
+        <g font-family="SFMono-Regular,Menlo,monospace" font-size="11.5" fill="#6B665E" text-anchor="middle">
+          <text x="190" y="198">4</text><text x="360.7" y="198">8</text>
+          <text x="531.3" y="198">12</text><text x="702" y="198">16</text>
+          <text x="40" y="198" text-anchor="start">lag</text>
+        </g>
+        <text x="734" y="84" text-anchor="end" fill="#B5471E"
+              font-family="SFMono-Regular,Menlo,monospace" font-size="11">&plusmn;2/&radic;42 = &plusmn;0.31</text>
+      </svg>
+      <div class="figrow three">
+        <p class="step t"><b>Spikes at 4, 8, 12, 16</b>Multiples of m. The series is in phase with itself.</p>
+        <p class="step"><b>Troughs at 2, 6, 10, 14</b>Half-period offsets. In anti-phase &mdash; large, and negative.</p>
+        <p class="step g"><b>Nothing at odd lags</b>Quarter-period offsets average out to roughly zero.</p>
+      </div>
+    </figure>
+    <p class="punch step wide">Both the spikes and the troughs shrink as you move right &mdash; 0.80, 0.71, 0.63, 0.50. That is the distance penalty, not fading seasonality.</p>
+  </div>
+  <aside class="notes">These are the numbers <code>ACF()</code> actually prints for <code>recent_beer</code>, so you can check every bar against your own console.<br><br>The sign pattern generalizes: for a season of length m, expect positive spikes at multiples of m and negative ones near odd multiples of m/2. Monthly data with m = 12 therefore dips near lags 6, 18 and 30. If the negative dips are missing and everything sits above zero, a trend is holding the whole correlogram up &mdash; which is the case on the next two slides.</aside>
+</section>
+
+<!-- ---------- 16 ---------- -->
+<section class="slide" data-section="5" data-title="Trend and seasonality together">
+  <div class="inner">
+    <p class="kicker">Pattern 3 of 3 &nbsp;&middot;&nbsp; both, of comparable strength</p>
+    <h1 class="sowhat wide">Both present: a wave riding on a slope.</h1>
+    <figure>
+      <svg viewBox="0 0 760 200" role="img" aria-label="A correlogram of a series with both trend and seasonality. All bars are positive and decay from left to right, but ripple up and down with peaks at lags 12 and 24. A dashed gray curve traces the underlying decay">
+        <g stroke="#E4DFD5" stroke-width="1.2" fill="none"><path d="M36 26 V170"/></g>
+        <path d="M36 170 H730" stroke="#6B665E" stroke-width="1.2" fill="none"/>
+        <g fill="#1F3A4D">
+          <rect x="50"  y="64.4"  width="12" height="105.6"/><rect x="78"  y="71.6"  width="12" height="98.4"/>
+          <rect x="106" y="80"    width="12" height="90"/>   <rect x="134" y="88.4"  width="12" height="81.6"/>
+          <rect x="162" y="98"    width="12" height="72"/>   <rect x="190" y="106.4" width="12" height="63.6"/>
+          <rect x="218" y="104"   width="12" height="66"/>   <rect x="246" y="98"    width="12" height="72"/>
+          <rect x="274" y="90.8"  width="12" height="79.2"/> <rect x="302" y="86"    width="12" height="84"/>
+          <rect x="330" y="83.6"  width="12" height="86.4"/>
+        </g>
+        <rect x="358" y="76.4" width="12" height="93.6" fill="#B5471E"/>
+        <g fill="#1F3A4D">
+          <rect x="386" y="95.6"  width="12" height="74.4"/> <rect x="414" y="104"   width="12" height="66"/>
+          <rect x="442" y="112.4" width="12" height="57.6"/> <rect x="470" y="119.6" width="12" height="50.4"/>
+          <rect x="498" y="126.8" width="12" height="43.2"/> <rect x="526" y="134"   width="12" height="36"/>
+          <rect x="554" y="131.6" width="12" height="38.4"/> <rect x="582" y="126.8" width="12" height="43.2"/>
+          <rect x="610" y="120.8" width="12" height="49.2"/> <rect x="638" y="116"   width="12" height="54"/>
+          <rect x="666" y="112.4" width="12" height="57.6"/>
+        </g>
+        <rect x="694" y="106.4" width="12" height="63.6" fill="#B5471E"/>
+        <polyline fill="none" stroke="#6B665E" stroke-width="1.8" stroke-dasharray="6 5" opacity=".75"
+          points="56,74 140,86 224,96 308,104 392,112 476,119 560,125 644,130 700,133"/>
+        <g font-family="SFMono-Regular,Menlo,monospace" font-size="11.5" text-anchor="middle">
+          <text x="364" y="68" fill="#B5471E">12</text><text x="700" y="98" fill="#B5471E">24</text>
+        </g>
+        <text x="600" y="60" fill="#6B665E" font-family="SFMono-Regular,Menlo,monospace" font-size="11.5">the trend's decay</text>
+        <path d="M596 66 L560 108" stroke="#6B665E" stroke-width="1" fill="none" opacity=".6"/>
+      </svg>
+      <div class="figrow">
+        <p class="step"><b>The slope is the trend</b>Every bar is positive and the whole envelope falls from left to right. Cover the ripple and you have slide 14.</p>
+        <p class="step t"><b>The ripple is the season</b>Peaks at 12 and 24, dips near 6 and 18 &mdash; but pushed <i>up</i> by the trend, so the dips never reach zero.</p>
+      </div>
+    </figure>
+    <p class="punch step wide">Read it in two passes. Envelope first, then ripple. The order matters, because the envelope is what hides things.</p>
+  </div>
+  <aside class="notes">Compare this with slide 15 and you can see exactly what the trend did: on the pure seasonal series the half-period lags went deeply negative, and here the same lags only sag. The trend has lifted the whole picture, and the seasonal signal survives as a wobble rather than an alternation.<br><br>The shapes on this slide and the next two were generated with a small web app the notebook links to, where you can set the relative strength of trend and season and watch the correlogram change: <b>tel5cn-juan-garbayo.shinyapps.io/shiny_tseriesacf</b>. Ten minutes with it is worth more than re-reading this slide.</aside>
+</section>
+
+<!-- ---------- 17 ---------- -->
+<section class="slide" data-section="5" data-title="When the trend drowns the season">
+  <div class="inner">
+    <p class="kicker">04_C &nbsp;&middot;&nbsp; Australian antidiabetic drug sales (<code>a10</code>)</p>
+    <h1 class="sowhat wide">Same series, two tools, two different answers.</h1>
+    <figure>
+      <svg viewBox="0 0 760 196" role="img" aria-label="A correlogram of a strongly trended seasonal series. All bars are positive and decay smoothly; the bumps at lags 12 and 24 are barely higher than their neighbors">
+        <g stroke="#E4DFD5" stroke-width="1.2" fill="none"><path d="M36 26 V170"/></g>
+        <path d="M36 170 H730" stroke="#6B665E" stroke-width="1.2" fill="none"/>
+        <g fill="#1F3A4D">
+          <rect x="50"  y="59.6"  width="12" height="110.4"/><rect x="78"  y="66.8"  width="12" height="103.2"/>
+          <rect x="106" y="74"    width="12" height="96"/>   <rect x="134" y="81.2"  width="12" height="88.8"/>
+          <rect x="162" y="87.2"  width="12" height="82.8"/> <rect x="190" y="93.2"  width="12" height="76.8"/>
+          <rect x="218" y="98"    width="12" height="72"/>   <rect x="246" y="102.8" width="12" height="67.2"/>
+          <rect x="274" y="106.4" width="12" height="63.6"/> <rect x="302" y="108.8" width="12" height="61.2"/>
+          <rect x="330" y="110"   width="12" height="60"/>
+        </g>
+        <rect x="358" y="107.6" width="12" height="62.4" fill="#B5471E"/>
+        <g fill="#1F3A4D">
+          <rect x="386" y="113.6" width="12" height="56.4"/> <rect x="414" y="118.4" width="12" height="51.6"/>
+          <rect x="442" y="123.2" width="12" height="46.8"/> <rect x="470" y="128"   width="12" height="42"/>
+          <rect x="498" y="131.6" width="12" height="38.4"/> <rect x="526" y="135.2" width="12" height="34.8"/>
+          <rect x="554" y="137.6" width="12" height="32.4"/> <rect x="582" y="140"   width="12" height="30"/>
+          <rect x="610" y="141.2" width="12" height="28.8"/> <rect x="638" y="141.2" width="12" height="28.8"/>
+          <rect x="666" y="140"   width="12" height="30"/>
+        </g>
+        <rect x="694" y="137.6" width="12" height="32.4" fill="#B5471E"/>
+        <g font-family="SFMono-Regular,Menlo,monospace" font-size="11.5" text-anchor="middle">
+          <text x="364" y="99" fill="#B5471E">12</text><text x="700" y="129" fill="#B5471E">24</text>
+        </g>
+      </svg>
+      <div class="figrow">
+        <p class="step"><b>What Session 3's tools said</b>The time plot, <code>gg_season()</code> and <code>gg_subseries()</code> all showed a hard February cliff repeating identically every year. The seasonality is not in doubt.</p>
+        <p class="step t"><b>What the ACF says</b>A smooth positive decay. The bumps at 12 and 24 are there if you hunt for them, but the correlogram will not tell you the period is twelve.</p>
+      </div>
+    </figure>
+    <p class="punch step wide">A loud instrument does not delete a quiet one, it masks it. The seasonality is still in the data; it is missing from this summary of the data.</p>
+  </div>
+  <aside class="notes">Precision matters in how you state this. It is not that the ACF shows nothing seasonal &mdash; the notebook's phrasing is that the waves can be seen but &ldquo;the ACF alone does not reveal the actual seasonal period&rdquo;, because lag 12 is not clearly higher than its neighbors. What is lost is the <i>period</i>, not the existence of a pattern.<br><br>Push the trend harder still and even the ripple disappears, leaving a correlogram indistinguishable from a pure trend. That is the fourth row of the table on the next slide, and Session 5 is the fix: strip the trend out first, then run the ACF on what is left.</aside>
+</section>
+
+<!-- ---------- 18 ---------- -->
+<section class="slide" data-section="5" data-title="Four combinations">
+  <div class="inner">
+    <p class="kicker">What to expect, and what it hides</p>
+    <h1 class="sowhat">The ACF reports what dominates, not what exists.</h1>
+    <table class="traps">
+      <tr><td class="os">Trend only</td><td>Positive bars, slow smooth decay. No ripple.</td><td class="fix">Reliable reading.</td></tr>
+      <tr><td class="os">Season only</td><td>Spikes at multiples of m, deep troughs at half-periods, near-zero elsewhere.</td><td class="fix">Reliable reading. Gives you m.</td></tr>
+      <tr><td class="os">Comparable</td><td>A decaying envelope with a ripple on it. Both readable.</td><td class="fix">Read envelope, then ripple.</td></tr>
+      <tr><td class="os">One dominates</td><td>Only the dominant one shows. Strong trend &rarr; looks like pure trend; strong season &rarr; the trend vanishes.</td><td class="fix">Needs decomposition.</td></tr>
+    </table>
+    <p class="punch step wide">Two of these four rows will mislead you if the correlogram is the only thing you look at. That is an argument for always plotting the series first, not against the ACF.</p>
+  </div>
+  <aside class="notes">The last row runs in both directions, and the trend-hidden-by-season case gets less attention than it deserves. A strongly seasonal series with a mild drift produces a correlogram whose spikes are so dominant that the gentle background decay is invisible &mdash; and people then report &ldquo;seasonal, no trend&rdquo; from a series that is clearly drifting on its time plot.<br><br>Both failure modes have the same resolution, and it is the whole of Session 5: decompose the series, then look at the components separately. An ACF of the remainder after decomposition is a much sharper instrument than an ACF of the raw series, and it is how residual diagnostics work in Session 9.</aside>
+</section>
+
+<!-- ---------- 19 ---------- -->
+<section class="slide" data-section="5" data-title="Reading order">
+  <div class="inner">
+    <p class="kicker">The habit to build</p>
+    <h1 class="sowhat">Four questions, in this order, every correlogram.</h1>
+    <div class="cards four">
+      <div class="card"><h3>1 · Envelope</h3><p>Do the bars start high and decay slowly? That is <b>trend</b>.</p></div>
+      <div class="card"><h3>2 · Rhythm</h3><p>Are there peaks at regular intervals? The spacing is <b>m</b>.</p></div>
+      <div class="card sage"><h3>3 · Sign</h3><p>Deep negatives at half-periods confirm a season with no trend holding it up.</p></div>
+      <div class="card terra"><h3>4 · Scale</h3><p>Is anything big enough to matter? Compare against &plusmn;2/&radic;T.</p></div>
+    </div>
+    <p class="punch step wide">And one rule above all four: when the correlogram disagrees with the time plot, the time plot wins. A summary can hide a component; a picture of the data cannot.</p>
+  </div>
+  <aside class="notes">These deliberately echo Session 3's four questions about a time plot, and they are meant to be used together rather than in competition. Question 4 is the one the rest of this session is about.<br><br>Checking every bar against the bounds by eye is a slightly disreputable thing to do, statistically, and Session 9 replaces it with a single test over many lags at once &mdash; the Ljung&ndash;Box portmanteau test. Until then the visual rule is what you have, and the next three slides are about using it honestly.</aside>
+</section>
+
+<!-- ---------- 20 ---------- -->
+<section class="slide" data-section="6" data-title="White noise">
+  <div class="inner">
+    <p class="kicker">The reference case</p>
+    <h1 class="sowhat">White noise is a series with no memory at all.</h1>
+    <ul class="build">
+      <li class="step"><b>No autocorrelation at any lag.</b> That is the definition &mdash; not &ldquo;looks messy&rdquo;, but knowing y<sub>t&minus;k</sub> tells you nothing about y<sub>t</sub>, for every k.</li>
+      <li class="step"><b>The notebook's example draws from a normal distribution</b>, which makes it <i>Gaussian</i> white noise specifically. <code>set.seed(30)</code> fixes the draw so everyone's plot matches.</li>
+      <li class="step"><b>Its ACF will not be exactly zero.</b> Fifty random numbers will produce some accidental resemblance at some lag. The question is how much is too much.</li>
+    </ul>
+    <p class="punch step wide">White noise is the null hypothesis of this whole course. Every model you build from Session 8 onward is a claim that you can do better than it.</p>
+  </div>
+  <aside class="notes">Two distinctions worth keeping straight, both of which come back later.<br><br>First, <b>white noise is not the same as Gaussian</b>. The definition requires zero autocorrelation and a constant mean and variance; the normal distribution is an extra assumption, convenient and often reasonable, and it is what <code>rnorm()</code> supplies here. Second, and more subtly, <b>uncorrelated is not the same as independent</b> &mdash; which is exactly the point Session 3 made with the temperature-and-demand U-curve, where r was 0.26 and the relationship was enormous. Session 2's stochastic-process framing is where this bites: the IID assumption behind the CLT is stronger than anything the ACF can check.</aside>
+</section>
+
+<!-- ---------- 21 ---------- -->
+<section class="slide" data-section="6" data-title="Switch: generating white noise">
+  <div class="inner">
+    <p class="kicker">Now we compute</p>
+    <h1 class="sowhat">Fifty draws, and their correlogram</h1>
+    <div class="console">set.seed(30)
+
+y &lt;- tsibble(sample = 1:50, wn = rnorm(50), index = sample)
+
+y |&gt; autoplot(wn)
+y |&gt; ACF(wn) |&gt; autoplot()</div>
+    <div class="callout"><b>T = 50, so the bounds sit at &plusmn;2/&radic;50 = &plusmn;0.283.</b> They are drawn for you as dashed blue lines. Count how many of your spikes cross them before you turn the page.</div>
+  </div>
+  <aside class="notes"><code>set.seed()</code> makes a random draw reproducible: it fixes the starting state of R's pseudo-random generator, so <code>rnorm(50)</code> returns the same fifty numbers on every machine. Remove the seed and you get a different series &mdash; and a different correlogram &mdash; every time you run the chunk. Both are legitimate; only one is teachable.<br><br>Running it a few times without the seed is genuinely instructive. You will see spikes drift in and out of the bounds at random lags, which is the clearest possible demonstration that a single crossing means very little.</aside>
+</section>
+
+<!-- ---------- 22 ---------- -->
+<section class="slide" data-section="6" data-title="The 95% bounds">
+  <div class="inner">
+    <p class="kicker">Telling noise from signal</p>
+    <h1 class="sowhat">For white noise, 95% of spikes fall inside &plusmn;2/&radic;T.</h1>
+    <figure>
+      <svg viewBox="0 0 760 192" role="img" aria-label="A correlogram of white noise. Twenty small bars, positive and negative, all rising from a common zero line. Dashed bounds sit at plus and minus 0.283, and one bar at lag 11 crosses the upper bound">
+        <g stroke="#E4DFD5" stroke-width="1.2" fill="none"><path d="M40 34 V158"/></g>
+        <path d="M40 105 H730" stroke="#6B665E" stroke-width="1.2" fill="none"/>
+        <g stroke="#1F3A4D" stroke-width="1.5" stroke-dasharray="6 4" fill="none" opacity=".85">
+          <path d="M40 59.7 H730"/><path d="M40 150.3 H730"/>
+        </g>
+        <g fill="#1F3A4D">
+          <rect x="55"  y="87.4"  width="13" height="17.6"/><rect x="89"  y="105" width="13" height="9.6"/>
+          <rect x="123" y="76.2"  width="13" height="28.8"/><rect x="157" y="97"   width="13" height="8"/>
+          <rect x="191" y="105"   width="13" height="22.4"/><rect x="225" y="90.6" width="13" height="14.4"/>
+          <rect x="259" y="105"   width="13" height="33.6"/><rect x="293" y="101.8" width="13" height="3.2"/>
+          <rect x="327" y="84.2"  width="13" height="20.8"/><rect x="361" y="105"  width="13" height="12.8"/>
+        </g>
+        <rect x="395" y="55.4" width="13" height="49.6" fill="#B5471E"/>
+        <g fill="#1F3A4D">
+          <rect x="429" y="105"   width="13" height="6.4"/><rect x="463" y="79.4"  width="13" height="25.6"/>
+          <rect x="497" y="105"   width="13" height="17.6"/><rect x="531" y="93.8" width="13" height="11.2"/>
+          <rect x="565" y="69.8"  width="13" height="35.2"/><rect x="599" y="105"  width="13" height="27.2"/>
+          <rect x="633" y="100.2" width="13" height="4.8"/><rect x="667" y="105"   width="13" height="14.4"/>
+          <rect x="701" y="85.8"  width="13" height="19.2"/>
+        </g>
+        <g font-family="SFMono-Regular,Menlo,monospace" font-size="11" fill="#1F3A4D">
+          <text x="734" y="56" text-anchor="end" opacity=".85">+0.283</text>
+          <text x="734" y="164" text-anchor="end" opacity=".85">&minus;0.283</text>
+        </g>
+        <text x="401" y="48" text-anchor="middle" fill="#B5471E"
+              font-family="SFMono-Regular,Menlo,monospace" font-size="11.5">one crossing</text>
+      </svg>
+      <div class="figrow">
+        <p class="step"><b>What the band is</b>Not a decoration. Under white noise each r<sub>k</sub> is roughly normal with standard deviation 1/&radic;T, so two standard deviations either side covers 95% of them.</p>
+        <p class="step t"><b>Why one crossing proves nothing</b>Each lag is its own test. Show twenty lags and you have run twenty tests, so about one false alarm is the <i>expected</i> result, not a surprise.</p>
+      </div>
+    </figure>
+    <p class="punch step wide">The bounds narrow as the series gets longer: &plusmn;0.28 at T = 50, &plusmn;0.06 at T = 1000. A long series lets you detect a much weaker memory.</p>
+  </div>
+  <aside class="notes">The band is an illustration of the shape, not a reproduction of the <code>set.seed(30)</code> output &mdash; check your own console for that, and count the crossings yourself.<br><br>Where the 2 comes from: the exact 95% multiplier for a normal distribution is 1.96, and 2 is the rounding everyone uses. So &plusmn;2/&radic;T is very slightly wider than a true 95% band, which is the conservative direction to err in. And note what the shrinking band implies about long series &mdash; with T large enough, a trivially small autocorrelation becomes &ldquo;significant&rdquo;. Statistical significance and practical importance part company here, as they do everywhere.</aside>
+</section>
+
+<!-- ---------- 23 ---------- -->
+<section class="slide" data-section="6" data-title="Probably not white noise">
+  <div class="inner">
+    <p class="kicker">The decision rule</p>
+    <h1 class="sowhat wide">When should you say a series is <i>not</i> white noise?</h1>
+    <ul class="build">
+      <li class="step"><b>A spike is clearly outside</b>, not grazing the line. Size is evidence; borderline is not.</li>
+      <li class="step"><b>Substantially more than 5% of spikes are outside.</b> One in twenty is the expected rate. Five in twenty is a finding; two is not.</li>
+      <li class="step"><b>There is structure in the heights.</b> A decay, or spikes at regular intervals. Noise has no shape &mdash; a pattern is worth more than any single tall bar.</li>
+    </ul>
+    <p class="punch step wide">Any one of the three is enough. The third is the strongest, because it is the one chance cannot easily fake.</p>
+  </div>
+  <aside class="notes">The notebook gives the first two criteria; the third is implicit in every example it shows, and it is the one that will serve you best in the exam and afterwards.<br><br>Note the asymmetry in what this rule can do. Crossing the bounds is evidence <i>against</i> white noise. Staying inside them is not proof <i>of</i> white noise &mdash; it is a failure to find evidence, on a test that is weak for short series. In Session 9 this matters a great deal, because the thing you will be testing for white noise is a set of model residuals, and &ldquo;I could not detect any remaining structure&rdquo; is a more honest claim than &ldquo;there is none&rdquo;.</aside>
+</section>
+
+<!-- ---------- 24 ---------- -->
+<section class="slide" data-section="7" data-title="Lag k means k index units">
+  <div class="inner">
+    <p class="kicker">Before the homework &nbsp;&middot;&nbsp; <code>04_D</code></p>
+    <h1 class="sowhat wide">A lag is one step of whatever your index happens to be.</h1>
+    <figure>
+      <svg viewBox="0 0 760 172" role="img" aria-label="Three rows showing the same underlying data indexed hourly, weekly and monthly. Under each, the number of lags needed to reach one year: 8760, 52 and 12">
+        <g font-family="SFMono-Regular,Menlo,monospace" font-size="12.5">
+          <text x="36" y="44" fill="#1F3A4D">&lt;dttm&gt;  hourly</text>
+          <text x="36" y="88" fill="#1F3A4D">&lt;week&gt;  weekly</text>
+          <text x="36" y="132" fill="#1F3A4D">&lt;mth&gt;   monthly</text>
+        </g>
+        <g stroke="#E4DFD5" stroke-width="1.2" fill="none">
+          <path d="M250 56 H700 M250 100 H700 M250 144 H700"/>
+        </g>
+        <g stroke="#B5471E" stroke-width="2" fill="none" opacity=".9">
+          <path d="M250 50 V62 M700 50 V62 M254 56 H696"/>
+          <path d="M250 94 V106 M700 94 V106 M254 100 H696"/>
+          <path d="M250 138 V150 M700 138 V150 M254 144 H696"/>
+        </g>
+        <g font-family="SFMono-Regular,Menlo,monospace" font-size="12.5" fill="#B5471E" text-anchor="middle">
+          <text x="475" y="44">lag 8760</text>
+          <text x="475" y="88">lag 52</text>
+          <text x="475" y="132">lag 12</text>
+        </g>
+        <text x="475" y="22" text-anchor="middle" fill="#6B665E"
+              font-family="SFMono-Regular,Menlo,monospace" font-size="12">one year back</text>
+        <text x="36" y="166" fill="#98928a" font-family="SFMono-Regular,Menlo,monospace" font-size="11.5">same span of time · three index types · three very different values of lag_max</text>
+      </svg>
+    </figure>
+    <ul class="build">
+      <li class="step"><b>So <code>lag_max</code> is not a style choice.</b> A yearly season cannot appear in a correlogram that stops short of one full cycle in the units you are indexed by.</li>
+      <li class="step"><b>Which makes aggregation part of the analysis.</b> <code>index_by()</code> plus <code>summarise()</code> changes the unit, and with it the lag you should be looking at &mdash; and T, and therefore the bounds.</li>
+    </ul>
+    <p class="punch step wide">That is all <code>04_D</code> is: choosing the resolution at which the question can be asked. Do it before you reach for the ACF, not after.</p>
+  </div>
+  <aside class="notes"><code>04_D</code> itself contains no ACF work &mdash; it is pure aggregation and time plots, taking hourly Beijing pollution up to weekly and monthly, and weekly fuel prices up to quarterly. Treat it as the setup step that the correlogram depends on.<br><br>One detail in the fuel-prices exercise repays attention: the notebook asks you to try <code>index_by()</code> with and without a preceding <code>group_by(fuel_type)</code>. Without it, petrol and diesel are averaged together into a single meaningless series. That is the same keyed-tsibble idea from Session 2, and it is the sort of silent wrong answer that no warning will catch for you.</aside>
+</section>
+
+<!-- ---------- 25 ---------- -->
+<section class="slide" data-section="7" data-title="Exercise 1 in class">
+  <div class="inner">
+    <p class="kicker">04_C &nbsp;&middot;&nbsp; exercise 1 &mdash; start it here</p>
+    <h1 class="sowhat">Four series. Four correlograms. Work out the pairing.</h1>
+    <ul class="build">
+      <li class="step"><b>Look at the four correlograms first</b>, before the series. Classify each on its own: envelope, rhythm, sign, scale.</li>
+      <li class="step"><b>Then look at the four time plots</b> and do the same: trend, seasonality, cycles, damage.</li>
+      <li class="step"><b>Match on the strongest feature.</b> One clean discriminating feature is worth more than a general impression of similarity.</li>
+    </ul>
+    <div class="callout"><b>Check the sampling interval of every series before you match anything.</b> A spike at lag 12 means one thing in monthly data and something quite different in quarterly or annual data &mdash; and annual data, as Session 3 insisted, cannot be seasonal at all.</div>
+  </div>
+  <aside class="notes">Classifying each picture on its own before attempting any pairing is the whole method, and it is worth the discipline &mdash; matching by overall vibe is how people talk themselves into a wrong pair and then defend it.<br><br>A useful sanity check when you finish: every correlogram should be claimed exactly once. If two of your series want the same correlogram, the feature you matched on is not discriminating, and you should go back and find one that is.</aside>
+</section>
+
+<!-- ---------- 26 ---------- -->
+<section class="slide" data-section="7" data-title="Homework">
+  <div class="inner">
+    <p class="kicker">Due before Session 5</p>
+    <h1 class="sowhat">Homework.</h1>
+    <ul class="build">
+      <li><code>04_C</code> Exercises 1 to 4 &mdash; correlogram matching, then <code>us_employment</code>, <code>PBS</code> H02 and <code>us_gasoline</code>.</li>
+      <li>All of <code>04_D</code> &mdash; Beijing pollution aggregated to weekly and to monthly, then fuel prices aggregated to quarterly.</li>
+      <li>For every correlogram you produce, one sentence: which pattern dominates, and whether another could be hiding under it. One sentence, not a paragraph.</li>
+    </ul>
+    <div class="callout slate"><b>Both data files are in the repo.</b> <code>data/Beijing_Pollution_TSeries.csv</code> and <code>data/Weekly Fuel Prices.xlsx</code>, referenced by relative path from the repository root. <code>04_D</code> also needs <code>readxl</code>.</div>
+  </div>
+  <aside class="notes">Exercise 4 uses weekly data. Before you run anything, work out from slide 24 how many lags a yearly season would need in weekly units, then check what <code>ACF()</code> gives you by default. Decide whether those two numbers are compatible before you draw any conclusion about seasonality.<br><br>The one-sentence rule is the skill that transfers. Naming the dominant pattern is the easy half; the sentence only earns its keep when it also says what the correlogram might be hiding.</aside>
+</section>
+
+<!-- ---------- 27 ---------- -->
+<section class="slide" data-section="7" data-title="Next session">
+  <div class="inner">
+    <p class="kicker">Session 5</p>
+    <h1 class="sowhat">Today you measured the patterns. Next we pull them apart.</h1>
+    <p class="lead wide">Time series decomposition: separating a series into trend, seasonal and remainder. Additive and multiplicative schemes, detrended and seasonally adjusted series.</p>
+    <p class="punch step wide">The ACF told you which component is loudest. Decomposition turns the loud one down so you can finally hear the rest.</p>
+    <p class="url" style="font-size:clamp(0.95rem,1.7vw,1.9rem)">aberrizbeitia@faculty.ie.edu</p>
+  </div>
+  <aside class="notes">Slides 17 and 18 are the argument for Session 5: a masked component is invisible to the ACF but not gone from the data, and decomposition is how you get at it.<br><br>The ACF does not disappear once decomposition arrives &mdash; it gets sharper. Running it on the <i>remainder</i> of a decomposition asks whether anything structured is left over, which is precisely the residual diagnostic of Session 9. Today's white-noise test is the tool you will use to answer it.</aside>
+</section>
+
+<!-- lives inside the stage so it is positioned against it, not the viewport,
+     and therefore never covers the rail -->
+<div id="notepane"><h4>Going further</h4><div class="body"></div></div>
+
+</main>
+
+
+<!-- ============================== CHROME ============================== -->
+<div id="overview">
+  <h3>Jump to a slide</h3>
+  <ul id="ovlist"></ul>
+</div>
+
+<div id="hud">
+  <span id="count">1 / 27</span>
+  <button id="prev" title="Previous">&larr;</button>
+  <button id="next" title="Next">&rarr;</button>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  var SECTIONS = [
+    {name:"From eye to number",  from:1,  to:3},
+    {name:"Lags on time plots",  from:4,  to:6,  live:true},
+    {name:"Lag plots",           from:7,  to:9,  live:true},
+    {name:"Autocorrelation",     from:10, to:12},
+    {name:"ACF patterns",        from:13, to:19, live:true},
+    {name:"White noise",         from:20, to:23, live:true},
+    {name:"Close",               from:24, to:27}
+  ];
+
+  var slides = Array.prototype.slice.call(document.querySelectorAll(".slide"));
+  var toc    = document.getElementById("toc");
+  var ovlist = document.getElementById("ovlist");
+  var bar    = document.querySelector("#bar i");
+  var count  = document.getElementById("count");
+  var noteBody = document.querySelector("#notepane .body");
+
+  var si = 0;
+  var sti = 0;
+
+  SECTIONS.forEach(function(sec, i){
+    var li = document.createElement("li");
+    li.innerHTML = '<span class="num">' + (i+1) + '</span><span>' + sec.name + '</span>' +
+                   (sec.live ? '<span class="live" title="RStudio screen"></span>' : '');
+    li.addEventListener("click", function(){ go(sec.from - 1, 0); });
+    toc.appendChild(li);
+  });
+
+  SECTIONS.forEach(function(sec){
+    var head = document.createElement("li");
+    head.className = "head";
+    head.textContent = sec.name + (sec.live ? " \u00b7 RStudio" : "");
+    ovlist.appendChild(head);
+    for (var n = sec.from; n <= sec.to; n++){
+      (function(idx){
+        var li = document.createElement("li");
+        li.innerHTML = '<span class="n">' + (idx+1) + '</span><span>' +
+                       (slides[idx].getAttribute("data-title") || "") + '</span>';
+        li.addEventListener("click", function(){
+          document.body.classList.remove("ov-on");
+          go(idx, "all");
+        });
+        ovlist.appendChild(li);
+      })(n - 1);
+    }
+  });
+  var ovItems = Array.prototype.slice.call(ovlist.querySelectorAll("li:not(.head)"));
+
+  function steps(i){
+    return Array.prototype.slice.call(slides[i].querySelectorAll(".step"));
+  }
+
+  function paint(){
+    slides.forEach(function(s, i){ s.classList.toggle("active", i === si); });
+
+    var num = si + 1;
+    var active = 0;
+    SECTIONS.forEach(function(sec, i){
+      if (num >= sec.from && num <= sec.to) active = i;
+    });
+    Array.prototype.slice.call(toc.children).forEach(function(li, i){
+      li.classList.toggle("on", i === active);
+      li.classList.toggle("done", i < active);
+    });
+    ovItems.forEach(function(li, i){ li.classList.toggle("on", i === si); });
+
+    bar.style.width = (num / slides.length * 100) + "%";
+    count.textContent = num + " / " + slides.length;
+
+    var n = slides[si].querySelector(".notes");
+    noteBody.innerHTML = n ? n.innerHTML : "<i>Nothing further for this slide.</i>";
+
+    if (history.replaceState) history.replaceState(null, "", "#" + num);
+  }
+
+  function go(i, mode){
+    if (i < 0 || i >= slides.length) return;
+    si = i;
+    var st = steps(si);
+    if (mode === "all"){
+      st.forEach(function(e){ e.classList.add("on"); });
+      sti = st.length;
+    } else {
+      st.forEach(function(e){ e.classList.remove("on"); });
+      sti = 0;
+    }
+    paint();
+  }
+
+  function next(){
+    var st = steps(si);
+    if (sti < st.length){ st[sti].classList.add("on"); sti++; }
+    else go(si + 1, 0);
+  }
+
+  function prev(){
+    if (sti > 0){ sti--; steps(si)[sti].classList.remove("on"); }
+    else go(si - 1, "all");
+  }
+
+  document.getElementById("next").addEventListener("click", next);
+  document.getElementById("prev").addEventListener("click", prev);
+
+  document.addEventListener("keydown", function(e){
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    var k = e.key;
+
+    if (document.body.classList.contains("ov-on")){
+      if (k === "Escape" || k === "o" || k === "O"){
+        document.body.classList.remove("ov-on"); e.preventDefault();
+      }
+      return;
+    }
+
+    if (k === "ArrowRight" || k === " " || k === "PageDown" || k === "ArrowDown"){ next(); e.preventDefault(); }
+    else if (k === "ArrowLeft" || k === "PageUp" || k === "ArrowUp"){ prev(); e.preventDefault(); }
+    else if (k === "Home"){ go(0, 0); e.preventDefault(); }
+    else if (k === "End"){ go(slides.length - 1, "all"); e.preventDefault(); }
+    else if (k === "n" || k === "N"){ toggleNotes(); e.preventDefault(); }
+    else if (k === "o" || k === "O"){ document.body.classList.add("ov-on"); e.preventDefault(); }
+    else if (k === "[" || k === "]"){ document.body.classList.toggle("rail-hidden"); e.preventDefault(); }
+    else if (k === "f" || k === "F"){
+      if (document.fullscreenElement) document.exitFullscreen();
+      else document.documentElement.requestFullscreen();
+      e.preventDefault();
+    }
+  });
+
+  function toggleNotes(){
+    var on = document.body.classList.toggle("notes-on");
+    document.documentElement.style.setProperty("--notes-h", on ? "212px" : "0px");
+  }
+
+  var start = parseInt((location.hash || "").replace("#", ""), 10);
+  go(isNaN(start) ? 0 : Math.min(Math.max(start - 1, 0), slides.length - 1),
+     isNaN(start) ? 0 : "all");
+})();
+</script>
+</body>
+</html>

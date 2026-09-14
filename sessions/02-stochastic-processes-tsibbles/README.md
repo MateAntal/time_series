@@ -1,5 +1,7 @@
 # Session 02 — Time series as a stochastic process + the tsibble
 
+**Date:** Monday, 7 September 2026, 9:00–10:20 — IE Tower, room T-05.02
+
 **fpp3:** 2.1 (tsibbles)
 
 **Also:** Shumway & Stoffer, *Time Series: A Data Analysis Approach Using R* (2019), Ch. 1 — the

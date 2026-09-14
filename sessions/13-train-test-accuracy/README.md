@@ -1,5 +1,7 @@
 # Session 13 — Train/test splits and point forecast accuracy
 
+**Date:** Monday, 26 October 2026, 9:00–10:20 — IE Tower, room T-05.02
+
 **fpp3:** 5.8
 
 **Focus:** Subsetting a series with `filter()` and `slice()` (including the negative-index idiom and
@@ -9,7 +11,7 @@ the manual recomputation of MAE and RMSE checked against `accuracy()`.
 
 **R:** `filter()`, `slice()`, `accuracy()`
 
-**Homework:** `05_5` train/test exercises, plus the `05_6_A` manual computation of MAE and RMSE for
+**Homework:** `13_Train_Test` train/test exercises, plus the `13_A_PointAccuracy` manual computation of MAE and RMSE for
 the drift model on both sets.
 
 **Outcome:** Student sets up an honest train/test split and reads all six metrics, knowing which is

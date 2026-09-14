@@ -1,5 +1,7 @@
 # Session 14 — Time series cross-validation
 
+**Date:** Wednesday, 4 November 2026, 9:00–10:20 — IE Tower, room T-05.02
+
 **fpp3:** 5.10
 
 **Focus:** Why k-fold is wrong for time series; visualizing the expanding-window splits; one-step,

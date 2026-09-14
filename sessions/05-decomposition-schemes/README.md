@@ -1,5 +1,7 @@
 # Session 05 — Additive vs multiplicative; detrended and seasonally adjusted series
 
+**Date:** Monday, 21 September 2026, 9:00–10:20 — IE Tower, room T-05.02
+
 **fpp3:** 3.2, 3.4
 
 **Focus:** The additive and multiplicative schemes; how square-root / cube-root / log / inverse

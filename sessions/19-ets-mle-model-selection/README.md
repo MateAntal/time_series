@@ -1,5 +1,7 @@
 # Session 19 — The ETS taxonomy, model selection, and forecasting with ETS
 
+**Date:** Monday, 30 November 2026, 9:00–10:20 — IE Tower, room T-05.02
+
 **fpp3:** 8.4–8.7
 
 **Focus:** The ETS(Error, Trend, Season) notation and the full taxonomy. Then estimation: minimizing

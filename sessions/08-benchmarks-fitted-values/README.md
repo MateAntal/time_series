@@ -1,5 +1,7 @@
 # Session 08 — Benchmark methods, fitted values, and forecasting with decomposition
 
+**Date:** Wednesday, 30 September 2026, 9:00–10:20 — IE Tower, room T-05.02
+
 **fpp3:** 5.1–5.3, 5.7
 
 **Focus:** Fitted values vs forecasts — `ŷ_{t|t-1}` against `ŷ_{T+h|T}` — starting from the
