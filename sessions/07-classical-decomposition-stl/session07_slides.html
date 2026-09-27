@@ -405,12 +405,12 @@ body.ov-on #overview{display:block}
     <h1 class="sowhat">Two sessions of parts. Today they become one algorithm.</h1>
     <ul class="build">
       <li class="step"><b>Session 5 gave you the arithmetic</b> &mdash; plus or times &mdash; and the habit of checking a hand computation against R.</li>
-      <li class="step"><b>Session 6 gave you the trend</b> &mdash; a centered moving average, <code>2&times;m</code> when the season is even.</li>
+      <li class="step"><b>Session 6 gave you the trend</b>: a centered moving average, <code>2&times;m</code> when the season is even.</li>
       <li class="step"><b>Today you assemble them</b>, in four steps, and check every step against <code>classical_decomposition()</code> as you go.</li>
     </ul>
     <p class="punch step wide">Only one new thing arrives in the first half: step 3, the seasonal component. Everything else in the first half is made of things you already have.</p>
   </div>
-  <aside class="notes">That is worth taking seriously rather than as reassurance. If any part of Sessions 5 or 6 is shaky, today is where it shows up, because step 1 is Session 6 unchanged and step 2 is Session 5 unchanged.<br><br>The reason the algorithm is worth building by hand, when a single function call does it, is that Group Assignment 1 asks you to explain a decomposition rather than produce one. You cannot explain a component you have only ever received.</aside>
+  <aside class="notes">That is a warning as much as a reassurance. If any part of Sessions 5 or 6 is shaky, today is where it shows up, because step 1 is Session 6 unchanged and step 2 is Session 5 unchanged.<br><br>The reason the algorithm is worth building by hand, when a single function call does it, is that Group Assignment 1 asks you to explain a decomposition rather than produce one. You cannot explain a component you have only ever received.</aside>
 </section>
 
 <!-- ---------- 3 ---------- -->
@@ -541,7 +541,7 @@ S_i  =  S_unadj_i  <span class="hl">/</span>  mean(S_unadj)          <span class
     </ul>
     <p class="punch step wide">Both corrections are one line, and the notebook derives both. Do the derivation once: it is the cleanest small piece of algebra in the course.</p>
   </div>
-  <aside class="notes">Subtracting the mean from any vector makes it sum to zero, and dividing any vector by its mean makes it average to 1. Neither fact is specific to seasonality, which is why the notebook proves each in three lines and then applies it.<br><br>The sanity check is worth building into your code rather than doing once by eye. After step 3.2, <code>isTRUE(all.equal(sum(seasonal), 0))</code> for an additive fit, or <code>isTRUE(all.equal(mean(seasonal), 1))</code> for a multiplicative one. If it fails, the error is in step 3, and you have saved yourself from debugging step 4.</aside>
+  <aside class="notes">Subtracting the mean from any vector makes it sum to zero, and dividing any vector by its mean makes it average to 1. Neither fact is specific to seasonality, which is why the notebook proves each in three lines and then applies it.<br><br>Build the sanity check into your code rather than doing it once by eye. After step 3.2, <code>isTRUE(all.equal(sum(seasonal), 0))</code> for an additive fit, or <code>isTRUE(all.equal(mean(seasonal), 1))</code> for a multiplicative one. If it fails, the error is in step 3, and you have saved yourself from debugging step 4.</aside>
 </section>
 
 <!-- ---------- 6 ---------- -->
@@ -558,7 +558,7 @@ S_i  =  S_unadj_i  <span class="hl">/</span>  mean(S_unadj)          <span class
     </ul>
     <div class="callout"><b>Check as you go, not at the end.</b> A decomposition that fails at step 3 is far cheaper to find at step 3 than in the plot at the end.</div>
   </div>
-  <aside class="notes">Two column-name traps, both of which will bite somebody today. <code>classical_decomposition()</code> calls the remainder <code>random</code>, not <code>remainder</code>. And it exposes no detrended column at all, so step 2's check compares against <code>Employed - trend</code> computed from the reference.<br><br>All four checks return <code>TRUE</code> on this series, and that is not a coincidence you should take for granted. It means the algorithm in the notebook is the algorithm the package implements, step for step, and it is the strongest evidence you will get that you have understood it.</aside>
+  <aside class="notes">Two column-name traps, both of which will bite somebody today. <code>classical_decomposition()</code> calls the remainder <code>random</code>, not <code>remainder</code>. And it exposes no detrended column at all, so step 2's check compares against <code>Employed - trend</code> computed from the reference.<br><br>All four checks return <code>TRUE</code> on this series, and that is not a coincidence. It means the algorithm in the notebook is the algorithm the package implements, step for step, and it is the strongest evidence you will get that you have understood it.</aside>
 </section>
 
 <!-- ---------- 7 ---------- -->
@@ -572,7 +572,7 @@ S_i  =  S_unadj_i  <span class="hl">/</span>  mean(S_unadj)          <span class
       <li class="step"><b>Sometimes neither can be met.</b> Then take the decomposition that comes closest, and say out loud where it falls short.</li>
     </ul>
     <div class="callout slate"><b>Criterion 2 is Session 4, reused.</b> Run <code>ACF()</code> on the remainder and read it exactly as you read any other correlogram. Session 9 does the same thing to model residuals.</div>
-    <p class="punch step wide">Notice what is not on this list: whether the trend line looks nice. That judgment is worth very little, and it is the one everybody reaches for first.</p>
+    <p class="punch step wide">One thing is not on that list: whether the trend line looks nice. That judgment is worth very little, and it is the one everybody reaches for first.</p>
   </div>
   <aside class="notes">The grey bars down the left of an <code>autoplot()</code> panel are how you read criterion 1 without computing anything. Each bar covers the same range in data units, so a tall bar marks a panel whose range is small. A remainder panel with a tall bar is good news; one with a bar as short as the seasonal panel's is a warning.<br><br>Criterion 2 has a formal version, the Ljung&ndash;Box test, which replaces eyeballing twenty bars with a single number. It arrives in Session 9, where the thing being tested is a set of forecast residuals rather than a decomposition remainder. The logic is identical.</aside>
 </section>
@@ -624,7 +624,7 @@ S_i  =  S_unadj_i  <span class="hl">/</span>  mean(S_unadj)          <span class
       <li class="step"><b>The chain runs in one direction.</b> The outlier reaches the seasonal component only by passing through the trend and the detrended series first.</li>
       <li class="step"><b>Cut the chain at the first link and nothing propagates.</b> That is what the missing trend values at the ends do.</li>
     </ul>
-    <p class="punch step wide">The outlier case has a twist worth predicting before you run it: where in the series the outlier sits changes the answer completely.</p>
+    <p class="punch step wide">The outlier case has a twist you can predict before you run it: where in the series the outlier sits changes the answer completely.</p>
   </div>
   <aside class="notes">The twist, in case you want to reason it out rather than discover it: the trend is a <code>2&times;4-MA</code>, and Session 6 established that a moving average cannot be computed near the ends of a series. An outlier in the middle lands in the region the moving average can reach, so it is absorbed into the trend, passed into the detrended series, and then averaged into the seasonal component. An outlier at the very end lands where no trend value exists, so it never enters the chain at all.<br><br>That is a strange kind of robustness. The decomposition is undamaged because it had already given up on that part of the series.</aside>
 </section>
@@ -641,7 +641,7 @@ S_i  =  S_unadj_i  <span class="hl">/</span>  mean(S_unadj)          <span class
     </ul>
     <div class="callout"><b>Answer the "why" for every component</b>, not just the plot. Trend, detrended, seasonal: the outlier reaches them in that order, or it reaches none of them.</div>
   </div>
-  <aside class="notes">This is the one exercise in the block designed around breaking something rather than building it, and it teaches a habit worth more than the specific finding: when you want to know what a method is sensitive to, perturb the input and watch.<br><br>A detail you may notice and should not be alarmed by: with only twenty observations, the <code>2&times;4-MA</code> gives up two points at each end, so a fifth of this series has no trend estimate at all. Short series make every limitation in this session more visible, which is why this one was chosen.</aside>
+  <aside class="notes">This is the one exercise in the block designed around breaking something rather than building it, and it teaches a habit that outlasts the specific finding: when you want to know what a method is sensitive to, perturb the input and watch.<br><br>A detail you may notice and should not be alarmed by: with only twenty observations, the <code>2&times;4-MA</code> gives up two points at each end, so a fifth of this series has no trend estimate at all. Short series make every limitation in this session more visible, which is why this one was chosen.</aside>
 </section>
 
 <!-- ---------- 10 ---------- -->
@@ -677,9 +677,9 @@ S_i  =  S_unadj_i  <span class="hl">/</span>  mean(S_unadj)          <span class
       <li class="step"><b>LOESS is local regression.</b> To fit a value at a point, take its nearest neighbors, weight them by closeness, and fit a straight or slightly curved line to just those.</li>
       <li class="step"><b>You never choose a global formula.</b> No straight line, no polynomial for the whole series. Only a shape for the local pieces, and how big a neighborhood to use.</li>
     </ul>
-    <p class="punch step wide">STL applies that idea repeatedly to pull the components apart. The size of the neighborhood is the one thing you control, and it is the whole of the tuning.</p>
+    <p class="punch step wide">STL applies that idea repeatedly to pull the components apart. The size of the neighborhood is the one thing you control, and that is all the tuning there is.</p>
   </div>
-  <aside class="notes">Classical decomposition's trend is a moving average, which is a local <i>mean</i>. LOESS fits a local <i>line</i> instead. That one change is why STL follows a bend better than a moving average of comparable width, and why it can produce a trend estimate closer to the ends.<br><br>The full algorithm iterates between estimating the season and estimating the trend, refining each with the other held fixed, and it is genuinely more involved than anything you will be asked to reproduce. You are expected to know what the windows do and how to judge the result, not to implement it.</aside>
+  <aside class="notes">Classical decomposition's trend is a moving average, which is a local <i>mean</i>. LOESS fits a local <i>line</i> instead. That one change is why STL follows a bend better than a moving average of comparable width, and why it can produce a trend estimate closer to the ends.<br><br>The full algorithm iterates between estimating the season and estimating the trend, refining each with the other held fixed, and it is more involved than anything you will be asked to reproduce. You are expected to know what the windows do and how to judge the result, not to implement it.</aside>
 </section>
 
 <!-- ---------- 11 ---------- -->
@@ -695,9 +695,9 @@ S_i  =  S_unadj_i  <span class="hl">/</span>  mean(S_unadj)          <span class
       <li class="step"><b>The additive-only limit is not a real obstacle</b>, because Session 5 already solved it: take logs, decompose, and the multiplication has become addition.</li>
       <li class="step"><b>The tuning is the real cost.</b> Two windows, both odd, both changed by trial, and judged by the two criteria from slide 7 rather than by eye.</li>
     </ul>
-    <p class="punch step wide">Classical decomposition has no knobs and one answer. STL has two knobs and a judgment to make. That is the whole difference in practice.</p>
+    <p class="punch step wide">Classical decomposition has no knobs and one answer. STL has two knobs and a judgment to make. That is the difference in practice.</p>
   </div>
-  <aside class="notes">A caution about robustness that the notebook makes and is easy to misread: <code>robust = TRUE</code> keeps unusual observations from distorting the trend and the season, but they still land in the remainder, where they belong. It also does not always improve a decomposition, so it is worth trying both ways rather than switching it on by reflex.<br><br>&ldquo;Several seasonal periods at once&rdquo; is the one advantage you cannot appreciate yet. Half-hourly electricity demand has a daily cycle, a weekly cycle and a yearly cycle running simultaneously, and classical decomposition can represent exactly one of them. That is the Session 3 electricity example returning with a method that can handle it.</aside>
+  <aside class="notes">A caution about robustness that the notebook makes and is easy to misread: <code>robust = TRUE</code> keeps unusual observations from distorting the trend and the season, but they still land in the remainder, where they belong. It also does not always improve a decomposition, so try it both ways rather than switching it on by reflex.<br><br>&ldquo;Several seasonal periods at once&rdquo; is the one advantage you cannot appreciate yet. Half-hourly electricity demand has a daily cycle, a weekly cycle and a yearly cycle running simultaneously, and classical decomposition can represent exactly one of them. That is the Session 3 electricity example returning with a method that can handle it.</aside>
 </section>
 
 <!-- ---------- 12 ---------- -->
@@ -716,9 +716,9 @@ S_i  =  S_unadj_i  <span class="hl">/</span>  mean(S_unadj)          <span class
       <li class="step"><b>Start from the defaults and change one at a time.</b> Moving both at once tells you nothing about which one helped.</li>
       <li class="step"><b>A window that is too small is a real failure</b>, not just a cautious setting. Narrow the trend enough and it starts swallowing the seasonal wiggles.</li>
     </ul>
-    <p class="punch step wide">Notice the last row. Setting <code>season(window = "periodic")</code> throws away the one thing STL had over the algorithm you built this morning.</p>
+    <p class="punch step wide">Look at the last row. Setting <code>season(window = "periodic")</code> throws away the one thing STL had over the algorithm you built this morning.</p>
   </div>
-  <aside class="notes">Read the units carefully, because they differ between the two windows. The trend window counts <i>observations</i>. The seasonal window counts <i>seasons</i>, so <code>season(window = 13)</code> on monthly data means each seasonal value is estimated from thirteen Januaries, not thirteen months.<br><br>The default of 13 is a deliberate middle: wide enough that the seasonal estimate is not chasing noise, narrow enough that a genuinely drifting season can move. Both windows must be odd for the same reason a moving average window must be odd, which is that a local fit needs a center.</aside>
+  <aside class="notes">Read the units carefully, because they differ between the two windows. The trend window counts <i>observations</i>. The seasonal window counts <i>seasons</i>, so <code>season(window = 13)</code> on monthly data means each seasonal value is estimated from thirteen Januaries, not thirteen months.<br><br>The default of 13 is a compromise: wide enough that the seasonal estimate is not chasing noise, narrow enough that a drifting season can still move. Both windows must be odd for the same reason a moving average window must be odd, which is that a local fit needs a center.</aside>
 </section>
 
 <!-- ---------- 13 ---------- -->
@@ -733,7 +733,7 @@ S_i  =  S_unadj_i  <span class="hl">/</span>  mean(S_unadj)          <span class
     </ul>
     <div class="callout slate"><b>Judge every change with the ACF of the remainder</b>, not with how the trend line looks. The picture improves long before the diagnostic does.</div>
   </div>
-  <aside class="notes">This is the same 2008 dip that Session 5 pointed out as a <i>cycle</i>, which is why it belongs in the trend-cycle component rather than the remainder. STL with default windows is too stiff to take it, so it falls through. Narrowing the trend window is how you let the trend-cycle component do the job its name promises.<br><br>There is a limit to how far this goes, and it is worth reaching it once. Keep narrowing the trend window and eventually the trend starts following the seasonal wiggles too, which empties the seasonal component into the trend. Both extremes are visible in a few seconds of experimenting, and the useful setting is somewhere between them.</aside>
+  <aside class="notes">This is the same 2008 dip that Session 5 pointed out as a <i>cycle</i>, which is why it belongs in the trend-cycle component rather than the remainder. STL with default windows is too stiff to take it, so it falls through. Narrowing the trend window is how you let the trend-cycle component do the job its name promises.<br><br>There is a limit to how far this goes; reach it once. Keep narrowing the trend window and eventually the trend starts following the seasonal wiggles too, which empties the seasonal component into the trend. Both extremes are visible in a few seconds of experimenting, and the useful setting is somewhere between them.</aside>
 </section>
 
 <!-- ---------- 14 ---------- -->
@@ -743,12 +743,12 @@ S_i  =  S_unadj_i  <span class="hl">/</span>  mean(S_unadj)          <span class
     <h1 class="sowhat wide">Sometimes there is no setting that works, and saying so is the answer.</h1>
     <ul class="build">
       <li class="step"><b>The <code>labour</code> series has a crisis in 1991 to 1992</b> that no pair of windows fully absorbs. Narrow them and the remainder improves a little, then stops.</li>
-      <li class="step"><b>The daily electricity series is worse.</b> Its seasonal pattern genuinely differs at the start and end of the year, and the remainder's ACF stays far from white noise whatever you do.</li>
+      <li class="step"><b>The daily electricity series is worse.</b> Its seasonal pattern does differ at the start and end of the year, and the remainder's ACF stays far from white noise whatever you do.</li>
       <li class="step"><b>The correct report is not a better number.</b> It is: here is the closest I got, here is where it fails, and here is what I would need instead.</li>
     </ul>
-    <p class="punch step wide">A decomposition that does not work, honestly described, is a finding. A decomposition that does not work, presented as though it does, is the thing this course is trying to prevent.</p>
+    <p class="punch step wide">A decomposition that does not work, honestly described, is a finding. A decomposition that does not work, presented as though it does, is what this course exists to prevent.</p>
   </div>
-  <aside class="notes">What you would need instead, for the curious: an event like a recession can be handled by telling the model explicitly that it happened, with an intervention variable, rather than hoping a smoother absorbs it. That belongs to regression with time series predictors, which is in the sequel course rather than this one.<br><br>Comparing two remainders by eye across twenty ACF bars is unsatisfying, and you should feel that. The Ljung&ndash;Box statistic in Session 9 collapses the comparison into one number per decomposition, and it is the right tool for exactly this question.</aside>
+  <aside class="notes">What you would need instead, for the curious: an event like a recession can be handled by telling the model explicitly that it happened, with an intervention variable, rather than hoping a smoother absorbs it. That belongs to regression with time series predictors, which is in the sequel course rather than this one.<br><br>Comparing two remainders by eye across twenty ACF bars is unsatisfying. The Ljung&ndash;Box statistic in Session 9 collapses the comparison into one number per decomposition, and it is the right tool for exactly this question.</aside>
 </section>
 
 <!-- ---------- 15 ---------- -->
@@ -764,9 +764,9 @@ S_i  =  S_unadj_i  <span class="hl">/</span>  mean(S_unadj)          <span class
       <li class="step"><b>In short:</b> classical decomposition is what you build to understand decomposition. STL is what you run when you need an answer.</li>
       <li class="step"><b>Both are judged the same way</b>, by the two criteria on slide 7. The criteria do not care which algorithm produced the remainder.</li>
     </ul>
-    <p class="punch step wide">Group Assignment 1 asks for the first one, built by hand. That is a deliberate choice about what is being assessed.</p>
+    <p class="punch step wide">Group Assignment 1 asks for the first one, built by hand. That choice is about what is being assessed.</p>
   </div>
-  <aside class="notes">Neither of these is a forecasting method, and it is worth being clear about that before Session 8 arrives. A decomposition describes a series you already have. It has no opinion about the next observation, and the components it produces stop where the data stops.<br><br>Decomposition does turn up again inside forecasting, though: one common approach forecasts the seasonally adjusted series and then puts the seasonal component back on top. You meet that once you have a forecasting method to put inside it.</aside>
+  <aside class="notes">Neither of these is a forecasting method, so be clear about that before Session 8 arrives. A decomposition describes a series you already have. It has no opinion about the next observation, and the components it produces stop where the data stops.<br><br>Decomposition does turn up again inside forecasting, though: one common approach forecasts the seasonally adjusted series and then puts the seasonal component back on top. You meet that once you have a forecasting method to put inside it.</aside>
 </section>
 
 <!-- ---------- 16 ---------- -->
@@ -779,7 +779,7 @@ S_i  =  S_unadj_i  <span class="hl">/</span>  mean(S_unadj)          <span class
       <li class="step"><b>The marks are in the explanation</b>, not in the code. Every component has to be interpreted, and every choice defended: the scheme, the value of <code>m</code>, the reading of the remainder.</li>
       <li class="step"><b>It gets detailed written feedback</b>, unlike the weekly homework. It is one of only two pieces of work in the course that does.</li>
     </ul>
-    <div class="callout"><b>Four weeks, and the deadline is after the midterm.</b> That is deliberate: revising for the exam and building a decomposition from scratch are different activities and should not compete for the same week.</div>
+    <div class="callout"><b>Four weeks, and the deadline is after the midterm.</b> The reason: revising for the exam and building a decomposition from scratch are different activities and should not compete for the same week.</div>
     <div class="callout slate"><b>The brief is in <code>assignments/</code> in the course repo.</b> Read it this week, not the night before. Choosing a series with a clean, stable season is half the battle, and that choice is yours.</div>
   </div>
   <aside class="notes">A word on choosing a series, since it is the decision that most affects how hard the rest becomes. You want enough history to cover several complete seasons, a seasonal period you can justify from the sampling frequency, and ideally a scheme that is clearly additive or clearly multiplicative rather than ambiguous. Session 5's eye test is how you check the last one before committing.<br><br>You will hit the limitations from slide 8 on real data, and that is expected rather than a sign you chose badly. Naming a limitation you ran into, and showing what it did to your components, reads far better than a report that pretends the method worked perfectly.</aside>
@@ -793,12 +793,12 @@ S_i  =  S_unadj_i  <span class="hl">/</span>  mean(S_unadj)          <span class
     <ul class="build">
       <li><b><code>07_D</code> Exercise 1.</b> Gas, multiplicative, seasonally adjusted, then the outlier in the middle and at the end. Explain every component that moved.</li>
       <li><b><code>07_E</code> STL Example 3, items 1.1 and 1.2.</b> The <code>labour</code> series: default decomposition, then the 1991&ndash;92 crisis and the window tuning.</li>
-      <li><b><code>07_E</code> Exercise 2, item 2.1 only.</b> Daily electricity demand: what is wrong with the default decomposition. A diagnosis, not a tuning task &mdash; item 2.2 is not assigned.</li>
+      <li><b><code>07_E</code> Exercise 2, item 2.1 only.</b> Daily electricity demand: what is wrong with the default decomposition. A diagnosis, not a tuning task. Item 2.2 is not assigned.</li>
       <li>For the tuning task, report what you <i>tried</i>, not only what you kept. Two rejected settings and why is worth more than one accepted setting on its own.</li>
     </ul>
     <div class="callout slate"><b><code>07_E</code> needs the <code>fma</code> package</b> for the <code>labour</code> series. Install it before Sunday, not on Sunday.</div>
   </div>
-  <aside class="notes">Graded on completion and genuine effort. On the tuning task that is the whole point: there is no window setting that earns full marks and none that loses them. What earns marks is showing the search and judging it against the two criteria rather than against the look of the plot.<br><br>Item 2.2 on the electricity series is deliberately not assigned. The tuning mechanics are already exercised on <code>labour</code>, and on the electricity series no setting reaches white noise anyway, so the diagnosis in 2.1 already reaches the conclusion the tuning would.<br><br>Submit on Blackboard, under Assignments, as many files as you need. These exercises produce a lot of plots, so a single rendered document that keeps each plot next to the sentence about it is easier to read than a folder of images.</aside>
+  <aside class="notes">Graded on completion and genuine effort. On the tuning task that is the point: there is no window setting that earns full marks and none that loses them. What earns marks is showing the search and judging it against the two criteria rather than against the look of the plot.<br><br>Item 2.2 on the electricity series is not assigned this term. The tuning mechanics are already exercised on <code>labour</code>, and on the electricity series no setting reaches white noise anyway, so the diagnosis in 2.1 already reaches the conclusion the tuning would.<br><br>Submit on Blackboard, under Assignments, as many files as you need. These exercises produce a lot of plots, so a single rendered document that keeps each plot next to the sentence about it is easier to read than a folder of images.</aside>
 </section>
 
 <!-- ---------- 18 ---------- -->
@@ -814,7 +814,7 @@ S_i  =  S_unadj_i  <span class="hl">/</span>  mean(S_unadj)          <span class
     <p class="punch step wide">Session 4 told you white noise is the null hypothesis of this course. From Session 8 on, every model is a claim to beat it.</p>
     <p class="url" style="font-size:clamp(0.95rem,1.7vw,1.9rem)">aberrizbeitia@faculty.ie.edu</p>
   </div>
-  <aside class="notes">Sessions 5, 6 and 7 are one topic and are examined as one. Read the three sets of notes together rather than separately, and make sure you can state the four steps in order and say what each one consumes and produces.<br><br>The remainder is where the two halves of this course meet. Today it is what a decomposition failed to explain; from Session 9 it is what a forecast failed to predict, and the test applied to it is Session 4's white-noise test in both cases. If you can see why those are the same question, you have the spine of the whole course.</aside>
+  <aside class="notes">Sessions 5, 6 and 7 are one topic and are examined as one. Read the three sets of notes together rather than separately, and make sure you can state the four steps in order and say what each one consumes and produces.<br><br>The remainder is where the two halves of this course meet. Today it is what a decomposition failed to explain; from Session 9 it is what a forecast failed to predict, and the test applied to it is Session 4's white-noise test in both cases. If you can see why those are the same question, you have understood how the course fits together.</aside>
 </section>
 
 <!-- lives inside the stage so it is positioned against it, not the viewport,
