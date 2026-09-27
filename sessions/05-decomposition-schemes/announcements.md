@@ -10,14 +10,15 @@ this note explains why it reads the way it does.
 
 ## Why the calendar looks the way it does
 
-September is packed: eight sessions in four weeks, every Monday and Wednesday. The back half of the
-term is sparser, and that is not by choice. Four Spanish national holidays fall in October to
-December 2026, three of them on Mondays:
+September is packed: eight sessions, on nearly every Monday and Wednesday of the month. The back half of the
+term is sparser, and that is not by choice. Five holidays fall in October to
+December 2026, four of them on Mondays:
 
 | Date | Holiday | Effect on the schedule |
 |---|---|---|
 | Mon 12 Oct | Fiesta Nacional de España | No Monday session; the midterm (Session 10) moves to Wed 14 Oct |
 | Mon 2 Nov | All Saints (1 Nov is Sunday, observed Monday) | Session 14 slides to Wed 4 Nov |
+| Mon 9 Nov | La Almudena (Madrid) | No Monday session that week |
 | Mon 7 Dec | Constitution Day (6 Dec is Sunday, observed Monday) | No session that week |
 | Tue 8 Dec | Inmaculada Concepción | No session that week |
 
