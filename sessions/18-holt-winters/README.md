@@ -2,7 +2,7 @@
 
 **Date:** Wednesday, 25 November 2026, 9:00–10:20 — IE Tower, room T-05.02
 
-**fpp3:** 8.3
+**[fpp3](https://otexts.com/fpp3/index.html):** 8.3
 
 **Focus:** Additive vs multiplicative seasonality; the component form and the `k` subindex in the
 seasonal component; fitted-value and forecast equations; the Australian overnight-trips example fitted

@@ -2,7 +2,7 @@
 
 **Date:** Monday, 14 September 2026, 9:00–10:20 — IE Tower, room T-05.02
 
-**fpp3:** 2.7–2.9
+**[fpp3](https://otexts.com/fpp3/index.html):** 2.7–2.9
 
 **Data:** `Beijing_Pollution_TSeries.csv`, `Weekly Fuel Prices.xlsx` (homework)
 

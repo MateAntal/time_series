@@ -2,7 +2,7 @@
 
 **Date:** Wednesday, 30 September 2026, 9:00–10:20 — IE Tower, room T-05.02
 
-**fpp3:** 5.1–5.3, 5.7
+**[fpp3](https://otexts.com/fpp3/index.html):** 5.1–5.3, 5.7
 
 **Focus:** Fitted values vs forecasts — `ŷ_{t|t-1}` against `ŷ_{T+h|T}` — starting from the
 linear-regression analogy; point forecast vs forecast distribution; innovation residuals; then the

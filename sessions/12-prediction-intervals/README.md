@@ -2,7 +2,7 @@
 
 **Date:** Wednesday, 21 October 2026, 9:00–10:20 — IE Tower, room T-05.02
 
-**fpp3:** 5.5–5.6
+**[fpp3](https://otexts.com/fpp3/index.html):** 5.5–5.6
 
 **Focus:** Forecast distributions; one-step vs multi-step intervals; computing them with `fable` and
 then reproducing them by hand from the residual standard deviation and a normal quantile, checking the
