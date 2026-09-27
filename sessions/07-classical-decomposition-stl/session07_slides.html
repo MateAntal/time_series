@@ -773,16 +773,16 @@ S_i  =  S_unadj_i  <span class="hl">/</span>  mean(S_unadj)          <span class
 <section class="slide" data-section="6" data-title="Group Assignment 1">
   <div class="inner">
     <p class="kicker">Launches today &nbsp;&middot;&nbsp; due Sunday 25 October, 23:59</p>
-    <h1 class="sowhat">Classical decomposition, from scratch, on a series you choose.</h1>
+    <h1 class="sowhat">Classical decomposition, from scratch, on Victorian liquor retailing.</h1>
     <ul class="build">
-      <li class="step"><b>It is this morning's four steps</b>, on data nobody has walked you through, with every step checked against <code>classical_decomposition()</code>.</li>
+      <li class="step"><b>It is this morning's four steps</b>, on a series nobody has walked you through, with every step checked against <code>classical_decomposition()</code>.</li>
       <li class="step"><b>The marks are in the explanation</b>, not in the code. Every component has to be interpreted, and every choice defended: the scheme, the value of <code>m</code>, the reading of the remainder.</li>
       <li class="step"><b>It gets detailed written feedback</b>, unlike the weekly homework. It is one of only two pieces of work in the course that does.</li>
     </ul>
     <div class="callout"><b>Four weeks, and the deadline is after the midterm.</b> The reason: revising for the exam and building a decomposition from scratch are different activities and should not compete for the same week.</div>
-    <div class="callout slate"><b>The brief is in <code>assignments/</code> in the course repo.</b> Read it this week, not the night before. Choosing a series with a clean, stable season is half the battle, and that choice is yours.</div>
+    <div class="callout slate"><b>The brief is in <code>assignments/</code> in the course repo.</b> Read it this week, not the night before. The series and the object names are given, and the data comes from <code>fpp3</code>, so there is nothing to download and nothing to choose.</div>
   </div>
-  <aside class="notes">A word on choosing a series, since it is the decision that most affects how hard the rest becomes. You want enough history to cover several complete seasons, a seasonal period you can justify from the sampling frequency, and ideally a scheme that is clearly additive or clearly multiplicative rather than ambiguous. Session 5's eye test is how you check the last one before committing.<br><br>You will hit the limitations from slide 8 on real data, and that is expected rather than a sign you chose badly. Naming a limitation you ran into, and showing what it did to your components, reads far better than a report that pretends the method worked perfectly.</aside>
+  <aside class="notes">The series is fixed, and that is deliberate. Every component you build is compared against <code>classical_decomposition()</code> with <code>all.equal()</code>, so the reference has to be the same for everybody. It also means your effort goes into the algorithm and the interpretation rather than into hunting for a dataset.<br><br>What is still yours is the reading. Look at the time plot before you write any code and form an expectation about the scheme, using Session 5&#39;s eye test. Part 3 asks you to defend that judgment with numbers, and a verdict you predicted and then confirmed reads very differently from one you discovered at the end.<br><br>You will hit the limitations from slide 8 on this data, and that is expected. Naming a limitation you ran into, and showing what it did to your components, reads far better than a report that pretends the method worked perfectly.</aside>
 </section>
 
 <!-- ---------- 17 ---------- -->
