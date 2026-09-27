@@ -8,7 +8,7 @@
 
 <meta name="author" content="Juan Garbayo - TS Analysis">
 
-<title>07_D_Classical_Decomposition_fromScratch</title>
+<title>07_D_ClassicalDecomposition_fromScratch</title>
 <style>
 
 span.smallcaps{font-variant: small-caps;}
@@ -2353,7 +2353,7 @@ window.Quarto = {
   <li><a href="#references" id="toc-references" class="nav-link active" data-scroll-target="#references">References</a></li>
   <li><a href="#packages" id="toc-packages" class="nav-link" data-scroll-target="#packages">Packages</a></li>
   <li><a href="#classical-decomposition" id="toc-classical-decomposition" class="nav-link" data-scroll-target="#classical-decomposition">Classical decomposition</a></li>
-  <li><a href="#additive-schemes---classical-decomposition" id="toc-additive-schemes---classical-decomposition" class="nav-link" data-scroll-target="#additive-schemes---classical-decomposition">Additive schemes - classical decomposition</a>
+  <li><a href="#additive-scheme---classical-decomposition" id="toc-additive-scheme---classical-decomposition" class="nav-link" data-scroll-target="#additive-scheme---classical-decomposition">Additive scheme - classical decomposition</a>
   <ul>
   <li><a href="#step-1---estimate-trend" id="toc-step-1---estimate-trend" class="nav-link" data-scroll-target="#step-1---estimate-trend">Step 1 - Estimate trend</a></li>
   <li><a href="#step-2---detrended-series" id="toc-step-2---detrended-series" class="nav-link" data-scroll-target="#step-2---detrended-series">Step 2 - Detrended series</a></li>
@@ -2391,7 +2391,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">07_D_Classical_Decomposition_fromScratch</h1>
+<h1 class="title">07_D_ClassicalDecomposition_fromScratch</h1>
 </div>
 
 
@@ -2451,20 +2451,20 @@ window.Quarto = {
 <li><strong>Odd seasonal period <span class="math inline">\(m\)</span>:</strong> trend approximated by an <span class="math inline">\(m\)</span> moving average.</li>
 </ul>
 </section>
-<section id="additive-schemes---classical-decomposition" class="level1">
-<h1>Additive schemes - classical decomposition</h1>
+<section id="additive-scheme---classical-decomposition" class="level1">
+<h1>Additive scheme - classical decomposition</h1>
 <section id="step-1---estimate-trend" class="level2">
 <h2 class="anchored" data-anchor-id="step-1---estimate-trend">Step 1 - Estimate trend</h2>
 <p><span class="math inline">\(m\)</span>: length of the seasonal period.</p>
 <ul>
 <li>If <span class="math inline">\(m\)</span> is an even number, compute the trend-cycle component <span class="math inline">\(T_t\)</span> using 2 x <span class="math inline">\(m\)</span>-MA.</li>
-<li>If <span class="math inline">\(m\)</span> is an odd number compute the trend-cycle component <span class="math inline">\(T_t\)</span> using an <span class="math inline">\(m\)</span>-MA.</li>
+<li>If <span class="math inline">\(m\)</span> is an odd number, compute the trend-cycle component <span class="math inline">\(T_t\)</span> using an <span class="math inline">\(m\)</span>-MA.</li>
 </ul>
 <p><strong>Output</strong>: the <strong>trend component <span class="math inline">\(T_t\)</span></strong></p>
 </section>
 <section id="step-2---detrended-series" class="level2">
 <h2 class="anchored" data-anchor-id="step-2---detrended-series">Step 2 - Detrended series</h2>
-<p>Calculate the de-trended series: <span class="math inline">\(D_t = y_t - T_t\)</span></p>
+<p>Calculate the detrended series: <span class="math inline">\(D_t = y_t - T_t\)</span></p>
 <p><strong>Output</strong>: the <strong>detrended series <span class="math inline">\(D_t\)</span></strong></p>
 </section>
 <section id="step-3---compute-seasonal-component" class="level2">
@@ -2510,7 +2510,7 @@ window.Quarto = {
 </tr>
 <tr class="even">
 <td style="text-align: center;"><span class="math inline">\(2\)</span></td>
-<td style="text-align: left;">abr-13</td>
+<td style="text-align: left;">apr-13</td>
 <td style="text-align: left;"><span class="math inline">\(y_{2}\)</span></td>
 <td style="text-align: left;"><span class="math inline">\(\text{T}_{2}\)</span></td>
 <td style="text-align: left;"><span class="math inline">\(\text{D}_{2}\)</span></td>
@@ -2542,7 +2542,7 @@ window.Quarto = {
 </tr>
 <tr class="even">
 <td style="text-align: center;"><span class="math inline">\(6\)</span></td>
-<td style="text-align: left;">ago-13</td>
+<td style="text-align: left;">aug-13</td>
 <td style="text-align: left;"><span class="math inline">\(y_{6}\)</span></td>
 <td style="text-align: left;"><span class="math inline">\(\text{T}_{6}\)</span></td>
 <td style="text-align: left;"><span class="math inline">\(\text{D}_{6}\)</span></td>
@@ -2574,7 +2574,7 @@ window.Quarto = {
 </tr>
 <tr class="even">
 <td style="text-align: center;"><span class="math inline">\(10\)</span></td>
-<td style="text-align: left;">dic-13</td>
+<td style="text-align: left;">dec-13</td>
 <td style="text-align: left;"><span class="math inline">\(y_{10}\)</span></td>
 <td style="text-align: left;"><span class="math inline">\(\text{T}_{10}\)</span></td>
 <td style="text-align: left;"><span class="math inline">\(\text{D}_{10}\)</span></td>
@@ -2582,7 +2582,7 @@ window.Quarto = {
 </tr>
 <tr class="odd">
 <td style="text-align: center;"><span class="math inline">\(11\)</span></td>
-<td style="text-align: left;">ene-14</td>
+<td style="text-align: left;">jan-14</td>
 <td style="text-align: left;"><span class="math inline">\(y_{11}\)</span></td>
 <td style="text-align: left;"><span class="math inline">\(\text{T}_{11}\)</span></td>
 <td style="text-align: left;"><span class="math inline">\(\text{D}_{11}\)</span></td>
@@ -2606,7 +2606,7 @@ window.Quarto = {
 </tr>
 <tr class="even">
 <td style="text-align: center;"><span class="math inline">\(14\)</span></td>
-<td style="text-align: left;">abr-14</td>
+<td style="text-align: left;">apr-14</td>
 <td style="text-align: left;"><span class="math inline">\(y_{14}\)</span></td>
 <td style="text-align: left;"><span class="math inline">\(\text{T}_{14}\)</span></td>
 <td style="text-align: left;"><span class="math inline">\(\text{D}_{14}\)</span></td>
@@ -2622,7 +2622,7 @@ window.Quarto = {
 </tr>
 <tr class="even">
 <td style="text-align: center;"><span class="math inline">\(T\!-\!4\)</span></td>
-<td style="text-align: left;">ago-20</td>
+<td style="text-align: left;">aug-20</td>
 <td style="text-align: left;"><span class="math inline">\(y_{T-4}\)</span></td>
 <td style="text-align: left;"><span class="math inline">\(\text{T}_{T-4}\)</span></td>
 <td style="text-align: left;"><span class="math inline">\(\text{D}_{T-4}\)</span></td>
@@ -2654,7 +2654,7 @@ window.Quarto = {
 </tr>
 <tr class="even">
 <td style="text-align: center;"><span class="math inline">\(T\)</span></td>
-<td style="text-align: left;">dic-20</td>
+<td style="text-align: left;">dec-20</td>
 <td style="text-align: left;"><span class="math inline">\(y_{T}\)</span></td>
 <td style="text-align: left;"><span class="math inline">\(\text{T}_{T}\)</span></td>
 <td style="text-align: left;"><span class="math inline">\(\text{D}_{T}\)</span></td>
@@ -2730,7 +2730,7 @@ window.Quarto = {
 <li><strong>With daily data and a weekly seasonal period</strong>: we would average the detrended series over the 7 days of the week (<span class="math inline">\(m=7\)</span>)</li>
 <li>…</li>
 </ul>
-<p><strong>Output of step 3.1</strong>: <span class="math inline">\(S_{unadj}\)</span>, the <strong>unadjusted seasonal component</strong> a vector of length <span class="math inline">\(m\)</span>, with <span class="math inline">\(m\)</span> being the length (period) of the seasonal component.</p>
+<p><strong>Output of step 3.1</strong>: <span class="math inline">\(S_{unadj}\)</span>, the <strong>unadjusted seasonal component</strong>, a vector of length <span class="math inline">\(m\)</span>, with <span class="math inline">\(m\)</span> being the length (period) of the seasonal component.</p>
 <p><br></p>
 </section>
 <section id="step-3.2-adjust-the-seasonal-component-to-sum-to-zero" class="level4">
@@ -2779,7 +2779,7 @@ mean(z_t) = \frac{\sum_{i=1}^{T}z_{i}}{T} = \frac{\sum_{i=1}^{T}(y_{i} - mean(y_
 <p><span class="math display">\[
 = mean(y_t) - \frac{mean(y_t) \cdot \sum_{i=1}^{T} 1}{T} = mean(y_t) - \frac{mean(y_t) \cdot T}{T} = 0
 \]</span></p>
-<p><strong>Output of step 3.2</strong>: <span class="math inline">\(S\)</span>, the <strong>adjusted seasonal component</strong>. S vector of length <span class="math inline">\(m\)</span>, with <span class="math inline">\(m\)</span> being the length (period) of the seasonal component. For the previous monthly example it would look as follows:</p>
+<p><strong>Output of step 3.2</strong>: <span class="math inline">\(S\)</span>, the <strong>adjusted seasonal component</strong>, a vector of length <span class="math inline">\(m\)</span>, with <span class="math inline">\(m\)</span> being the length (period) of the seasonal component. For the previous monthly example it would look as follows:</p>
 <div style="width: fit-content; margin: auto;">
 <table class="caption-top table">
 <thead>
@@ -2894,7 +2894,7 @@ mean(z_t) = \frac{\sum_{i=1}^{T}z_{i}}{T} = \frac{\sum_{i=1}^{T}(y_{i} - mean(y_
 </tr>
 <tr class="even">
 <td style="text-align: center;"><span class="math inline">\(2\)</span></td>
-<td style="text-align: left;">abr-13</td>
+<td style="text-align: left;">apr-13</td>
 <td style="text-align: left;"><span class="math inline">\(y_{2}\)</span></td>
 <td style="text-align: left;"><span class="math inline">\(\text{T}_{2}\)</span></td>
 <td style="text-align: left;"><span class="math inline">\(\text{D}_{2}\)</span></td>
@@ -2930,7 +2930,7 @@ mean(z_t) = \frac{\sum_{i=1}^{T}z_{i}}{T} = \frac{\sum_{i=1}^{T}(y_{i} - mean(y_
 </tr>
 <tr class="even">
 <td style="text-align: center;"><span class="math inline">\(6\)</span></td>
-<td style="text-align: left;">ago-13</td>
+<td style="text-align: left;">aug-13</td>
 <td style="text-align: left;"><span class="math inline">\(y_{6}\)</span></td>
 <td style="text-align: left;"><span class="math inline">\(\text{T}_{6}\)</span></td>
 <td style="text-align: left;"><span class="math inline">\(\text{D}_{6}\)</span></td>
@@ -2966,7 +2966,7 @@ mean(z_t) = \frac{\sum_{i=1}^{T}z_{i}}{T} = \frac{\sum_{i=1}^{T}(y_{i} - mean(y_
 </tr>
 <tr class="even">
 <td style="text-align: center;"><span class="math inline">\(10\)</span></td>
-<td style="text-align: left;">dic-13</td>
+<td style="text-align: left;">dec-13</td>
 <td style="text-align: left;"><span class="math inline">\(y_{10}\)</span></td>
 <td style="text-align: left;"><span class="math inline">\(\text{T}_{10}\)</span></td>
 <td style="text-align: left;"><span class="math inline">\(\text{D}_{10}\)</span></td>
@@ -2975,7 +2975,7 @@ mean(z_t) = \frac{\sum_{i=1}^{T}z_{i}}{T} = \frac{\sum_{i=1}^{T}(y_{i} - mean(y_
 </tr>
 <tr class="odd">
 <td style="text-align: center;"><span class="math inline">\(11\)</span></td>
-<td style="text-align: left;">ene-14</td>
+<td style="text-align: left;">jan-14</td>
 <td style="text-align: left;"><span class="math inline">\(y_{11}\)</span></td>
 <td style="text-align: left;"><span class="math inline">\(\text{T}_{11}\)</span></td>
 <td style="text-align: left;"><span class="math inline">\(\text{D}_{11}\)</span></td>
@@ -3002,7 +3002,7 @@ mean(z_t) = \frac{\sum_{i=1}^{T}z_{i}}{T} = \frac{\sum_{i=1}^{T}(y_{i} - mean(y_
 </tr>
 <tr class="even">
 <td style="text-align: center;"><span class="math inline">\(14\)</span></td>
-<td style="text-align: left;">abr-14</td>
+<td style="text-align: left;">apr-14</td>
 <td style="text-align: left;"><span class="math inline">\(y_{14}\)</span></td>
 <td style="text-align: left;"><span class="math inline">\(\text{T}_{14}\)</span></td>
 <td style="text-align: left;"><span class="math inline">\(\text{D}_{14}\)</span></td>
@@ -3020,7 +3020,7 @@ mean(z_t) = \frac{\sum_{i=1}^{T}z_{i}}{T} = \frac{\sum_{i=1}^{T}(y_{i} - mean(y_
 </tr>
 <tr class="even">
 <td style="text-align: center;"><span class="math inline">\(T\!-\!4\)</span></td>
-<td style="text-align: left;">ago-20</td>
+<td style="text-align: left;">aug-20</td>
 <td style="text-align: left;"><span class="math inline">\(y_{T-4}\)</span></td>
 <td style="text-align: left;"><span class="math inline">\(\text{T}_{T-4}\)</span></td>
 <td style="text-align: left;"><span class="math inline">\(\text{D}_{T-4}\)</span></td>
@@ -3056,7 +3056,7 @@ mean(z_t) = \frac{\sum_{i=1}^{T}z_{i}}{T} = \frac{\sum_{i=1}^{T}(y_{i} - mean(y_
 </tr>
 <tr class="even">
 <td style="text-align: center;"><span class="math inline">\(T\)</span></td>
-<td style="text-align: left;">dic-20</td>
+<td style="text-align: left;">dec-20</td>
 <td style="text-align: left;"><span class="math inline">\(y_{T}\)</span></td>
 <td style="text-align: left;"><span class="math inline">\(\text{T}_{T}\)</span></td>
 <td style="text-align: left;"><span class="math inline">\(\text{D}_{T}\)</span></td>
@@ -3082,13 +3082,14 @@ mean(z_t) = \frac{\sum_{i=1}^{T}z_{i}}{T} = \frac{\sum_{i=1}^{T}(y_{i} - mean(y_
 <p><span class="math inline">\(m\)</span>: length of the seasonal period.</p>
 <ul>
 <li>If <span class="math inline">\(m\)</span> is an even number, compute the trend-cycle component <span class="math inline">\(T_t\)</span> using 2 x <span class="math inline">\(m\)</span>-MA.</li>
-<li>If <span class="math inline">\(m\)</span> is an odd number compute the trend-cycle component <span class="math inline">\(T_t\)</span> using an <span class="math inline">\(m\)</span>-MA.</li>
+<li>If <span class="math inline">\(m\)</span> is an odd number, compute the trend-cycle component <span class="math inline">\(T_t\)</span> using an <span class="math inline">\(m\)</span>-MA.</li>
 </ul>
+<p><strong>Output</strong>: the <strong>trend component <span class="math inline">\(T_t\)</span></strong></p>
 </section>
 <section id="step-2---detrended-series-1" class="level2">
 <h2 class="anchored" data-anchor-id="step-2---detrended-series-1">Step 2 - Detrended series</h2>
-<p>Calculate the de-trended series: <span class="math inline">\(D_t = y_t / T_t\)</span></p>
-<p><strong>Output step 2:</strong> the detrended series <span class="math inline">\(D_t\)</span>.</p>
+<p>Calculate the detrended series: <span class="math inline">\(D_t = y_t / T_t\)</span></p>
+<p><strong>Output</strong>: the <strong>detrended series <span class="math inline">\(D_t\)</span></strong></p>
 </section>
 <section id="step-3---compute-seasonal-component-1" class="level2">
 <h2 class="anchored" data-anchor-id="step-3---compute-seasonal-component-1">Step 3 - Compute seasonal component</h2>
@@ -3133,7 +3134,7 @@ mean(z_t) = \frac{\sum_{i=1}^{T}z_{i}}{T} = \frac{\sum_{i=1}^{T}(y_{i} - mean(y_
 </tr>
 <tr class="even">
 <td style="text-align: center;"><span class="math inline">\(2\)</span></td>
-<td style="text-align: left;">abr-13</td>
+<td style="text-align: left;">apr-13</td>
 <td style="text-align: left;"><span class="math inline">\(y_{2}\)</span></td>
 <td style="text-align: left;"><span class="math inline">\(\text{T}_{2}\)</span></td>
 <td style="text-align: left;"><span class="math inline">\(\text{D}_{2}\)</span></td>
@@ -3165,7 +3166,7 @@ mean(z_t) = \frac{\sum_{i=1}^{T}z_{i}}{T} = \frac{\sum_{i=1}^{T}(y_{i} - mean(y_
 </tr>
 <tr class="even">
 <td style="text-align: center;"><span class="math inline">\(6\)</span></td>
-<td style="text-align: left;">ago-13</td>
+<td style="text-align: left;">aug-13</td>
 <td style="text-align: left;"><span class="math inline">\(y_{6}\)</span></td>
 <td style="text-align: left;"><span class="math inline">\(\text{T}_{6}\)</span></td>
 <td style="text-align: left;"><span class="math inline">\(\text{D}_{6}\)</span></td>
@@ -3197,7 +3198,7 @@ mean(z_t) = \frac{\sum_{i=1}^{T}z_{i}}{T} = \frac{\sum_{i=1}^{T}(y_{i} - mean(y_
 </tr>
 <tr class="even">
 <td style="text-align: center;"><span class="math inline">\(10\)</span></td>
-<td style="text-align: left;">dic-13</td>
+<td style="text-align: left;">dec-13</td>
 <td style="text-align: left;"><span class="math inline">\(y_{10}\)</span></td>
 <td style="text-align: left;"><span class="math inline">\(\text{T}_{10}\)</span></td>
 <td style="text-align: left;"><span class="math inline">\(\text{D}_{10}\)</span></td>
@@ -3205,7 +3206,7 @@ mean(z_t) = \frac{\sum_{i=1}^{T}z_{i}}{T} = \frac{\sum_{i=1}^{T}(y_{i} - mean(y_
 </tr>
 <tr class="odd">
 <td style="text-align: center;"><span class="math inline">\(11\)</span></td>
-<td style="text-align: left;">ene-14</td>
+<td style="text-align: left;">jan-14</td>
 <td style="text-align: left;"><span class="math inline">\(y_{11}\)</span></td>
 <td style="text-align: left;"><span class="math inline">\(\text{T}_{11}\)</span></td>
 <td style="text-align: left;"><span class="math inline">\(\text{D}_{11}\)</span></td>
@@ -3229,7 +3230,7 @@ mean(z_t) = \frac{\sum_{i=1}^{T}z_{i}}{T} = \frac{\sum_{i=1}^{T}(y_{i} - mean(y_
 </tr>
 <tr class="even">
 <td style="text-align: center;"><span class="math inline">\(14\)</span></td>
-<td style="text-align: left;">abr-14</td>
+<td style="text-align: left;">apr-14</td>
 <td style="text-align: left;"><span class="math inline">\(y_{14}\)</span></td>
 <td style="text-align: left;"><span class="math inline">\(\text{T}_{14}\)</span></td>
 <td style="text-align: left;"><span class="math inline">\(\text{D}_{14}\)</span></td>
@@ -3245,7 +3246,7 @@ mean(z_t) = \frac{\sum_{i=1}^{T}z_{i}}{T} = \frac{\sum_{i=1}^{T}(y_{i} - mean(y_
 </tr>
 <tr class="even">
 <td style="text-align: center;"><span class="math inline">\(T\!-\!4\)</span></td>
-<td style="text-align: left;">ago-20</td>
+<td style="text-align: left;">aug-20</td>
 <td style="text-align: left;"><span class="math inline">\(y_{T-4}\)</span></td>
 <td style="text-align: left;"><span class="math inline">\(\text{T}_{T-4}\)</span></td>
 <td style="text-align: left;"><span class="math inline">\(\text{D}_{T-4}\)</span></td>
@@ -3277,7 +3278,7 @@ mean(z_t) = \frac{\sum_{i=1}^{T}z_{i}}{T} = \frac{\sum_{i=1}^{T}(y_{i} - mean(y_
 </tr>
 <tr class="even">
 <td style="text-align: center;"><span class="math inline">\(T\)</span></td>
-<td style="text-align: left;">dic-20</td>
+<td style="text-align: left;">dec-20</td>
 <td style="text-align: left;"><span class="math inline">\(y_{T}\)</span></td>
 <td style="text-align: left;"><span class="math inline">\(\text{T}_{T}\)</span></td>
 <td style="text-align: left;"><span class="math inline">\(\text{D}_{T}\)</span></td>
@@ -3353,7 +3354,7 @@ mean(z_t) = \frac{\sum_{i=1}^{T}z_{i}}{T} = \frac{\sum_{i=1}^{T}(y_{i} - mean(y_
 <li><strong>With daily data and a weekly seasonal period</strong>: we would average the detrended series over the 7 days of the week (<span class="math inline">\(m=7\)</span>)</li>
 <li>…</li>
 </ul>
-<p><strong>Output of step 3.1</strong>: <span class="math inline">\(S_{unadj}\)</span>, the <strong>unadjusted seasonal component</strong> a vector of length <span class="math inline">\(m\)</span>, with <span class="math inline">\(m\)</span> being the length (period) of the seasonal component.</p>
+<p><strong>Output of step 3.1</strong>: <span class="math inline">\(S_{unadj}\)</span>, the <strong>unadjusted seasonal component</strong>, a vector of length <span class="math inline">\(m\)</span>, with <span class="math inline">\(m\)</span> being the length (period) of the seasonal component.</p>
 <p><br></p>
 </section>
 <section id="step-3.2-adjust-the-seasonal-component-to-sum-to-m" class="level4">
@@ -3364,7 +3365,7 @@ mean(z_t) = \frac{\sum_{i=1}^{T}z_{i}}{T} = \frac{\sum_{i=1}^{T}(y_{i} - mean(y_
 \]</span></p>
 <p>This condition can also be written as:</p>
 <p><span class="math display">\[
-\text{The condition we want: } \frac{\sum_{i=1}^{m}S_i}{m} = mean(Si) = 1
+\text{The condition we want: } \frac{\sum_{i=1}^{m}S_i}{m} = mean(S_i) = 1
 \]</span></p>
 <p>So we want <strong>the adjusted seasonal component centered on 1</strong>, with its values spread evenly above and below. That makes the average of the series over one season a weighted average of <span class="math inline">\(T_iR_i\)</span>, with <span class="math inline">\(S_i/m\)</span> as the weight on each:</p>
 <p><span class="math display">\[
@@ -3393,7 +3394,7 @@ S_i = \frac{S_{Unadj \ i}}{x} = \frac{S_{Unadj \ i}}{mean(S_{unadj})}
 \]</span></p>
 <p>In other words, <strong>dividing <span class="math inline">\(S_{unadj}\)</span> by its own mean centers it on 1</strong>, which is the condition we wanted:</p>
 <p><span class="math display">\[
-\sum_{i=1}^{m} S_i= m  \iff \frac{\sum_{i=1}^{m}S_i}{m} = mean(Si) = 1
+\sum_{i=1}^{m} S_i= m  \iff \frac{\sum_{i=1}^{m}S_i}{m} = mean(S_i) = 1
 \]</span></p>
 <p><strong>This works for any series too.</strong> Compute <span class="math inline">\(y_t / mean(y_t)\)</span> and the result always has mean 1. If <span class="math inline">\(y_t\)</span> has <span class="math inline">\(T\)</span> datapoints and <span class="math inline">\(z_t\)</span> is the time series resulting from scaling <span class="math inline">\(y_t\)</span> with its mean, each element <span class="math inline">\(z_{i}\)</span> of <span class="math inline">\(z_t\)</span> is computed as:</p>
 <p><span class="math display">\[
@@ -3403,7 +3404,7 @@ z_{i} = \frac{y_{i}}{mean(y_t)}
 <p><span class="math display">\[
 mean(z_t) = \frac{\sum_{i=1}^{T}z_{i}}{T} = \frac{\sum_{i=1}^{T}y_{i} / mean(y_t)}{T} = \frac{1}{mean(y_t)} \cdot \frac{\sum_{i=1}^{T}y_i}{T} = \frac{1}{mean(y_t)} \cdot mean(y_t) = 1
 \]</span></p>
-<p><strong>Output of step 3.2</strong>: <span class="math inline">\(S\)</span>, the <strong>adjusted seasonal component</strong>. S vector of length <span class="math inline">\(m\)</span>, with <span class="math inline">\(m\)</span> being the length (period) of the seasonal component. For the previous monthly example it would look as follows:</p>
+<p><strong>Output of step 3.2</strong>: <span class="math inline">\(S\)</span>, the <strong>adjusted seasonal component</strong>, a vector of length <span class="math inline">\(m\)</span>, with <span class="math inline">\(m\)</span> being the length (period) of the seasonal component. For the previous monthly example it would look as follows:</p>
 <div style="width: fit-content; margin: auto;">
 <table class="caption-top table">
 <thead>
@@ -3518,7 +3519,7 @@ mean(z_t) = \frac{\sum_{i=1}^{T}z_{i}}{T} = \frac{\sum_{i=1}^{T}y_{i} / mean(y_t
 </tr>
 <tr class="even">
 <td style="text-align: center;"><span class="math inline">\(2\)</span></td>
-<td style="text-align: left;">abr-13</td>
+<td style="text-align: left;">apr-13</td>
 <td style="text-align: left;"><span class="math inline">\(y_{2}\)</span></td>
 <td style="text-align: left;"><span class="math inline">\(\text{T}_{2}\)</span></td>
 <td style="text-align: left;"><span class="math inline">\(\text{D}_{2}\)</span></td>
@@ -3554,7 +3555,7 @@ mean(z_t) = \frac{\sum_{i=1}^{T}z_{i}}{T} = \frac{\sum_{i=1}^{T}y_{i} / mean(y_t
 </tr>
 <tr class="even">
 <td style="text-align: center;"><span class="math inline">\(6\)</span></td>
-<td style="text-align: left;">ago-13</td>
+<td style="text-align: left;">aug-13</td>
 <td style="text-align: left;"><span class="math inline">\(y_{6}\)</span></td>
 <td style="text-align: left;"><span class="math inline">\(\text{T}_{6}\)</span></td>
 <td style="text-align: left;"><span class="math inline">\(\text{D}_{6}\)</span></td>
@@ -3590,7 +3591,7 @@ mean(z_t) = \frac{\sum_{i=1}^{T}z_{i}}{T} = \frac{\sum_{i=1}^{T}y_{i} / mean(y_t
 </tr>
 <tr class="even">
 <td style="text-align: center;"><span class="math inline">\(10\)</span></td>
-<td style="text-align: left;">dic-13</td>
+<td style="text-align: left;">dec-13</td>
 <td style="text-align: left;"><span class="math inline">\(y_{10}\)</span></td>
 <td style="text-align: left;"><span class="math inline">\(\text{T}_{10}\)</span></td>
 <td style="text-align: left;"><span class="math inline">\(\text{D}_{10}\)</span></td>
@@ -3599,7 +3600,7 @@ mean(z_t) = \frac{\sum_{i=1}^{T}z_{i}}{T} = \frac{\sum_{i=1}^{T}y_{i} / mean(y_t
 </tr>
 <tr class="odd">
 <td style="text-align: center;"><span class="math inline">\(11\)</span></td>
-<td style="text-align: left;">ene-14</td>
+<td style="text-align: left;">jan-14</td>
 <td style="text-align: left;"><span class="math inline">\(y_{11}\)</span></td>
 <td style="text-align: left;"><span class="math inline">\(\text{T}_{11}\)</span></td>
 <td style="text-align: left;"><span class="math inline">\(\text{D}_{11}\)</span></td>
@@ -3626,7 +3627,7 @@ mean(z_t) = \frac{\sum_{i=1}^{T}z_{i}}{T} = \frac{\sum_{i=1}^{T}y_{i} / mean(y_t
 </tr>
 <tr class="even">
 <td style="text-align: center;"><span class="math inline">\(14\)</span></td>
-<td style="text-align: left;">abr-14</td>
+<td style="text-align: left;">apr-14</td>
 <td style="text-align: left;"><span class="math inline">\(y_{14}\)</span></td>
 <td style="text-align: left;"><span class="math inline">\(\text{T}_{14}\)</span></td>
 <td style="text-align: left;"><span class="math inline">\(\text{D}_{14}\)</span></td>
@@ -3644,7 +3645,7 @@ mean(z_t) = \frac{\sum_{i=1}^{T}z_{i}}{T} = \frac{\sum_{i=1}^{T}y_{i} / mean(y_t
 </tr>
 <tr class="even">
 <td style="text-align: center;"><span class="math inline">\(T\!-\!4\)</span></td>
-<td style="text-align: left;">ago-20</td>
+<td style="text-align: left;">aug-20</td>
 <td style="text-align: left;"><span class="math inline">\(y_{T-4}\)</span></td>
 <td style="text-align: left;"><span class="math inline">\(\text{T}_{T-4}\)</span></td>
 <td style="text-align: left;"><span class="math inline">\(\text{D}_{T-4}\)</span></td>
@@ -3680,7 +3681,7 @@ mean(z_t) = \frac{\sum_{i=1}^{T}z_{i}}{T} = \frac{\sum_{i=1}^{T}y_{i} / mean(y_t
 </tr>
 <tr class="even">
 <td style="text-align: center;"><span class="math inline">\(T\)</span></td>
-<td style="text-align: left;">dic-20</td>
+<td style="text-align: left;">dec-20</td>
 <td style="text-align: left;"><span class="math inline">\(y_{T}\)</span></td>
 <td style="text-align: left;"><span class="math inline">\(\text{T}_{T}\)</span></td>
 <td style="text-align: left;"><span class="math inline">\(\text{D}_{T}\)</span></td>
@@ -3712,7 +3713,7 @@ mean(z_t) = \frac{\sum_{i=1}^{T}z_{i}}{T} = \frac{\sum_{i=1}^{T}y_{i} / mean(y_t
 <span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Fit the classical decomposition model specifying an additive scheme</span></span>
 <span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">model</span>(</span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">clas_deic =</span> <span class="fu">classical_decomposition</span>(Employed, <span class="at">type =</span> <span class="st">&quot;additive&quot;</span>)</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">class_dec =</span> <span class="fu">classical_decomposition</span>(Employed, <span class="at">type =</span> <span class="st">&quot;additive&quot;</span>)</span>
 <span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
 <span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Extract components from the fitted model</span></span>
