@@ -716,7 +716,7 @@ S_i  =  S_unadj_i  <span class="hl">/</span>  mean(S_unadj)          <span class
       <li class="step"><b>Start from the defaults and change one at a time.</b> Moving both at once tells you nothing about which one helped.</li>
       <li class="step"><b>A window that is too small is a real failure</b>, not just a cautious setting. Narrow the trend enough and it starts swallowing the seasonal wiggles.</li>
     </ul>
-    <p class="punch step wide">Look at the last row. Setting <code>season(window = "periodic")</code> throws away the one thing STL had over the algorithm you built this morning.</p>
+    <p class="punch step wide">Look at the last row. Setting <code>season(window = "periodic")</code> throws away the one thing STL had over the algorithm you built earlier.</p>
   </div>
   <aside class="notes">Read the units carefully, because they differ between the two windows. The trend window counts <i>observations</i>. The seasonal window counts <i>seasons</i>, so <code>season(window = 13)</code> on monthly data means each seasonal value is estimated from thirteen Januaries, not thirteen months.<br><br>The default of 13 is a compromise: wide enough that the seasonal estimate is not chasing noise, narrow enough that a drifting season can still move. Both windows must be odd for the same reason a moving average window must be odd, which is that a local fit needs a center.</aside>
 </section>
@@ -725,7 +725,7 @@ S_i  =  S_unadj_i  <span class="hl">/</span>  mean(S_unadj)          <span class
 <section class="slide" data-section="5" data-title="Switch: STL and the 2008 crisis">
   <div class="inner">
     <p class="kicker">Now we compute &nbsp;&middot;&nbsp; 07_E</p>
-    <h1 class="sowhat">Same series as this morning. Watch where 2008 ends up.</h1>
+    <h1 class="sowhat">Same series as earlier. Watch where 2008 ends up.</h1>
     <ul class="build">
       <li class="step"><b>Run STL with the defaults</b> on <code>us_retail_employment</code> and look at the remainder panel around 2008. The crisis is sitting in it.</li>
       <li class="step"><b>That is a diagnosis, not an opinion.</b> A recession is not random noise, so a remainder holding one is a remainder holding structure &mdash; criterion 2, failed.</li>
@@ -775,7 +775,7 @@ S_i  =  S_unadj_i  <span class="hl">/</span>  mean(S_unadj)          <span class
     <p class="kicker">Launches today &nbsp;&middot;&nbsp; due Sunday 25 October, 23:59</p>
     <h1 class="sowhat">Classical decomposition, from scratch, on Victorian liquor retailing.</h1>
     <ul class="build">
-      <li class="step"><b>It is this morning's four steps</b>, on a series nobody has walked you through, with every step checked against <code>classical_decomposition()</code>.</li>
+      <li class="step"><b>It is the same four steps from earlier</b>, on a series nobody has walked you through, with every step checked against <code>classical_decomposition()</code>.</li>
       <li class="step"><b>The marks are in the explanation</b>, not in the code. Every component has to be interpreted, and every choice defended: the scheme, the value of <code>m</code>, the reading of the remainder.</li>
       <li class="step"><b>It gets detailed written feedback</b>, unlike the weekly homework. It is one of only two pieces of work in the course that does.</li>
     </ul>
