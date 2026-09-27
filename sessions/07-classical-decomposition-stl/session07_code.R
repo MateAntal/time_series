@@ -240,10 +240,13 @@ scratch |>
 # THE TWO WINDOWS
 #   trend(window = )   how fast the trend may change.
 #                      Smaller = more flexible. Must be ODD.
-#                      Default 21.
+#                      No fixed default: it is computed from the
+#                      seasonal period. Works out at 21 for
+#                      monthly data, 13 for daily data with a
+#                      weekly season.
 #   season(window = )  how fast the season may change.
 #                      Smaller = more flexible. Must be ODD.
-#                      Default 13.
+#                      Default 11.
 #                      "periodic" makes it infinite, which
 #                      forces a constant season, like classical
 #                      decomposition.
@@ -269,7 +272,7 @@ stl_default |> autoplot()
 # before you start changing the numbers.
 us_retail_employment |>
   model(
-    stl = STL(Employed ~ trend(window = 21) + season(window = 13))
+    stl = STL(Employed ~ trend(window = 21) + season(window = 11))
   ) |>
   components() |>
   autoplot()
@@ -358,9 +361,12 @@ vic_elec_d <-
 vic_elec_d |> autoplot(avg_demand)
 
 # The default decomposition, and the ACF of its remainder.
+# Daily data with a weekly season has period 7, so the defaults
+# here are trend(window = 13) and season(window = 11). Passing no
+# arguments at all, STL(avg_demand), gives exactly this result.
 dcmp_1 <-
   vic_elec_d |>
-  model(decomp = STL(avg_demand ~ trend(window = 21) + season(window = 13))) |>
+  model(decomp = STL(avg_demand ~ trend(window = 13) + season(window = 11))) |>
   components()
 
 dcmp_1 |> autoplot()

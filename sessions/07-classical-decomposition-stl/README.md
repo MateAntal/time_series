@@ -11,8 +11,9 @@ tuning them on three worked examples.
 
 **R:** `classical_decomposition()`, `STL(y ~ trend() + season())`, `components()`
 
-**Homework:** `07_D` Exercise 1, then the two STL window-tuning tasks in `07_E`: *STL - Example 3*
-(items 1.1–1.2) and *Exercise 2 - STL* (items 2.1–2.2).
+**Homework:** `07_D` Exercise 1, then two tasks in `07_E`: *STL - Example 3*
+(items 1.1–1.2) and *Exercise 2 - STL* (item 2.1 only — a diagnosis; item 2.2 is not assigned
+this term).
 
 **Outcome:** Student decomposes a series both ways, interprets every component, and knows when to
 prefer STL.
