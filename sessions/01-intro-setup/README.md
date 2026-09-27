@@ -2,7 +2,7 @@
 
 **Date:** Wednesday, 2 September 2026, 9:00–10:20 — IE Tower, room T-05.02
 
-**fpp3:** 1.1–1.7
+**[fpp3](https://otexts.com/fpp3/index.html):** 1.1–1.7
 
 **Focus:** Course logistics, assessment, attendance and the AI/library policy; what a time series is;
 what can and cannot be forecast and the basic steps in a forecasting task; the automated-forecast use
