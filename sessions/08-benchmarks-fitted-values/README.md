@@ -19,6 +19,10 @@ short — Group Assignment 1 is running this week and midterm revision starts no
 **Outcome:** Student produces and plots benchmark forecasts for any series, can say precisely what a
 fitted value is, and can forecast a series through its decomposition.
 
+**Opens with a short homework review:** the three difficulties that came up most often in HW02 to
+HW04, plus how to write your work in a `.qmd`. See
+[`homework-review-hw02-hw04.md`](homework-review-hw02-hw04.md).
+
 > 5.7 closes the loop from the decomposition block: it is what makes decomposition a *forecasting*
 > tool rather than only a descriptive one. It is also the ancestor of the STL + ETS approach the
 > follow-up course uses.
