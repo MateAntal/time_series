@@ -718,7 +718,7 @@ S_i  =  S_unadj_i  <span class="hl">/</span>  mean(S_unadj)          <span class
     </ul>
     <p class="punch step wide">Look at the last row. Setting <code>season(window = "periodic")</code> throws away the one thing STL had over the algorithm you built earlier.</p>
   </div>
-  <aside class="notes">Read the units carefully, because they differ between the two windows. The trend window counts <i>observations</i>. The seasonal window counts <i>seasons</i>, so <code>season(window = 13)</code> on monthly data means each seasonal value is estimated from thirteen Januaries, not thirteen months.<br><br>The default of 13 is a compromise: wide enough that the seasonal estimate is not chasing noise, narrow enough that a drifting season can still move. Both windows must be odd for the same reason a moving average window must be odd, which is that a local fit needs a center.</aside>
+  <aside class="notes">Read the units carefully, because they differ between the two windows. The trend window counts <i>observations</i>. The seasonal window counts <i>seasons</i>, so <code>season(window = 13)</code> on monthly data means each seasonal value is estimated from thirteen Januaries, not thirteen months.<br><br>The default of 11 is a compromise: wide enough that the seasonal estimate is not chasing noise, narrow enough that a drifting season can still move. Slide 13 shows what both sides of that compromise look like when you overshoot them. Both windows must be odd for the same reason a moving average window must be odd, which is that a local fit needs a center.</aside>
 </section>
 
 <!-- ---------- 13 ---------- -->
@@ -728,12 +728,18 @@ S_i  =  S_unadj_i  <span class="hl">/</span>  mean(S_unadj)          <span class
     <h1 class="sowhat">Same series as earlier. Watch where 2008 ends up.</h1>
     <ul class="build">
       <li class="step"><b>Run STL with the defaults</b> on <code>us_retail_employment</code> and look at the remainder panel around 2008. The crisis is sitting in it.</li>
-      <li class="step"><b>That is a diagnosis, not an opinion.</b> A recession is not random noise, so a remainder holding one is a remainder holding structure &mdash; criterion 2, failed.</li>
-      <li class="step"><b>Narrow the trend window and run it again.</b> The trend can now bend into the crisis, and the remainder gets quieter.</li>
+      <li class="step"><b>That is a diagnosis, not an opinion.</b> A recession is not random noise, so a remainder holding one is a remainder holding structure. Criterion 2, failed.</li>
+      <li class="step"><b>So narrow the trend window. But how far?</b> Run the ladder, <code>season(window = 11)</code> fixed throughout, and read the remainder both ways.</li>
     </ul>
-    <div class="callout slate"><b>Judge every change with the ACF of the remainder</b>, not with how the trend line looks. The picture improves long before the diagnostic does.</div>
+    <table class="traps compact step">
+      <tr><td class="os">trend 21</td><td>var(remainder) <b>943</b></td><td>ACF at lag 1 <b>+0.641</b></td><td class="fix">Too stiff. The crisis is still in the remainder.</td></tr>
+      <tr><td class="os">trend 13</td><td>var(remainder) <b>474</b></td><td>ACF at lag 1 <b>+0.355</b></td><td class="fix">Better, still leaning one way.</td></tr>
+      <tr><td class="os">trend 9</td><td>var(remainder) <b>290</b></td><td>ACF at lag 1 <b>+0.038</b></td><td class="fix">Take this one.</td></tr>
+      <tr><td class="os">trend 5</td><td>var(remainder) <b>131</b></td><td>ACF at lag 1 <b>&minus;0.445</b></td><td class="fix">Trend is chasing noise and overshooting every point.</td></tr>
+    </table>
+    <p class="punch step wide">The smallest remainder on that list is the worst decomposition on it. Criterion 1 falls forever as you narrow the trend, so it can rank two candidates but it can never tell you to stop. <b>Only the sign of the autocorrelation does that.</b></p>
   </div>
-  <aside class="notes">This is the same 2008 dip that Session 5 pointed out as a <i>cycle</i>, which is why it belongs in the trend-cycle component rather than the remainder. STL with default windows is too stiff to take it, so it falls through. Narrowing the trend window is how you let the trend-cycle component do the job its name promises.<br><br>There is a limit to how far this goes; reach it once. Keep narrowing the trend window and eventually the trend starts following the seasonal wiggles too, which empties the seasonal component into the trend. Both extremes are visible in a few seconds of experimenting, and the useful setting is somewhere between them.</aside>
+  <aside class="notes">This is the same 2008 dip that Session 5 pointed out as a <i>cycle</i>, which is why it belongs in the trend-cycle component rather than the remainder. STL with default windows is too stiff to take it, so it falls through. Narrowing the trend window is how you let the trend-cycle component do the job its name promises.<br><br>The two failure modes have opposite signatures and both are on the slide. A window that is too wide leaves <i>positive</i> autocorrelation: the trend is too stiff to follow real movement, so that movement stays in the remainder and consecutive remainders lean the same way. A window that is too narrow leaves <i>negative</i> autocorrelation: the trend now threads through the noise, overshoots each point, and consecutive remainders alternate sign.<br><br>The notebook goes on to the seasonal window, judged on the seasonal component rather than the remainder. Plotting the December factor year by year at <code>season(window = )</code> of 5, 11 and <code>"periodic"</code> gives a jagged line, a smooth decline and a flat line. The default wins, and that is worth saying: not every knob needs turning.</aside>
 </section>
 
 <!-- ---------- 14 ---------- -->

@@ -278,28 +278,151 @@ us_retail_employment |>
   autoplot()
 
 
-# ---- tuning, and how to judge it ----
+# ---- tuning, step A: the trend window ----
 
-# Reducing the trend window lets the trend follow the crisis.
-# robust = TRUE makes the fit less sensitive to outliers; it
-# does not always improve things, so try it both ways.
+# Two rules. Move one window at a time, or you cannot tell which
+# one helped. And judge the result on the remainder's correlogram,
+# not on whether the trend line looks nicer.
+
+stl_trend <- function(w) {
+  us_retail_employment |>
+    model(STL(Employed ~ trend(window = w) + season(window = 11))) |>
+    components()
+}
+
+trend_windows <- c(21, 13, 9, 5)
+
+# Two numbers per setting: how big the remainder is, and how much
+# autocorrelation is left in it.
+bind_rows(lapply(trend_windows, function(w) {
+  cp <- stl_trend(w)
+  tibble(
+    trend_window  = w,
+    var_remainder = round(var(cp$remainder)),
+    acf_lag1      = round(ACF(cp, remainder, lag_max = 1)$acf[1], 3)
+  )
+}))
+
+# The four correlograms on one plot.
+window_label <- function(w) {
+  factor(paste0("trend(window = ", w, ")"),
+         levels = paste0("trend(window = ", trend_windows, ")"))
+}
+
+remainder_acfs <- bind_rows(lapply(trend_windows, function(w) {
+  stl_trend(w) |>
+    ACF(remainder, lag_max = 24) |>
+    as_tibble() |>
+    mutate(lag = as.numeric(lag), window = window_label(w))
+}))
+
+ci <- 1.96 / sqrt(nrow(us_retail_employment))
+
+remainder_acfs |>
+  ggplot(aes(x = lag, y = acf)) +
+  geom_hline(yintercept = c(-ci, ci), linetype = "dashed", color = "steelblue") +
+  geom_segment(aes(xend = lag, yend = 0)) +
+  facet_wrap(~ window) +
+  labs(title = "Remainder correlogram at four trend windows", y = "ACF")
+
+# What the table and the plot say together:
+#
+#   var(remainder) falls the whole way down: 943, 474, 290, 131,
+#   and it keeps falling if you go further. So criterion 1 can
+#   rank two candidates, but it can never tell you to stop. Taken
+#   on its own it would send you to window = 1, where the trend is
+#   just the data.
+#
+#   The lag-1 autocorrelation is the one with an answer in it:
+#   +0.641, +0.355, +0.038, -0.445. It crosses zero between 13
+#   and 9, so trend(window = 9) is the setting to take.
+#
+#   The two failure modes have opposite signatures.
+#     too wide   -> POSITIVE autocorrelation. The trend is too
+#                   stiff, so real movement stays in the remainder
+#                   and consecutive remainders lean the same way.
+#     too narrow -> NEGATIVE autocorrelation. The trend threads
+#                   through the noise and overshoots, so
+#                   consecutive remainders alternate sign.
+
+
+# ---- tuning, step B: the seasonal window ----
+
+# The trend window is settled at 9. This knob is judged on the
+# SEASONAL component, not on the remainder. Track one seasonal
+# factor across the years and see what each window lets it do.
+
+stl_season <- function(s) {
+  us_retail_employment |>
+    model(STL(Employed ~ trend(window = 9) + season(window = s))) |>
+    components()
+}
+
+december_factors <- bind_rows(lapply(list(5, 11, "periodic"), function(s) {
+  stl_season(s) |>
+    as_tibble() |>
+    filter(month(Month) == 12) |>
+    transmute(
+      Year          = year(Month),
+      season_window = factor(as.character(s), levels = c("5", "11", "periodic")),
+      December      = season_year
+    )
+}))
+
+december_factors |>
+  ggplot(aes(x = Year, y = December, color = season_window)) +
+  geom_line(linewidth = 0.8) +
+  labs(title = "The December seasonal factor under three seasonal windows",
+       y = "December seasonal component")
+
+# Three lines, three claims about Christmas hiring in US retail.
+#
+#   "periodic"  a flat line. An infinite seasonal window forces
+#               every December to the same number, which is the
+#               classical decomposition assumption. Here it is
+#               false: the factor runs from about 650 in the late
+#               1990s down to about 505 by 2018. It also costs the
+#               most, var(remainder) 716 against 290.
+#   window = 5  jagged. Tens of units of movement from one year to
+#               the next, including a bump around 2013 with no
+#               retail explanation. Chasing noise.
+#   window = 11 the default, and the smooth decline. It tracks the
+#               fall without inventing wobble.
+#
+# So the default survives here. Not every knob needs turning, and
+# you cannot know a default is right until you have seen what the
+# alternatives do to the component it controls.
+
+
+# ---- an aside on robust = TRUE ----
+
+# Tempting on a series with a recession in it, and wrong here.
+# Robust STL downweights outlying observations so they cannot bend
+# the trend. The 2008 crisis IS the outlier, so switching
+# robustness on tells the algorithm to ignore the event we are
+# trying to capture. At these windows it takes var(remainder) from
+# 290 back up to 921, most of the way to where we started.
+#
+# Robustness earns its place on a one-off contaminant, a sensor
+# fault or a data-entry error. A recession is real and persistent,
+# and it belongs in the trend-cycle component.
 us_retail_employment |>
   model(
-    stl = STL(Employed ~ trend(window = 13) + season(window = 13),
+    stl = STL(Employed ~ trend(window = 9) + season(window = 11),
               robust = TRUE)
   ) |>
   components() |>
   autoplot()
 
-# Judge a change by the two criteria from section 2, not by
-# whether the trend line looks nicer. The remainder's ACF is the
-# harder test of the two.
+
+# ---- the decomposition this arrives at ----
+
 us_retail_employment |>
-  model(stl = STL(Employed ~ trend(window = 13) + season(window = 13))) |>
+  model(
+    stl = STL(Employed ~ trend(window = 9) + season(window = 11))
+  ) |>
   components() |>
-  ACF(remainder) |>
-  autoplot() +
-  labs(title = "Remainder ACF, trend window 13")
+  autoplot()
 
 
 # ============================================================
