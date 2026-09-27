@@ -2360,17 +2360,22 @@ window.Quarto = {
   <li><a href="#stl-example-1" id="toc-stl-example-1" class="nav-link" data-scroll-target="#stl-example-1">STL Example 1</a></li>
   <li><a href="#stl-example-2" id="toc-stl-example-2" class="nav-link" data-scroll-target="#stl-example-2">STL Example 2</a>
   <ul>
+  <li><a href="#step-a-the-trend-window" id="toc-step-a-the-trend-window" class="nav-link" data-scroll-target="#step-a-the-trend-window">Step A: the trend window</a></li>
   <li><a href="#well-discuss-potential-solutions-during-the-live-session." id="toc-well-discuss-potential-solutions-during-the-live-session." class="nav-link" data-scroll-target="#well-discuss-potential-solutions-during-the-live-session.">We’ll discuss potential solutions during the live session.</a></li>
+  <li><a href="#step-b-the-seasonal-window" id="toc-step-b-the-seasonal-window" class="nav-link" data-scroll-target="#step-b-the-seasonal-window">Step B: the seasonal window</a></li>
+  <li><a href="#well-discuss-potential-solutions-during-the-live-session.-1" id="toc-well-discuss-potential-solutions-during-the-live-session.-1" class="nav-link" data-scroll-target="#well-discuss-potential-solutions-during-the-live-session.-1">We’ll discuss potential solutions during the live session.</a></li>
+  <li><a href="#an-aside-on-robust-true" id="toc-an-aside-on-robust-true" class="nav-link" data-scroll-target="#an-aside-on-robust-true">An aside on <code>robust = TRUE</code></a></li>
+  <li><a href="#the-decomposition-this-example-arrives-at" id="toc-the-decomposition-this-example-arrives-at" class="nav-link" data-scroll-target="#the-decomposition-this-example-arrives-at">The decomposition this example arrives at</a></li>
   </ul></li>
   <li><a href="#stl-example-3" id="toc-stl-example-3" class="nav-link" data-scroll-target="#stl-example-3">STL Example 3</a>
   <ul>
   <li><a href="#default-stl-decomposition" id="toc-default-stl-decomposition" class="nav-link" data-scroll-target="#default-stl-decomposition">1.1 Default STL decomposition</a>
   <ul>
-  <li><a href="#well-discuss-potential-solutions-during-the-live-session.-1" id="toc-well-discuss-potential-solutions-during-the-live-session.-1" class="nav-link" data-scroll-target="#well-discuss-potential-solutions-during-the-live-session.-1">We’ll discuss potential solutions during the live session.</a></li>
+  <li><a href="#well-discuss-potential-solutions-during-the-live-session.-2" id="toc-well-discuss-potential-solutions-during-the-live-session.-2" class="nav-link" data-scroll-target="#well-discuss-potential-solutions-during-the-live-session.-2">We’ll discuss potential solutions during the live session.</a></li>
   </ul></li>
   <li><a href="#the-1991-1992-crisis" id="toc-the-1991-1992-crisis" class="nav-link" data-scroll-target="#the-1991-1992-crisis">1.2 The 1991-1992 crisis</a>
   <ul>
-  <li><a href="#well-discuss-potential-solutions-during-the-live-session.-2" id="toc-well-discuss-potential-solutions-during-the-live-session.-2" class="nav-link" data-scroll-target="#well-discuss-potential-solutions-during-the-live-session.-2">We’ll discuss potential solutions during the live session.</a></li>
+  <li><a href="#well-discuss-potential-solutions-during-the-live-session.-3" id="toc-well-discuss-potential-solutions-during-the-live-session.-3" class="nav-link" data-scroll-target="#well-discuss-potential-solutions-during-the-live-session.-3">We’ll discuss potential solutions during the live session.</a></li>
   </ul></li>
   </ul></li>
   </ul></li>
@@ -2378,11 +2383,11 @@ window.Quarto = {
   <ul>
   <li><a href="#do-you-see-any-problem-with-this-decomposition" id="toc-do-you-see-any-problem-with-this-decomposition" class="nav-link" data-scroll-target="#do-you-see-any-problem-with-this-decomposition">2.1 Do you see any problem with this decomposition?</a>
   <ul>
-  <li><a href="#well-discuss-potential-solutions-during-the-live-session.-3" id="toc-well-discuss-potential-solutions-during-the-live-session.-3" class="nav-link" data-scroll-target="#well-discuss-potential-solutions-during-the-live-session.-3">We’ll discuss potential solutions during the live session.</a></li>
+  <li><a href="#well-discuss-potential-solutions-during-the-live-session.-4" id="toc-well-discuss-potential-solutions-during-the-live-session.-4" class="nav-link" data-scroll-target="#well-discuss-potential-solutions-during-the-live-session.-4">We’ll discuss potential solutions during the live session.</a></li>
   </ul></li>
   <li><a href="#tuning-the-windows" id="toc-tuning-the-windows" class="nav-link" data-scroll-target="#tuning-the-windows">2.2 Tuning the windows</a>
   <ul>
-  <li><a href="#well-discuss-potential-solutions-during-the-live-session.-4" id="toc-well-discuss-potential-solutions-during-the-live-session.-4" class="nav-link" data-scroll-target="#well-discuss-potential-solutions-during-the-live-session.-4">We’ll discuss potential solutions during the live session.</a></li>
+  <li><a href="#well-discuss-potential-solutions-during-the-live-session.-5" id="toc-well-discuss-potential-solutions-during-the-live-session.-5" class="nav-link" data-scroll-target="#well-discuss-potential-solutions-during-the-live-session.-5">We’ll discuss potential solutions during the live session.</a></li>
   </ul></li>
   </ul></li>
   </ul>
@@ -2691,26 +2696,61 @@ Attaching package: &#39;seasonal&#39;</code></pre>
 </section>
 <section id="stl-example-2" class="level2">
 <h2 class="anchored" data-anchor-id="stl-example-2">STL Example 2</h2>
-<p>Adjust the trend window so that the decomposition captures the financial crisis better:</p>
+<p>Example 1 left the 2008 crisis sitting in the remainder. Fixing that means changing a window, and this example is about <strong>how you decide which window, and how far to move it</strong>.</p>
+<p>Two rules before you start:</p>
+<ol type="1">
+<li><strong>Move one window at a time.</strong> Change both and you learn nothing about which one helped.</li>
+<li><strong>Judge the result on the remainder’s correlogram, not on how the trend line looks.</strong> The picture improves long before the diagnostic does.</li>
+</ol>
 <p><strong>NOTE</strong>: the code below has a <strong>bug</strong>. You need to</p>
 <ol type="1">
-<li>Replace “TODO” with the default arguments</li>
+<li>Replace <code>&quot;TODO&quot;</code> with the default values for this series: 21 for the trend, 11 for the season.</li>
 <li>Correct the syntax so that the code runs.</li>
-<li>Adjust the windows until the decomposition captures the crisis.</li>
 </ol>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>us_retail_employment <span class="sc">|&gt;</span></span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">model</span>(</span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">STL</span>(Employed <span class="sc">~</span> <span class="fu">trend</span>(<span class="at">window =</span> <span class="st">&quot;TODO&quot;</span>) <span class="sc">+</span> <span class="co"># Manually change this value </span></span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>                                            <span class="co"># from the default 21</span></span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>                   <span class="fu">season</span>(<span class="at">window =</span> <span class="st">&quot;TODO&quot;</span>), <span class="co"># Replace with &quot;periodic&quot; </span></span>
-<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>                                            <span class="co"># or an integer other than 11</span></span>
-<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>        ) <span class="sc">|&gt;</span></span>
-<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">components</span>() <span class="sc">|&gt;</span></span>
-<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autoplot</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">STL</span>(Employed <span class="sc">~</span> <span class="fu">trend</span>(<span class="at">window =</span> <span class="st">&quot;TODO&quot;</span>) <span class="sc">+</span> <span class="co"># the default for monthly data</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>                   <span class="fu">season</span>(<span class="at">window =</span> <span class="st">&quot;TODO&quot;</span>), <span class="co"># the default</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>        ) <span class="sc">|&gt;</span></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">components</span>() <span class="sc">|&gt;</span></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autoplot</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
+<section id="step-a-the-trend-window" class="level3">
+<h3 class="anchored" data-anchor-id="step-a-the-trend-window">Step A: the trend window</h3>
+<p>Run the decomposition four times, at <code>trend(window = )</code> of <strong>21, 13, 9 and 5</strong>, leaving <code>season(window = 11)</code> alone throughout. Record two numbers each time: the variance of the remainder, and its autocorrelation at lag 1.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>stl_trend <span class="ot">&lt;-</span> <span class="cf">function</span>(w) {</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  us_retail_employment <span class="sc">|&gt;</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">model</span>(<span class="fu">STL</span>(Employed <span class="sc">~</span> <span class="fu">trend</span>(<span class="at">window =</span> w) <span class="sc">+</span> <span class="fu">season</span>(<span class="at">window =</span> <span class="dv">11</span>))) <span class="sc">|&gt;</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">components</span>()</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Fill this in for w = 21, 13, 9, 5.</span></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a><span class="fu">stl_trend</span>(<span class="dv">21</span>) <span class="sc">|&gt;</span> <span class="fu">ACF</span>(remainder) <span class="sc">|&gt;</span> <span class="fu">autoplot</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
 <section id="well-discuss-potential-solutions-during-the-live-session." class="level3">
 <h3 class="anchored" data-anchor-id="well-discuss-potential-solutions-during-the-live-session.">We’ll discuss potential solutions during the live session.</h3>
+<p>The four correlograms side by side:</p>
+</section>
+<section id="step-b-the-seasonal-window" class="level3">
+<h3 class="anchored" data-anchor-id="step-b-the-seasonal-window">Step B: the seasonal window</h3>
+<p>The trend window is settled at 9. Now the other knob, and this one is judged on the <strong>seasonal</strong> component rather than on the remainder. Track a single seasonal factor across the years and see what each window lets it do.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Compare season(window = 5), season(window = 11) and season(window = &quot;periodic&quot;).</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the December seasonal factor year by year for each.</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="well-discuss-potential-solutions-during-the-live-session.-1" class="level3">
+<h3 class="anchored" data-anchor-id="well-discuss-potential-solutions-during-the-live-session.-1">We’ll discuss potential solutions during the live session.</h3>
+</section>
+<section id="an-aside-on-robust-true" class="level3">
+<h3 class="anchored" data-anchor-id="an-aside-on-robust-true">An aside on <code>robust = TRUE</code></h3>
+</section>
+<section id="the-decomposition-this-example-arrives-at" class="level3">
+<h3 class="anchored" data-anchor-id="the-decomposition-this-example-arrives-at">The decomposition this example arrives at</h3>
 </section>
 </section>
 <section id="stl-example-3" class="level2">
@@ -2719,8 +2759,8 @@ Attaching package: &#39;seasonal&#39;</code></pre>
 <p>The series <code>labour</code> counts the people in the Australian civilian labour force, monthly, from February 1978 to August 1995.</p>
 <p>You need to <strong>install and load the <code>fma</code> package</strong> for this series to be available.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>labour_tsibble <span class="ot">&lt;-</span> <span class="fu">as_tsibble</span>(labour)</span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="fu">autoplot</span>(labour_tsibble)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>labour_tsibble <span class="ot">&lt;-</span> <span class="fu">as_tsibble</span>(labour)</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">autoplot</span>(labour_tsibble)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Plot variable not specified, automatically selected `.vars = value`</code></pre>
 </div>
@@ -2735,8 +2775,8 @@ Attaching package: &#39;seasonal&#39;</code></pre>
 <section id="default-stl-decomposition" class="level3">
 <h3 class="anchored" data-anchor-id="default-stl-decomposition">1.1 Default STL decomposition</h3>
 <p>Run an STL decomposition with the default trend and seasonal windows, that is, without passing any further arguments.</p>
-<section id="well-discuss-potential-solutions-during-the-live-session.-1" class="level4">
-<h4 class="anchored" data-anchor-id="well-discuss-potential-solutions-during-the-live-session.-1">We’ll discuss potential solutions during the live session.</h4>
+<section id="well-discuss-potential-solutions-during-the-live-session.-2" class="level4">
+<h4 class="anchored" data-anchor-id="well-discuss-potential-solutions-during-the-live-session.-2">We’ll discuss potential solutions during the live session.</h4>
 </section>
 </section>
 <section id="the-1991-1992-crisis" class="level3">
@@ -2748,8 +2788,8 @@ Attaching package: &#39;seasonal&#39;</code></pre>
 <li><p>The grey bars printed on the left of the decomposition graphs when using <code>autoplot()</code> are created to compare the scale between graphs (the length of the bar is the same on all graphs). Comparing the scale of the graphs, do you think this is a good decomposition? Why or why not?</p></li>
 <li><p>How would you change the window parameters so that the trend better captures the 91-92 crisis? Perform several attempts to improve the STL decomposition.</p></li>
 </ul>
-<section id="well-discuss-potential-solutions-during-the-live-session.-2" class="level4">
-<h4 class="anchored" data-anchor-id="well-discuss-potential-solutions-during-the-live-session.-2">We’ll discuss potential solutions during the live session.</h4>
+<section id="well-discuss-potential-solutions-during-the-live-session.-3" class="level4">
+<h4 class="anchored" data-anchor-id="well-discuss-potential-solutions-during-the-live-session.-3">We’ll discuss potential solutions during the live session.</h4>
 </section>
 </section>
 </section>
@@ -2759,13 +2799,13 @@ Attaching package: &#39;seasonal&#39;</code></pre>
 <p>Decompose the time series of the daily average electricity demand in Victoria (Australia) using an STL decomposition.</p>
 <p>First compute daily electricity demand from <code>vic_elec</code>:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>vic_elec_d <span class="ot">&lt;-</span></span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  vic_elec <span class="sc">|&gt;</span></span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">index_by</span>(Date) <span class="sc">|&gt;</span></span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarize</span>(<span class="at">avg_demand =</span> <span class="fu">mean</span>(Demand)) <span class="sc">|&gt;</span></span>
-<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(<span class="fu">year</span>(Date) <span class="sc">==</span> <span class="dv">2012</span>)</span>
-<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>vic_elec_d <span class="sc">|&gt;</span> <span class="fu">autoplot</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>vic_elec_d <span class="ot">&lt;-</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  vic_elec <span class="sc">|&gt;</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">index_by</span>(Date) <span class="sc">|&gt;</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarize</span>(<span class="at">avg_demand =</span> <span class="fu">mean</span>(Demand)) <span class="sc">|&gt;</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(<span class="fu">year</span>(Date) <span class="sc">==</span> <span class="dv">2012</span>)</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>vic_elec_d <span class="sc">|&gt;</span> <span class="fu">autoplot</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Plot variable not specified, automatically selected `.vars = avg_demand`</code></pre>
 </div>
@@ -2779,14 +2819,14 @@ Attaching package: &#39;seasonal&#39;</code></pre>
 </div>
 <p>This series is daily with a weekly season, so its period is 7, and the defaults work out at <code>trend(window = 13)</code> and <code>season(window = 11)</code>. The decomposition below writes them out explicitly so you can see them. Passing no arguments at all, <code>STL(avg_demand)</code>, gives exactly this result.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>dcmp_1 <span class="ot">&lt;-</span> </span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  vic_elec_d <span class="sc">|&gt;</span></span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>      <span class="fu">model</span>(</span>
-<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>        <span class="at">decomp =</span> <span class="fu">STL</span>(avg_demand <span class="sc">~</span> <span class="fu">trend</span>(<span class="at">window =</span> <span class="dv">13</span>) <span class="sc">+</span> <span class="fu">season</span>(<span class="at">window =</span> <span class="dv">11</span>))</span>
-<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>        ) <span class="sc">|&gt;</span></span>
-<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>      <span class="fu">components</span>()</span>
-<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>dcmp_1 <span class="sc">|&gt;</span> <span class="fu">autoplot</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>dcmp_1 <span class="ot">&lt;-</span> </span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  vic_elec_d <span class="sc">|&gt;</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>      <span class="fu">model</span>(</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>        <span class="at">decomp =</span> <span class="fu">STL</span>(avg_demand <span class="sc">~</span> <span class="fu">trend</span>(<span class="at">window =</span> <span class="dv">13</span>) <span class="sc">+</span> <span class="fu">season</span>(<span class="at">window =</span> <span class="dv">11</span>))</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>        ) <span class="sc">|&gt;</span></span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>      <span class="fu">components</span>()</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>dcmp_1 <span class="sc">|&gt;</span> <span class="fu">autoplot</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -2797,9 +2837,9 @@ Attaching package: &#39;seasonal&#39;</code></pre>
 </div>
 <p>Now look at the correlogram of the remainder. It is plainly not white noise: a lot of autocorrelation is left in it.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>dcmp_1 <span class="sc">|&gt;</span> </span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ACF</span>(remainder) <span class="sc">|&gt;</span> </span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autoplot</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>dcmp_1 <span class="sc">|&gt;</span> </span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ACF</span>(remainder) <span class="sc">|&gt;</span> </span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autoplot</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -2810,15 +2850,15 @@ Attaching package: &#39;seasonal&#39;</code></pre>
 </div>
 <section id="do-you-see-any-problem-with-this-decomposition" class="level2">
 <h2 class="anchored" data-anchor-id="do-you-see-any-problem-with-this-decomposition">2.1 Do you see any problem with this decomposition?</h2>
-<section id="well-discuss-potential-solutions-during-the-live-session.-3" class="level3">
-<h3 class="anchored" data-anchor-id="well-discuss-potential-solutions-during-the-live-session.-3">We’ll discuss potential solutions during the live session.</h3>
+<section id="well-discuss-potential-solutions-during-the-live-session.-4" class="level3">
+<h3 class="anchored" data-anchor-id="well-discuss-potential-solutions-during-the-live-session.-4">We’ll discuss potential solutions during the live session.</h3>
 </section>
 </section>
 <section id="tuning-the-windows" class="level2">
 <h2 class="anchored" data-anchor-id="tuning-the-windows">2.2 Tuning the windows</h2>
 <p>Adjust the seasonal and trend windows to improve the decomposition as far as you can:</p>
-<section id="well-discuss-potential-solutions-during-the-live-session.-4" class="level3">
-<h3 class="anchored" data-anchor-id="well-discuss-potential-solutions-during-the-live-session.-4">We’ll discuss potential solutions during the live session.</h3>
+<section id="well-discuss-potential-solutions-during-the-live-session.-5" class="level3">
+<h3 class="anchored" data-anchor-id="well-discuss-potential-solutions-during-the-live-session.-5">We’ll discuss potential solutions during the live session.</h3>
 </section>
 </section>
 </section>
