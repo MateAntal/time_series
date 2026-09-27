@@ -583,7 +583,7 @@ S_i  =  S_unadj_i  <span class="hl">/</span>  mean(S_unadj)          <span class
     <p class="kicker">Where classical decomposition gives up</p>
     <h1 class="sowhat wide">Three limitations, and you have already met the first two.</h1>
     <table class="traps">
-      <tr><td class="os">The ends</td><td>No trend, and therefore no remainder, for the first and last <code>(m&nbsp;&minus;&nbsp;1)/2</code> points.</td><td class="fix">Session 6. Not fixable without changing what the number means.</td></tr>
+      <tr><td class="os">The ends</td><td>No trend, and therefore no remainder, for the first and last <code>m/2</code> points when <code>m</code> is even, <code>(m&nbsp;&minus;&nbsp;1)/2</code> when it is odd.</td><td class="fix">Session 6. Not fixable without changing what the number means.</td></tr>
       <tr><td class="os">Fixed season</td><td>The same <code>m</code> values repeat from the first year to the last. A season that evolves cannot be represented.</td><td class="fix">STL, later today.</td></tr>
       <tr><td class="os">Outliers</td><td>One unusual value contaminates the trend, then the detrended series, then the seasonal average.</td><td class="fix">Exercise 1 makes you watch it happen.</td></tr>
     </table>
@@ -705,11 +705,11 @@ S_i  =  S_unadj_i  <span class="hl">/</span>  mean(S_unadj)          <span class
   <div class="inner">
     <p class="kicker">The only two settings you will touch</p>
     <h1 class="sowhat wide">Smaller window, faster change. Both numbers must be odd.</h1>
-    <div class="console">STL(Employed ~ trend(window = <span class="hl">21</span>) + season(window = <span class="hl">13</span>))
-                            <span class="dim">default</span>            <span class="dim">default</span></div>
+    <div class="console">STL(Employed ~ trend(window = <span class="hl">21</span>) + season(window = <span class="hl">11</span>))
+                            <span class="dim">default, monthly</span>   <span class="dim">default</span></div>
     <table class="traps compact">
-      <tr><td class="os">trend(window)</td><td>How fast the trend-cycle may change. How many consecutive observations feed each local fit.</td><td class="fix">Smaller = follows bends. Default 21.</td></tr>
-      <tr><td class="os">season(window)</td><td>How fast the seasonal shape may change. How many consecutive <i>seasons</i> feed each seasonal value.</td><td class="fix">Smaller = season evolves. Default 13.</td></tr>
+      <tr><td class="os">trend(window)</td><td>How fast the trend-cycle may change. How many consecutive observations feed each local fit.</td><td class="fix">Smaller = follows bends. Computed from the period: 21 for monthly.</td></tr>
+      <tr><td class="os">season(window)</td><td>How fast the seasonal shape may change. How many consecutive <i>seasons</i> feed each seasonal value.</td><td class="fix">Smaller = season evolves. Default 11.</td></tr>
       <tr><td class="os">"periodic"</td><td>An infinite seasonal window: every seasonal value uses the whole series, so the season comes out constant.</td><td class="fix">This is classical decomposition's assumption.</td></tr>
     </table>
     <ul class="build">
