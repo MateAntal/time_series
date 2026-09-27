@@ -168,7 +168,7 @@ manual_dcmp_mult$random <- # YOUR CODE GOES HERE
 
 ## Final check: rebuild the original series from your components
 
-Two things to do:
+Do this for both schemes. Two things to do in each case:
 
 1. Reconstruct the original series from your components.
 2. Compare the reconstruction against the original series.
