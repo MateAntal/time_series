@@ -2443,19 +2443,19 @@ window.Quarto = {
 <li>Constant variance of the residuals (homoscedasticity).</li>
 <li>Normal distribution of the residuals.</li>
 </ol>
-<p>A separate .pdf file summarizes these conditions. Below a more succinct discussion:</p>
-<p><strong>1 and 2</strong> are more relevant when assessing the model. A model that does not satisfy them can be improved. If several of our models satisfy 1 and 2 (a common situation), we need to select among them. We will learn how to do this using tools like information criteria and cross-validation later in the subject.</p>
+<p>A separate .pdf file summarizes these conditions. Below is a more succinct discussion:</p>
+<p><strong>1 and 2</strong> are more relevant when assessing the model. A model that does not satisfy them can be improved. If several of our models satisfy 1 and 2 (a common situation), we need to select among them. We will learn how to do this using tools like information criteria and cross-validation later in the course.</p>
 <ul>
 <li><p>The bias of the residuals (mean deviated from 0) is easy to fix by subtracting the mean of your residuals from your forecasts.</p></li>
-<li><p>Autocorrelation left in the residuals is more difficult to fix. You may need to include autoregressive terms, external regressors, or change the model altogether. We will deal with these topics later in the subject.</p></li>
+<li><p>Autocorrelation left in the residuals is more difficult to fix. You may need to include autoregressive terms, external regressors, or change the model altogether. We will deal with these topics later in the course.</p></li>
 </ul>
 <p><strong>3 and 4</strong> are more related to the computation of prediction intervals.</p>
 <ul>
 <li><p>Apart from applying transformations (most commonly a Box-Cox transformation), there is usually little you can do to improve the normality and homoskedasticity of your residuals. If this is a problem that cannot be solved with transformations, changing the model may be the best option.</p></li>
-<li><p>There are alternative approaches to computing the prediction intervals. For example, <a href="https://spot.pcc.edu/~evega/images/distributions/simpleNormal.png">bootstrapping</a> will allow us to produce confidence intervals even in situations where normality is lost, as long as residuals are uncorrelated and homoskedastic.</p></li>
+<li><p>There are alternative approaches to computing the prediction intervals. For example, <a href="https://otexts.com/fpp3/prediction-intervals.html">bootstrapping</a> will allow us to produce confidence intervals even in situations where normality is lost, as long as residuals are uncorrelated and homoskedastic.</p></li>
 </ul>
-<p>Please read carefully <a href="https://otexts.com/fpp3/">section 5.4</a> of the book as well as the <strong>pdf uploaded to blackboard</strong>.</p>
-<p>Some specific models (e.g linear models) will require that we do some additional checks on the residuals. We will see this in due course.</p>
+<p>Please read carefully <a href="https://otexts.com/fpp3/residuals.html">section 5.4</a> of the book as well as the <strong>PDF uploaded to Blackboard</strong>.</p>
+<p>Some specific models (e.g. linear models) will require that we do some additional checks on the residuals. We will see this in due course.</p>
 </section>
 <section id="example-1---production-of-bricks" class="level1">
 <h1>Example 1 - Production of Bricks</h1>
@@ -2531,7 +2531,7 @@ window.Quarto = {
 </div>
 <p>Note that the residuals of the mean model have the same shape as the data itself. The residuals are the time series minus the fitted values. If the fitted values are the mean of the data, then the residuals are the same data but now centered around zero. Recall from the classical decomposition algorithm that removing the mean from a time series centers it around 0.</p>
 <p>Hence the mean model is a great example of a model with <strong>unbiased residuals</strong> (mean = 0) but <strong>correlated residuals</strong>.</p>
-<p>To assess normality we will use a box-plot and a qqplot of the residuals. Note that, in the box-plot I am adding the mean as a red dot to judge if it differs a lot from the mean or not.</p>
+<p>To assess normality we will use a box-plot and a qqplot of the residuals. Note that in the box-plot I am adding the mean as a red dot to judge whether it differs from the median.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>mean_vals <span class="ot">&lt;-</span> <span class="fu">filter</span>(model_vals, .model<span class="sc">==</span><span class="st">&quot;Mean&quot;</span>)</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -2621,10 +2621,10 @@ window.Quarto = {
 <li><p>Visual inspection of the variance of the residuals across historical data indicates lack of homoscedasticity. There are recession periods (such as 1982 or 1974) where the variation of the series is much higher.</p></li>
 </ol>
 <ul>
-<li><strong>NOTE:</strong> in case of doubt, best judgement regarding homoskedasticity can be attained combining visual inspection with some form of statistical testing, but in this subject we will only use visual inspection to assess homoskedasticity.</li>
+<li><strong>NOTE:</strong> in case of doubt, judgment on homoskedasticity is best made by combining visual inspection with some form of statistical testing, but in this course we will only use visual inspection to assess homoskedasticity.</li>
 </ul>
 <ol start="4" type="1">
-<li>Visual inspection agrees with the hypothesis that the residuals are fairly normal. The histogram seems relatively bell shaped and the distribution adjusts fairly well to the QQ-plot (except on the tails and perhaps a bit in the middle). The boxplot further confirms the relative symmetry of the distribution, showing as well that the mean is close to the median.</li>
+<li>Visual inspection agrees with the hypothesis that the residuals are fairly normal. The histogram seems relatively bell shaped and the distribution fits the QQ-plot fairly well (except at the tails and perhaps a bit in the middle). The boxplot further confirms the relative symmetry of the distribution, showing as well that the mean is close to the median.</li>
 </ol>
 <ul>
 <li>To formally assess the normality we would need to perform a test, something we will not do for now.</li>
@@ -2697,7 +2697,7 @@ y_t  = y_{t-1} + \varepsilon_t
 1 0.0791</code></pre>
 </div>
 </div>
-<p>Let us also produce a box-plot and a qqplot of the residuals. Note that, in the box-plot I am adding the mean as a red dot to judge if it differs a lot from the mean or not.</p>
+<p>Let us also produce a box-plot and a qqplot of the residuals. Note that in the box-plot I am adding the mean as a red dot to judge whether it differs from the median.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>mean_vals <span class="ot">&lt;-</span> <span class="fu">filter</span>(model_vals, .model<span class="sc">==</span><span class="st">&quot;Nv&quot;</span>)</span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -2801,7 +2801,7 @@ y_t  = y_{t-1} + \varepsilon_t
 <li>The residuals are clearly correlated. The remaining spikes at multiples of the seasonal period (4, 8, 12, 16, 20…) indicate that the naïve model has not adequately captured the seasonal pattern in the data.</li>
 <li><strong>The innovation residuals mean is close to 0 (0.08).</strong> To formally assess if this difference is statistically significant we could perform a t-test. In practical terms, whether this bias is significant or not will depend on our particular application and goal. In any case, we could remove it from the forecasts.</li>
 <li>These residuals are more homoscedastic than those of the mean model. The variance of the residuals remains more uniform across the historical data. The crisis in 1974 and 1982-83 could be treated as outliers.</li>
-<li>Visually the residuals seem to be normally distributed. The histogram seems symmetric and relatively bell-shaped. The values adjust well in the qq-plot with the exception of the tails. The box-plox confirms the symmetry of the distribution and the closeness of mean and median. To formally assess the normality we would need to perform a test, something we will not do in this subject.</li>
+<li>Visually the residuals seem to be normally distributed. The histogram seems symmetric and relatively bell-shaped. The values fall close to the line in the qq-plot, with the exception of the tails. The box-plot confirms the symmetry of the distribution and the closeness of mean and median. To formally assess the normality we would need to perform a test, something we will not do in this subject.</li>
 </ol>
 </section>
 </section>
@@ -2848,7 +2848,7 @@ y_t  = y_{t-1} + \varepsilon_t
 <h2 class="anchored" data-anchor-id="naive-model-1">NAIVE model</h2>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>google_fit <span class="sc">|&gt;</span> </span>
-<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Naive) <span class="sc">|&gt;</span> <span class="co"># Selects the Mean model</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Naive) <span class="sc">|&gt;</span> <span class="co"># Selects the Naive model</span></span>
 <span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gg_tsresiduals</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning: Removed 1 row containing missing values or values outside the scale range
@@ -2886,7 +2886,7 @@ y_t  = y_{t-1} + \varepsilon_t
 1 0.944</code></pre>
 </div>
 </div>
-<p>Let us also produce a box-plot and a qqplot of the residuals. Note that, in the box-plot I am adding the mean as a red dot to judge if it differs a lot from the mean or not.</p>
+<p>Let us also produce a box-plot and a qqplot of the residuals. Note that in the box-plot I am adding the mean as a red dot to judge whether it differs from the median.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>mean_vals <span class="ot">&lt;-</span> <span class="fu">filter</span>(model_vals, .model<span class="sc">==</span><span class="st">&quot;Naive&quot;</span>)</span>
 <span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -2934,7 +2934,7 @@ y_t  = y_{t-1} + \varepsilon_t
 <p><span class="math display">\[
 \text{residuals of naïve model:} \ \ \ \ y_t - y_{t-1}
 \]</span></p>
-<p>So, as explained earlier in this notebook, the residuals of the naïve model when applied to stock data are many times white noise, meaning that the data resembles a random walk.</p>
+<p>So, as explained earlier in this notebook, the residuals of the naïve model when applied to stock data are often white noise, meaning that the data resembles a random walk.</p>
 <ol start="2" type="1">
 <li><p>The mean of the residuals is actually close to 1, indicating that there is a bias in the forecasts. The bias might be small compared to the actual price that we are trying to predict, but we could remove it nonetheless.</p></li>
 <li><p>The variance of the residuals stays much the same across the historical data, apart from one spike around trading day 130-140. Therefore the residuals’ variance can be treated as constant.</p></li>
@@ -2967,7 +2967,7 @@ y_t  = y_{t-1} + \varepsilon_t
 1 2.71e-14</code></pre>
 </div>
 </div>
-<p>Let us also produce a box-plot and a qqplot of the residuals. Note that, in the box-plot I am adding the mean as a red dot to judge if it differs a lot from the mean or not.</p>
+<p>Let us also produce a box-plot and a qqplot of the residuals. Note that in the box-plot I am adding the mean as a red dot to judge whether it differs from the median.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>mean_vals <span class="ot">&lt;-</span> <span class="fu">filter</span>(model_vals, .model<span class="sc">==</span><span class="st">&quot;Mean&quot;</span>)</span>
 <span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -3077,13 +3077,13 @@ Q^* = T(T+2) \sum_{k=1}^\ell (T-k)^{-1}r_k^2.
 </ol>
 <p>The examples below might seem obvious but are worth giving some thought (this idea of squaring is prevalent in the logic behind many statistics and formulas):</p>
 <ul>
-<li><span class="math inline">\(0.9 * 0.9 = 0.81\)</span> : reduction of 10% of the initial module (<span class="math inline">\(1 - 0.9 = 0.1\)</span>)</li>
-<li><span class="math inline">\(0.7 * 0.7 = 0.49\)</span> : reduction of 30% of the initial module (<span class="math inline">\(1 - 0.7 = 0.3\)</span>)</li>
-<li><span class="math inline">\(0.5 * 0.5 = 0.25\)</span> : reduction of 50% of the initial module (<span class="math inline">\(1 - 0.5 = 0.5\)</span>)</li>
-<li><span class="math inline">\(0.25 * 0.25 = 0.0625\)</span> : reduction of 75% of the initial module (<span class="math inline">\(1-0.25 = 0.25\)</span>)</li>
-<li><span class="math inline">\(0.1 * 0.1 = 0.01\)</span> : reduction of 90% of the initial module (<span class="math inline">\(1 - 0.1 = 0.9\)</span>)</li>
+<li><span class="math inline">\(0.9 * 0.9 = 0.81\)</span> : the magnitude is reduced by 10% (<span class="math inline">\(1 - 0.9 = 0.1\)</span>)</li>
+<li><span class="math inline">\(0.7 * 0.7 = 0.49\)</span> : the magnitude is reduced by 30% (<span class="math inline">\(1 - 0.7 = 0.3\)</span>)</li>
+<li><span class="math inline">\(0.5 * 0.5 = 0.25\)</span> : the magnitude is reduced by 50% (<span class="math inline">\(1 - 0.5 = 0.5\)</span>)</li>
+<li><span class="math inline">\(0.25 * 0.25 = 0.0625\)</span> : the magnitude is reduced by 75% (<span class="math inline">\(1-0.25 = 0.25\)</span>)</li>
+<li><span class="math inline">\(0.1 * 0.1 = 0.01\)</span> : the magnitude is reduced by 90% (<span class="math inline">\(1 - 0.1 = 0.9\)</span>)</li>
 </ul>
-<p><strong>So, summarizing</strong>, squaring the autocorrelation coefficients <span class="math inline">\(r_k\)</span> attains the following:</p>
+<p><strong>So, summarizing</strong>, squaring the autocorrelation coefficients <span class="math inline">\(r_k\)</span> does two things:</p>
 <ol type="1">
 <li>It renders all terms in the sum of <span class="math inline">\(Q\)</span> and <span class="math inline">\(Q*\)</span> (the two statistics we will use) positive</li>
 <li>It scales the importance of each autocorrelation coefficient within that sum:
@@ -3093,7 +3093,7 @@ Q^* = T(T+2) \sum_{k=1}^\ell (T-k)^{-1}r_k^2.
 </ul></li>
 </ol>
 <p><strong>Suggested values for</strong> <span class="math inline">\(l\)</span>:</p>
-<p><span class="math inline">\(l\)</span> (the number of terms in the sum) is something we need to choose. The following recommendations are to be followed</p>
+<p><span class="math inline">\(l\)</span> (the number of terms in the sum) is something we need to choose. Follow these recommendations:</p>
 <ul>
 <li><p><span class="math inline">\(l = 10\)</span> for non-seasonal data</p></li>
 <li><p><span class="math inline">\(l = 2m\)</span> for seasonal data, where <span class="math inline">\(m\)</span> is the period of seasonality</p></li>
@@ -3107,7 +3107,7 @@ Q^* = T(T+2) \sum_{k=1}^\ell (T-k)^{-1}r_k^2.
 <p>Instead, we will use the existing result that, <strong>under the null Hypothesis that the series under study is white noise, both <span class="math inline">\(Q\)</span> and <span class="math inline">\(Q*\)</span> would follow a <span class="math inline">\(\chi^2\)</span> distribution with <span class="math inline">\((l-K)\)</span> degrees of freedom</strong>, where:</p>
 <ul>
 <li><span class="math inline">\(l\)</span> is the amount of lags considered in the sum of the statistic. Remember the recommendations given in the previous section.</li>
-<li><span class="math inline">\(K\)</span> are the degrees of freedom constrained during the test. Without any constraints, the set of <span class="math inline">\(l\)</span> autocorrelation coefficients would have <span class="math inline">\(l\)</span> degrees of freedom, but with <span class="math inline">\(K\)</span> constraints it has <span class="math inline">\(l-K\)</span> degrees of freedom.</li>
+<li><span class="math inline">\(K\)</span> is the number of degrees of freedom constrained during the test. Without any constraints, the set of <span class="math inline">\(l\)</span> autocorrelation coefficients would have <span class="math inline">\(l\)</span> degrees of freedom, but with <span class="math inline">\(K\)</span> constraints it has <span class="math inline">\(l-K\)</span> degrees of freedom.</li>
 </ul>
 <p><strong>The adequate value for <span class="math inline">\(K\)</span> depends strongly on the model type</strong>. There is <strong>debate in the time series community about the correct value for K for these tests</strong>. We are going to follow the recommendations below, taken from reference 3.</p>
 <ul>
@@ -3123,7 +3123,7 @@ Q^* = T(T+2) \sum_{k=1}^\ell (T-k)^{-1}r_k^2.
 <li>For seasonal ETS models, use <span class="math inline">\(K=0\)</span> and hence <span class="math inline">\(l\)</span> degrees of freedom for the statistic.</li>
 </ul></li>
 </ul>
-<p>Below a summary of <span class="math inline">\(H_0\)</span> and <span class="math inline">\(H_1\)</span>:</p>
+<p>Below is a summary of <span class="math inline">\(H_0\)</span> and <span class="math inline">\(H_1\)</span>:</p>
 <ul>
 <li><span class="math inline">\(H_0: r_{ks}\;come\;from\;white\;noise\)</span>.
 <ul>
@@ -3170,7 +3170,7 @@ Q^* = T(T+2) \sum_{k=1}^\ell (T-k)^{-1}r_k^2.
 1 Northern Territory Clothing, footwear and personal a… decomp    113.  7.44e-14</code></pre>
 </div>
 </div>
-<p>In both cases the p-value is much smaller than 0.05 and even than 0.01, so we can reject <span class="math inline">\(H_0\)</span> with a 99% confidence level. In other words, the residuals do not come from a white noise series and are therefore correlated.</p>
+<p>In both cases the p-value is smaller than 0.01, so we can reject <span class="math inline">\(H_0\)</span> at the 99% confidence level. In other words, the residuals do not come from a white noise series and are therefore correlated.</p>
 </section>
 </section>
 <section id="exercise-2" class="level1">
