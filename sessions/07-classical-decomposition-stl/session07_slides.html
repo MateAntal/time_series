@@ -408,7 +408,7 @@ body.ov-on #overview{display:block}
       <li class="step"><b>Session 6 gave you the trend</b> &mdash; a centered moving average, <code>2&times;m</code> when the season is even.</li>
       <li class="step"><b>Today you assemble them</b>, in four steps, and check every step against <code>classical_decomposition()</code> as you go.</li>
     </ul>
-    <p class="punch step wide">Nothing new arrives until slide 14. The first half of this session is entirely made of things you already have.</p>
+    <p class="punch step wide">Only one new thing arrives in the first half: step 3, the seasonal component. Everything else in the first half is made of things you already have.</p>
   </div>
   <aside class="notes">That is worth taking seriously rather than as reassurance. If any part of Sessions 5 or 6 is shaky, today is where it shows up, because step 1 is Session 6 unchanged and step 2 is Session 5 unchanged.<br><br>The reason the algorithm is worth building by hand, when a single function call does it, is that Group Assignment 1 asks you to explain a decomposition rather than produce one. You cannot explain a component you have only ever received.</aside>
 </section>
@@ -523,7 +523,7 @@ body.ov-on #overview{display:block}
     </figure>
     <p class="punch step wide">Twelve numbers describe the whole season, and then they repeat unchanged forever. That sentence is both the method and its biggest limitation.</p>
   </div>
-  <aside class="notes">In R the repeating step is a <code>left_join()</code> on the month of the year. The twelve-row table joins onto the full series and every row collects the seasonal value for its own month. Nothing clever, and it is where an off-by-one in the month column would show up immediately.<br><br>Note what the averaging assumes. Every January in the sample contributes equally to <code>S_1</code>, whether it came from 1990 or 2019. If January's behaviour has drifted over thirty years, this method cannot see it and will report the average of the two eras, which matches neither. STL, at the end of today, is the answer to that.</aside>
+  <aside class="notes">In R the repeating step is a <code>left_join()</code> on the month of the year. The twelve-row table joins onto the full series and every row collects the seasonal value for its own month. Nothing clever, and it is where an off-by-one in the month column would show up immediately.<br><br>Note what the averaging assumes. Every January in the sample contributes equally to <code>S_1</code>, whether it came from 1990 or 2019. If January's behavior has drifted over thirty years, this method cannot see it and will report the average of the two eras, which matches neither. STL, at the end of today, is the answer to that.</aside>
 </section>
 
 <!-- ---------- 5 ---------- -->
@@ -572,7 +572,7 @@ S_i  =  S_unadj_i  <span class="hl">/</span>  mean(S_unadj)          <span class
       <li class="step"><b>Sometimes neither can be met.</b> Then take the decomposition that comes closest, and say out loud where it falls short.</li>
     </ul>
     <div class="callout slate"><b>Criterion 2 is Session 4, reused.</b> Run <code>ACF()</code> on the remainder and read it exactly as you read any other correlogram. Session 9 does the same thing to model residuals.</div>
-    <p class="punch step wide">Notice what is not on this list: whether the trend line looks nice. That judgement is worth very little, and it is the one everybody reaches for first.</p>
+    <p class="punch step wide">Notice what is not on this list: whether the trend line looks nice. That judgment is worth very little, and it is the one everybody reaches for first.</p>
   </div>
   <aside class="notes">The grey bars down the left of an <code>autoplot()</code> panel are how you read criterion 1 without computing anything. Each bar covers the same range in data units, so a tall bar marks a panel whose range is small. A remainder panel with a tall bar is good news; one with a bar as short as the seasonal panel's is a warning.<br><br>Criterion 2 has a formal version, the Ljung&ndash;Box test, which replaces eyeballing twenty bars with a single number. It arrives in Session 9, where the thing being tested is a set of forecast residuals rather than a decomposition remainder. The logic is identical.</aside>
 </section>
@@ -650,7 +650,7 @@ S_i  =  S_unadj_i  <span class="hl">/</span>  mean(S_unadj)          <span class
     <p class="kicker">The other algorithm &nbsp;&middot;&nbsp; fpp3 3.6</p>
     <h1 class="sowhat">Seasonal and Trend decomposition using LOESS.</h1>
     <figure>
-      <svg viewBox="0 0 760 196" role="img" aria-label="A scatter of points with a smooth curve running through them. At one point on the curve a shaded neighbourhood is highlighted, containing the nearest points, and a short straight line is fitted through just those points to show the local fit">
+      <svg viewBox="0 0 760 196" role="img" aria-label="A scatter of points with a smooth curve running through them. At one point on the curve a shaded neighborhood is highlighted, containing the nearest points, and a short straight line is fitted through just those points to show the local fit">
         <g stroke="#E4DFD5" stroke-width="1.2" fill="none"><path d="M36 162 H730 M36 162 V22"/></g>
         <rect x="290" y="30" width="170" height="132" fill="#B5471E" opacity=".10"/>
         <g fill="#98928a">
@@ -669,7 +669,7 @@ S_i  =  S_unadj_i  <span class="hl">/</span>  mean(S_unadj)          <span class
               fill="none" stroke="#D55E00" stroke-width="2.4" stroke-dasharray="6 4" opacity=".8"/>
         <circle cx="384" cy="80" r="6.5" fill="#B5471E"/>
         <text x="375" y="24" text-anchor="middle" fill="#B5471E"
-              font-family="SFMono-Regular,Menlo,monospace" font-size="12">the neighbourhood of one point</text>
+              font-family="SFMono-Regular,Menlo,monospace" font-size="12">the neighborhood of one point</text>
         <text x="470" y="132" fill="#98928a" font-family="SFMono-Regular,Menlo,monospace" font-size="11.5">do this at every point, and the local fits trace the dashed curve</text>
       </svg>
     </figure>
@@ -695,7 +695,7 @@ S_i  =  S_unadj_i  <span class="hl">/</span>  mean(S_unadj)          <span class
       <li class="step"><b>The additive-only limit is not a real obstacle</b>, because Session 5 already solved it: take logs, decompose, and the multiplication has become addition.</li>
       <li class="step"><b>The tuning is the real cost.</b> Two windows, both odd, both changed by trial, and judged by the two criteria from slide 7 rather than by eye.</li>
     </ul>
-    <p class="punch step wide">Classical decomposition has no knobs and one answer. STL has two knobs and a judgement to make. That is the whole difference in practice.</p>
+    <p class="punch step wide">Classical decomposition has no knobs and one answer. STL has two knobs and a judgment to make. That is the whole difference in practice.</p>
   </div>
   <aside class="notes">A caution about robustness that the notebook makes and is easy to misread: <code>robust = TRUE</code> keeps unusual observations from distorting the trend and the season, but they still land in the remainder, where they belong. It also does not always improve a decomposition, so it is worth trying both ways rather than switching it on by reflex.<br><br>&ldquo;Several seasonal periods at once&rdquo; is the one advantage you cannot appreciate yet. Half-hourly electricity demand has a daily cycle, a weekly cycle and a yearly cycle running simultaneously, and classical decomposition can represent exactly one of them. That is the Session 3 electricity example returning with a method that can handle it.</aside>
 </section>
