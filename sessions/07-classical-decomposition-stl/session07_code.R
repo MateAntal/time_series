@@ -325,36 +325,24 @@ remainder_acfs |>
   facet_wrap(~ window) +
   labs(title = "Remainder correlogram at four trend windows", y = "ACF")
 
-# What the table and the plot say together:
-#
-#   var(remainder) falls the whole way down: 943, 474, 290, 131,
-#   and it keeps falling if you go further. So criterion 1 can
-#   rank two candidates, but it can never tell you to stop. Taken
-#   on its own it would send you to window = 1, where the trend is
-#   just the data.
-#
-#   The lag-1 autocorrelation is the one with an answer in it:
-#   +0.641, +0.355, +0.038, -0.445. It crosses zero between 13
-#   and 9, so trend(window = 9) is the setting to take.
-#
-#   The two failure modes have opposite signatures.
-#     too wide   -> POSITIVE autocorrelation. The trend is too
-#                   stiff, so real movement stays in the remainder
-#                   and consecutive remainders lean the same way.
-#     too narrow -> NEGATIVE autocorrelation. The trend threads
-#                   through the noise and overshoots, so
-#                   consecutive remainders alternate sign.
+# Read the table and the plot together, and come to the session
+# with a window chosen and a reason for it. One question to have an
+# answer to: the narrowest setting gives the smallest remainder of
+# the four. Does that make it the best decomposition of the four?
 
 
 # ---- tuning, step B: the seasonal window ----
 
-# The trend window is settled at 9. This knob is judged on the
-# SEASONAL component, not on the remainder. Track one seasonal
-# factor across the years and see what each window lets it do.
+# The other knob, and this one is judged on the SEASONAL component
+# rather than on the remainder. Track one seasonal factor across
+# the years and see what each window lets it do.
+
+# Replace this with the trend window you settled on in step A.
+chosen_trend <- 21
 
 stl_season <- function(s) {
   us_retail_employment |>
-    model(STL(Employed ~ trend(window = 9) + season(window = s))) |>
+    model(STL(Employed ~ trend(window = chosen_trend) + season(window = s))) |>
     components()
 }
 
@@ -376,39 +364,18 @@ december_factors |>
        y = "December seasonal component")
 
 # Three lines, three claims about Christmas hiring in US retail.
-#
-#   "periodic"  a flat line. An infinite seasonal window forces
-#               every December to the same number, which is the
-#               classical decomposition assumption. Here it is
-#               false: the factor runs from about 650 in the late
-#               1990s down to about 505 by 2018. It also costs the
-#               most, var(remainder) 716 against 290.
-#   window = 5  jagged. Tens of units of movement from one year to
-#               the next, including a bump around 2013 with no
-#               retail explanation. Chasing noise.
-#   window = 11 the default, and the smooth decline. It tracks the
-#               fall without inventing wobble.
-#
-# So the default survives here. Not every knob needs turning, and
-# you cannot know a default is right until you have seen what the
-# alternatives do to the component it controls.
+# Decide which of the three you believe, and why.
 
 
 # ---- an aside on robust = TRUE ----
 
-# Tempting on a series with a recession in it, and wrong here.
-# Robust STL downweights outlying observations so they cannot bend
-# the trend. The 2008 crisis IS the outlier, so switching
-# robustness on tells the algorithm to ignore the event we are
-# trying to capture. At these windows it takes var(remainder) from
-# 290 back up to 921, most of the way to where we started.
-#
-# Robustness earns its place on a one-off contaminant, a sensor
-# fault or a data-entry error. A recession is real and persistent,
-# and it belongs in the trend-cycle component.
+# STL() also takes a robust argument, and a series with a recession
+# in it looks like exactly the place to reach for it. Run it both
+# ways. Before you look at the numbers, think about what robustness
+# is being asked to do to the 2008 observations.
 us_retail_employment |>
   model(
-    stl = STL(Employed ~ trend(window = 9) + season(window = 11),
+    stl = STL(Employed ~ trend(window = chosen_trend) + season(window = 11),
               robust = TRUE)
   ) |>
   components() |>
@@ -417,9 +384,14 @@ us_retail_employment |>
 
 # ---- the decomposition this arrives at ----
 
+# Put your two chosen windows together and plot the components one
+# last time. Check it against the two criteria from section 2, and
+# be ready to say which window earned which part of the improvement.
+chosen_season <- 11
+
 us_retail_employment |>
   model(
-    stl = STL(Employed ~ trend(window = 9) + season(window = 11))
+    stl = STL(Employed ~ trend(window = chosen_trend) + season(window = chosen_season))
   ) |>
   components() |>
   autoplot()
