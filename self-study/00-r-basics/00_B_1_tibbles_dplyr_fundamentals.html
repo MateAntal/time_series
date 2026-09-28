@@ -3116,8 +3116,8 @@ vertical-align: -.125em;
 </section>
 <section id="packages-library-and-workspace" class="level1">
 <h1>Packages, library and workspace</h1>
-<p>Packages are eternal collections of functions, data and code, they are what make R powerful. Packages are stored in “<em>the library</em>”. They need to be installed once and then summoned from the library every time we run a program.</p>
-<p>Packages shall be installed only once using <code>install.packages()</code> and then summoned using <code>library()</code></p>
+<p>Packages are external collections of functions, data and code, they are what make R powerful. Packages are stored in “<em>the library</em>”. They need to be installed once and then summoned from the library every time we run a program.</p>
+<p>Packages should be installed only once using <code>install.packages()</code> and then summoned using <code>library()</code></p>
 <p>While working we should be aware of the names of the variables we have created. The <code>ls()</code> and <code>BrowseEnv()</code> commands will help us with that. The environment explorer built in RStudio is perhaps more convenient for this.</p>
 <p>For this lesson we are going to need:</p>
 <div class="cell">
@@ -3130,12 +3130,12 @@ vertical-align: -.125em;
 <p>The tidyverse is an opinionated collection of R packages designed for data science. All packages share an underlying design philosophy, grammar, and data structures.</p>
 <p>The tidyverse package is based on the principles of “tidy data”, which I strongly encourage you to read and reflect upon.</p>
 <p>https://r4ds.had.co.nz/tidy-data.html#tidy-data</p>
-<p>Reference 1 is recommended to get acquainted with the tidyverse in a formal manner. However, most of what you know about data.frames will be applicable in the tidyverse.</p>
+<p>Reference 1 is recommended to get acquainted with the tidyverse formally. However, most of what you know about data.frames will be applicable in the tidyverse.</p>
 </section>
 <section id="tibbles" class="level1">
 <h1>tibbles</h1>
-<p>Tibble is a modern re-imagining of the data.frame, keeping what time has proven to be effective, and throwing out what is not. They are the building blocks of the tidyverse and one of the reasons for the cohesion of the different packages within the tidiverse. We will be using tibbles instead of data.frames in this course, but most of what you already know will be directly applicable with some minor tweaks.</p>
-<p>Tibbles are data.frames that are lazy and surely:</p>
+<p>Tibble is a modern re-imagining of the data.frame, keeping what time has proven to be effective, and throwing out what is not. They are the building blocks of the tidyverse and one of the reasons for the cohesion of the different packages within the tidyverse. We will be using tibbles instead of data.frames in this course, but most of what you already know will be directly applicable with some minor tweaks.</p>
+<p>Tibbles are data.frames that are lazy and surly:</p>
 <ul>
 <li>they do less
 <ul>
@@ -3145,8 +3145,8 @@ vertical-align: -.125em;
 </ul></li>
 <li>they complain more (e.g. when a variable does not exist).</li>
 </ul>
-<p>This <strong>forces you to confront problems earlier</strong>, typically leading to cleaner, more expressive code as well as promoting consistency in the data, essentially for the reliability of the calculations.</p>
-<p>On the practical side, there are <strong>two main differences</strong> in the usage of a tibble vs. a classic <code>datta.frame</code>:</p>
+<p>This <strong>forces you to confront problems earlier</strong>, typically leading to cleaner, more expressive code as well as promoting consistency in the data, for the reliability of the calculations.</p>
+<p>On the practical side, there are <strong>two main differences</strong> in the usage of a tibble vs. a classic <code>data.frame</code>:</p>
 <ul>
 <li>printing</li>
 <li>subsetting</li>
@@ -3468,7 +3468,7 @@ vertical-align: -.125em;
 <ul>
 <li><code>$</code> operator: only extracts by name, but requires a little less typing</li>
 <li><code>[[</code> operator: can extract both by name or position.</li>
-<li><code>pull()</code> is a an alternative function provided by de <code>dplyr</code> package (loaded with <code>tidyverse</code>).</li>
+<li><code>pull()</code> is an alternative function provided by the <code>dplyr</code> package (loaded with <code>tidyverse</code>).</li>
 </ul>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>tibb_1 <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
@@ -3526,7 +3526,7 @@ vertical-align: -.125em;
 </section>
 <section id="filter-for-row-subsetting" class="level3">
 <h3 class="anchored" data-anchor-id="filter-for-row-subsetting"><code>filter()</code> for row subsetting</h3>
-<p>Let us use the nycflights13 dataset to show how the main sub-setting functions work (loaded in the first cell of the workbook). You can retrieve detailed information about the data set with <code>?flights</code>. Note that <code>flights</code> s already a tibble.</p>
+<p>Let us use the nycflights13 dataset to show how the main sub-setting functions work (loaded in the first cell of the workbook). You can retrieve detailed information about the data set with <code>?flights</code>. Note that <code>flights</code> is already a tibble.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>flights</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -3577,7 +3577,7 @@ vertical-align: -.125em;
 #   hour &lt;dbl&gt;, minute &lt;dbl&gt;, time_hour &lt;dttm&gt;</code></pre>
 </div>
 </div>
-<p><strong>Example</strong>: flights on months from July till end of years</p>
+<p><strong>Example</strong>: flights on months from July till end of year</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">filter</span>(flights, month <span class="sc">&gt;=</span> <span class="dv">7</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -3648,7 +3648,6 @@ vertical-align: -.125em;
 <section id="select-for-column-subsetting" class="level3">
 <h3 class="anchored" data-anchor-id="select-for-column-subsetting"><code>select()</code> for column subsetting</h3>
 <p>Allows you to zoom in on a useful subset of variables (columns) using operations based on the name of the variables.</p>
-<p>Allows you to zoom in on a useful subset using operations based on the name of the variables.</p>
 <p><strong>Example:</strong> select columns year, month, day</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="fu">select</span>(flights, year, month, day)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -3799,7 +3798,7 @@ vertical-align: -.125em;
 #   hour &lt;dbl&gt;, minute &lt;dbl&gt;, time_hour &lt;dttm&gt;</code></pre>
 </div>
 </div>
-<p>If we specify more than one column then when two rows are equally ranked on the first of the column or columns, the those rows are ordered following the order of the remaining columns specified within arrange.</p>
+<p>If we specify more than one column then when two rows are equally ranked on the first of the column or columns, those rows are ordered following the order of the remaining columns specified within arrange.</p>
 <p>For example, let us order the dataframe flights by <code>year</code>, <code>month</code>, <code>day</code>, <code>dep_time</code> and <code>arr_time</code></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a>flights <span class="sc">%&gt;%</span> <span class="fu">arrange</span>(year, month, day, dep_time, arr_time)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -3823,7 +3822,7 @@ vertical-align: -.125em;
 #   hour &lt;dbl&gt;, minute &lt;dbl&gt;, time_hour &lt;dttm&gt;</code></pre>
 </div>
 </div>
-<p>Using the function <code>desc()</code> within the function <code>arrange()</code> we may specify that one are more columns are to be ranked in descending order. As an example lets change the previos ordering so that flights are arranged by descending departure time within each combination of year, month and day</p>
+<p>Using the function <code>desc()</code> within the function <code>arrange()</code> we may specify that one or more columns are to be ranked in descending order. As an example let's change the previous ordering so that flights are arranged by descending departure time within each combination of year, month and day</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a>flights <span class="sc">%&gt;%</span> <span class="fu">arrange</span>(year, month, day, <span class="fu">desc</span>(dep_time), arr_time)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -3885,7 +3884,7 @@ vertical-align: -.125em;
 <h1>group_by()</h1>
 <section id="group_by-summarize-to-create-aggregations-of-one-row-per-group" class="level2">
 <h2 class="anchored" data-anchor-id="group_by-summarize-to-create-aggregations-of-one-row-per-group"><code>group_by</code> + <code>summarize()</code> to create aggregations of one row per group</h2>
-<p>As an example, let us compute the number of fligths, average delay and maximum delay for each unique combination of <code>year</code> and <code>month</code> using the <code>flights</code> dataset (loaded with the libary <code>nycflights13</code>).</p>
+<p>As an example, let us compute the number of flights, average delay and maximum delay for each unique combination of <code>year</code> and <code>month</code> using the <code>flights</code> dataset (loaded with the library <code>nycflights13</code>).</p>
 <p>Please note that <strong>the resulting dataset only has 12 rows because we only have data for 2013</strong>:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb73"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a>res <span class="ot">&lt;-</span></span>
@@ -3923,12 +3922,12 @@ vertical-align: -.125em;
 </section>
 <section id="group_by-mutate-ungroup-to-work-with-partitions." class="level2">
 <h2 class="anchored" data-anchor-id="group_by-mutate-ungroup-to-work-with-partitions."><code>group_by()</code> + <code>mutate()</code> + <code>ungroup()</code> to work with partitions.</h2>
-<p>The <strong>resulting dataframe will have the same number of rows as the original dataframe</strong>. This is useful in some contexts and is the dplyr equivalent to SQLs <code>partition_by</code>.</p>
+<p>The <strong>resulting dataframe will have the same number of rows as the original dataframe</strong>. This is useful in some contexts and is the dplyr equivalent to SQL's <code>partition_by</code>.</p>
 <p>As an example let us:</p>
 <ol type="1">
 <li>Select columns <code>year</code>, <code>month</code>, <code>day</code>, <code>dep_time</code> and <code>dep_delay</code>.</li>
 <li>Use arrange to ensure the data is arranged by <code>year</code>, <code>month</code>, <code>day</code> and <code>dep_time</code></li>
-<li>Create two new columns that will reset every time the combination <code>year</code>, <code>month</code> and <code>day</code> changes. Each combination of <code>year</code>, <code>month</code> and <code>day</code> will constitute what we may call a <strong>partition</strong>, a term used in SQL terms in opposition to <strong>groups</strong> when the total number of rows is not changed by the operation. 3.1 The first column will contain the cumulative sum of delay times. 3.2 The second column will create an index identifier for each observation within the partition. We will achieve this with the function <code>row_number()</code></li>
+<li>Create two new columns that will reset every time the combination <code>year</code>, <code>month</code> and <code>day</code> changes. Each combination of <code>year</code>, <code>month</code> and <code>day</code> will constitute what we may call a <strong>partition</strong>, a term used in SQL in opposition to <strong>groups</strong> when the total number of rows is not changed by the operation. 3.1 The first column will contain the cumulative sum of delay times. 3.2 The second column will create an index identifier for each observation within the partition. We will achieve this with the function <code>row_number()</code></li>
 <li>Re-arrange columns so that the integer identifier appears as the first column.</li>
 </ol>
 <div class="cell">
@@ -3971,7 +3970,7 @@ vertical-align: -.125em;
 # ℹ 336,766 more rows</code></pre>
 </div>
 </div>
-<p>Very <strong>importantly</strong>, the result of the previous operation <code>res2</code> is still grouped! You can spot it on the output <code>Groups:   year, month, day [365]</code>. This means that, whenever you perform operations such as creating new columns, they will be carried-out <strong>partition-wise</strong>.</p>
+<p><strong>Importantly</strong>, the result of the previous operation <code>res2</code> is still grouped! You can spot it on the output <code>Groups:   year, month, day [365]</code>. This means that, whenever you perform operations such as creating new columns, they will be carried out <strong>partition-wise</strong>.</p>
 <p>To avoid this we need to use <strong>ungroup</strong> at the end of the operation when we are using <code>group_by()</code> in combination with <code>mutate()</code>. See next point.</p>
 <p>NOTE: if you use <code>group_by()</code> in combination with <code>summarize()</code> you will not have this problem.</p>
 <section id="ungroup-to-remove-the-partitions." class="level4">
@@ -4055,7 +4054,7 @@ vertical-align: -.125em;
 <p>The <code>[</code> function is the main reason that older functions do not work with tibbles</p>
 <ul>
 <li><p>For tibbles we can solve the same problems with clearer code using <code>dplyr::filter()</code> and <code>dplyr::select()</code>.</p></li>
-<li><p>With R base data frames, <code>[</code> sometimes returns a data frame an sometimes it returns a vector.</p></li>
+<li><p>With R base data frames, <code>[</code> sometimes returns a data frame and sometimes it returns a vector.</p></li>
 <li><p>With tibbles <code>[</code> always returns another tibble.</p></li>
 </ul>
 <section id="behavior-comparison" class="level4">
@@ -4102,12 +4101,12 @@ vertical-align: -.125em;
 <ul>
 <li>the type of object that is returned differs on the number of columns.
 <ul>
-<li><strong>with one column:</strong> it wont return a data.frame, but instead will return a vector.</li>
+<li><strong>with one column:</strong> it won't return a data.frame, but instead will return a vector.</li>
 <li><strong>with more than one column:</strong> it return a data.frame</li>
 </ul></li>
 </ul></li>
 </ul>
-<p>This behavior is good if you know what you are passing in, but if you are passing somehting like <code>df[, vars]</code> where <code>vars</code> was a variable: the code depends on the <code>length(vars)</code> and you’d have to write code to account for those situations or risk bugs.</p>
+<p>This behavior is good if you know what you are passing in, but if you are passing something like <code>df[, vars]</code> where <code>vars</code> was a variable: the code depends on the <code>length(vars)</code> and you’d have to write code to account for those situations or risk bugs.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb97"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb97-1"><a href="#cb97-1" aria-hidden="true" tabindex="-1"></a>tbl <span class="ot">&lt;-</span> <span class="fu">as_tibble</span>(df)</span>
 <span id="cb97-2"><a href="#cb97-2" aria-hidden="true" tabindex="-1"></a>tbl<span class="sc">$</span>x</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>

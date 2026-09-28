@@ -2597,7 +2597,7 @@ vertical-align: -.125em;
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#conitionals-if-elseif-else-statements" id="toc-conitionals-if-elseif-else-statements" class="nav-link active" data-scroll-target="#conitionals-if-elseif-else-statements">Conitionals: <code>if-elseif-else</code> statements</a>
+  <li><a href="#conitionals-if-elseif-else-statements" id="toc-conitionals-if-elseif-else-statements" class="nav-link active" data-scroll-target="#conitionals-if-elseif-else-statements">Conditionals: <code>if-elseif-else</code> statements</a>
   <ul>
   <li><a href="#general-structure" id="toc-general-structure" class="nav-link" data-scroll-target="#general-structure">General structure</a></li>
   <li><a href="#situation-with-multiple-true-conditions" id="toc-situation-with-multiple-true-conditions" class="nav-link" data-scroll-target="#situation-with-multiple-true-conditions">Situation with multiple <code>TRUE</code> conditions</a></li>
@@ -2639,7 +2639,7 @@ vertical-align: -.125em;
 </header>
 
 <section id="conitionals-if-elseif-else-statements" class="level1">
-<h1>Conitionals: <code>if-elseif-else</code> statements</h1>
+<h1>Conditionals: <code>if-elseif-else</code> statements</h1>
 <section id="general-structure" class="level2">
 <h2 class="anchored" data-anchor-id="general-structure">General structure</h2>
 <p>A conditional statement with an <code>if-elseif-else</code> structure follows the same flowchart across multiple programming languages. For example, with 3 conditions we might have (more conditions could be added as needed):</p>
@@ -2684,7 +2684,7 @@ vertical-align: -.125em;
 <li>The <code>!</code> operator (logical negation)</li>
 <li>The relational operators (<code>&gt;</code>, <code>&lt;</code>, <code>&gt;=</code>, <code>&lt;=</code>, <code>==</code> and <code>!=</code>)</li>
 </ul></li>
-<li><strong>All the <code>else if</code> sections as well as the <code>else</code> sections are optional</strong>. In other words, the most succint version of the above structure would be:</li>
+<li><strong>All the <code>else if</code> sections as well as the <code>else</code> sections are optional</strong>. In other words, the most succinct version of the above structure would be:</li>
 </ul>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Most simple version of an if statement</span></span>
@@ -2694,7 +2694,7 @@ vertical-align: -.125em;
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Let us look at a basic example that executes different statements depending on whether an integer belongs to the natural numbers, the whole numbers or the integer numbers. The <code>cat()</code> function is an alternative to <code>print()</code> used in R. In the character strings used below, the special character <code>\n</code> is the <em>new line character</em>, which signals to the function <code>cat()</code> that it should start a new line. We do this to achieve more clarity on the output.</p>
+<p>Let us look at a basic example that executes different statements depending on whether an integer belongs to the natural numbers, the whole numbers or the integer numbers. The <code>cat()</code> function is an alternative to <code>print()</code> used in R. In the character strings used below, the special character <code>\n</code> is the <em>new line character</em>, which signals to the function <code>cat()</code> that it should start a new line. We do this to make the output clearer.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Input</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>integer <span class="ot">&lt;-</span> <span class="co"># INTRODUCE USER INPUT</span></span>
@@ -2750,7 +2750,7 @@ The program has finished</code></pre>
 <pre><code>hello</code></pre>
 </div>
 </div>
-<p>If we wanted both statements to run, we could not use and <code>if-else if</code> structure, but rather two separate <code>if</code>:</p>
+<p>If we wanted both statements to run, we could not use an <code>if-else if</code> structure, but rather two separate <code>if</code>:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="dv">3</span><span class="sc">&lt;</span><span class="dv">5</span>){</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">&quot;hello&quot;</span>)</span>
@@ -2806,7 +2806,7 @@ world</code></pre>
 <span id="cb14-33"><a href="#cb14-33" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb14-34"><a href="#cb14-34" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>The example below illustrates how these nested statements work. First the code is given and then we will run the code with specific values of age an retirement age:</p>
+<p>The example below illustrates how these nested statements work. First the code is given and then we will run the code with specific values of age and retirement age:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Input</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>age <span class="ot">&lt;-</span> <span class="co"># INTRODUCE YOUR AGE</span></span>
@@ -2874,8 +2874,8 @@ The program has finished</code></pre>
 <li><code>sequence</code> is a vector. The for loop <strong>iterates over all the values of the sequence</strong>. This means that it executes the code within the for loop for each of the values in the vector.</li>
 <li><code>val</code> stands for value. <strong>For each iteration the variable <code>val</code> gets assigned the current vector element</strong>.</li>
 </ul>
-<p>Essentially, the code above <strong>iterates over all the values of the sequence and executes the statements within the for loop sequentially for each value of the vector</strong>. The execution of the statements for a specific value within the vector is called an <strong>iteration</strong>.</p>
-<p>The flowchart below further clarifies this (the flowchart uses the notation <code>item</code> instead of <code>val</code>, but it is otherwise equivalent:</p>
+<p>The code above <strong>iterates over all the values of the sequence and executes the statements within the for loop sequentially for each value of the vector</strong>. The execution of the statements for a specific value within the vector is called an <strong>iteration</strong>.</p>
+<p>The flowchart below further clarifies this (the flowchart uses the notation <code>item</code> instead of <code>val</code>, but it is otherwise equivalent):</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="data:image/png;base64,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" class="img-fluid figure-img"></p>
@@ -2884,7 +2884,7 @@ The program has finished</code></pre>
 <p>Note that <code>val</code> (or <code>item</code>) could have been given any other name. We will see this in the examples below.</p>
 <section id="examples-with-integers" class="level2">
 <h2 class="anchored" data-anchor-id="examples-with-integers">Examples with integers</h2>
-<p>The most basic example that I can think of a for loop is:</p>
+<p>The most basic example of a for loop that I can think of is:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq</span>(<span class="dv">1</span>, <span class="dv">10</span>)){</span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(i, <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>) <span class="co"># \n is the new line character</span></span>
@@ -2892,7 +2892,7 @@ The program has finished</code></pre>
 <span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;</span><span class="sc">\n</span><span class="st">The value of i upon exiting the for loop was&quot;</span>, i)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>The code above does the following. For each value in <code>seq(1,10)</code> (1, 2, 3, 4, 5, 6, 7, 8, 9, 10) it runs all the code within the for loop. In this case the only code is the <code>cat()</code> statement, which prints the current value of <code>i</code>. Finally it prints the last statement, which examines the value of <code>i</code> upon exiting the for loop. Because all the iterations are executed, the value if <code>i</code> after finishing the loop is 10 (the last value in the sequence).</p>
+<p>The code above does the following. For each value in <code>seq(1,10)</code> (1, 2, 3, 4, 5, 6, 7, 8, 9, 10) it runs all the code within the for loop. In this case the only code is the <code>cat()</code> statement, which prints the current value of <code>i</code>. Finally it prints the last statement, which examines the value of <code>i</code> upon exiting the for loop. Because all the iterations are executed, the value of <code>i</code> after finishing the loop is 10 (the last value in the sequence).</p>
 <p>Let us actually run the code and check this:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq</span>(<span class="dv">1</span>, <span class="dv">10</span>)){</span>
@@ -2916,7 +2916,7 @@ The program has finished</code></pre>
 The value of i upon exiting the for loop was 10</code></pre>
 </div>
 </div>
-<p>Note that <strong>we could have used another name for the variable <code>i</code></strong>. <code>i</code> was simply chosen because it is convention to do this when looping through integers. But we could have given it another name and do exactly the same. For example:</p>
+<p>Note that <strong>we could have used another name for the variable <code>i</code></strong>. <code>i</code> was simply chosen because it is convention to do this when looping through integers. But we could have given it another name and done exactly the same. For example:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (thing <span class="cf">in</span> <span class="fu">seq</span>(<span class="dv">1</span>, <span class="dv">10</span>)){</span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(thing, <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>) <span class="co"># \n is the new line character</span></span>
@@ -2995,7 +2995,7 @@ Gimly </code></pre>
 <li><code>break</code>: exits the for loop entirely. That is, it exits the current iteration, does not execute any subsequent iteration and moves on to execute the code after the for loop.</li>
 </ul>
 <p>The following examples will clarify the difference between <code>next</code> and <code>break</code>.</p>
-<p>First lets check the output the very basic for loop below. The subsequent examples will alter the behavior of the for loop using <code>next</code> and <code>break</code>:</p>
+<p>First, let&#39;s check the output of the basic for loop below. The subsequent examples will alter the behavior of the for loop using <code>next</code> and <code>break</code>:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">100</span>, <span class="at">by=</span><span class="dv">10</span>)){</span>
 <span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a> <span class="fu">cat</span>(i, <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
@@ -3055,7 +3055,7 @@ The value of i upon exiting the for loop was 100</code></pre>
 The value of i upon exiting the for loop was 0</code></pre>
 </div>
 </div>
-<p>The code above does not execute any of the <code>cat(i, &quot;&quot;)</code> statements within the loop because, during the first iteration (<code>i = 0</code>), the <code>break</code> statement is executed, exiting the for loop altogether and continuing executing the remaining statements.</p>
+<p>The code above does not execute any of the <code>cat(i, &quot;&quot;)</code> statements within the loop because, during the first iteration (<code>i = 0</code>), the <code>break</code> statement is executed, exiting the for loop altogether and continuing to execute the remaining statements.</p>
 </section>
 <section id="example-3---break" class="level3">
 <h3 class="anchored" data-anchor-id="example-3---break">Example 3 - break</h3>
@@ -3075,7 +3075,7 @@ The value of i upon exiting the for loop was 0</code></pre>
 The value of i upon exiting the for loop was 60</code></pre>
 </div>
 </div>
-<p>Note that, upon exiting the for loop, the value of i was 60. In other words, in the 7-th iteration, <code>i</code> was assigned the value 60 and the break statement was executed, exiting the loop altogether and therefore the value if <code>i</code> right after the loop is still 60.</p>
+<p>Note that, upon exiting the for loop, the value of i was 60. In other words, in the 7-th iteration, <code>i</code> was assigned the value 60 and the break statement was executed, exiting the loop altogether and therefore the value of <code>i</code> right after the loop is still 60.</p>
 </section>
 <section id="example-4---next" class="level3">
 <h3 class="anchored" data-anchor-id="example-4---next">Example 4 - next</h3>
@@ -3095,7 +3095,7 @@ The value of i upon exiting the for loop was 60</code></pre>
 The value of i upon exiting the for loop was 100</code></pre>
 </div>
 </div>
-<p>Note that <strong>in examples 3 and 4 the same numbers are printed when using next instead of break</strong>. However, <strong>there is a crucial difference</strong>. Now the value of i at the end of the loop is 100 instead of 60. The for loop continued beyond i = 60, only the <code>cat(i, &quot;&quot;)</code> statement skipped because at every <code>next</code> statement the flow moved to the next iteration skipping the rest of the statements in that iteration.</p>
+<p>Note that <strong>in examples 3 and 4 the same numbers are printed when using next instead of break</strong>. However, <strong>there is a crucial difference</strong>. Now the value of i at the end of the loop is 100 instead of 60. The for loop continued beyond i = 60, only the <code>cat(i, &quot;&quot;)</code> statement was skipped because at every <code>next</code> statement the flow moved to the next iteration skipping the rest of the statements in that iteration.</p>
 </section>
 </section>
 </section>

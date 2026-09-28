@@ -240,10 +240,13 @@ scratch |>
 # THE TWO WINDOWS
 #   trend(window = )   how fast the trend may change.
 #                      Smaller = more flexible. Must be ODD.
-#                      Default 21.
+#                      No fixed default: it is computed from the
+#                      seasonal period. Works out at 21 for
+#                      monthly data, 13 for daily data with a
+#                      weekly season.
 #   season(window = )  how fast the season may change.
 #                      Smaller = more flexible. Must be ODD.
-#                      Default 13.
+#                      Default 11.
 #                      "periodic" makes it infinite, which
 #                      forces a constant season, like classical
 #                      decomposition.
@@ -269,34 +272,129 @@ stl_default |> autoplot()
 # before you start changing the numbers.
 us_retail_employment |>
   model(
-    stl = STL(Employed ~ trend(window = 21) + season(window = 13))
+    stl = STL(Employed ~ trend(window = 21) + season(window = 11))
   ) |>
   components() |>
   autoplot()
 
 
-# ---- tuning, and how to judge it ----
+# ---- tuning, step A: the trend window ----
 
-# Reducing the trend window lets the trend follow the crisis.
-# robust = TRUE makes the fit less sensitive to outliers; it
-# does not always improve things, so try it both ways.
+# Two rules. Move one window at a time, or you cannot tell which
+# one helped. And judge the result on the remainder's correlogram,
+# not on whether the trend line looks nicer.
+
+stl_trend <- function(w) {
+  us_retail_employment |>
+    model(STL(Employed ~ trend(window = w) + season(window = 11))) |>
+    components()
+}
+
+trend_windows <- c(21, 13, 9, 5)
+
+ci <- 1.96 / sqrt(nrow(us_retail_employment))
+
+# Two numbers per setting: how big the remainder is, and how many of
+# its first 24 autocorrelations fall outside the white noise bounds.
+bind_rows(lapply(trend_windows, function(w) {
+  cp <- stl_trend(w)
+  tibble(
+    trend_window  = w,
+    var_remainder = round(var(cp$remainder)),
+    acf_bars_out  = sum(abs(ACF(cp, remainder, lag_max = 24)$acf) > ci)
+  )
+}))
+
+# The four correlograms on one plot.
+window_label <- function(w) {
+  factor(paste0("trend(window = ", w, ")"),
+         levels = paste0("trend(window = ", trend_windows, ")"))
+}
+
+remainder_acfs <- bind_rows(lapply(trend_windows, function(w) {
+  stl_trend(w) |>
+    ACF(remainder, lag_max = 24) |>
+    as_tibble() |>
+    mutate(lag = as.numeric(lag), window = window_label(w))
+}))
+
+remainder_acfs |>
+  ggplot(aes(x = lag, y = acf)) +
+  geom_hline(yintercept = c(-ci, ci), linetype = "dashed", color = "steelblue") +
+  geom_segment(aes(xend = lag, yend = 0)) +
+  facet_wrap(~ window) +
+  labs(title = "Remainder correlogram at four trend windows", y = "ACF")
+
+# Read the table and the plot together, and come to the session
+# with a window chosen and a reason for it. One question to have an
+# answer to: the narrowest setting gives the smallest remainder of
+# the four. Does that make it the best decomposition of the four?
+
+
+# ---- tuning, step B: the seasonal window ----
+
+# The other knob, and this one is judged on the SEASONAL component
+# rather than on the remainder. Track one seasonal factor across
+# the years and see what each window lets it do.
+
+# Replace this with the trend window you settled on in step A.
+chosen_trend <- 21
+
+stl_season <- function(s) {
+  us_retail_employment |>
+    model(STL(Employed ~ trend(window = chosen_trend) + season(window = s))) |>
+    components()
+}
+
+december_factors <- bind_rows(lapply(list(5, 11, "periodic"), function(s) {
+  stl_season(s) |>
+    as_tibble() |>
+    filter(month(Month) == 12) |>
+    transmute(
+      Year          = year(Month),
+      season_window = factor(as.character(s), levels = c("5", "11", "periodic")),
+      December      = season_year
+    )
+}))
+
+december_factors |>
+  ggplot(aes(x = Year, y = December, color = season_window)) +
+  geom_line(linewidth = 0.8) +
+  labs(title = "The December seasonal factor under three seasonal windows",
+       y = "December seasonal component")
+
+# Three lines, three claims about Christmas hiring in US retail.
+# Decide which of the three you believe, and why.
+
+
+# ---- an aside on robust = TRUE ----
+
+# STL() also takes a robust argument, and a series with a recession
+# in it looks like exactly the place to reach for it. Run it both
+# ways. Before you look at the numbers, think about what robustness
+# is being asked to do to the 2008 observations.
 us_retail_employment |>
   model(
-    stl = STL(Employed ~ trend(window = 13) + season(window = 13),
+    stl = STL(Employed ~ trend(window = chosen_trend) + season(window = 11),
               robust = TRUE)
   ) |>
   components() |>
   autoplot()
 
-# Judge a change by the two criteria from section 2, not by
-# whether the trend line looks nicer. The remainder's ACF is the
-# harder test of the two.
+
+# ---- the decomposition this arrives at ----
+
+# Put your two chosen windows together and plot the components one
+# last time. Check it against the two criteria from section 2, and
+# be ready to say which window earned which part of the improvement.
+chosen_season <- 11
+
 us_retail_employment |>
-  model(stl = STL(Employed ~ trend(window = 13) + season(window = 13))) |>
+  model(
+    stl = STL(Employed ~ trend(window = chosen_trend) + season(window = chosen_season))
+  ) |>
   components() |>
-  ACF(remainder) |>
-  autoplot() +
-  labs(title = "Remainder ACF, trend window 13")
+  autoplot()
 
 
 # ============================================================
@@ -358,9 +456,12 @@ vic_elec_d <-
 vic_elec_d |> autoplot(avg_demand)
 
 # The default decomposition, and the ACF of its remainder.
+# Daily data with a weekly season has period 7, so the defaults
+# here are trend(window = 13) and season(window = 11). Passing no
+# arguments at all, STL(avg_demand), gives exactly this result.
 dcmp_1 <-
   vic_elec_d |>
-  model(decomp = STL(avg_demand ~ trend(window = 21) + season(window = 13))) |>
+  model(decomp = STL(avg_demand ~ trend(window = 13) + season(window = 11))) |>
   components()
 
 dcmp_1 |> autoplot()

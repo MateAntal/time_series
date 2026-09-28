@@ -1,0 +1,244 @@
+---
+title: "Group Assignment 1 - Time series decomposition"
+format: html
+editor: source
+---
+
+**Released:** Session 7, Monday 28 September 2026.
+**Due:** Sunday 25 October 2026, 23:59, on Blackboard.
+
+Four weeks. The deadline falls after the midterm on purpose: revising for the exam and building a
+decomposition from scratch are different kinds of work, and they should not compete for the same week.
+
+This is group work. It receives detailed written feedback, unlike the weekly homework.
+
+```{r}
+library(fpp3)
+```
+
+## The data
+
+`aus_retail` holds monthly retail turnover for every Australian state and industry. The code below
+takes one of those series: liquor retailing in Victoria, from January 1990 on.
+
+```{r}
+liquor <-
+  aus_retail |>
+  # 1. One state, one industry
+  filter(State == "Victoria", Industry == "Liquor retailing") |>
+  # 2. Keep the period from 1990 onward
+  filter(year(Month) >= 1990) |>
+  # 3. Drop the key columns, leaving the index and the series
+  select(Month, Turnover)
+
+autoplot(liquor, Turnover) +
+  labs(y = "Turnover ($ million)",
+       title = "Liquor retailing turnover, Victoria")
+```
+
+Read the plot before you write any code. How the size of the seasonal swing changes as the series
+grows is the thing that decides Part 3, so form an expectation now and check it at the end.
+
+# Part 1
+
+Decompose the series with classical decomposition, using the `classical_decomposition()` function
+from the fpp3 library. Do it twice:
+
+- an additive decomposition, stored in a dataframe called `dcmp_additive`
+- a multiplicative decomposition, stored in a dataframe called `dcmp_multiplicative`
+
+```{r}
+dcmp_additive <-
+  liquor |>
+  # YOUR CODE GOES HERE
+
+dcmp_additive |> autoplot()
+
+dcmp_multiplicative <-
+  liquor |>
+  # YOUR CODE GOES HERE
+
+dcmp_multiplicative |> autoplot()
+```
+
+# Part 2
+
+Now produce the same two decompositions by writing the algorithm yourself, following the four steps
+in the notebook `07_D_ClassicalDecomposition_fromScratch`. Build one dataframe per scheme, and keep
+every intermediate column in it.
+
+- additive: `manual_dcmp_add`
+- multiplicative: `manual_dcmp_mult`
+
+Every component you compute must match the Part 1 result **exactly**. Check as you go rather than at
+the end: build a step, compare it against the library, and only then build the next step on top of
+it. `all.equal()` is the function to use for these checks.
+
+## Step 1 - Trend estimation
+
+Use the appropriate moving average to create a column called `trend` in each dataframe, matching the
+trend that `classical_decomposition()` produces. The choice of moving average depends on the seasonal
+period, and the notebook explains which one applies here.
+
+```{r}
+manual_dcmp_add <-
+  liquor |>
+  # YOUR CODE GOES HERE
+
+
+manual_dcmp_mult <-
+  liquor |>
+  # YOUR CODE GOES HERE
+```
+
+## Step 2 - Detrended series
+
+Remove the trend from the series. The additive and multiplicative schemes do this differently.
+
+```{r}
+manual_dcmp_add$detrended <-  # YOUR CODE GOES HERE
+
+manual_dcmp_mult$detrended <- # YOUR CODE GOES HERE
+```
+
+## Step 3 - The seasonal component
+
+### Step 3.1 - Unadjusted seasonal component
+
+Build a separate dataframe holding the seasonal pattern of each decomposition, one value per month
+of the year.
+
+**Name things exactly as follows:**
+
+- additive: a dataframe called `df_seasonal_add`, with the unadjusted seasonal component in a column
+  called `S_unadj`
+- multiplicative: a dataframe called `df_seasonal_mult`, with the unadjusted seasonal component in a
+  column called `S_unadj`
+
+```{r}
+df_seasonal_add <-
+  manual_dcmp_add |>
+  # YOUR CODE GOES HERE
+
+df_seasonal_mult <-
+  manual_dcmp_mult |>
+  # YOUR CODE GOES HERE
+```
+
+### Step 3.2 - Adjusted seasonal component
+
+Adjust `S_unadj` in each case, and store the result in a new column called `S`. The additive scheme
+and the multiplicative scheme are adjusted to different targets. Make sure you know which target
+applies to which, and why.
+
+```{r}
+df_seasonal_add <-
+  df_seasonal_add |>
+  # YOUR CODE GOES HERE
+
+df_seasonal_mult <-
+  df_seasonal_mult |>
+  # YOUR CODE GOES HERE
+```
+
+### Step 3.3 - Repeat the seasonal pattern across the whole series
+
+Use `left_join()` to carry the `S` column of `df_seasonal_add` into `manual_dcmp_add`, and the `S`
+column of `df_seasonal_mult` into `manual_dcmp_mult`.
+
+```{r}
+manual_dcmp_add <-
+  manual_dcmp_add |>
+  # YOUR CODE GOES HERE
+
+manual_dcmp_mult <-
+  manual_dcmp_mult |>
+  # YOUR CODE GOES HERE
+```
+
+## Step 4 - The remainder
+
+Create a column called `random` in `manual_dcmp_add` and in `manual_dcmp_mult`.
+
+```{r}
+manual_dcmp_add$random <- # YOUR CODE GOES HERE
+
+manual_dcmp_mult$random <- # YOUR CODE GOES HERE
+```
+
+## Final check: rebuild the original series from your components
+
+Do this for both schemes. Two things to do in each case:
+
+1. Reconstruct the original series from your components.
+2. Compare the reconstruction against the original series.
+
+One complication. The moving average produces no values at the two ends of the series, so `trend` and
+`random` both start and end with NAs. Compare only over the stretch where your decomposition has no
+NAs:
+
+- Build a logical mask that is `TRUE` wherever your decomposition has a value.
+- Apply that same mask to the original series and to your reconstruction, so both cover the same
+  stretch.
+
+The code below is a reminder of how a mask like that works on a plain vector.
+
+```{r}
+# REMINDER: HOW TO MASK NAs OUT OF A VECTOR IN R.
+
+# toy vector for the demonstration
+v <- c(NA, NA, 10, 12, 15, 18, 20, 25, 30, 35, NA, NA)
+
+# build the mask
+mask <- !is.na(v)
+
+# the mask itself
+mask
+
+# the elements that survive it
+v[mask]
+```
+
+
+```{r}
+# YOUR CODE GOES HERE
+```
+
+## Draw the decomposition
+
+Plot your manual decomposition with ggplot commands. Do not use `autoplot()`. Pick either the
+additive or the multiplicative case.
+
+Aim for what the fpp3 library prints when you call `autoplot()` on a decomposition, apart from the
+grey scale bars on the left of each panel. Those bars are worth understanding, and they come up in
+class.
+
+```{r}
+# YOUR CODE GOES HERE
+```
+
+# Part 3 - Which decomposition is better?
+
+Session 7 gives two criteria for a good decomposition, both of them about the remainder. Apply both
+to your two decompositions and decide which scheme suits this series.
+
+Answer all three of the following:
+
+1. **Criterion 1, as numbers.** Report the variance of the trend, the seasonal component and the
+   remainder, for both schemes. Then state the one reason these six numbers cannot be compared
+   directly across the two schemes, and give a quantity built from them that can be.
+2. **Criterion 2, as a picture and a count.** Plot the correlogram of the remainder for both schemes,
+   out to lag 24. Count the spikes that cross the blue bounds in each plot and report the two counts.
+   Counting off the plot is all that is asked for here.
+3. **The verdict.** Name the better scheme. Support it with one number from each criterion, and tie
+   it to a feature you can point at in the time plot of the original series.
+
+```{r}
+# YOUR CODE GOES HERE
+```
+
+------
+
+**YOUR ANSWER GOES HERE. MAX 150 WORDS.**
+
+------

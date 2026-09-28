@@ -2,7 +2,7 @@
 
 **Date:** Wednesday, 4 November 2026, 9:00–10:20 — IE Tower, room T-05.02
 
-**fpp3:** 5.10
+**[fpp3](https://otexts.com/fpp3/index.html):** 5.10
 
 **Focus:** Why k-fold is wrong for time series; visualizing the expanding-window splits; one-step,
 multi-step and multi-horizon variants; `stretch_tsibble()`; the full four-step worked example.

@@ -2597,7 +2597,7 @@ vertical-align: -.125em;
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#res1-groupby" id="toc-res1-groupby" class="nav-link active" data-scroll-target="#res1-groupby">res1: groupby()</a></li>
+  <li><a href="#res1-groupby" id="toc-res1-groupby" class="nav-link active" data-scroll-target="#res1-groupby">res1: group_by()</a></li>
   <li><a href="#summarize" id="toc-summarize" class="nav-link" data-scroll-target="#summarize">summarize()</a>
   <ul>
   <li><a href="#res2" id="toc-res2" class="nav-link" data-scroll-target="#res2">res2</a></li>
@@ -2643,12 +2643,12 @@ vertical-align: -.125em;
 </header>
 
 <p>This short notebook is the code required to run the examples in the associated .pdf document <em>group_by_examples.pdf</em>. Please study this notebook along with that presentation.</p>
-<p>The purpose is to show some toy examples that should help you understand how <code>group_by()</code> works in R, specifically:</p>
+<p>The purpose is to show toy examples that should help you understand how <code>group_by()</code> works in R, specifically:</p>
 <ul>
 <li>Its different behavior when combined with <code>summarize()</code>, <code>mutate()</code> and <code>filter()</code></li>
 <li>The need to use <code>ungroup()</code></li>
 </ul>
-<p>We will begin by loading the library tidyverse. Note how the library <code>dplyr</code> is loaded under the hood when loading <code>tidyverse</code> (be sure you understand the output message below, otherwise watch the playlist on the fundamentals of RStudio uploaded to youtube).</p>
+<p>We will begin by loading the library tidyverse. Note how the library <code>dplyr</code> is loaded under the hood when loading <code>tidyverse</code> (be sure you understand the output message below, otherwise watch the playlist on the fundamentals of RStudio uploaded to YouTube).</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
@@ -2699,7 +2699,7 @@ vertical-align: -.125em;
 </div>
 </div>
 <section id="res1-groupby" class="level1">
-<h1>res1: groupby()</h1>
+<h1>res1: group_by()</h1>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>res1 <span class="ot">&lt;-</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  df <span class="sc">%&gt;%</span> </span>
@@ -2753,7 +2753,7 @@ argument.</code></pre>
 4 B     F        3      3   </code></pre>
 </div>
 </div>
-<p>Note that <code>res2</code> is still being considered group-wise, only now only the variable <code>v1</code> is defining the groups. Because of the previous <code>summarize()</code> operation, <code>res2</code> only has one row per unique combination of <code>v1</code> and <code>v2</code>. Therefore there is no point in grouping <code>res2</code> by <code>v1</code> and <code>v2</code>, because those groups would be one-element groups (one row per group). That is why <code>dplyr</code> automatically groups <code>res2</code> by <code>v1</code> and not by <code>v1</code> and <code>v2</code>.</p>
+<p>Note that <code>res2</code> is still being considered group-wise, only now the variable <code>v1</code> is defining the groups. Because of the previous <code>summarize()</code> operation, <code>res2</code> only has one row per unique combination of <code>v1</code> and <code>v2</code>. Therefore there is no point in grouping <code>res2</code> by <code>v1</code> and <code>v2</code>, because those groups would be one-element groups (one row per group). That is why <code>dplyr</code> automatically groups <code>res2</code> by <code>v1</code> and not by <code>v1</code> and <code>v2</code>.</p>
 </section>
 <section id="res3" class="level2">
 <h2 class="anchored" data-anchor-id="res3">res3</h2>
@@ -2780,7 +2780,7 @@ argument.</code></pre>
 </section>
 <section id="using-the-pipe-without-storing-intermediate-results" class="level2">
 <h2 class="anchored" data-anchor-id="using-the-pipe-without-storing-intermediate-results">Using the pipe without storing intermediate results:</h2>
-<p>We reach exactly the same result. Remember you can inspect intermediate steps by selecting just up to a specific point in the pipe and running only that selection pressing <code>ctrl+enter</code> (or <code>cmd+enter</code> in Mac):</p>
+<p>We reach exactly the same result. Remember you can inspect intermediate steps by selecting just up to a specific point in the pipe and running only that selection pressing <code>ctrl+enter</code> (or <code>cmd+enter</code> on Mac):</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>df <span class="sc">%&gt;%</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(v1, v2) <span class="sc">%&gt;%</span> </span>
@@ -2868,7 +2868,7 @@ argument.</code></pre>
 </section>
 <section id="using-the-pipe-without-storing-intermediate-results-1" class="level2">
 <h2 class="anchored" data-anchor-id="using-the-pipe-without-storing-intermediate-results-1">Using the pipe without storing intermediate results:</h2>
-<p>We reach exactly the same result. Remember you can inspect intermediate steps by selecting just up to a specific point in the pipe and running only that selection pressing <code>ctrl+enter</code> (or <code>cmd+enter</code> in Mac):</p>
+<p>We reach exactly the same result. Remember you can inspect intermediate steps by selecting just up to a specific point in the pipe and running only that selection pressing <code>ctrl+enter</code> (or <code>cmd+enter</code> on Mac):</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>df <span class="sc">%&gt;%</span> </span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(v1, v2) <span class="sc">%&gt;%</span> </span>
@@ -2934,7 +2934,7 @@ argument.</code></pre>
 </section>
 <section id="using-the-pipe-without-storing-intermediate-results-2" class="level2">
 <h2 class="anchored" data-anchor-id="using-the-pipe-without-storing-intermediate-results-2">Using the pipe without storing intermediate results:</h2>
-<p>We reach exactly the same result. Remember you can inspect intermediate steps by selecting just up to a specific point in the pipe and running only that selection pressing <code>ctrl+enter</code> (or <code>cmd+enter</code> in Mac):</p>
+<p>We reach exactly the same result. Remember you can inspect intermediate steps by selecting just up to a specific point in the pipe and running only that selection pressing <code>ctrl+enter</code> (or <code>cmd+enter</code> on Mac):</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>df <span class="sc">%&gt;%</span> </span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(v1, v2) <span class="sc">%&gt;%</span> </span>

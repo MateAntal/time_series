@@ -2,7 +2,7 @@
 
 **Date:** Wednesday, 30 September 2026, 9:00–10:20 — IE Tower, room T-05.02
 
-**fpp3:** 5.1–5.3, 5.7
+**[fpp3](https://otexts.com/fpp3/index.html):** 5.1–5.3, 5.7
 
 **Focus:** Fitted values vs forecasts — `ŷ_{t|t-1}` against `ŷ_{T+h|T}` — starting from the
 linear-regression analogy; point forecast vs forecast distribution; innovation residuals; then the
@@ -18,6 +18,10 @@ short — Group Assignment 1 is running this week and midterm revision starts no
 
 **Outcome:** Student produces and plots benchmark forecasts for any series, can say precisely what a
 fitted value is, and can forecast a series through its decomposition.
+
+**Opens with a short homework review:** the three difficulties that came up most often in HW02 to
+HW04, plus how to write your work in a `.qmd`. See
+[`homework-review-hw02-hw04.md`](homework-review-hw02-hw04.md).
 
 > 5.7 closes the loop from the decomposition block: it is what makes decomposition a *forecasting*
 > tool rather than only a descriptive one. It is also the ancestor of the STL + ETS approach the

@@ -73,7 +73,8 @@ Many datasets come bundled in the `fpp3` packages, so those load directly in R â
 | `Beijing_Pollution_TSeries.csv`, `Weekly Fuel Prices.xlsx` | Session 4 homework |
 | `australian_imports_japan.csv`, `private_housing_US.csv` | Session 11 homework |
 | `yhat_SES_test` | Session 16 |
-| `FTSE_Prices.csv` | Group Assignment 2 |
+
+Group Assignment 2 also uses an external file. It ships with the assignment in Session 17.
 
 If you cloned the repo these are already on your machine; if you downloaded the ZIP, they're inside the unzipped folder under `data/`.
 

@@ -3054,7 +3054,7 @@ vertical-align: -.125em;
   </ul></li>
   <li><a href="#group_by-summarize" id="toc-group_by-summarize" class="nav-link" data-scroll-target="#group_by-summarize"><code>group_by()</code> + <code>summarize()</code></a>
   <ul>
-  <li><a href="#ex-13.-use-group_by-summarize-to-get-the-mean-and-median-value-of-arr_delay-each-month.-you-will-need-to-specify-a-correct-value-for-the-argument-na.rm-of-the-funtions-mean-and-median." id="toc-ex-13.-use-group_by-summarize-to-get-the-mean-and-median-value-of-arr_delay-each-month.-you-will-need-to-specify-a-correct-value-for-the-argument-na.rm-of-the-funtions-mean-and-median." class="nav-link" data-scroll-target="#ex-13.-use-group_by-summarize-to-get-the-mean-and-median-value-of-arr_delay-each-month.-you-will-need-to-specify-a-correct-value-for-the-argument-na.rm-of-the-funtions-mean-and-median.">Ex 13. Use <code>group_by()</code> + <code>summarize()</code> to get the <code>mean()</code> and <code>median()</code> value of <code>arr_delay</code> each month. You will need to specify a correct value for the argument <code>na.rm</code> of the funtions <code>mean()</code> and `<code>median()</code>.</a></li>
+  <li><a href="#ex-13.-use-group_by-summarize-to-get-the-mean-and-median-value-of-arr_delay-each-month.-you-will-need-to-specify-a-correct-value-for-the-argument-na.rm-of-the-funtions-mean-and-median." id="toc-ex-13.-use-group_by-summarize-to-get-the-mean-and-median-value-of-arr_delay-each-month.-you-will-need-to-specify-a-correct-value-for-the-argument-na.rm-of-the-funtions-mean-and-median." class="nav-link" data-scroll-target="#ex-13.-use-group_by-summarize-to-get-the-mean-and-median-value-of-arr_delay-each-month.-you-will-need-to-specify-a-correct-value-for-the-argument-na.rm-of-the-funtions-mean-and-median.">Ex 13. Use <code>group_by()</code> + <code>summarize()</code> to get the <code>mean()</code> and <code>median()</code> value of <code>arr_delay</code> each month. You will need to specify a correct value for the argument <code>na.rm</code> of the functions <code>mean()</code> and <code>median()</code>.</a></li>
   </ul></li>
   <li><a href="#group_by-filter-ungroup" id="toc-group_by-filter-ungroup" class="nav-link" data-scroll-target="#group_by-filter-ungroup"><code>group_by()</code> + <code>filter()</code> + <code>ungroup()</code></a>
   <ul>
@@ -3207,9 +3207,9 @@ vertical-align: -.125em;
 <h2 class="anchored" data-anchor-id="arrange"><code>arrange()</code></h2>
 <section id="ex-10." class="level3">
 <h3 class="anchored" data-anchor-id="ex-10.">Ex 10.</h3>
-<p>Use the function <code>arrange</code> in combination with <code>des()</code> to rearrange the dataset <code>babynames</code> all the conditions below are fulfilled:</p>
+<p>Use the function <code>arrange</code> in combination with <code>desc()</code> to rearrange the dataset <code>babynames</code> so that all the conditions below are fulfilled:</p>
 <ol type="1">
-<li>years are desplayed rom smallest to largest</li>
+<li>years are displayed from smallest to largest</li>
 <li>male names are shown before female names</li>
 <li>within each sex category the less frequently occurring names are shown first.</li>
 </ol>
@@ -3221,7 +3221,7 @@ vertical-align: -.125em;
 <h3 class="anchored" data-anchor-id="ex-11.-use-mutate-to-create-two-new-columns-in-the-flights-dataset">Ex 11. Use <code>mutate()</code> to create two new columns in the flights dataset:</h3>
 <ul>
 <li>using <code>make_date()</code> combine <code>year</code>, <code>month</code> and <code>day</code> to create a <code>date</code> object. You may research online or use <code>?make_date</code> on the console to understand how <code>make_date()</code> works</li>
-<li>create a new column that returns <code>FALSE</code> if <code>arr_delay</code> is smaller than an hour and <code>TRUE</code> else. For this us <code>ifelse()</code> create a conditional. Reseach online how <code>ifelse()</code> works in dplyr or use <code>?ifelse()</code> to get help from the console.</li>
+<li>create a new column that returns <code>FALSE</code> if <code>arr_delay</code> is smaller than an hour and <code>TRUE</code> else. For this, use <code>ifelse()</code> to create a conditional. Research online how <code>ifelse()</code> works in dplyr or use <code>?ifelse()</code> to get help from the console.</li>
 </ul>
 <p>After this re-order the dataframe so that the newly created columns are located at the beginning of the dataframe.</p>
 <p><strong>To have <code>make_date()</code> available, you need to load (and if required install) the library <code>lubridate</code></strong></p>
@@ -3240,7 +3240,7 @@ vertical-align: -.125em;
 <section id="group_by-summarize" class="level2">
 <h2 class="anchored" data-anchor-id="group_by-summarize"><code>group_by()</code> + <code>summarize()</code></h2>
 <section id="ex-13.-use-group_by-summarize-to-get-the-mean-and-median-value-of-arr_delay-each-month.-you-will-need-to-specify-a-correct-value-for-the-argument-na.rm-of-the-funtions-mean-and-median." class="level3">
-<h3 class="anchored" data-anchor-id="ex-13.-use-group_by-summarize-to-get-the-mean-and-median-value-of-arr_delay-each-month.-you-will-need-to-specify-a-correct-value-for-the-argument-na.rm-of-the-funtions-mean-and-median.">Ex 13. Use <code>group_by()</code> + <code>summarize()</code> to get the <code>mean()</code> and <code>median()</code> value of <code>arr_delay</code> each month. You will need to specify a correct value for the argument <code>na.rm</code> of the funtions <code>mean()</code> and `<code>median()</code>.</h3>
+<h3 class="anchored" data-anchor-id="ex-13.-use-group_by-summarize-to-get-the-mean-and-median-value-of-arr_delay-each-month.-you-will-need-to-specify-a-correct-value-for-the-argument-na.rm-of-the-funtions-mean-and-median.">Ex 13. Use <code>group_by()</code> + <code>summarize()</code> to get the <code>mean()</code> and <code>median()</code> value of <code>arr_delay</code> each month. You will need to specify a correct value for the argument <code>na.rm</code> of the functions <code>mean()</code> and <code>median()</code>.</h3>
 </section>
 </section>
 <section id="group_by-filter-ungroup" class="level2">
@@ -3253,8 +3253,8 @@ vertical-align: -.125em;
 <h2 class="anchored" data-anchor-id="group_by-mutate-ungroup"><code>group_by()</code> + <code>mutate()</code> + <code>ungroup()</code></h2>
 <section id="ex-15.-use-group_by-mutate-and-ungroup" class="level3">
 <h3 class="anchored" data-anchor-id="ex-15.-use-group_by-mutate-and-ungroup">Ex 15. Use <code>group_by()</code>, <code>mutate()</code> and <code>ungroup()</code></h3>
-<p>Use the function <code>dense_rank()</code> in combination with <code>group_by()</code>, <code>mutate()</code> and <code>ungroup()</code> to create a rank of flights within the same day based upon their <code>arr_delay</code>. Flights with greater delay should have the smallest rank. Research online or on the help how <code>dense_rank()</code> works.</p>
-<p>At the same time, use the function <code>row_number()</code> to assign an integer number to each row (each flight) of each day. The biggest arrival delays within a day should have the smallest <code>row_number</code>)</p>
+<p>Use the function <code>dense_rank()</code> in combination with <code>group_by()</code>, <code>mutate()</code> and <code>ungroup()</code> to create a rank of flights within the same day based on their <code>arr_delay</code>. Flights with greater delay should have the smallest rank. Research online or on the help how <code>dense_rank()</code> works.</p>
+<p>At the same time, use the function <code>row_number()</code> to assign an integer number to each row (each flight) of each day. The biggest arrival delays within a day should have the smallest <code>row_number</code>.</p>
 </section>
 </section>
 </section>

@@ -2,7 +2,7 @@
 
 **Date:** Monday, 28 September 2026, 9:00–10:20 — IE Tower, room T-05.02
 
-**fpp3:** 3.4, 3.6
+**[fpp3](https://otexts.com/fpp3/index.html):** 3.4, 3.6
 
 **Focus:** The four steps of classical decomposition (trend by MA → detrend → seasonal component →
 remainder) for both schemes, built by hand and then reproduced by `classical_decomposition()`; the
@@ -11,8 +11,9 @@ tuning them on three worked examples.
 
 **R:** `classical_decomposition()`, `STL(y ~ trend() + season())`, `components()`
 
-**Homework:** `07_D` Exercise 1, then the two STL window-tuning tasks in `07_E`: *STL - Example 3*
-(items 1.1–1.2) and *Exercise 2 - STL* (items 2.1–2.2).
+**Homework:** `07_D` Exercise 1, then two tasks in `07_E`: *STL - Example 3*
+(items 1.1–1.2) and *Exercise 2 - STL* (item 2.1 only — a diagnosis; item 2.2 is not assigned
+this term).
 
 **Outcome:** Student decomposes a series both ways, interprets every component, and knows when to
 prefer STL.
@@ -24,4 +25,4 @@ prefer STL.
 > the scheme, Session 6 estimated the trend, and this session assembles the whole algorithm and
 > adds STL. The three are examined together.
 
-> The heaviest session in the decomposition block. fpp3 3.5 (X-11 / SEATS) is not covered.
+> The heaviest session in the decomposition block. [fpp3](https://otexts.com/fpp3/index.html) 3.5 (X-11 / SEATS) is not covered.

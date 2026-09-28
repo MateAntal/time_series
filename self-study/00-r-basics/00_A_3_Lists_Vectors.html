@@ -2679,7 +2679,7 @@ vertical-align: -.125em;
 <h2 class="anchored" data-anchor-id="creating-vectors">Creating vectors</h2>
 <section id="creating-a-vector-using-c-the-combine-function" class="level3">
 <h3 class="anchored" data-anchor-id="creating-a-vector-using-c-the-combine-function">Creating a vector using <code>c()</code>, the combine function</h3>
-<p>The most common way to create vectors is using the functio <code>c()</code> (combine). Remember a vector can only contain elements of the same type, so if the specified elements are not of the same type, <code>c()</code> will attempt to coerce it.</p>
+<p>The most common way to create vectors is using the function <code>c()</code> (combine). Remember a vector can only contain elements of the same type, so if the specified elements are not of the same type, <code>c()</code> will attempt to coerce it.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Numeric (double) vector of 5 elements</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>vec1 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>)</span>
@@ -2739,7 +2739,7 @@ vertical-align: -.125em;
 <h2 class="anchored" data-anchor-id="accessing-elements-of-a-vector">Accessing elements of a vector</h2>
 <section id="using-numerical-indices" class="level3">
 <h3 class="anchored" data-anchor-id="using-numerical-indices">Using numerical indices</h3>
-<p>Unike in python, where indices start at 0, in R inidices start at 1.</p>
+<p>Unlike in Python, where indices start at 0, in R indices start at 1.</p>
 <ul>
 <li>Specifying a vector of integers allows us to access the elements with those indices</li>
 <li>Specifying <strong>negative integers</strong> returns all elements except those with negative integers</li>
@@ -2757,7 +2757,7 @@ vertical-align: -.125em;
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 7</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Elements 1, 3 and 5 of vector x</span></span>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Elements 1, 2 and 5 of vector x</span></span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>x[<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">5</span>)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 5 6 9</code></pre>
@@ -2770,7 +2770,7 @@ vertical-align: -.125em;
 </div>
 <section id="note-repeating-elements-when-indexing" class="level4">
 <h4 class="anchored" data-anchor-id="note-repeating-elements-when-indexing">NOTE: repeating elements when indexing</h4>
-<p>Although we will not use it in our course, you should be aware that you may repeat elements when trying to select elements of a vector. This is very useful, for example, for scenarios where you want to sample with replacement randomly from the elements of a vector (the fact that indices can be repeated simulates the replacement):</p>
+<p>Although we will not use it in our course, you should be aware that you may repeat elements when trying to select elements of a vector. This is useful, for example, for scenarios where you want to sample with replacement randomly from the elements of a vector (the fact that indices can be repeated simulates the replacement):</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Creates a vector using elements of the vector x</span></span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>z <span class="ot">&lt;-</span> x[<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">5</span>,<span class="dv">5</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">4</span>,<span class="dv">1</span>)]</span>
@@ -2793,7 +2793,7 @@ vertical-align: -.125em;
 <pre><code>[1]  5  7  8  9 10</code></pre>
 </div>
 </div>
-<p>When explicitly specifying a vector of booleans to sub-set the vector, ensure the vector of booleans is of the same length as the vector we want to subset to avoid problematic scenarios.</p>
+<p>When explicitly specifying a vector of booleans to subset the vector, ensure the vector of booleans is of the same length as the vector we want to subset to avoid problematic scenarios.</p>
 <p>If we specify a vector of booleans with more elements that the vector we are selecting from, we will get NAs:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>x</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -2879,7 +2879,7 @@ vertical-align: -.125em;
 </section>
 <section id="modifying-elements-of-a-vector" class="level3">
 <h3 class="anchored" data-anchor-id="modifying-elements-of-a-vector">Modifying elements of a vector</h3>
-<p>An element of a vector may me modified directly using the assignment operator. Let us look at some examples:</p>
+<p>An element of a vector may be modified directly using the assignment operator. Let us look at some examples:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>x</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -2894,7 +2894,7 @@ vertical-align: -.125em;
 <pre><code>el_1 el_2 el_3 el_4 el_5 el_6 
    5    6    7    8    0   10 </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Assign same value to elemenets 2, 3, 4</span></span>
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Assign same value to elements 2, 3, 4</span></span>
 <span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>x[<span class="dv">2</span><span class="sc">:</span><span class="dv">4</span>] <span class="ot">&lt;-</span> <span class="dv">2</span></span>
 <span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a>x</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -2906,7 +2906,7 @@ vertical-align: -.125em;
 </section>
 <section id="removing-elements-of-a-vector" class="level3">
 <h3 class="anchored" data-anchor-id="removing-elements-of-a-vector">Removing elements of a vector</h3>
-<p>This is attained by using negative integers. See the section <em>accessing elements of a vector</em></p>
+<p>This is done using negative integers. See the section <em>accessing elements of a vector</em></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove elements 2 and 5 from the vector</span></span>
 <span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a>x[<span class="fu">c</span>(<span class="sc">-</span><span class="dv">2</span>, <span class="sc">-</span><span class="dv">5</span>)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -2945,8 +2945,8 @@ vertical-align: -.125em;
 </section>
 <section id="lists" class="level1">
 <h1>Lists</h1>
-<p>Lists are very similar to vectors, the most notable difference being that they can hold elements of different types.</p>
-<p>Just like vectors, lists may also be named. Let us created a named list:</p>
+<p>Lists are similar to vectors, the most notable difference being that they can hold elements of different types.</p>
+<p>Just like vectors, lists may also be named. Let us create a named list:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a>l1 <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="st">&quot;a_1&quot;</span> <span class="ot">=</span> <span class="st">&quot;Maria&quot;</span>, <span class="st">&quot;b_2&quot;</span> <span class="ot">=</span> <span class="dv">0</span>, <span class="st">&quot;c_3&quot;</span> <span class="ot">=</span> <span class="cn">TRUE</span>, <span class="st">&quot;d_4&quot;</span> <span class="ot">=</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">4</span>, <span class="dv">4</span>, <span class="at">by=</span> <span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>

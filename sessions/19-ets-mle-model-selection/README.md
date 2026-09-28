@@ -2,7 +2,7 @@
 
 **Date:** Monday, 30 November 2026, 9:00–10:20 — IE Tower, room T-05.02
 
-**fpp3:** 8.4–8.7
+**[fpp3](https://otexts.com/fpp3/index.html):** 8.4–8.7
 
 **Focus:** The ETS(Error, Trend, Season) notation and the full taxonomy. Then estimation: minimizing
 SSE vs maximizing likelihood, following the MLE primer from the normal pdf through the joint density of

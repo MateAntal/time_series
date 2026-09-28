@@ -395,7 +395,7 @@ body.ov-on #overview{display:block}
     <p class="who"><b>Session 9.</b> Residual diagnostics, and midterm revision.<br>
     Alejandro Berrizbeitia · aberrizbeitia@faculty.ie.edu</p>
   </div>
-  <aside class="notes">The deck is self-contained: press <b>N</b> at any time to open or close this panel, and <b>O</b> for a list of every slide.<br><br>Today is fpp3 section 5.4, notebook <code>09_B</code>, and the one-page residuals summary on Blackboard, which is the spine of the first half.<br><br><b>Two things to know before we start.</b> This session is <b>not examined in the midterm</b> &mdash; coverage there is Sessions 1 to 8. And the second half of today is revision for that midterm, so bring questions rather than notes.</aside>
+  <aside class="notes">The deck is self-contained: press <b>N</b> at any time to open or close this panel, and <b>O</b> for a list of every slide.<br><br>Today is fpp3 section 5.4, notebook <code>09_B</code>, and the one-page residuals summary on Blackboard, which is the spine of the first half.<br><br><b>Two things to know before we start.</b> This session is <b>not examined in the midterm</b>: coverage there is Sessions 1 to 8. And the second half of today is revision for that midterm, so bring questions rather than notes.</aside>
 </section>
 
 <!-- ---------- 2 ---------- -->
@@ -405,7 +405,7 @@ body.ov-on #overview{display:block}
     <h1 class="sowhat">On Wednesday you produced forecasts. Nobody asked whether they were any good.</h1>
     <ul class="build">
       <li class="step"><b>A model that runs is not a model that works.</b> Today is the first of three sessions about telling the difference.</li>
-      <li class="step"><b>This session is not on the midterm.</b> It opens the evaluation block &mdash; today, train and test splits in Session 13, cross-validation in Session 14 &mdash; and those are examined together in the final.</li>
+      <li class="step"><b>This session is not on the midterm.</b> It opens the evaluation block: today, then train and test splits in Session 13 and cross-validation in Session 14, and those are examined together in the final.</li>
       <li class="step"><b>Which is why the second half of today is revision.</b> Sessions 1 to 8, driven by your questions.</li>
     </ul>
     <div class="callout"><b>Do not let the exam news change how you treat the first half.</b> Residual diagnostics is the most-used skill in the second half of this course, and Group Assignment 2 depends on it.</div>
@@ -448,7 +448,7 @@ body.ov-on #overview{display:block}
     </figure>
     <p class="punch step wide">Four properties, two questions. Knowing which question a failure belongs to tells you whether to change the model or change what you claim.</p>
   </div>
-  <aside class="notes">The one-page PDF on Blackboard sets these out with what to do about each failure, and it is the single most useful thing to have beside you during Group Assignment 2. Print it.<br><br>A point about ordering that is easy to miss: properties 1 and 2 are checked to decide whether a model is <i>finished</i>, and properties 3 and 4 to decide what you are entitled to <i>say</i>. A model can pass 1 and 2 and still leave you unable to quote an honest interval, and that is not a failure of the forecast &mdash; it is a limit on the claim.</aside>
+  <aside class="notes">The one-page PDF on Blackboard sets these out with what to do about each failure, and it is the single most useful thing to have beside you during Group Assignment 2. Print it.<br><br>A point about ordering that is easy to miss: properties 1 and 2 are checked to decide whether a model is <i>finished</i>, and properties 3 and 4 to decide what you are entitled to <i>say</i>. A model can pass 1 and 2 and still leave you unable to quote an honest interval, and that is not a failure of the forecast. It is a limit on the claim.</aside>
 </section>
 
 <!-- ---------- 4 ---------- -->
@@ -487,7 +487,7 @@ body.ov-on #overview{display:block}
     </figure>
     <ul class="build">
       <li class="step"><b>Structure left in the residuals is structure the model failed to use.</b> A forecast that could have been better, and was not.</li>
-      <li class="step"><b>Unlike bias, this is hard to fix.</b> You need a richer model &mdash; autoregressive terms, external regressors, a different family &mdash; not an adjustment.</li>
+      <li class="step"><b>Unlike bias, this is hard to fix.</b> You need a richer model, not an adjustment: autoregressive terms, external regressors, a different family.</li>
       <li class="step"><b>Read it exactly as in Session 4.</b> Same bounds, <code>&plusmn;2/&radic;T</code>, same caution about single crossings.</li>
     </ul>
     <p class="punch step wide">If you understood Session 4, you already know how to read this plot. What is new is what a crossing now implies: not a feature of the data, but a shortcoming of the model.</p>
@@ -508,7 +508,7 @@ body.ov-on #overview{display:block}
     <div class="callout slate"><b>Bias and uselessness are different problems.</b> A biased model that otherwise fits well is nearly fixed. An unbiased model with autocorrelated residuals is not.</div>
     <p class="punch step wide">Check it, fix it if it fails, and do not congratulate a model for passing it.</p>
   </div>
-  <aside class="notes">The reason the mean model passes automatically is worth a moment. Its fitted value everywhere is the sample mean, so the residuals are the deviations from the mean, and those sum to zero by definition. Exactly the same algebra as centering the seasonal component in Session 7.<br><br>In practice a visibly non-zero residual mean often points at something more interesting than bias: a trend the model has not captured, which shows up as residuals mostly above zero early and mostly below later, or the reverse. Look at the time plot before reaching for the subtraction.</aside>
+  <aside class="notes">The reason the mean model passes automatically is one line of algebra. Its fitted value everywhere is the sample mean, so the residuals are the deviations from the mean, and those sum to zero by definition. Exactly the same algebra as centering the seasonal component in Session 7.<br><br>In practice a visibly non-zero residual mean often points at something more interesting than bias: a trend the model has not captured, which shows up as residuals mostly above zero early and mostly below later, or the reverse. Look at the time plot before reaching for the subtraction.</aside>
 </section>
 
 <!-- ---------- 6 ---------- -->
@@ -517,8 +517,8 @@ body.ov-on #overview{display:block}
     <p class="kicker">Properties 3 and 4 &nbsp;&middot;&nbsp; about what you are entitled to claim</p>
     <h1 class="sowhat">These two do not judge the forecast. They judge the interval around it.</h1>
     <ul class="build">
-      <li class="step"><b>Constant variance</b> &mdash; homoscedasticity. If the residual spread grows over time, an interval computed from the whole history is too narrow at the end and too wide at the start.</li>
-      <li class="step"><b>Normality</b> &mdash; the interval arithmetic in Session 12 assumes it. Without it the stated 95% is not 95%.</li>
+      <li class="step"><b>Constant variance</b> (homoscedasticity). If the residual spread grows over time, an interval computed from the whole history is too narrow at the end and too wide at the start.</li>
+      <li class="step"><b>Normality</b>, which the interval arithmetic in Session 12 assumes. Without it the stated 95% is not 95%.</li>
       <li class="step"><b>Both are harder to fix than bias.</b> A transformation sometimes helps, which is Session 11. Beyond that, changing the model may be the only option.</li>
     </ul>
     <div class="callout"><b>There is a way out.</b> Bootstrapped intervals need uncorrelated, homoscedastic residuals but <i>not</i> normal ones. So a normality failure is survivable; a variance failure is harder.</div>
@@ -534,9 +534,9 @@ body.ov-on #overview{display:block}
     <h1 class="sowhat">One function, three panels, three of the four properties</h1>
     <div class="console">bricks_fit |&gt; select(Nv) |&gt; gg_tsresiduals()</div>
     <ul class="build plain" style="margin-top:1.5rem">
-      <li><b>Top</b> &mdash; residuals over time &rarr; the mean, and whether the spread drifts</li>
-      <li><b>Bottom left</b> &mdash; the correlogram &rarr; autocorrelation</li>
-      <li><b>Bottom right</b> &mdash; the histogram &rarr; normality</li>
+      <li><b>Top:</b> residuals over time &rarr; the mean, and whether the spread drifts</li>
+      <li><b>Bottom left:</b> the correlogram &rarr; autocorrelation</li>
+      <li><b>Bottom right:</b> the histogram &rarr; normality</li>
     </ul>
     <div class="callout"><b>It needs one model.</b> <code>select()</code> a single column from the mable first, or it will not know which set of residuals you mean.</div>
   </div>
@@ -632,7 +632,7 @@ Ljung-Box    Q* = T(T+2) &middot; sum over k=1..l of  r_k&#178; / (T &minus; k)
     </ul>
     <p class="punch step wide">Read the p-value, not the statistic. The statistic has no meaning on its own scale.</p>
   </div>
-  <aside class="notes">Two arguments to choose. <code>lag</code> is <code>l</code>: fpp3 suggests 10 for non-seasonal data and <code>2m</code> for seasonal. <code>dof</code> is the number of parameters the model estimated, which is 0 for all four benchmarks, because none of them estimates anything except drift &mdash; and even drift is a single parameter, so <code>dof = 1</code> there if you want to be exact.<br><br>Why <code>dof</code> matters at all: a model with more parameters can fit noise, so its residuals look more like white noise than they should. Subtracting the degrees of freedom is the correction for that, and it will matter properly once ETS models arrive in Session 19 with several parameters each.</aside>
+  <aside class="notes">Two arguments to choose. <code>lag</code> is <code>l</code>: fpp3 suggests 10 for non-seasonal data and <code>2m</code> for seasonal. <code>dof</code> is the number of parameters the model estimated, which is 0 for all four benchmarks, because none of them estimates anything except drift, and even drift is a single parameter, so <code>dof = 1</code> there if you want to be exact.<br><br>Why <code>dof</code> matters at all: a model with more parameters can fit noise, so its residuals look more like white noise than they should. Subtracting the degrees of freedom is the correction for that, and it will matter properly once ETS models arrive in Session 19 with several parameters each.</aside>
 </section>
 
 <!-- ---------- 12 ---------- -->
@@ -648,12 +648,12 @@ Ljung-Box    Q* = T(T+2) &middot; sum over k=1..l of  r_k&#178; / (T &minus; k)
    0.1      <span class="hl">0.01</span>        <span class="hl">90%</span></div>
     <ul class="build">
       <li class="step"><b>Every <code>r<sub>k</sub></code> is between &minus;1 and 1</b>, so squaring shrinks all of them. But it shrinks the small ones almost to nothing.</li>
-      <li class="step"><b>A correlation of 0.1 contributes 0.01.</b> One of 0.9 contributes 0.81 &mdash; eighty times as much.</li>
+      <li class="step"><b>A correlation of 0.1 contributes 0.01.</b> One of 0.9 contributes 0.81, eighty times as much.</li>
       <li class="step"><b>So accidental little correlations cannot add up to a rejection</b>, while genuine structure at a few lags dominates the sum.</li>
     </ul>
     <p class="punch step wide">The same trick appears everywhere in statistics, from variance to least squares. Squaring is how you make a sum notice the big things and forgive the small ones.</p>
   </div>
-  <aside class="notes">Squaring does a second job here that is easy to overlook: it removes the sign. A strong <i>negative</i> autocorrelation is just as much evidence of structure as a strong positive one &mdash; Session 4's anti-phase panels are the picture of that &mdash; and without squaring the two would cancel in the sum.<br><br>The extra <code>T(T+2)/(T-k)</code> weighting in Ljung-Box gives more weight to the higher lags, where fewer pairs are available and the estimates are noisier. It is a small-sample correction, and on a long series the two statistics agree closely.</aside>
+  <aside class="notes">Squaring does a second job here that is easy to overlook: it removes the sign. A strong <i>negative</i> autocorrelation is just as much evidence of structure as a strong positive one (Session 4's anti-phase panels are the picture of that), and without squaring the two would cancel in the sum.<br><br>The extra <code>T(T+2)/(T-k)</code> weighting in Ljung-Box gives more weight to the higher lags, where fewer pairs are available and the estimates are noisier. It is a small-sample correction, and on a long series the two statistics agree closely.</aside>
 </section>
 
 <!-- ---------- 13 ---------- -->
@@ -671,7 +671,7 @@ Ljung-Box    Q* = T(T+2) &middot; sum over k=1..l of  r_k&#178; / (T &minus; k)
       <li class="step"><b>Which is the right answer.</b> A naive model on strongly seasonal quarterly data should fail this, and a diagnostic that let it pass would be the broken thing.</li>
       <li class="step"><b>Run it on <code>.innov</code>, not <code>.resid</code>.</b> Identical today, and the habit is what you want before Session 11.</li>
     </ul>
-    <p class="punch step wide">You now have the full instrument. Session 13 asks the other question &mdash; not whether structure is left, but how large the errors are.</p>
+    <p class="punch step wide">You now have the full instrument. Session 13 asks the other question: not whether structure is left, but how large the errors are.</p>
   </div>
   <aside class="notes">Reading a p-value of 0 in the output does not mean the probability is exactly zero; it means it is smaller than the print precision. Say "we reject at any conventional level" rather than "the probability is zero".<br><br>A caution that will matter in Group Assignment 2. Passing Ljung-Box is not proof that residuals are white noise; it is a failure to detect otherwise, on a test that is weak for short series. Session 4 made the same point about the visual bounds, and it applies with equal force here. "I could not detect remaining structure" is the honest phrasing.</aside>
 </section>
@@ -691,9 +691,9 @@ Ljung-Box    Q* = T(T+2) &middot; sum over k=1..l of  r_k&#178; / (T &minus; k)
       <li class="step"><b>Only the first one questions the model itself.</b> The other three are about presentation and arithmetic, not about whether the forecast is well aimed.</li>
       <li class="step"><b>None of them is a reason to hide the diagnostic.</b> A reported failure you cannot fix is a legitimate finding, and Session 7 made the same argument about decompositions.</li>
     </ul>
-    <p class="punch step wide">Print the one-page summary and keep it beside you for Group Assignment 2. It is the most reused page in the course.</p>
+    <p class="punch step wide">Print the one-page summary and keep it beside you for Group Assignment 2. It is the most used page in the course.</p>
   </div>
-  <aside class="notes">The third row is worth pausing on, because it closes a loop. A funnel-shaped residual plot usually means the series is multiplicative and you fitted it additively &mdash; which is Session 5's very first question, arriving four weeks later with a consequence attached. The eye test you learned for choosing a scheme is the same eye test that reads this plot.<br><br>The fourth row is the most survivable. Bootstrapped prediction intervals need residuals that are uncorrelated and homoscedastic but make no normality assumption at all, so a normality failure limits which method you use rather than whether you can quote an interval.</aside>
+  <aside class="notes">The third row is worth pausing on, because it closes a loop. A funnel-shaped residual plot usually means the series is multiplicative and you fitted it additively, which is Session 5's very first question back four weeks later with a consequence attached. The eye test you learned for choosing a scheme is the same eye test that reads this plot.<br><br>The fourth row is the most survivable. Bootstrapped prediction intervals need residuals that are uncorrelated and homoscedastic but make no normality assumption at all, so a normality failure limits which method you use rather than whether you can quote an interval.</aside>
 </section>
 
 <!-- ---------- 15 ---------- -->
@@ -707,12 +707,12 @@ Ljung-Box    Q* = T(T+2) &middot; sum over k=1..l of  r_k&#178; / (T &minus; k)
     </div>
     <ul class="build">
       <li class="step"><b>Twenty multiple-choice questions, four options each.</b> Conceptual recall rather than code you have to write from memory.</li>
-      <li class="step"><b>There is no retake.</b> If you cannot attend for personal or work reasons the final carries 60% instead of 30% &mdash; see the syllabus.</li>
-      <li class="step"><b>An optional online prep tutorial runs in the preceding week.</b> Come with questions to it as well.</li>
+      <li class="step"><b>There is no retake.</b> If you cannot attend for personal or work reasons the final carries 60% instead of 30% (see the syllabus).</li>
+      <li class="step"><b>An optional online prep tutorial runs in the week before it.</b> Come with questions to it as well.</li>
     </ul>
     <p class="punch step wide">Group Assignment 1 is due Sunday 25 October, after the exam. That is deliberate: revision and a from-scratch implementation should not compete for the same week.</p>
   </div>
-  <aside class="notes">Because the questions are multiple choice, the useful preparation is being able to say what each tool <i>is for</i> and what its output <i>means</i>, rather than being able to type the function call unaided. A student who can explain why a 2&times;12-MA spans thirteen points is in much better shape than one who has memorized the call.<br><br>The coverage boundary is worth restating once more before the room disperses. Anything after Session 8 is examined in the final, so today's material is not wasted &mdash; it is deferred.</aside>
+  <aside class="notes">Because the questions are multiple choice, the useful preparation is being able to say what each tool <i>is for</i> and what its output <i>means</i>, rather than being able to type the function call unaided. A student who can explain why a 2&times;12-MA spans thirteen points is in much better shape than one who has memorized the call.<br><br>State the coverage boundary once more before the class ends. Anything after Session 8 is examined in the final, so today's material is not wasted; it is deferred.</aside>
 </section>
 
 <!-- ---------- 16 ---------- -->
@@ -757,15 +757,15 @@ Ljung-Box    Q* = T(T+2) &middot; sum over k=1..l of  r_k&#178; / (T &minus; k)
   <div class="inner">
     <p class="kicker">Session 10 &nbsp;&middot;&nbsp; Wednesday 14 October</p>
     <h1 class="sowhat">Next session is the midterm.</h1>
-    <p class="lead wide">Twenty multiple-choice questions on Sessions 1 to 8. After it, Session 11 picks the course back up with transformations and the Box&ndash;Cox family &mdash; the principled version of the transformation ladder you met in Session 5.</p>
+    <p class="lead wide">Twenty multiple-choice questions on Sessions 1 to 8. After it, Session 11 picks the course back up with transformations and the Box&ndash;Cox family, the principled version of the transformation ladder you met in Session 5.</p>
     <ul class="build">
       <li class="step"><b>Session 11 also carries this homework's review</b>, on Monday 19 October, and is where Group Assignment 1 questions get answered before its 25 October deadline.</li>
-      <li class="step"><b>The evaluation block resumes at Session 13.</b> Today's diagnostics, then train and test splits, then cross-validation &mdash; examined together in the final.</li>
+      <li class="step"><b>The evaluation block resumes at Session 13.</b> Today's diagnostics, then train and test splits, then cross-validation, all examined together in the final.</li>
     </ul>
     <p class="punch step wide">Today you learned how to tell whether a model is finished. Session 13 asks how wrong it is, which turns out to be a different question with a different answer.</p>
     <p class="url" style="font-size:clamp(0.95rem,1.7vw,1.9rem)">aberrizbeitia@faculty.ie.edu</p>
   </div>
-  <aside class="notes">The distinction in the closing line is the one that organizes the rest of the course. Residual diagnostics asks whether anything is <i>left</i>; accuracy measures ask how <i>large</i> the errors are. A model can pass the first and still forecast badly, and a model can fail the first and still be the most accurate thing available.<br><br>Good luck on Wednesday. Come to the optional prep tutorial with questions, and read the four-property summary sheet once more before the exam &mdash; not because it is examined, but because it is the clearest one page in the course.</aside>
+  <aside class="notes">The distinction in the closing line is the one that organizes the rest of the course. Residual diagnostics asks whether anything is <i>left</i>; accuracy measures ask how <i>large</i> the errors are. A model can pass the first and still forecast badly, and a model can fail the first and still be the most accurate thing available.<br><br>Good luck on Wednesday. Come to the optional prep tutorial with questions, and read the four-property summary sheet once more before the exam, not because it is examined, but because it is the clearest one page in the course.</aside>
 </section>
 
 <!-- lives inside the stage so it is positioned against it, not the viewport,

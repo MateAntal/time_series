@@ -456,12 +456,12 @@ body.ov-on #overview{display:block}
       </svg>
       <div class="figrow">
         <p class="step"><b>All four are flat or straight</b>Nothing here learns a pattern. That is the point: they are the floor, not the ceiling.</p>
-        <p class="step t"><b>Each has a series it suits</b>A series with no trend and no season is genuinely well forecast by its own mean. Sometimes the floor is enough.</p>
+        <p class="step t"><b>Each has a series it suits</b>A series with no trend and no season is well forecast by its own mean. Sometimes the floor is enough.</p>
       </div>
     </figure>
     <p class="punch step wide">Seasonal naive is the one that surprises people. On a strongly seasonal series it is hard to beat, and papers get published failing to beat it.</p>
   </div>
-  <aside class="notes">The dashed green line under the drift panel is worth noticing now, because slide 10 is about it: the drift slope is not fitted by least squares. It is the straight line through the first and last observation, and nothing in between affects it.<br><br>Naive has a deeper significance than its simplicity suggests. If a series is a random walk, then the naive forecast is the <i>optimal</i> forecast, and no amount of modelling will beat it. That is the claim behind the efficient market hypothesis, which is Group Assignment 2 in Session 17.</aside>
+  <aside class="notes">Notice the dashed green line under the drift panel now, because slide 10 is about it: the drift slope is not fitted by least squares. It is the straight line through the first and last observation, and nothing in between affects it.<br><br>Naive has a deeper significance than its simplicity suggests. If a series is a random walk, then the naive forecast is the <i>optimal</i> forecast, and no amount of modelling will beat it. That is the claim behind the efficient market hypothesis, which is Group Assignment 2 in Session 17.</aside>
 </section>
 
 <!-- ---------- 4 ---------- -->
@@ -515,7 +515,7 @@ body.ov-on #overview{display:block}
     </figure>
     <p class="punch step wide">Residual and forecast error are different quantities measured on different data. Session 13 is built entirely on keeping them apart.</p>
   </div>
-  <aside class="notes">Keep this picture. It is the single most reused diagram in the course: Session 9 works on the blue gaps, Sessions 13 and 14 work on the orange ones, and every model from Session 15 on produces both.<br><br>The reason the distinction matters so much in practice is that residuals are always available and forecast errors are not. You can compute a residual the moment you fit a model; you have to wait for the world to happen before you can compute a forecast error. A model chosen on residuals alone is a model chosen on the easier question.</aside>
+  <aside class="notes">Keep this picture. It is the single most used diagram in the course: Session 9 works on the blue gaps, Sessions 13 and 14 work on the orange ones, and every model from Session 15 on produces both.<br><br>The reason the distinction matters so much in practice is that residuals are always available and forecast errors are not. You can compute a residual the moment you fit a model; you have to wait for the world to happen before you can compute a forecast error. A model chosen on residuals alone is a model chosen on the easier question.</aside>
 </section>
 
 <!-- ---------- 5 ---------- -->
@@ -557,7 +557,7 @@ y&#770;<span class="hl">_{t | t-1}</span>     the value at t,   given everything
     </ul>
     <p class="punch step wide">Worth carrying into Session 9: a diagnostic run on residuals is only as honest as the fitted values underneath it.</p>
   </div>
-  <aside class="notes">How much the mean model actually gains from this is small when <code>T</code> is large, because one observation out of several hundred barely moves the average. On a very short series it is not negligible at all.<br><br>You will meet the same idea in a much sharper form in Session 14. Cross-validation exists precisely to stop a model being judged on data it was fitted to, and the mean model here is the mildest possible version of that problem.</aside>
+  <aside class="notes">How much the mean model actually gains from this is small when <code>T</code> is large, because one observation out of several hundred barely moves the average. On a very short series it is not negligible at all.<br><br>You will meet the same idea in a much sharper form in Session 14. Cross-validation exists to stop a model being judged on data it was fitted to, and the mean model here is the mildest possible version of that problem.</aside>
 </section>
 
 <!-- ---------- 7 ---------- -->
@@ -611,7 +611,7 @@ NAIVE(y)   y&#770;_{T+h|T}  =  y_T                              <span class="dim
     <ul class="build">
       <li class="step"><b>The formula looks worse than the idea.</b> All the <code>k</code> is doing is finding the most recent observation that sits in the same position of the season.</li>
       <li class="step"><b>Its fitted value at <code>t</code> is <code>y<sub>t-m</sub></code></b>, so the first <code>m</code> fitted values are missing. Same reason the moving average had gaps in Session 6: nothing to look back at yet.</li>
-      <li class="step"><b>It carries the whole seasonal shape for free</b>, without estimating a single parameter. On a strongly seasonal series that is a genuinely high bar.</li>
+      <li class="step"><b>It carries the whole seasonal shape for free</b>, without estimating a single parameter. On a strongly seasonal series that is a high bar.</li>
     </ul>
     <p class="punch step wide">If a forecasting paper does not report seasonal naive as a comparison on seasonal data, be suspicious. It is the benchmark most often quietly omitted.</p>
   </div>
@@ -647,7 +647,7 @@ NAIVE(y)   y&#770;_{T+h|T}  =  y_T                              <span class="dim
     </figure>
     <p class="punch step wide">Equivalent to drawing a line through the first and last observations and extending it. Say that out loud and the formula stops needing to be memorized.</p>
   </div>
-  <aside class="notes">The telescoping is worth doing once on paper. The average change is the sum of <code>(y<sub>t</sub> &minus; y<sub>t-1</sub>)</code> from <code>t = 2</code> to <code>T</code>, divided by <code>T &minus; 1</code>. Expand the sum and everything cancels except <code>y<sub>T</sub> &minus; y<sub>1</sub></code>. The script computes both forms and checks they agree.<br><br>In <code>fable</code> the drift method is written <code>RW(y ~ drift())</code>, where RW stands for random walk: a naive forecast is a random walk with no drift, and this is the same model with a drift term added. <code>tidy()</code> will show you the estimated drift, and it is the only one of today's four methods with a parameter to estimate at all.</aside>
+  <aside class="notes">Do the telescoping once on paper. The average change is the sum of <code>(y<sub>t</sub> &minus; y<sub>t-1</sub>)</code> from <code>t = 2</code> to <code>T</code>, divided by <code>T &minus; 1</code>. Expand the sum and everything cancels except <code>y<sub>T</sub> &minus; y<sub>1</sub></code>. The script computes both forms and checks they agree.<br><br>In <code>fable</code> the drift method is written <code>RW(y ~ drift())</code>, where RW stands for random walk: a naive forecast is a random walk with no drift, and this is the same model with a drift term added. <code>tidy()</code> will show you the estimated drift, and it is the only one of today's four methods with a parameter to estimate at all.</aside>
 </section>
 
 <!-- ---------- 11 ---------- -->
@@ -733,7 +733,7 @@ fit |&gt; forecast(h = 24)     <span class="dim"># 24 months beyond the data</sp
     <ul class="build">
       <li class="step"><b>Plot all four with <code>level = NULL</code>.</b> Four shapes on one set of axes is the clearest picture of what each method assumes.</li>
       <li class="step"><b>Then plot one of them with its intervals.</b> The difference in how confident the two pictures look is the point of the exercise.</li>
-      <li class="step"><b>Ask which one you would defend.</b> Not which is correct &mdash; there is no way to know that yet. Which one you would defend, and from what feature of the series.</li>
+      <li class="step"><b>Ask which one you would defend.</b> Not which is correct: there is no way to know that yet. Which one you would defend, and from what feature of the series.</li>
     </ul>
     <div class="callout slate"><b>Measuring which is actually better is Session 13.</b> Today you argue from the shape of the series. That is a legitimate first move, and it is not a substitute for the measurement.</div>
   </div>
@@ -851,12 +851,12 @@ fit |&gt; forecast(h = 24)     <span class="dim"># 24 months beyond the data</sp
       <li><b>Pick one seasonal series</b> from <code>fpp3</code>. Anything you find interesting.</li>
       <li><b>Fit all four benchmarks</b> in a single <code>model()</code> call, forecast far enough to show two full seasons, and plot them over the data.</li>
       <li><b>One sentence</b> on which benchmark you would defend for your series, and which feature of the series makes it so.</li>
-      <li>That is all. No tuning, no error measures &mdash; measuring which forecast is better is Session 13.</li>
+      <li>That is all. No tuning, no error measures. Measuring which forecast is better is Session 13.</li>
     </ul>
     <div class="callout"><b>Deliberately about an hour.</b> Group Assignment 1 is running this week and it is due Sunday 25 October. Session 7's homework shares tonight's deadline.</div>
     <div class="callout slate"><b>This is the last session on the midterm.</b> Coverage is Sessions 1 to 8. Session 9 is examined in the final instead, so start your revision list here.</div>
   </div>
-  <aside class="notes">Three things land in the same week on purpose, and the homework is the one that has been shrunk to make room. Group Assignment 1 is the large piece of work; this is a warm-up for the machinery you will use in it.<br><br>On revision: the midterm is 20 multiple-choice questions over Sessions 1 to 8, and there is no retake. The optional online prep tutorial runs in the preceding week. Session 9 is a full revision session, so arrive with your questions rather than your notes.</aside>
+  <aside class="notes">Three things land in the same week on purpose, and the homework is the one that has been shrunk to make room. Group Assignment 1 is the large piece of work; this is a warm-up for the machinery you will use in it.<br><br>On revision: the midterm is 20 multiple-choice questions over Sessions 1 to 8, and there is no retake. The optional online prep tutorial runs in the week before it. Session 9 is a full revision session, so arrive with your questions rather than your notes.</aside>
 </section>
 
 <!-- ---------- 19 ---------- -->

@@ -2662,7 +2662,7 @@ vertical-align: -.125em;
 </div>
 </div>
 <ol start="2" type="1">
-<li><strong>integer</strong>: integer nunbers</li>
+<li><strong>integer</strong>: integer numbers</li>
 </ol>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Note the L at the end of the number to indicate it should</span></span>
@@ -2677,7 +2677,7 @@ vertical-align: -.125em;
 <li><strong>numeric</strong>: real numbers</li>
 </ol>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Did not include the L, so it is stores as &quot;numeric&quot; and not integer</span></span>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Did not include the L, so it is stored as &quot;numeric&quot; and not integer</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>number <span class="ot">&lt;-</span> <span class="dv">3</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>number</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -2690,7 +2690,7 @@ vertical-align: -.125em;
 </div>
 <p>As a side note, double stands for <em>double precision number</em>. Explaining this in detail would require us to get into floating point arithmetic, which is beyond the scope of this course. Just know that there are <em>single precision numbers</em> and <em>double precision numbers</em>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Did not include the L, so it is stores as &quot;numeric&quot; and not integer</span></span>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Did not include the L, so it is stored as &quot;numeric&quot; and not integer</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>number <span class="ot">&lt;-</span> <span class="fl">3.5</span></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>number</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -2726,7 +2726,7 @@ vertical-align: -.125em;
 </div>
 </div>
 <ol start="6" type="1">
-<li><strong>Raw</strong>: not discussed in this course.</li>
+<li><strong>raw</strong>: not discussed in this course.</li>
 </ol>
 </section>
 <section id="inspecting-the-type-of-an-object" class="level1">
@@ -2768,12 +2768,12 @@ vertical-align: -.125em;
 </ul>
 <section id="example-booleans-to-integers" class="level2">
 <h2 class="anchored" data-anchor-id="example-booleans-to-integers">Example: booleans to integers</h2>
-<p>This is actually very important. Keep in mind that:</p>
+<p>This is important. Keep in mind that:</p>
 <ul>
 <li><code>TRUE</code> will be converted to <code>1</code></li>
 <li><code>FALSE</code> will be converted to <code>0</code></li>
 </ul>
-<p><strong>Never forget this, this convention is not language-specific (it applies to other programming languages)</strong>.</p>
+<p><strong>Never forget this. This convention is not language-specific (it applies to other programming languages)</strong>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>bool1 <span class="ot">&lt;-</span> <span class="cn">TRUE</span></span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>bool2 <span class="ot">&lt;-</span> <span class="cn">FALSE</span></span>
@@ -2853,7 +2853,7 @@ vertical-align: -.125em;
 </table>
 <section id="examples" class="level2">
 <h2 class="anchored" data-anchor-id="examples">Examples</h2>
-<p>Lets create for variables</p>
+<p>Let's create four variables</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="dv">10</span></span>
 <span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>b <span class="ot">&lt;-</span> <span class="dv">5</span></span>
@@ -2987,7 +2987,7 @@ vertical-align: -.125em;
 <pre><code>[1] FALSE</code></pre>
 </div>
 </div>
-<p>This is a summary of all possible inputs to the function logical and and is what is called a <strong>truth table of the operator AND</strong> (do not learn it by heart, be sure you understand AND so that you would be able to reconstruct the table):</p>
+<p>This is a summary of all possible inputs to the function logical AND and is what is called a <strong>truth table of the operator AND</strong> (do not learn it by heart, be sure you understand AND so that you would be able to reconstruct the table):</p>
 <table class="table">
 <caption>Truth table of the AND operator ( &amp; )</caption>
 <thead>
@@ -3246,7 +3246,7 @@ vertical-align: -.125em;
 </section>
 <section id="relational-operators-and-non-numeric-types" class="level2">
 <h2 class="anchored" data-anchor-id="relational-operators-and-non-numeric-types">Relational operators and non-numeric types</h2>
-<p>Importantly note that this operators can be used to compare types other than numbers!. This will be very useful to filter dataframes (see corresponding notebook).</p>
+<p>Importantly note that these operators can be used to compare types other than numbers. This will be useful to filter dataframes (see corresponding notebook).</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb124"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb124-1"><a href="#cb124-1" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;Paco de Lucia&quot;</span> <span class="sc">==</span> <span class="st">&quot;Paco de Lucia&quot;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">

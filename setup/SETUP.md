@@ -119,7 +119,7 @@ The first line installs the forecasting toolkit — `tsibble`, `feasts`, `fable`
 |---|---|---|
 | `tidyverse` | the R primer, **your first homework** | see the note below |
 | `nycflights13`, `babynames` | the R primer | example datasets it uses |
-| `urca` | Session 1, and Group Assignment 2 | `ARIMA()`'s unit-root test |
+| `urca` | Session 1 | `ARIMA()`'s unit-root test |
 | `GGally`, `fma`, `patchwork` | Session 3 onwards | plotting and extra datasets |
 | `cowplot`, `seasonal` | Sessions 12 and 7 | loaded by those notebooks |
 
