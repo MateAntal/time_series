@@ -13,8 +13,8 @@ seasonally adjusted component and the seasonal component separately, then recomb
 **R:** `model()`, `MEAN()`, `NAIVE()`, `SNAIVE()`, `RW(y ~ drift())`, `forecast(h = ...)`,
 `augment()`, `decomposition_model()`
 
-**Homework:** Fit all four benchmarks to a series of your choice, extract the fitted values, and plot
-forecasts. Begin midterm revision.
+**Homework:** Fit all four benchmarks to a series of your choice and plot the forecasts. Deliberately
+short — Group Assignment 1 is running this week and midterm revision starts now.
 
 **Outcome:** Student produces and plots benchmark forecasts for any series, can say precisely what a
 fitted value is, and can forecast a series through its decomposition.
@@ -22,3 +22,6 @@ fitted value is, and can forecast a series through its decomposition.
 > 5.7 closes the loop from the decomposition block: it is what makes decomposition a *forecasting*
 > tool rather than only a descriptive one. It is also the ancestor of the STL + ETS approach the
 > follow-up course uses.
+
+> **This is the last session on the midterm.** Coverage runs S1–S8; Session 9 opens the evaluation arc
+> and is examined in the final instead.

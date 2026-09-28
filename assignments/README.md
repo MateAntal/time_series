@@ -2,7 +2,7 @@
 
 Two group assignments, 20 % of the course grade between them. Both receive detailed written feedback.
 
-## 1 — Classical decomposition (released Session 7)
+## 1 — Classical decomposition (released Session 7, due Sunday 25 October 2026)
 
 [`assignment-1-classical-decomposition/`](assignment-1-classical-decomposition/)
 
@@ -26,3 +26,6 @@ computed both via `accuracy()` and by hand, then full cross-validation.
 
 Both assignments are submitted on Blackboard. See [`../SYLLABUS.md`](../SYLLABUS.md) for weights, the
 AI policy and the library policy — using a different library for the same model is graded zero.
+
+Assignment 1 runs for four weeks and is due **Sunday 25 October 2026, 23:59** — after the midterm,
+so that exam revision and a from-scratch implementation do not compete for the same week.

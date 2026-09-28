@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Session 9 · Time Series Analysis · Fall 2026</title>
+<style>
+/* ============================================================
+   Session 09 slides. Same self-contained shell as Sessions 01
+   to 08: no fonts, scripts or images are fetched from the
+   network, so this renders identically on a projector with no
+   internet.
+   ============================================================ */
+
+:root{
+  --paper:#FAF8F5;
+  --ink:#161513;
+  --muted:#6B665E;
+  --faint:#98928a;
+  --hair:#E4DFD5;
+  --slate:#1F3A4D;
+  --terra:#B5471E;
+  --sage:#6B7F5E;
+  --sand:#EFEAE1;
+
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif;
+  --mono:SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+
+  --fs-huge:clamp(3.4rem,9vw,10rem);
+  --fs-sowhat:clamp(2.1rem,4.3vw,4.8rem);
+  --fs-h2:clamp(1.5rem,2.6vw,2.9rem);
+  --fs-lead:clamp(1.05rem,1.62vw,1.95rem);
+  --fs-body:clamp(0.95rem,1.25vw,1.5rem);
+  --fs-small:clamp(0.82rem,0.98vw,1.15rem);
+  --fs-kicker:clamp(0.66rem,0.8vw,0.95rem);
+  --fs-mono:clamp(0.88rem,1.28vw,1.62rem);
+
+  --rail:266px;
+  --notes-h:0px;
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--sans);
+  -webkit-font-smoothing:antialiased;
+  display:flex;
+  overflow:hidden;
+}
+
+/* ---------------- left rail ---------------- */
+
+#rail{
+  width:var(--rail);
+  flex:0 0 var(--rail);
+  border-right:1px solid var(--hair);
+  background:var(--sand);
+  display:flex;
+  flex-direction:column;
+  padding:2.1rem 0 1.1rem;
+  transition:margin-left .25s ease;
+  z-index:5;
+}
+body.rail-hidden #rail{margin-left:calc(-1 * var(--rail))}
+
+#rail .brand{padding:0 1.6rem 1.5rem;border-bottom:1px solid var(--hair)}
+#rail .brand b{
+  display:block;font-family:var(--serif);font-size:1.18rem;
+  font-weight:500;line-height:1.15;letter-spacing:.005em;
+}
+#rail .brand span{
+  display:block;margin-top:.42rem;font-size:.7rem;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--muted);
+}
+
+#toc{list-style:none;margin:0;padding:1rem 0;flex:1;overflow:auto}
+#toc li{
+  display:flex;gap:.72rem;align-items:baseline;
+  padding:.52rem 1.6rem .52rem 1.25rem;
+  font-size:.83rem;line-height:1.3;color:var(--muted);
+  border-left:3px solid transparent;cursor:pointer;
+  transition:color .15s ease,border-color .15s ease;
+}
+#toc li .num{
+  font-variant-numeric:tabular-nums;font-size:.68rem;
+  color:var(--faint);min-width:.9rem;
+}
+#toc li:hover{color:var(--ink)}
+#toc li.on{color:var(--ink);border-left-color:var(--terra);font-weight:600}
+#toc li.on .num{color:var(--terra)}
+#toc li.done{color:var(--faint)}
+/* a dot marks the sections delivered from the RStudio screen */
+#toc li .live{
+  margin-left:auto;width:6px;height:6px;border-radius:50%;
+  background:var(--slate);opacity:.45;flex:0 0 6px;
+}
+#toc li.on .live{opacity:1}
+
+#rail .foot{padding:.9rem 1.6rem 0;border-top:1px solid var(--hair)}
+#bar{height:2px;background:var(--hair);border-radius:2px;overflow:hidden}
+#bar i{display:block;height:100%;width:0;background:var(--terra);transition:width .3s ease}
+#rail .foot .keys{
+  margin-top:.7rem;font-size:.63rem;color:var(--faint);
+  line-height:1.7;letter-spacing:.02em;
+}
+kbd{
+  font-family:var(--mono);font-size:.62rem;background:var(--paper);
+  border:1px solid var(--hair);border-radius:3px;padding:.05em .32em;color:var(--muted);
+}
+
+/* ---------------- stage ---------------- */
+
+#stage{position:relative;flex:1;min-width:0;overflow:hidden}
+
+.slide{
+  position:absolute;inset:0;bottom:var(--notes-h);
+  display:flex;overflow:auto;
+  padding:5vh 5.5vw 5vh 5vw;
+  opacity:0;visibility:hidden;
+  transition:opacity .26s ease;
+}
+.slide.active{opacity:1;visibility:visible}
+.slide > .inner{margin:auto;width:100%;max-width:1240px}
+
+/* ---------------- typography ---------------- */
+
+.kicker{
+  margin:0 0 1.15rem;font-size:var(--fs-kicker);letter-spacing:.19em;
+  text-transform:uppercase;color:var(--terra);font-weight:600;
+}
+.kicker.q{color:var(--muted)}
+
+h1.sowhat{
+  margin:0;font-family:var(--serif);font-weight:500;
+  font-size:var(--fs-sowhat);line-height:1.04;letter-spacing:-.012em;
+  max-width:19ch;
+}
+h1.sowhat.wide{max-width:26ch}
+h2.sub{
+  margin:1.5rem 0 0;font-family:var(--serif);font-weight:500;
+  font-size:var(--fs-h2);line-height:1.15;color:var(--slate);max-width:26ch;
+}
+.lead{font-size:var(--fs-lead);line-height:1.4;color:var(--muted);max-width:44ch;margin:1.3rem 0 0}
+.lead.wide{max-width:58ch}
+.small{font-size:var(--fs-small);color:var(--faint);line-height:1.55;margin:1.5rem 0 0;max-width:60ch}
+.hr{height:1px;background:var(--hair);border:0;margin:1.9rem 0 0}
+
+/* inline code sits inside serif headlines and sans body alike, so it is
+   sized relative to its parent rather than at a fixed size */
+code{
+  font-family:var(--mono);font-size:.86em;letter-spacing:-.01em;
+  background:#fff;border:1px solid var(--hair);border-radius:3px;
+  padding:.08em .34em;color:var(--slate);white-space:nowrap;
+}
+h1.sowhat code{font-size:.82em;padding:.05em .26em;color:var(--ink)}
+.callout code,ul.build code,table.traps code{background:var(--sand);border-color:#DCD5C8}
+
+.punch{
+  font-family:var(--serif);font-size:var(--fs-h2);line-height:1.16;
+  color:var(--terra);margin:1.7rem 0 0;max-width:24ch;font-weight:500;
+}
+.punch.ink{color:var(--ink)}
+.punch.slate{color:var(--slate)}
+.punch.wide{max-width:34ch}
+
+.huge{
+  font-family:var(--mono);font-size:var(--fs-huge);line-height:1;
+  letter-spacing:-.03em;margin:0;color:var(--ink);
+}
+.huge.long{font-size:clamp(2.1rem,5.4vw,5.8rem)}
+.url{
+  font-family:var(--mono);font-size:clamp(1.1rem,2.55vw,3rem);
+  line-height:1.2;color:var(--slate);margin:1.3rem 0 0;word-break:break-word;
+}
+
+/* ---------------- builds ---------------- */
+
+ul.build{list-style:none;margin:1.9rem 0 0;padding:0}
+ul.build li{
+  font-size:var(--fs-lead);line-height:1.34;margin:0 0 1.02rem;
+  padding-left:2.1rem;position:relative;max-width:46ch;
+}
+ul.build.wide li{max-width:58ch}
+ul.build li:last-child{margin-bottom:0}
+ul.build li::before{
+  content:counter(step);counter-increment:step;
+  position:absolute;left:0;top:.24em;
+  font-family:var(--mono);font-size:.62em;color:var(--terra);
+  font-weight:700;letter-spacing:.04em;
+}
+ul.build{counter-reset:step}
+ul.build.plain li::before{content:"·";font-size:1em;top:.02em;color:var(--terra)}
+ul.build li b{font-weight:600}
+
+.step{opacity:0;transform:translateY(6px);transition:opacity .3s ease,transform .3s ease}
+.step.on{opacity:1;transform:none}
+
+/* ---------------- blocks ---------------- */
+
+.console{
+  font-family:var(--mono);font-size:var(--fs-mono);line-height:1.62;
+  background:#fff;border:1px solid var(--hair);border-left:3px solid var(--slate);
+  border-radius:3px;padding:1.05rem 1.3rem;margin:1.7rem 0 0;
+  white-space:pre;overflow-x:auto;color:var(--slate);
+}
+.console .hl{color:var(--terra);font-weight:700}
+.console .dim{color:var(--faint)}
+.console.terra{border-left-color:var(--terra)}
+.console.tight{font-size:clamp(0.78rem,1.05vw,1.32rem);padding:.85rem 1.05rem}
+
+.callout{
+  margin:1.7rem 0 0;padding:.95rem 1.25rem;border-radius:3px;
+  background:#fff;border:1px solid var(--hair);border-left:3px solid var(--terra);
+  font-size:var(--fs-body);line-height:1.45;max-width:52ch;
+}
+.callout b{color:var(--terra)}
+.callout.slate{border-left-color:var(--slate)}
+.callout.slate b{color:var(--slate)}
+
+.cards{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem 1.5rem;margin:1.9rem 0 0}
+.cards.four{grid-template-columns:repeat(4,1fr);gap:1.2rem}
+.card{border-top:2px solid var(--slate);padding:.85rem 0 0}
+.card.terra{border-top-color:var(--terra)}
+.card.sage{border-top-color:var(--sage)}
+.card h3{
+  margin:0 0 .5rem;font-size:var(--fs-small);letter-spacing:.11em;
+  text-transform:uppercase;color:var(--slate);font-weight:700;
+}
+.card.terra h3{color:var(--terra)}
+.card.sage h3{color:var(--sage)}
+.card p{margin:0;font-size:var(--fs-body);line-height:1.38;color:var(--muted)}
+
+table.traps{border-collapse:collapse;margin:1.6rem 0 0;width:100%}
+table.traps td{
+  padding:.58rem .9rem .58rem 0;border-bottom:1px solid var(--hair);
+  font-size:var(--fs-body);line-height:1.35;vertical-align:top;
+}
+table.traps td.os{
+  white-space:nowrap;color:var(--slate);font-weight:700;
+  font-size:var(--fs-small);letter-spacing:.05em;text-transform:uppercase;padding-top:.72rem;
+}
+table.traps td.fix{color:var(--muted)}
+table.traps td code{white-space:nowrap}
+table.traps.compact td{padding:.42rem .9rem .42rem 0;font-size:var(--fs-small)}
+
+.chips{display:flex;flex-wrap:wrap;gap:.5rem;margin:1.5rem 0 0}
+.chip{
+  font-size:var(--fs-small);border:1px solid var(--hair);background:#fff;
+  border-radius:100px;padding:.34em .95em;color:var(--slate);letter-spacing:.02em;
+}
+
+figure{margin:1.7rem 0 0}
+figure svg{width:100%;height:auto;max-height:44vh;display:block}
+figcaption{
+  margin-top:1rem;font-size:var(--fs-body);color:var(--muted);
+  line-height:1.4;max-width:56ch;
+}
+.figrow{display:grid;grid-template-columns:1fr 1fr;gap:1.6rem;margin-top:.9rem}
+.figrow.three{grid-template-columns:repeat(3,1fr);gap:1.3rem}
+.figrow p{margin:0;font-size:var(--fs-body);line-height:1.38}
+.figrow p b{display:block;color:var(--slate);letter-spacing:.05em;font-size:.8em;text-transform:uppercase;margin-bottom:.3rem}
+.figrow p.t b{color:var(--terra)}
+.figrow p.g b{color:var(--sage)}
+
+.split{display:grid;grid-template-columns:1.05fr .95fr;gap:3rem;align-items:center}
+@media (max-width:1080px){.split{grid-template-columns:1fr;gap:1.5rem}.cards.four{grid-template-columns:repeat(2,1fr)}.figrow.three{grid-template-columns:1fr}}
+
+/* ---------------- title slide ---------------- */
+
+.title-slide .inner{max-width:none}
+.title-slide h1{
+  font-family:var(--serif);font-weight:500;margin:0;
+  font-size:clamp(2.6rem,6.4vw,7.2rem);line-height:1;letter-spacing:-.02em;
+}
+.title-slide .rule{width:84px;height:3px;background:var(--terra);margin:2rem 0}
+.title-slide .who{font-size:var(--fs-lead);line-height:1.5;color:var(--muted);margin:0}
+.title-slide .who b{color:var(--ink);font-weight:600}
+
+/* ---------------- HUD ---------------- */
+
+#hud{
+  position:fixed;right:1.1rem;bottom:.85rem;z-index:20;
+  display:flex;align-items:center;gap:.55rem;
+  font-family:var(--mono);font-size:.72rem;color:var(--faint);
+}
+#hud button{
+  font:inherit;border:1px solid var(--hair);background:var(--paper);
+  color:var(--muted);border-radius:3px;width:26px;height:24px;cursor:pointer;line-height:1;
+}
+#hud button:hover{color:var(--ink);border-color:var(--muted)}
+#count{font-variant-numeric:tabular-nums;letter-spacing:.05em}
+
+/* ---------------- notes ---------------- */
+
+.notes{display:none}
+#notepane{
+  position:absolute;left:0;right:0;bottom:0;height:212px;z-index:10;
+  background:#F3EFE7;border-top:1px solid var(--hair);
+  padding:1rem 1.6rem 1.1rem;overflow:auto;display:none;
+}
+body.notes-on #notepane{display:block}
+#notepane h4{
+  margin:0 0 .55rem;font-size:.63rem;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--terra);font-weight:700;
+}
+#notepane .body{font-size:.94rem;line-height:1.58;color:#3d3a35;max-width:96ch}
+#notepane .body em{color:var(--slate);font-style:normal;font-weight:600}
+#notepane .body .clock{
+  font-family:var(--mono);background:var(--paper);border:1px solid var(--hair);
+  border-radius:3px;padding:.05em .4em;font-size:.86em;color:var(--terra);font-weight:700;
+}
+/* screen-switch cue. Loud on purpose: it is the one instruction that costs
+   you the room if you miss it. */
+#notepane .body .switch{
+  display:inline-block;font-family:var(--mono);font-size:.78em;font-weight:700;
+  letter-spacing:.09em;text-transform:uppercase;
+  background:var(--slate);color:var(--paper);border-radius:3px;
+  padding:.18em .62em;margin:0 .5em .2em 0;
+}
+#notepane .body .switch.back{background:var(--terra)}
+
+/* ---------------- overview ---------------- */
+
+#overview{
+  position:fixed;inset:0;z-index:40;background:var(--paper);
+  padding:2.4rem 3vw;overflow:auto;display:none;
+}
+body.ov-on #overview{display:block}
+#overview h3{
+  margin:0 0 1.4rem;font-family:var(--serif);font-weight:500;font-size:1.5rem;
+}
+#ovlist{columns:3;column-gap:2.6rem;list-style:none;margin:0;padding:0}
+@media (max-width:1000px){#ovlist{columns:2}}
+#ovlist li{
+  break-inside:avoid;display:flex;gap:.7rem;padding:.28rem 0;
+  font-size:.86rem;line-height:1.35;color:var(--muted);cursor:pointer;
+}
+#ovlist li:hover{color:var(--ink)}
+#ovlist li.on{color:var(--terra);font-weight:600}
+#ovlist li .n{font-family:var(--mono);font-size:.72rem;color:var(--faint);min-width:1.6rem;text-align:right}
+#ovlist li.head{
+  margin-top:1.1rem;color:var(--slate);font-weight:700;font-size:.68rem;
+  letter-spacing:.16em;text-transform:uppercase;cursor:default;
+}
+#ovlist li.head:first-child{margin-top:0}
+
+/* ---------------- print ---------------- */
+
+@media print{
+  body{display:block;overflow:visible;background:#fff}
+  #rail,#hud,#notepane,#overview{display:none !important}
+  #stage{overflow:visible;position:static}
+  .slide{
+    position:static;visibility:visible;opacity:1;bottom:0;
+    height:auto;min-height:92vh;page-break-after:always;
+    border-bottom:1px solid #ddd;
+  }
+  .step{opacity:1 !important;transform:none !important}
+  figure svg{max-height:32vh}
+}
+</style>
+</head>
+
+<body>
+
+<!-- ============================== RAIL ============================== -->
+<nav id="rail">
+  <div class="brand">
+    <b>Time Series Analysis</b>
+    <span>Session 9 · Fall 2026</span>
+  </div>
+  <ul id="toc"></ul>
+  <div class="foot">
+    <div id="bar"><i></i></div>
+    <div class="keys">
+      <kbd>&rarr;</kbd> next &nbsp; <kbd>&larr;</kbd> back &nbsp; <kbd>N</kbd> detail<br>
+      <kbd>O</kbd> jump &nbsp; <kbd>F</kbd> full &nbsp; <kbd>[</kbd> hide this pane
+    </div>
+  </div>
+</nav>
+
+<!-- ============================== STAGE ============================== -->
+<main id="stage">
+
+<!-- ---------- 1 ---------- -->
+<section class="slide title-slide" data-section="1" data-title="Title">
+  <div class="inner">
+    <p class="kicker">IE University · Dual Degree BBA &amp; Data and Business Analytics</p>
+    <h1>What is<br>left over.</h1>
+    <div class="rule"></div>
+    <p class="who"><b>Session 9.</b> Residual diagnostics, and midterm revision.<br>
+    Alejandro Berrizbeitia · aberrizbeitia@faculty.ie.edu</p>
+  </div>
+  <aside class="notes">The deck is self-contained: press <b>N</b> at any time to open or close this panel, and <b>O</b> for a list of every slide.<br><br>Today is fpp3 section 5.4, notebook <code>09_B</code>, and the one-page residuals summary on Blackboard, which is the spine of the first half.<br><br><b>Two things to know before we start.</b> This session is <b>not examined in the midterm</b> &mdash; coverage there is Sessions 1 to 8. And the second half of today is revision for that midterm, so bring questions rather than notes.</aside>
+</section>
+
+<!-- ---------- 2 ---------- -->
+<section class="slide" data-section="1" data-title="Where we are">
+  <div class="inner">
+    <p class="kicker">Where we are &nbsp;&middot;&nbsp; and what is on the exam</p>
+    <h1 class="sowhat">On Wednesday you produced forecasts. Nobody asked whether they were any good.</h1>
+    <ul class="build">
+      <li class="step"><b>A model that runs is not a model that works.</b> Today is the first of three sessions about telling the difference.</li>
+      <li class="step"><b>This session is not on the midterm.</b> It opens the evaluation block &mdash; today, train and test splits in Session 13, cross-validation in Session 14 &mdash; and those are examined together in the final.</li>
+      <li class="step"><b>Which is why the second half of today is revision.</b> Sessions 1 to 8, driven by your questions.</li>
+    </ul>
+    <div class="callout"><b>Do not let the exam news change how you treat the first half.</b> Residual diagnostics is the most-used skill in the second half of this course, and Group Assignment 2 depends on it.</div>
+    <p class="punch step wide">The midterm is Wednesday 14 October. Twenty multiple-choice questions, Sessions 1 to 8, no retake.</p>
+  </div>
+  <aside class="notes">The coverage change is deliberate rather than administrative. Session 8 closes the decomposition arc and opens forecasting; Session 9 opens the evaluation arc and runs through Sessions 13 and 14. Splitting the exams at that seam keeps each one testing a coherent body of material rather than stopping halfway through an idea.<br><br>It also fixes a scheduling problem. The session after this one is the midterm itself, so there was no room for the usual start-of-session homework review. Tonight's homework is reviewed at the start of Session 11 instead, and slide 18 has the details.</aside>
+</section>
+
+<!-- ---------- 3 ---------- -->
+<section class="slide" data-section="2" data-title="Four properties">
+  <div class="inner">
+    <p class="kicker">fpp3 5.4 &nbsp;&middot;&nbsp; the summary sheet in one slide</p>
+    <h1 class="sowhat wide">A model has done its job when nothing but noise is left.</h1>
+    <figure>
+      <svg viewBox="0 0 760 208" role="img" aria-label="Four properties in two groups. The first group, about the model, contains no autocorrelation and zero mean. The second group, about the intervals, contains constant variance and normal distribution. The first group is marked as worth fixing, the second as harder to fix">
+        <g font-family="SFMono-Regular,Menlo,monospace">
+          <rect x="24" y="30" width="348" height="150" rx="5" fill="#B5471E" opacity=".07"/>
+          <rect x="24" y="30" width="348" height="150" rx="5" fill="none" stroke="#B5471E" stroke-width="1.8"/>
+          <text x="198" y="54" text-anchor="middle" fill="#B5471E" font-size="12.5" font-weight="700">ABOUT THE MODEL</text>
+          <text x="198" y="72" text-anchor="middle" fill="#98928a" font-size="10.5">fails here and the model can be improved</text>
+          <text x="46" y="104" fill="#161513" font-size="13">1 &nbsp; no autocorrelation</text>
+          <text x="68" y="122" fill="#98928a" font-size="10.5">nothing left to explain</text>
+          <text x="46" y="150" fill="#161513" font-size="13">2 &nbsp; zero mean</text>
+          <text x="68" y="168" fill="#98928a" font-size="10.5">the forecasts are not biased</text>
+
+          <rect x="388" y="30" width="348" height="150" rx="5" fill="#1F3A4D" opacity=".07"/>
+          <rect x="388" y="30" width="348" height="150" rx="5" fill="none" stroke="#1F3A4D" stroke-width="1.8"/>
+          <text x="562" y="54" text-anchor="middle" fill="#1F3A4D" font-size="12.5" font-weight="700">ABOUT THE INTERVALS</text>
+          <text x="562" y="72" text-anchor="middle" fill="#98928a" font-size="10.5">fails here and the intervals are wrong</text>
+          <text x="410" y="104" fill="#161513" font-size="13">3 &nbsp; constant variance</text>
+          <text x="432" y="122" fill="#98928a" font-size="10.5">the spread does not drift</text>
+          <text x="410" y="150" fill="#161513" font-size="13">4 &nbsp; normally distributed</text>
+          <text x="432" y="168" fill="#98928a" font-size="10.5">so the interval arithmetic holds</text>
+        </g>
+      </svg>
+      <div class="figrow">
+        <p class="step"><b>Left pair: can I do better?</b>Autocorrelation and bias both say the model missed something. Both are worth acting on.</p>
+        <p class="step t"><b>Right pair: can I quote a range?</b>Variance and normality decide whether a prediction interval means what it claims. Session 12's problem.</p>
+      </div>
+    </figure>
+    <p class="punch step wide">Four properties, two questions. Knowing which question a failure belongs to tells you whether to change the model or change what you claim.</p>
+  </div>
+  <aside class="notes">The one-page PDF on Blackboard sets these out with what to do about each failure, and it is the single most useful thing to have beside you during Group Assignment 2. Print it.<br><br>A point about ordering that is easy to miss: properties 1 and 2 are checked to decide whether a model is <i>finished</i>, and properties 3 and 4 to decide what you are entitled to <i>say</i>. A model can pass 1 and 2 and still leave you unable to quote an honest interval, and that is not a failure of the forecast &mdash; it is a limit on the claim.</aside>
+</section>
+
+<!-- ---------- 4 ---------- -->
+<section class="slide" data-section="2" data-title="No autocorrelation">
+  <div class="inner">
+    <p class="kicker">Property 1 &nbsp;&middot;&nbsp; the hard one</p>
+    <h1 class="sowhat">This is the correlogram, used for the third time.</h1>
+    <figure>
+      <svg viewBox="0 0 760 178" role="img" aria-label="Three panels showing the same correlogram tool applied to three different things: a raw series in session four, a decomposition remainder in session seven, and model residuals in session nine">
+        <g font-family="SFMono-Regular,Menlo,monospace" font-size="11.5">
+          <rect x="24" y="36" width="216" height="80" rx="4" fill="#1F3A4D" opacity=".07"/>
+          <rect x="24" y="36" width="216" height="80" rx="4" fill="none" stroke="#98928a" stroke-width="1.4"/>
+          <text x="132" y="26" text-anchor="middle" fill="#98928a">SESSION 4</text>
+          <text x="132" y="66" text-anchor="middle" fill="#161513" font-size="12.5">a raw series</text>
+          <text x="132" y="92" text-anchor="middle" fill="#6B665E" font-size="10.5">what patterns are in here?</text>
+
+          <rect x="272" y="36" width="216" height="80" rx="4" fill="#6B7F5E" opacity=".10"/>
+          <rect x="272" y="36" width="216" height="80" rx="4" fill="none" stroke="#6B7F5E" stroke-width="1.4"/>
+          <text x="380" y="26" text-anchor="middle" fill="#6B7F5E">SESSION 7</text>
+          <text x="380" y="66" text-anchor="middle" fill="#161513" font-size="12.5">a decomposition remainder</text>
+          <text x="380" y="92" text-anchor="middle" fill="#6B665E" font-size="10.5">what did the split miss?</text>
+
+          <rect x="520" y="36" width="216" height="80" rx="4" fill="#B5471E" opacity=".12"/>
+          <rect x="520" y="36" width="216" height="80" rx="4" fill="none" stroke="#B5471E" stroke-width="1.8"/>
+          <text x="628" y="26" text-anchor="middle" fill="#B5471E">SESSION 9</text>
+          <text x="628" y="66" text-anchor="middle" fill="#161513" font-size="12.5">model residuals</text>
+          <text x="628" y="92" text-anchor="middle" fill="#6B665E" font-size="10.5">what did the model miss?</text>
+
+          <g stroke="#98928a" stroke-width="1.6" fill="none">
+            <path d="M240 76 H266"/><path d="M259 70 L268 76 L259 82"/>
+            <path d="M488 76 H514"/><path d="M481 70 L490 76 L481 82"/>
+          </g>
+          <text x="380" y="150" text-anchor="middle" fill="#98928a" font-size="11.5">one instrument, a sharper question each time</text>
+        </g>
+      </svg>
+    </figure>
+    <ul class="build">
+      <li class="step"><b>Structure left in the residuals is structure the model failed to use.</b> A forecast that could have been better, and was not.</li>
+      <li class="step"><b>Unlike bias, this is hard to fix.</b> You need a richer model &mdash; autoregressive terms, external regressors, a different family &mdash; not an adjustment.</li>
+      <li class="step"><b>Read it exactly as in Session 4.</b> Same bounds, <code>&plusmn;2/&radic;T</code>, same caution about single crossings.</li>
+    </ul>
+    <p class="punch step wide">If you understood Session 4, you already know how to read this plot. What is new is what a crossing now implies: not a feature of the data, but a shortcoming of the model.</p>
+  </div>
+  <aside class="notes">Run the correlogram on <code>.innov</code> rather than <code>.resid</code>. With no transformation they are identical, so it makes no difference today, but from Session 11 on the innovation residuals are the ones the model actually worked with, and those are the ones whose structure is meaningful.<br><br>This is also the point where Session 4's white noise stops being an abstraction. The null hypothesis of the whole course was that a series has no memory; the hope for a set of residuals is that they do not either. Same statement, opposite sign of hope.</aside>
+</section>
+
+<!-- ---------- 5 ---------- -->
+<section class="slide" data-section="2" data-title="Zero mean">
+  <div class="inner">
+    <p class="kicker">Property 2 &nbsp;&middot;&nbsp; the easy one</p>
+    <h1 class="sowhat wide">A non-zero mean means biased forecasts, and it costs one subtraction to fix.</h1>
+    <ul class="build">
+      <li class="step"><b>What it means.</b> The model is systematically high or low. Every forecast it makes carries the same offset.</li>
+      <li class="step"><b>How to fix it.</b> Subtract the mean of the residuals from the forecasts. That is the whole remedy, and it is why this property is the least worrying of the four.</li>
+      <li class="step"><b>What it does not tell you.</b> A residual mean of zero is not evidence of a good model. The mean model's residuals average to zero by construction, and it can still be a terrible forecast.</li>
+    </ul>
+    <div class="callout slate"><b>Bias and uselessness are different problems.</b> A biased model that otherwise fits well is nearly fixed. An unbiased model with autocorrelated residuals is not.</div>
+    <p class="punch step wide">Check it, fix it if it fails, and do not congratulate a model for passing it.</p>
+  </div>
+  <aside class="notes">The reason the mean model passes automatically is worth a moment. Its fitted value everywhere is the sample mean, so the residuals are the deviations from the mean, and those sum to zero by definition. Exactly the same algebra as centering the seasonal component in Session 7.<br><br>In practice a visibly non-zero residual mean often points at something more interesting than bias: a trend the model has not captured, which shows up as residuals mostly above zero early and mostly below later, or the reverse. Look at the time plot before reaching for the subtraction.</aside>
+</section>
+
+<!-- ---------- 6 ---------- -->
+<section class="slide" data-section="2" data-title="Variance and normality">
+  <div class="inner">
+    <p class="kicker">Properties 3 and 4 &nbsp;&middot;&nbsp; about what you are entitled to claim</p>
+    <h1 class="sowhat">These two do not judge the forecast. They judge the interval around it.</h1>
+    <ul class="build">
+      <li class="step"><b>Constant variance</b> &mdash; homoscedasticity. If the residual spread grows over time, an interval computed from the whole history is too narrow at the end and too wide at the start.</li>
+      <li class="step"><b>Normality</b> &mdash; the interval arithmetic in Session 12 assumes it. Without it the stated 95% is not 95%.</li>
+      <li class="step"><b>Both are harder to fix than bias.</b> A transformation sometimes helps, which is Session 11. Beyond that, changing the model may be the only option.</li>
+    </ul>
+    <div class="callout"><b>There is a way out.</b> Bootstrapped intervals need uncorrelated, homoscedastic residuals but <i>not</i> normal ones. So a normality failure is survivable; a variance failure is harder.</div>
+    <p class="punch step wide">A point forecast can be perfectly good while the interval around it is a fiction. Reporting the first without checking the second is where forecasts mislead people.</p>
+  </div>
+  <aside class="notes">Heteroscedasticity in a residual plot usually looks like a funnel: the spread widening left to right. It very often means the series is multiplicative and was fitted additively, which is Session 5's question arriving with a consequence. A log transformation is the first thing to try.<br><br>The tools for these two are a QQ plot and a set of boxplots, and both appear in the script. A QQ plot puts the residual quantiles against the quantiles of a normal distribution: points on the line means normal, and systematic curvature at the ends means heavy tails.</aside>
+</section>
+
+<!-- ---------- 7 ---------- -->
+<section class="slide" data-section="3" data-title="Switch: gg_tsresiduals()">
+  <div class="inner">
+    <p class="kicker">Now we compute</p>
+    <h1 class="sowhat">One function, three panels, three of the four properties</h1>
+    <div class="console">bricks_fit |&gt; select(Nv) |&gt; gg_tsresiduals()</div>
+    <ul class="build plain" style="margin-top:1.5rem">
+      <li><b>Top</b> &mdash; residuals over time &rarr; the mean, and whether the spread drifts</li>
+      <li><b>Bottom left</b> &mdash; the correlogram &rarr; autocorrelation</li>
+      <li><b>Bottom right</b> &mdash; the histogram &rarr; normality</li>
+    </ul>
+    <div class="callout"><b>It needs one model.</b> <code>select()</code> a single column from the mable first, or it will not know which set of residuals you mean.</div>
+  </div>
+  <aside class="notes">This is the one place where <code>select()</code> on a mable is the right move, in contrast with Session 8's warning about it: here you are not forecasting afterwards, so losing the key columns costs nothing.<br><br>Property 3, constant variance, is only half visible in the top panel. A set of boxplots by year makes a drifting spread much easier to see, and the script builds them. Use the three-panel plot as the first look and the boxplots when the top panel leaves you unsure.</aside>
+</section>
+
+<!-- ---------- 8 ---------- -->
+<section class="slide" data-section="3" data-title="Reading the panels in order">
+  <div class="inner">
+    <p class="kicker">09_B &nbsp;&middot;&nbsp; bricks, naive and mean</p>
+    <h1 class="sowhat wide">Read them in the order of the four properties, not the order they are drawn.</h1>
+    <ul class="build">
+      <li class="step"><b>Correlogram first.</b> It is the finding that changes what you do next. Bars well outside the bounds mean the model is not finished.</li>
+      <li class="step"><b>Then the mean.</b> Does the top panel sit on zero, or is it mostly above or mostly below? That is bias, and it is cheap to fix.</li>
+      <li class="step"><b>Then spread and shape.</b> Does the top panel funnel? Is the histogram symmetric with reasonable tails?</li>
+    </ul>
+    <div class="callout slate"><b>Both models on bricks fail property 1 badly.</b> That is the expected result, and it is the honest state of a benchmark on a series with real structure in it.</div>
+    <p class="punch step wide">A failing diagnostic is not a failed exercise. It is the instrument telling you a benchmark is a benchmark.</p>
+  </div>
+  <aside class="notes">Quarterly brick production has a strong season and a long trend, and neither the naive nor the mean model represents either of them. So the seasonal structure walks straight through into the residuals, and the correlogram shows it at the seasonal lags. That is exactly what you would predict from Session 8's table of which method suits which series.<br><br>Worth trying afterwards on your own: fit <code>SNAIVE()</code> to the same series and run the same diagnostic. The seasonal spikes largely disappear and the trend remains. Watching a diagnostic improve when you pick a better-matched model is the fastest way to learn to read one.</aside>
+</section>
+
+<!-- ---------- 9 ---------- -->
+<section class="slide" data-section="3" data-title="Switch: QQ plots and boxplots">
+  <div class="inner">
+    <p class="kicker">09_B &nbsp;&middot;&nbsp; on the RStudio screen</p>
+    <h1 class="sowhat">Two plots for the two properties the histogram half-answers.</h1>
+    <ul class="build">
+      <li class="step"><b>QQ plot for normality.</b> Residual quantiles against normal quantiles. On the line means normal; curving away at both ends means heavy tails.</li>
+      <li class="step"><b>Boxplots by year for constant variance.</b> Boxes of similar height mean the spread is stable. A steady climb in box height is a funnel you might have missed.</li>
+      <li class="step"><b>Neither replaces the histogram.</b> They sharpen it. The histogram tells you whether to look harder; these tell you what you are looking at.</li>
+    </ul>
+    <p class="punch step wide">Four properties, four questions, and no single plot answers all of them. That is why the summary sheet exists.</p>
+  </div>
+  <aside class="notes">A QQ plot is worth understanding rather than pattern-matching. It sorts your residuals, sorts an equal number of draws from a normal distribution, and plots one against the other. If your residuals really are normal the two sorted lists agree and the points fall on a straight line. Deviation at the ends is the usual finding, and it means the tails are heavier or lighter than normal.<br><br>The boxplot-by-year construction is the same <code>index_by()</code> thinking from Session 4, used for a different purpose: group the residuals into calendar blocks and compare the blocks.</aside>
+</section>
+
+<!-- ---------- 10 ---------- -->
+<section class="slide" data-section="4" data-title="Twenty tests at once">
+  <div class="inner">
+    <p class="kicker">The problem with reading bars</p>
+    <h1 class="sowhat">Checking twenty bars is running twenty tests, and about one will fail by chance.</h1>
+    <figure>
+      <svg viewBox="0 0 760 186" role="img" aria-label="A correlogram of twenty bars with significance bounds. Nineteen are inside the bounds and one crosses. A caption notes that on pure white noise about one crossing in twenty is the expected result rather than a finding">
+        <g stroke="#E4DFD5" stroke-width="1.2" fill="none"><path d="M40 34 V148"/></g>
+        <path d="M40 98 H730" stroke="#6B665E" stroke-width="1.2" fill="none"/>
+        <g stroke="#1F3A4D" stroke-width="1.5" stroke-dasharray="6 4" fill="none" opacity=".85">
+          <path d="M40 58 H730"/><path d="M40 138 H730"/>
+        </g>
+        <g fill="#1F3A4D">
+          <rect x="56"  y="84" width="12" height="14"/><rect x="90"  y="98" width="12" height="9"/>
+          <rect x="124" y="76" width="12" height="22"/><rect x="158" y="92" width="12" height="6"/>
+          <rect x="192" y="98" width="12" height="18"/><rect x="226" y="86" width="12" height="12"/>
+          <rect x="260" y="98" width="12" height="26"/><rect x="294" y="94" width="12" height="4"/>
+          <rect x="328" y="80" width="12" height="18"/><rect x="362" y="98" width="12" height="11"/>
+          <rect x="430" y="98" width="12" height="6"/><rect x="464" y="78" width="12" height="20"/>
+          <rect x="498" y="98" width="12" height="15"/><rect x="532" y="88" width="12" height="10"/>
+          <rect x="566" y="72" width="12" height="26"/><rect x="600" y="98" width="12" height="21"/>
+          <rect x="634" y="95" width="12" height="3"/><rect x="668" y="98" width="12" height="13"/>
+          <rect x="702" y="84" width="12" height="14"/>
+        </g>
+        <rect x="396" y="46" width="12" height="52" fill="#B5471E"/>
+        <text x="402" y="38" text-anchor="middle" fill="#B5471E"
+              font-family="SFMono-Regular,Menlo,monospace" font-size="11.5">one crossing</text>
+        <text x="40" y="172" fill="#98928a" font-family="SFMono-Regular,Menlo,monospace" font-size="11.5">20 bars &times; 5% false-positive rate each &nbsp;=&nbsp; about 1 expected crossing on pure white noise</text>
+      </svg>
+    </figure>
+    <ul class="build">
+      <li class="step"><b>Session 4 warned you about this</b> and gave you a visual rule: look for structure, not for a single tall bar.</li>
+      <li class="step"><b>Today you get the proper fix.</b> One test that asks about the first <code>l</code> autocorrelations together, instead of <code>l</code> separate tests.</li>
+    </ul>
+    <p class="punch step wide">A <i>portmanteau</i> test, from the French for a rack that carries several items of clothing. One question, many lags.</p>
+  </div>
+  <aside class="notes">The multiple-comparisons problem is not specific to time series, and meeting it here is a good opportunity to recognize it elsewhere. Any time somebody runs many tests and reports the one that came out significant, this is the mechanism that should make you suspicious.<br><br>Note what the portmanteau test does <i>not</i> do: it will not tell you <i>which</i> lag carries the structure. It answers "is there autocorrelation anywhere in the first <code>l</code> lags", and if you want to know where, you go back to the correlogram. The two tools are complements.</aside>
+</section>
+
+<!-- ---------- 11 ---------- -->
+<section class="slide" data-section="4" data-title="Box-Pierce and Ljung-Box">
+  <div class="inner">
+    <p class="kicker">Two statistics, the same idea</p>
+    <h1 class="sowhat">Add up the squared autocorrelations. If the total is large, something is there.</h1>
+    <div class="console">Box-Pierce   Q  = T &middot; sum over k=1..l of  r_k&#178;
+
+Ljung-Box    Q* = T(T+2) &middot; sum over k=1..l of  r_k&#178; / (T &minus; k)
+
+             l = how many lags to include
+             T = number of observations
+             r_k = the autocorrelation at lag k</div>
+    <ul class="build">
+      <li class="step"><b>Both grow with the autocorrelation</b>, because every term is <code>r<sub>k</sub></code> squared: never negative, so nothing cancels.</li>
+      <li class="step"><b><code>H&#8320;</code>: the residuals are white noise.</b> A small p-value rejects it, which means structure is left and the model is not finished.</li>
+      <li class="step"><b>Use Ljung-Box.</b> Box-Pierce is the older, simpler version; the extra weighting makes Ljung-Box better behaved on the short series you will actually have.</li>
+    </ul>
+    <p class="punch step wide">Read the p-value, not the statistic. The statistic has no meaning on its own scale.</p>
+  </div>
+  <aside class="notes">Two arguments to choose. <code>lag</code> is <code>l</code>: fpp3 suggests 10 for non-seasonal data and <code>2m</code> for seasonal. <code>dof</code> is the number of parameters the model estimated, which is 0 for all four benchmarks, because none of them estimates anything except drift &mdash; and even drift is a single parameter, so <code>dof = 1</code> there if you want to be exact.<br><br>Why <code>dof</code> matters at all: a model with more parameters can fit noise, so its residuals look more like white noise than they should. Subtracting the degrees of freedom is the correction for that, and it will matter properly once ETS models arrive in Session 19 with several parameters each.</aside>
+</section>
+
+<!-- ---------- 12 ---------- -->
+<section class="slide" data-section="4" data-title="Why squaring">
+  <div class="inner">
+    <p class="kicker">The detail that makes it work</p>
+    <h1 class="sowhat wide">Squaring punishes small correlations far harder than large ones.</h1>
+    <div class="console">    r        r&#178;       shrunk by
+   0.9      0.81        10%
+   0.7      0.49        30%
+   0.5      0.25        50%
+  0.25      0.06        75%
+   0.1      <span class="hl">0.01</span>        <span class="hl">90%</span></div>
+    <ul class="build">
+      <li class="step"><b>Every <code>r<sub>k</sub></code> is between &minus;1 and 1</b>, so squaring shrinks all of them. But it shrinks the small ones almost to nothing.</li>
+      <li class="step"><b>A correlation of 0.1 contributes 0.01.</b> One of 0.9 contributes 0.81 &mdash; eighty times as much.</li>
+      <li class="step"><b>So accidental little correlations cannot add up to a rejection</b>, while genuine structure at a few lags dominates the sum.</li>
+    </ul>
+    <p class="punch step wide">The same trick appears everywhere in statistics, from variance to least squares. Squaring is how you make a sum notice the big things and forgive the small ones.</p>
+  </div>
+  <aside class="notes">Squaring does a second job here that is easy to overlook: it removes the sign. A strong <i>negative</i> autocorrelation is just as much evidence of structure as a strong positive one &mdash; Session 4's anti-phase panels are the picture of that &mdash; and without squaring the two would cancel in the sum.<br><br>The extra <code>T(T+2)/(T-k)</code> weighting in Ljung-Box gives more weight to the higher lags, where fewer pairs are available and the estimates are noisier. It is a small-sample correction, and on a long series the two statistics agree closely.</aside>
+</section>
+
+<!-- ---------- 13 ---------- -->
+<section class="slide" data-section="4" data-title="Switch: running the test">
+  <div class="inner">
+    <p class="kicker">Now we compute</p>
+    <h1 class="sowhat"><code>features(.innov, ljung_box, lag, dof)</code></h1>
+    <div class="console">bricks_aug |&gt; features(.innov, ljung_box, lag = 10, dof = 0)
+
+<span class="dim"># .model    lb_stat   lb_pvalue</span>
+<span class="dim"># Mean      274.2     0</span>
+<span class="dim"># Nv        245.1     0</span></div>
+    <ul class="build">
+      <li class="step"><b>Both p-values are zero to the printed precision.</b> Reject <code>H&#8320;</code> comfortably: neither benchmark has captured the structure in this series.</li>
+      <li class="step"><b>Which is the right answer.</b> A naive model on strongly seasonal quarterly data should fail this, and a diagnostic that let it pass would be the broken thing.</li>
+      <li class="step"><b>Run it on <code>.innov</code>, not <code>.resid</code>.</b> Identical today, and the habit is what you want before Session 11.</li>
+    </ul>
+    <p class="punch step wide">You now have the full instrument. Session 13 asks the other question &mdash; not whether structure is left, but how large the errors are.</p>
+  </div>
+  <aside class="notes">Reading a p-value of 0 in the output does not mean the probability is exactly zero; it means it is smaller than the print precision. Say "we reject at any conventional level" rather than "the probability is zero".<br><br>A caution that will matter in Group Assignment 2. Passing Ljung-Box is not proof that residuals are white noise; it is a failure to detect otherwise, on a test that is weak for short series. Session 4 made the same point about the visual bounds, and it applies with equal force here. "I could not detect remaining structure" is the honest phrasing.</aside>
+</section>
+
+<!-- ---------- 14 ---------- -->
+<section class="slide" data-section="5" data-title="What to do when each fails">
+  <div class="inner">
+    <p class="kicker">The summary sheet, condensed</p>
+    <h1 class="sowhat">Each failure has a different answer. Knowing which is the skill.</h1>
+    <table class="traps compact">
+      <tr><td class="os">Autocorrelation</td><td>The model missed usable structure.</td><td class="fix">Richer model. Hard. Sessions 15&ndash;19.</td></tr>
+      <tr><td class="os">Non-zero mean</td><td>Forecasts are biased by a constant.</td><td class="fix">Subtract it. Easy.</td></tr>
+      <tr><td class="os">Changing variance</td><td>Often a multiplicative series fitted additively.</td><td class="fix">Transform. Session 11.</td></tr>
+      <tr><td class="os">Not normal</td><td>The interval arithmetic does not hold.</td><td class="fix">Transform, or bootstrap the intervals.</td></tr>
+    </table>
+    <ul class="build">
+      <li class="step"><b>Only the first one questions the model itself.</b> The other three are about presentation and arithmetic, not about whether the forecast is well aimed.</li>
+      <li class="step"><b>None of them is a reason to hide the diagnostic.</b> A reported failure you cannot fix is a legitimate finding, and Session 7 made the same argument about decompositions.</li>
+    </ul>
+    <p class="punch step wide">Print the one-page summary and keep it beside you for Group Assignment 2. It is the most reused page in the course.</p>
+  </div>
+  <aside class="notes">The third row is worth pausing on, because it closes a loop. A funnel-shaped residual plot usually means the series is multiplicative and you fitted it additively &mdash; which is Session 5's very first question, arriving four weeks later with a consequence attached. The eye test you learned for choosing a scheme is the same eye test that reads this plot.<br><br>The fourth row is the most survivable. Bootstrapped prediction intervals need residuals that are uncorrelated and homoscedastic but make no normality assumption at all, so a normality failure limits which method you use rather than whether you can quote an interval.</aside>
+</section>
+
+<!-- ---------- 15 ---------- -->
+<section class="slide" data-section="5" data-title="The midterm">
+  <div class="inner">
+    <p class="kicker">Wednesday 14 October</p>
+    <h1 class="sowhat">Twenty questions, Sessions 1 to 8, no retake.</h1>
+    <div class="cards">
+      <div class="card sage"><h3>On the exam</h3><p>Sessions 1&ndash;8. R and tsibbles, graphics and the ACF, the whole decomposition block, benchmarks and fitted values, forecasting through a decomposition.</p></div>
+      <div class="card terra"><h3>Not on the exam</h3><p>Today. Residual diagnostics belongs to the evaluation block with Sessions 13 and 14, and those are examined in the final.</p></div>
+    </div>
+    <ul class="build">
+      <li class="step"><b>Twenty multiple-choice questions, four options each.</b> Conceptual recall rather than code you have to write from memory.</li>
+      <li class="step"><b>There is no retake.</b> If you cannot attend for personal or work reasons the final carries 60% instead of 30% &mdash; see the syllabus.</li>
+      <li class="step"><b>An optional online prep tutorial runs in the preceding week.</b> Come with questions to it as well.</li>
+    </ul>
+    <p class="punch step wide">Group Assignment 1 is due Sunday 25 October, after the exam. That is deliberate: revision and a from-scratch implementation should not compete for the same week.</p>
+  </div>
+  <aside class="notes">Because the questions are multiple choice, the useful preparation is being able to say what each tool <i>is for</i> and what its output <i>means</i>, rather than being able to type the function call unaided. A student who can explain why a 2&times;12-MA spans thirteen points is in much better shape than one who has memorized the call.<br><br>The coverage boundary is worth restating once more before the room disperses. Anything after Session 8 is examined in the final, so today's material is not wasted &mdash; it is deferred.</aside>
+</section>
+
+<!-- ---------- 16 ---------- -->
+<section class="slide" data-section="5" data-title="Revision: the spine">
+  <div class="inner">
+    <p class="kicker">The rest of today is yours</p>
+    <h1 class="sowhat wide">Eight sessions, one line each. For every line: what is it, and what is the R?</h1>
+    <table class="traps compact">
+      <tr><td class="os">S1</td><td>R, RStudio, projects, packages.</td><td class="fix">setup</td></tr>
+      <tr><td class="os">S2</td><td>Stochastic processes; tsibbles; index, key, measured variables.</td><td class="fix"><code>as_tsibble()</code></td></tr>
+      <tr><td class="os">S3</td><td>Time, seasonal, subseries and scatterplots. Trend vs seasonality vs cycle.</td><td class="fix"><code>gg_season()</code></td></tr>
+      <tr><td class="os">S4</td><td>Lag plots, the ACF, the correlogram, white noise, <code>&plusmn;2/&radic;T</code>.</td><td class="fix"><code>ACF()</code></td></tr>
+      <tr><td class="os">S5</td><td>Additive vs multiplicative; detrended and seasonally adjusted; <code>isTRUE(all.equal())</code>.</td><td class="fix">the scheme</td></tr>
+      <tr><td class="os">S6</td><td>Moving averages; centered windows; odd <code>m</code> and the <code>2&times;m</code> construction; the missing ends.</td><td class="fix"><code>slide_dbl()</code></td></tr>
+      <tr><td class="os">S7</td><td>Classical decomposition in four steps; the two criteria; STL and its two windows.</td><td class="fix"><code>STL()</code></td></tr>
+      <tr><td class="os">S8</td><td>Fitted values vs forecasts; four benchmarks; forecast distributions; decomposition forecasting.</td><td class="fix"><code>model()</code></td></tr>
+    </table>
+    <p class="punch step wide">Work down it and mark the lines you cannot explain out loud. Those are your questions for the rest of this session.</p>
+  </div>
+  <aside class="notes">The same list is at the bottom of <code>session09_code.R</code>, so you can keep it beside the console rather than beside the slides.<br><br>Three things reliably cause trouble every year, and they are worth checking first: the difference between seasonality and a cycle (Session 3), why the seasonal period must be even or odd for different moving averages (Session 6), and the difference between a fitted value and a forecast (Session 8). If you are solid on those three, the rest tends to follow.</aside>
+</section>
+
+<!-- ---------- 17 ---------- -->
+<section class="slide" data-section="6" data-title="Homework">
+  <div class="inner">
+    <p class="kicker">Due Sunday 11 October, 23:59</p>
+    <h1 class="sowhat">Homework, and one scheduling exception.</h1>
+    <ul class="build">
+      <li><b><code>09_B</code> Exercise 1, and only that.</b> Diagnose the decomposition model from <code>08_A</code>: STL on <code>log(Turnover)</code>, drift on the seasonally adjusted part, seasonal naive on the season. The fitting code is in the notebook.</li>
+      <li>All four properties, one sentence each. Then a Ljung&ndash;Box test, working out <code>lag</code> and <code>dof</code> yourself and saying why.</li>
+      <li><b>One extra check:</b> are <code>.resid</code> and <code>.innov</code> still identical here? They are not. Say why in one sentence.</li>
+      <li>Then revise. The midterm is the following Wednesday.</li>
+    </ul>
+    <div class="callout"><b>Feedback works differently for this one, and only this one.</b> The next session is the midterm itself, so there is no start-of-session slot to review it in.</div>
+    <div class="callout slate"><b>The cohort common-errors note goes up in writing on Monday 12 October</b>, two days before the exam, so you can use it while revising. The live review happens at the start of <b>Session 11, Monday 19 October</b>.</div>
+  </div>
+  <aside class="notes">That last check is the first time in the course those two columns differ, and the reason is the <code>log()</code> inside <code>STL()</code>. Session 8 told you the distinction existed and that it would not matter yet; this is where it starts to.<br><br>This is the only week in the course where the review is not at the start of the next session, and it is worth reading the two dates carefully. The written note arrives before the midterm precisely because it is useful for revision; the discussion waits until there is a session to have it in.<br><br>Graded on completion and genuine effort as usual. For these two exercises, working through all four properties and being honest about which ones fail is the whole assignment. Both models are benchmarks on series with real structure, so expect failures and report them.</aside>
+</section>
+
+<!-- ---------- 18 ---------- -->
+<section class="slide" data-section="6" data-title="Next session">
+  <div class="inner">
+    <p class="kicker">Session 10 &nbsp;&middot;&nbsp; Wednesday 14 October</p>
+    <h1 class="sowhat">Next session is the midterm.</h1>
+    <p class="lead wide">Twenty multiple-choice questions on Sessions 1 to 8. After it, Session 11 picks the course back up with transformations and the Box&ndash;Cox family &mdash; the principled version of the transformation ladder you met in Session 5.</p>
+    <ul class="build">
+      <li class="step"><b>Session 11 also carries this homework's review</b>, on Monday 19 October, and is where Group Assignment 1 questions get answered before its 25 October deadline.</li>
+      <li class="step"><b>The evaluation block resumes at Session 13.</b> Today's diagnostics, then train and test splits, then cross-validation &mdash; examined together in the final.</li>
+    </ul>
+    <p class="punch step wide">Today you learned how to tell whether a model is finished. Session 13 asks how wrong it is, which turns out to be a different question with a different answer.</p>
+    <p class="url" style="font-size:clamp(0.95rem,1.7vw,1.9rem)">aberrizbeitia@faculty.ie.edu</p>
+  </div>
+  <aside class="notes">The distinction in the closing line is the one that organizes the rest of the course. Residual diagnostics asks whether anything is <i>left</i>; accuracy measures ask how <i>large</i> the errors are. A model can pass the first and still forecast badly, and a model can fail the first and still be the most accurate thing available.<br><br>Good luck on Wednesday. Come to the optional prep tutorial with questions, and read the four-property summary sheet once more before the exam &mdash; not because it is examined, but because it is the clearest one page in the course.</aside>
+</section>
+
+<!-- lives inside the stage so it is positioned against it, not the viewport,
+     and therefore never covers the rail -->
+<div id="notepane"><h4>Going further</h4><div class="body"></div></div>
+
+</main>
+
+
+<!-- ============================== CHROME ============================== -->
+<div id="overview">
+  <h3>Jump to a slide</h3>
+  <ul id="ovlist"></ul>
+</div>
+
+<div id="hud">
+  <span id="count">1 / 18</span>
+  <button id="prev" title="Previous">&larr;</button>
+  <button id="next" title="Next">&rarr;</button>
+</div>
+
+
+<script>
+(function(){
+  "use strict";
+
+  var SECTIONS = [
+    {name:"Where we are",        from:1,  to:2},
+    {name:"The four properties", from:3,  to:6},
+    {name:"Diagnosing",          from:7,  to:9,  live:true},
+    {name:"Portmanteau tests",   from:10, to:13, live:true},
+    {name:"Midterm revision",    from:14, to:16},
+    {name:"Close",               from:17, to:18}
+  ];
+
+  var slides = Array.prototype.slice.call(document.querySelectorAll(".slide"));
+  var toc    = document.getElementById("toc");
+  var ovlist = document.getElementById("ovlist");
+  var bar    = document.querySelector("#bar i");
+  var count  = document.getElementById("count");
+  var noteBody = document.querySelector("#notepane .body");
+
+  var si = 0;
+  var sti = 0;
+
+  SECTIONS.forEach(function(sec, i){
+    var li = document.createElement("li");
+    li.innerHTML = '<span class="num">' + (i+1) + '</span><span>' + sec.name + '</span>' +
+                   (sec.live ? '<span class="live" title="RStudio screen"></span>' : '');
+    li.addEventListener("click", function(){ go(sec.from - 1, 0); });
+    toc.appendChild(li);
+  });
+
+  SECTIONS.forEach(function(sec){
+    var head = document.createElement("li");
+    head.className = "head";
+    head.textContent = sec.name + (sec.live ? " \u00b7 RStudio" : "");
+    ovlist.appendChild(head);
+    for (var n = sec.from; n <= sec.to; n++){
+      (function(idx){
+        var li = document.createElement("li");
+        li.innerHTML = '<span class="n">' + (idx+1) + '</span><span>' +
+                       (slides[idx].getAttribute("data-title") || "") + '</span>';
+        li.addEventListener("click", function(){
+          document.body.classList.remove("ov-on");
+          go(idx, "all");
+        });
+        ovlist.appendChild(li);
+      })(n - 1);
+    }
+  });
+  var ovItems = Array.prototype.slice.call(ovlist.querySelectorAll("li:not(.head)"));
+
+  function steps(i){
+    return Array.prototype.slice.call(slides[i].querySelectorAll(".step"));
+  }
+
+  function paint(){
+    slides.forEach(function(s, i){ s.classList.toggle("active", i === si); });
+
+    var num = si + 1;
+    var active = 0;
+    SECTIONS.forEach(function(sec, i){
+      if (num >= sec.from && num <= sec.to) active = i;
+    });
+    Array.prototype.slice.call(toc.children).forEach(function(li, i){
+      li.classList.toggle("on", i === active);
+      li.classList.toggle("done", i < active);
+    });
+    ovItems.forEach(function(li, i){ li.classList.toggle("on", i === si); });
+
+    bar.style.width = (num / slides.length * 100) + "%";
+    count.textContent = num + " / " + slides.length;
+
+    var n = slides[si].querySelector(".notes");
+    noteBody.innerHTML = n ? n.innerHTML : "<i>Nothing further for this slide.</i>";
+
+    if (history.replaceState) history.replaceState(null, "", "#" + num);
+  }
+
+  function go(i, mode){
+    if (i < 0 || i >= slides.length) return;
+    si = i;
+    var st = steps(si);
+    if (mode === "all"){
+      st.forEach(function(e){ e.classList.add("on"); });
+      sti = st.length;
+    } else {
+      st.forEach(function(e){ e.classList.remove("on"); });
+      sti = 0;
+    }
+    paint();
+  }
+
+  function next(){
+    var st = steps(si);
+    if (sti < st.length){ st[sti].classList.add("on"); sti++; }
+    else go(si + 1, 0);
+  }
+
+  function prev(){
+    if (sti > 0){ sti--; steps(si)[sti].classList.remove("on"); }
+    else go(si - 1, "all");
+  }
+
+  document.getElementById("next").addEventListener("click", next);
+  document.getElementById("prev").addEventListener("click", prev);
+
+  document.addEventListener("keydown", function(e){
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    var k = e.key;
+
+    if (document.body.classList.contains("ov-on")){
+      if (k === "Escape" || k === "o" || k === "O"){
+        document.body.classList.remove("ov-on"); e.preventDefault();
+      }
+      return;
+    }
+
+    if (k === "ArrowRight" || k === " " || k === "PageDown" || k === "ArrowDown"){ next(); e.preventDefault(); }
+    else if (k === "ArrowLeft" || k === "PageUp" || k === "ArrowUp"){ prev(); e.preventDefault(); }
+    else if (k === "Home"){ go(0, 0); e.preventDefault(); }
+    else if (k === "End"){ go(slides.length - 1, "all"); e.preventDefault(); }
+    else if (k === "n" || k === "N"){ toggleNotes(); e.preventDefault(); }
+    else if (k === "o" || k === "O"){ document.body.classList.add("ov-on"); e.preventDefault(); }
+    else if (k === "[" || k === "]"){ document.body.classList.toggle("rail-hidden"); e.preventDefault(); }
+    else if (k === "f" || k === "F"){
+      if (document.fullscreenElement) document.exitFullscreen();
+      else document.documentElement.requestFullscreen();
+      e.preventDefault();
+    }
+  });
+
+  function toggleNotes(){
+    var on = document.body.classList.toggle("notes-on");
+    document.documentElement.style.setProperty("--notes-h", on ? "212px" : "0px");
+  }
+
+  var start = parseInt((location.hash || "").replace("#", ""), 10);
+  go(isNaN(start) ? 0 : Math.min(Math.max(start - 1, 0), slides.length - 1),
+     isNaN(start) ? 0 : "all");
+})();
+</script>
+</body>
+</html>

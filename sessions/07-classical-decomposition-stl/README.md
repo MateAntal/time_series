@@ -17,6 +17,11 @@ tuning them on three worked examples.
 **Outcome:** Student decomposes a series both ways, interprets every component, and knows when to
 prefer STL.
 
-**→ Group Assignment 1 launches** — see [`assignments/`](../../assignments/).
+**→ Group Assignment 1 launches** — due **Sunday 25 October 2026, 23:59**. See
+[`assignments/`](../../assignments/).
+
+> **Part 3 of 3.** Sessions 5, 6 and 7 are one topic, time series decomposition. Session 5 chose
+> the scheme, Session 6 estimated the trend, and this session assembles the whole algorithm and
+> adds STL. The three are examined together.
 
 > The heaviest session in the decomposition block. fpp3 3.5 (X-11 / SEATS) is not covered.

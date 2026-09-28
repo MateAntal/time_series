@@ -95,9 +95,19 @@ materials in advance will allow you to get the most out of each lecture. During 
 the examples but do not try to solve them. Every session in the program below names the textbook
 sections to read beforehand.
 
-Homework is provided after each class and is due before the next session. Detailed solutions are
-published after each due date. Homework must show effort but need not be perfect; it is not
-individually corrected. The two group assignments do receive detailed written feedback.
+Homework is provided after each class and is due by 23:59 on the Sunday of the teaching week in which
+it was assigned; the exact date for every assignment is posted on Blackboard. Homework must show a
+genuine individual attempt but need not be correct — it is graded on completion and effort, not on
+results. Most exercises are self-verifying: the manual computation is checked against R's own
+implementation with `all.equal()`, so students confirm their own work as they go. After each due date
+the professor publishes a common-errors note to the whole cohort on Blackboard and reviews the main
+difficulties at the start of the first session after the deadline. A rotating sample of submissions receives
+individual written comments on Blackboard, so that every student is commented on individually several
+times over the course. The two group assignments receive detailed written feedback.
+
+Plan for roughly 1.5 hours per session outside class, covering the pre-session reading and the
+homework. The decomposition block (Sessions 5 to 7) and the weeks around each group assignment run
+heavier than that.
 
 Optional online preparation tutorials are offered before the midterm and before the final exam.
 
@@ -182,7 +192,7 @@ for the stochastic-process framing.
 - Detrended and seasonally adjusted series, computed manually and verified
 - Mixed schemes
 
-**Reading:** fpp3 3.2, 3.4
+**Reading:** fpp3 3.2
 
 ### Session 6 — Time series decomposition (2/3): moving averages for trend estimation
 
@@ -223,13 +233,15 @@ for the stochastic-process framing.
 - Residual mean, residual ACF, qq-plots and boxplots
 - Why inspecting each ACF bar individually is multiple hypothesis testing, and hence portmanteau tests
 - The Ljung–Box test
-- Closing revision sweep of Sessions 1 to 9
+- Closing revision sweep of Sessions 1 to 8, ahead of the midterm
 
 **Reading:** fpp3 5.4
 
 ### Session 10 — Midterm exam
 
-- Coverage: Sessions 1 to 9
+- Coverage: Sessions 1 to 8
+- Residual diagnostics (Session 9) is **not** examined here; it belongs to the evaluation block and is
+  examined in the final
 - Format: 20 multiple-choice questions, four options each
 - An optional online preparation tutorial is offered in the preceding week
 
@@ -353,8 +365,12 @@ for the stochastic-process framing.
 released in Session 7, and the Efficient Market Hypothesis, released in Session 17. Both receive
 detailed written feedback. See [`assignments/`](assignments/).
 
-**Individual work** is the per-session homework, assigned after each class and due before the next.
-Detailed solutions are published after each due date.
+**Individual work** is the per-session homework, assigned after each class and due by 23:59 on the
+Sunday of the teaching week in which it was assigned. It is graded on completion and genuine
+individual effort, not on correctness. Feedback is given as a cohort-wide common-errors note after
+each due date, as a review at the start of the first session after the deadline, and as individual
+written comments
+on a rotating sample of submissions.
 
 **Class Participation** is assessed on attendance and on engagement during in-class exercises and
 discussions.
@@ -363,6 +379,20 @@ discussions.
 questions with four options each.
 
 Homework and assignments are submitted on **Blackboard**, not in this repository.
+
+### Verification of individual understanding
+
+As part of the normal assessment of this course, the professor may ask any student for a short
+individual conversation about their submitted work or about the material covered in class. The
+student is asked to explain their reasoning, the choices behind an analysis, and the concepts the
+work relies on. No separate preparation is expected: if the work reflects the student's own
+understanding, the conversation is straightforward.
+
+These conversations are a routine part of assessment. They may be requested of any student at any
+point in the term, and a request is not in itself an indication of any concern about that student's
+work. Where the conversation does not support that a piece of work reflects the student's own
+understanding, the professor may take that into account in assessing the work concerned and, where
+appropriate, refer the matter under the University's Academic Integrity Policy.
 
 ### Midterm retake policy
 

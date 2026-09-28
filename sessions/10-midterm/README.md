@@ -2,9 +2,13 @@
 
 **Date:** Wednesday, 14 October 2026, 9:00–10:20 — IE Tower, room T-05.02
 
-**Coverage:** S1–S9 — R basics, the stochastic-process framing, tsibbles, graphics and the ACF,
-decomposition (classical and STL), benchmark methods and forecasting with decomposition, fitted values
-and residual diagnostics.
+**Coverage:** S1–S8 — R basics, the stochastic-process framing, tsibbles, graphics and the ACF,
+decomposition (classical and STL), benchmark methods, fitted values, and forecasting with a
+decomposition.
+
+**Not examined here:** residual diagnostics (Session 9). That session opens the evaluation arc, which
+continues through train/test accuracy (Session 13) and cross-validation (Session 14). Those three
+belong together and are examined in the **final**.
 
 **Format:** 20 multiple-choice questions, 4 options each.
 

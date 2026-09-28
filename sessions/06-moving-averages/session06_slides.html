@@ -1,0 +1,1009 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Session 6 · Time Series Analysis · Fall 2026</title>
+<style>
+/* ============================================================
+   Session 06 slides. Same self-contained shell as Sessions 01
+   to 05: no fonts, scripts or images are fetched from the
+   network, so this renders identically on a projector with no
+   internet.
+   ============================================================ */
+
+:root{
+  --paper:#FAF8F5;
+  --ink:#161513;
+  --muted:#6B665E;
+  --faint:#98928a;
+  --hair:#E4DFD5;
+  --slate:#1F3A4D;
+  --terra:#B5471E;
+  --sage:#6B7F5E;
+  --sand:#EFEAE1;
+
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif;
+  --mono:SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+
+  --fs-huge:clamp(3.4rem,9vw,10rem);
+  --fs-sowhat:clamp(2.1rem,4.3vw,4.8rem);
+  --fs-h2:clamp(1.5rem,2.6vw,2.9rem);
+  --fs-lead:clamp(1.05rem,1.62vw,1.95rem);
+  --fs-body:clamp(0.95rem,1.25vw,1.5rem);
+  --fs-small:clamp(0.82rem,0.98vw,1.15rem);
+  --fs-kicker:clamp(0.66rem,0.8vw,0.95rem);
+  --fs-mono:clamp(0.88rem,1.28vw,1.62rem);
+
+  --rail:266px;
+  --notes-h:0px;
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--sans);
+  -webkit-font-smoothing:antialiased;
+  display:flex;
+  overflow:hidden;
+}
+
+/* ---------------- left rail ---------------- */
+
+#rail{
+  width:var(--rail);
+  flex:0 0 var(--rail);
+  border-right:1px solid var(--hair);
+  background:var(--sand);
+  display:flex;
+  flex-direction:column;
+  padding:2.1rem 0 1.1rem;
+  transition:margin-left .25s ease;
+  z-index:5;
+}
+body.rail-hidden #rail{margin-left:calc(-1 * var(--rail))}
+
+#rail .brand{padding:0 1.6rem 1.5rem;border-bottom:1px solid var(--hair)}
+#rail .brand b{
+  display:block;font-family:var(--serif);font-size:1.18rem;
+  font-weight:500;line-height:1.15;letter-spacing:.005em;
+}
+#rail .brand span{
+  display:block;margin-top:.42rem;font-size:.7rem;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--muted);
+}
+
+#toc{list-style:none;margin:0;padding:1rem 0;flex:1;overflow:auto}
+#toc li{
+  display:flex;gap:.72rem;align-items:baseline;
+  padding:.52rem 1.6rem .52rem 1.25rem;
+  font-size:.83rem;line-height:1.3;color:var(--muted);
+  border-left:3px solid transparent;cursor:pointer;
+  transition:color .15s ease,border-color .15s ease;
+}
+#toc li .num{
+  font-variant-numeric:tabular-nums;font-size:.68rem;
+  color:var(--faint);min-width:.9rem;
+}
+#toc li:hover{color:var(--ink)}
+#toc li.on{color:var(--ink);border-left-color:var(--terra);font-weight:600}
+#toc li.on .num{color:var(--terra)}
+#toc li.done{color:var(--faint)}
+/* a dot marks the sections delivered from the RStudio screen */
+#toc li .live{
+  margin-left:auto;width:6px;height:6px;border-radius:50%;
+  background:var(--slate);opacity:.45;flex:0 0 6px;
+}
+#toc li.on .live{opacity:1}
+
+#rail .foot{padding:.9rem 1.6rem 0;border-top:1px solid var(--hair)}
+#bar{height:2px;background:var(--hair);border-radius:2px;overflow:hidden}
+#bar i{display:block;height:100%;width:0;background:var(--terra);transition:width .3s ease}
+#rail .foot .keys{
+  margin-top:.7rem;font-size:.63rem;color:var(--faint);
+  line-height:1.7;letter-spacing:.02em;
+}
+kbd{
+  font-family:var(--mono);font-size:.62rem;background:var(--paper);
+  border:1px solid var(--hair);border-radius:3px;padding:.05em .32em;color:var(--muted);
+}
+
+/* ---------------- stage ---------------- */
+
+#stage{position:relative;flex:1;min-width:0;overflow:hidden}
+
+.slide{
+  position:absolute;inset:0;bottom:var(--notes-h);
+  display:flex;overflow:auto;
+  padding:5vh 5.5vw 5vh 5vw;
+  opacity:0;visibility:hidden;
+  transition:opacity .26s ease;
+}
+.slide.active{opacity:1;visibility:visible}
+.slide > .inner{margin:auto;width:100%;max-width:1240px}
+
+/* ---------------- typography ---------------- */
+
+.kicker{
+  margin:0 0 1.15rem;font-size:var(--fs-kicker);letter-spacing:.19em;
+  text-transform:uppercase;color:var(--terra);font-weight:600;
+}
+.kicker.q{color:var(--muted)}
+
+h1.sowhat{
+  margin:0;font-family:var(--serif);font-weight:500;
+  font-size:var(--fs-sowhat);line-height:1.04;letter-spacing:-.012em;
+  max-width:19ch;
+}
+h1.sowhat.wide{max-width:26ch}
+h2.sub{
+  margin:1.5rem 0 0;font-family:var(--serif);font-weight:500;
+  font-size:var(--fs-h2);line-height:1.15;color:var(--slate);max-width:26ch;
+}
+.lead{font-size:var(--fs-lead);line-height:1.4;color:var(--muted);max-width:44ch;margin:1.3rem 0 0}
+.lead.wide{max-width:58ch}
+.small{font-size:var(--fs-small);color:var(--faint);line-height:1.55;margin:1.5rem 0 0;max-width:60ch}
+.hr{height:1px;background:var(--hair);border:0;margin:1.9rem 0 0}
+
+/* inline code sits inside serif headlines and sans body alike, so it is
+   sized relative to its parent rather than at a fixed size */
+code{
+  font-family:var(--mono);font-size:.86em;letter-spacing:-.01em;
+  background:#fff;border:1px solid var(--hair);border-radius:3px;
+  padding:.08em .34em;color:var(--slate);white-space:nowrap;
+}
+h1.sowhat code{font-size:.82em;padding:.05em .26em;color:var(--ink)}
+.callout code,ul.build code,table.traps code{background:var(--sand);border-color:#DCD5C8}
+
+.punch{
+  font-family:var(--serif);font-size:var(--fs-h2);line-height:1.16;
+  color:var(--terra);margin:1.7rem 0 0;max-width:24ch;font-weight:500;
+}
+.punch.ink{color:var(--ink)}
+.punch.slate{color:var(--slate)}
+.punch.wide{max-width:34ch}
+
+.huge{
+  font-family:var(--mono);font-size:var(--fs-huge);line-height:1;
+  letter-spacing:-.03em;margin:0;color:var(--ink);
+}
+.huge.long{font-size:clamp(2.1rem,5.4vw,5.8rem)}
+.url{
+  font-family:var(--mono);font-size:clamp(1.1rem,2.55vw,3rem);
+  line-height:1.2;color:var(--slate);margin:1.3rem 0 0;word-break:break-word;
+}
+
+/* ---------------- builds ---------------- */
+
+ul.build{list-style:none;margin:1.9rem 0 0;padding:0}
+ul.build li{
+  font-size:var(--fs-lead);line-height:1.34;margin:0 0 1.02rem;
+  padding-left:2.1rem;position:relative;max-width:46ch;
+}
+ul.build.wide li{max-width:58ch}
+ul.build li:last-child{margin-bottom:0}
+ul.build li::before{
+  content:counter(step);counter-increment:step;
+  position:absolute;left:0;top:.24em;
+  font-family:var(--mono);font-size:.62em;color:var(--terra);
+  font-weight:700;letter-spacing:.04em;
+}
+ul.build{counter-reset:step}
+ul.build.plain li::before{content:"·";font-size:1em;top:.02em;color:var(--terra)}
+ul.build li b{font-weight:600}
+
+.step{opacity:0;transform:translateY(6px);transition:opacity .3s ease,transform .3s ease}
+.step.on{opacity:1;transform:none}
+
+/* ---------------- blocks ---------------- */
+
+.console{
+  font-family:var(--mono);font-size:var(--fs-mono);line-height:1.62;
+  background:#fff;border:1px solid var(--hair);border-left:3px solid var(--slate);
+  border-radius:3px;padding:1.05rem 1.3rem;margin:1.7rem 0 0;
+  white-space:pre;overflow-x:auto;color:var(--slate);
+}
+.console .hl{color:var(--terra);font-weight:700}
+.console .dim{color:var(--faint)}
+.console.terra{border-left-color:var(--terra)}
+.console.tight{font-size:clamp(0.78rem,1.05vw,1.32rem);padding:.85rem 1.05rem}
+
+.callout{
+  margin:1.7rem 0 0;padding:.95rem 1.25rem;border-radius:3px;
+  background:#fff;border:1px solid var(--hair);border-left:3px solid var(--terra);
+  font-size:var(--fs-body);line-height:1.45;max-width:52ch;
+}
+.callout b{color:var(--terra)}
+.callout.slate{border-left-color:var(--slate)}
+.callout.slate b{color:var(--slate)}
+
+.cards{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem 1.5rem;margin:1.9rem 0 0}
+.cards.four{grid-template-columns:repeat(4,1fr);gap:1.2rem}
+.card{border-top:2px solid var(--slate);padding:.85rem 0 0}
+.card.terra{border-top-color:var(--terra)}
+.card.sage{border-top-color:var(--sage)}
+.card h3{
+  margin:0 0 .5rem;font-size:var(--fs-small);letter-spacing:.11em;
+  text-transform:uppercase;color:var(--slate);font-weight:700;
+}
+.card.terra h3{color:var(--terra)}
+.card.sage h3{color:var(--sage)}
+.card p{margin:0;font-size:var(--fs-body);line-height:1.38;color:var(--muted)}
+
+table.traps{border-collapse:collapse;margin:1.6rem 0 0;width:100%}
+table.traps td{
+  padding:.58rem .9rem .58rem 0;border-bottom:1px solid var(--hair);
+  font-size:var(--fs-body);line-height:1.35;vertical-align:top;
+}
+table.traps td.os{
+  white-space:nowrap;color:var(--slate);font-weight:700;
+  font-size:var(--fs-small);letter-spacing:.05em;text-transform:uppercase;padding-top:.72rem;
+}
+table.traps td.fix{color:var(--muted)}
+table.traps td code{white-space:nowrap}
+table.traps.compact td{padding:.42rem .9rem .42rem 0;font-size:var(--fs-small)}
+
+.chips{display:flex;flex-wrap:wrap;gap:.5rem;margin:1.5rem 0 0}
+.chip{
+  font-size:var(--fs-small);border:1px solid var(--hair);background:#fff;
+  border-radius:100px;padding:.34em .95em;color:var(--slate);letter-spacing:.02em;
+}
+
+figure{margin:1.7rem 0 0}
+figure svg{width:100%;height:auto;max-height:44vh;display:block}
+figcaption{
+  margin-top:1rem;font-size:var(--fs-body);color:var(--muted);
+  line-height:1.4;max-width:56ch;
+}
+.figrow{display:grid;grid-template-columns:1fr 1fr;gap:1.6rem;margin-top:.9rem}
+.figrow.three{grid-template-columns:repeat(3,1fr);gap:1.3rem}
+.figrow p{margin:0;font-size:var(--fs-body);line-height:1.38}
+.figrow p b{display:block;color:var(--slate);letter-spacing:.05em;font-size:.8em;text-transform:uppercase;margin-bottom:.3rem}
+.figrow p.t b{color:var(--terra)}
+.figrow p.g b{color:var(--sage)}
+
+.split{display:grid;grid-template-columns:1.05fr .95fr;gap:3rem;align-items:center}
+@media (max-width:1080px){.split{grid-template-columns:1fr;gap:1.5rem}.cards.four{grid-template-columns:repeat(2,1fr)}.figrow.three{grid-template-columns:1fr}}
+
+/* ---------------- title slide ---------------- */
+
+.title-slide .inner{max-width:none}
+.title-slide h1{
+  font-family:var(--serif);font-weight:500;margin:0;
+  font-size:clamp(2.6rem,6.4vw,7.2rem);line-height:1;letter-spacing:-.02em;
+}
+.title-slide .rule{width:84px;height:3px;background:var(--terra);margin:2rem 0}
+.title-slide .who{font-size:var(--fs-lead);line-height:1.5;color:var(--muted);margin:0}
+.title-slide .who b{color:var(--ink);font-weight:600}
+
+/* ---------------- HUD ---------------- */
+
+#hud{
+  position:fixed;right:1.1rem;bottom:.85rem;z-index:20;
+  display:flex;align-items:center;gap:.55rem;
+  font-family:var(--mono);font-size:.72rem;color:var(--faint);
+}
+#hud button{
+  font:inherit;border:1px solid var(--hair);background:var(--paper);
+  color:var(--muted);border-radius:3px;width:26px;height:24px;cursor:pointer;line-height:1;
+}
+#hud button:hover{color:var(--ink);border-color:var(--muted)}
+#count{font-variant-numeric:tabular-nums;letter-spacing:.05em}
+
+/* ---------------- notes ---------------- */
+
+.notes{display:none}
+#notepane{
+  position:absolute;left:0;right:0;bottom:0;height:212px;z-index:10;
+  background:#F3EFE7;border-top:1px solid var(--hair);
+  padding:1rem 1.6rem 1.1rem;overflow:auto;display:none;
+}
+body.notes-on #notepane{display:block}
+#notepane h4{
+  margin:0 0 .55rem;font-size:.63rem;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--terra);font-weight:700;
+}
+#notepane .body{font-size:.94rem;line-height:1.58;color:#3d3a35;max-width:96ch}
+#notepane .body em{color:var(--slate);font-style:normal;font-weight:600}
+#notepane .body .clock{
+  font-family:var(--mono);background:var(--paper);border:1px solid var(--hair);
+  border-radius:3px;padding:.05em .4em;font-size:.86em;color:var(--terra);font-weight:700;
+}
+/* screen-switch cue. Loud on purpose: it is the one instruction that costs
+   you the room if you miss it. */
+#notepane .body .switch{
+  display:inline-block;font-family:var(--mono);font-size:.78em;font-weight:700;
+  letter-spacing:.09em;text-transform:uppercase;
+  background:var(--slate);color:var(--paper);border-radius:3px;
+  padding:.18em .62em;margin:0 .5em .2em 0;
+}
+#notepane .body .switch.back{background:var(--terra)}
+
+/* ---------------- overview ---------------- */
+
+#overview{
+  position:fixed;inset:0;z-index:40;background:var(--paper);
+  padding:2.4rem 3vw;overflow:auto;display:none;
+}
+body.ov-on #overview{display:block}
+#overview h3{
+  margin:0 0 1.4rem;font-family:var(--serif);font-weight:500;font-size:1.5rem;
+}
+#ovlist{columns:3;column-gap:2.6rem;list-style:none;margin:0;padding:0}
+@media (max-width:1000px){#ovlist{columns:2}}
+#ovlist li{
+  break-inside:avoid;display:flex;gap:.7rem;padding:.28rem 0;
+  font-size:.86rem;line-height:1.35;color:var(--muted);cursor:pointer;
+}
+#ovlist li:hover{color:var(--ink)}
+#ovlist li.on{color:var(--terra);font-weight:600}
+#ovlist li .n{font-family:var(--mono);font-size:.72rem;color:var(--faint);min-width:1.6rem;text-align:right}
+#ovlist li.head{
+  margin-top:1.1rem;color:var(--slate);font-weight:700;font-size:.68rem;
+  letter-spacing:.16em;text-transform:uppercase;cursor:default;
+}
+#ovlist li.head:first-child{margin-top:0}
+
+/* ---------------- print ---------------- */
+
+@media print{
+  body{display:block;overflow:visible;background:#fff}
+  #rail,#hud,#notepane,#overview{display:none !important}
+  #stage{overflow:visible;position:static}
+  .slide{
+    position:static;visibility:visible;opacity:1;bottom:0;
+    height:auto;min-height:92vh;page-break-after:always;
+    border-bottom:1px solid #ddd;
+  }
+  .step{opacity:1 !important;transform:none !important}
+  figure svg{max-height:32vh}
+}
+</style>
+</head>
+
+<body>
+
+<!-- ============================== RAIL ============================== -->
+<nav id="rail">
+  <div class="brand">
+    <b>Time Series Analysis</b>
+    <span>Session 6 · Fall 2026</span>
+  </div>
+  <ul id="toc"></ul>
+  <div class="foot">
+    <div id="bar"><i></i></div>
+    <div class="keys">
+      <kbd>&rarr;</kbd> next &nbsp; <kbd>&larr;</kbd> back &nbsp; <kbd>N</kbd> detail<br>
+      <kbd>O</kbd> jump &nbsp; <kbd>F</kbd> full &nbsp; <kbd>[</kbd> hide this pane
+    </div>
+  </div>
+</nav>
+
+<!-- ============================== STAGE ============================== -->
+<main id="stage">
+
+<!-- ---------- 1 ---------- -->
+<section class="slide title-slide" data-section="1" data-title="Title">
+  <div class="inner">
+    <p class="kicker">IE University · Dual Degree BBA &amp; Data and Business Analytics</p>
+    <h1>One window,<br>sliding.</h1>
+    <div class="rule"></div>
+    <p class="who"><b>Session 6.</b> Moving averages and trend estimation.<br>
+    Alejandro Berrizbeitia · aberrizbeitia@faculty.ie.edu</p>
+  </div>
+  <aside class="notes">The deck is self-contained: press <b>N</b> at any time to open or close this panel, and <b>O</b> for a list of every slide.<br><br>Today is fpp3 section 3.3, and notebook <code>06_B</code> follows the same order. This is the narrowest session of the course and the most mechanical: one idea, worked carefully enough that Session 7 can build on it without stopping.</aside>
+</section>
+
+<!-- ---------- 2 ---------- -->
+<section class="slide" data-section="1" data-title="The promise from Monday">
+  <div class="inner">
+    <p class="kicker">Where we are &nbsp;&middot;&nbsp; part 2 of 3</p>
+    <h1 class="sowhat">You used <code>trend</code> all Monday. Nobody said where it came from.</h1>
+    <ul class="build">
+      <li class="step"><b>You subtracted it and divided by it</b> to build detrended and seasonally adjusted series. The column was handed to you.</li>
+      <li class="step"><b>You saw its edges were missing</b>, at both ends of every plot, and were told twice to wait for today.</li>
+      <li class="step"><b>Today is one idea.</b> Slide a window along the series, average what is inside it, and call the result the trend.</li>
+    </ul>
+    <p class="punch step wide">Everything else in this session, including the awkward arithmetic in the middle, is a consequence of that one move.</p>
+  </div>
+  <aside class="notes">Most decomposition algorithms start with the trend, and the reason is practical rather than deep: the trend is easier to pull out of a raw series than the seasonal component is. Once you have the trend you can take it out, and what is left is a much easier problem. That is the order Session 7 follows.<br><br>Moving averages are used well beyond decomposition, which is why the notebook covers a little more than the algorithm strictly needs. Anywhere you have seen a rolling seven-day average of case counts or a fifty-day average of a share price, this is the same object.</aside>
+</section>
+
+<!-- ---------- 3 ---------- -->
+<section class="slide" data-section="1" data-title="The one move">
+  <div class="inner">
+    <p class="kicker">The whole method, before any notation</p>
+    <h1 class="sowhat wide">Put a window over the series. Average what is inside. Move it one step. Repeat.</h1>
+    <figure>
+      <svg viewBox="0 0 760 214" role="img" aria-label="A jagged series of points. A shaded window covers seven of them, and an arrow leads from the window down to a single smooth point on a second line below, marking the average of those seven">
+        <g stroke="#E4DFD5" stroke-width="1.2" fill="none"><path d="M30 118 H734"/></g>
+        <rect x="214" y="22" width="219" height="96" fill="#B5471E" opacity=".12"/>
+        <rect x="214" y="22" width="219" height="96" fill="none" stroke="#B5471E" stroke-width="1.8"/>
+        <polyline fill="none" stroke="#1F3A4D" stroke-width="2" stroke-linejoin="round"
+          points="44,86 75,52 106,96 137,44 168,90 199,38 230,84 261,46 292,92 323,40 354,88 385,50 416,94 447,42 478,86 509,54 540,90 571,44 602,82 633,52 664,88 695,48 726,80"/>
+        <g fill="#1F3A4D">
+          <circle cx="261" cy="46" r="4"/><circle cx="292" cy="92" r="4"/><circle cx="323" cy="40" r="4"/>
+          <circle cx="354" cy="88" r="4"/><circle cx="385" cy="50" r="4"/><circle cx="416" cy="94" r="4"/>
+          <circle cx="230" cy="84" r="4"/>
+        </g>
+        <text x="323" y="16" text-anchor="middle" fill="#B5471E"
+              font-family="SFMono-Regular,Menlo,monospace" font-size="12">7 points</text>
+        <g stroke="#B5471E" stroke-width="2.2" fill="none">
+          <path d="M323 124 V152"/><path d="M316 145 L323 153 L330 145"/>
+        </g>
+        <text x="341" y="146" fill="#B5471E" font-family="SFMono-Regular,Menlo,monospace" font-size="12">mean</text>
+        <g stroke="#E4DFD5" stroke-width="1.2" fill="none"><path d="M30 196 H734"/></g>
+        <polyline fill="none" stroke="#D55E00" stroke-width="2.6" stroke-linejoin="round"
+          points="199,180 230,178 261,176 292,174 323,172 354,171 385,170 416,169 447,168 478,168 509,167 540,167 571,166"/>
+        <circle cx="323" cy="172" r="5" fill="#D55E00"/>
+        <text x="30" y="212" fill="#98928a" font-family="SFMono-Regular,Menlo,monospace" font-size="11.5">the moving average: one point per window position</text>
+      </svg>
+      <div class="figrow">
+        <p class="step"><b>One window, one number</b>The seven points inside are averaged into a single value, placed at the middle of the window.</p>
+        <p class="step t"><b>Then it moves</b>Shift the window one step to the right and do it again. The series of those averages is the <code>7-MA</code>.</p>
+      </div>
+    </figure>
+    <p class="punch step wide">The jagged line is the data. The smooth line underneath is what a sliding average leaves behind. That smooth line is the trend estimate.</p>
+  </div>
+  <aside class="notes">Notation, so that the rest of the session is short. A moving average over <i>m</i> points is written <code>m-MA</code>, so the window drawn here gives the <code>7-MA</code> of the series.<br><br>The window drawn here is <b>centered</b>: it leaves three points to the left of the point being averaged and three to the right. That is not the only choice, and slide 15 shows the alternatives, but it is the one this course uses and the one classical decomposition is built on.</aside>
+</section>
+
+<!-- ---------- 4 ---------- -->
+<section class="slide" data-section="1" data-title="Two consequences">
+  <div class="inner">
+    <p class="kicker">Both of which you have already seen</p>
+    <h1 class="sowhat">Neighboring windows differ in exactly two points.</h1>
+    <figure>
+      <svg viewBox="0 0 760 196" role="img" aria-label="Two shaded windows drawn one above the other over the same row of points. The window at t and the window at t plus one overlap across six points; the first has an extra point on the left and the second an extra point on the right, both marked in red">
+        <g fill="#98928a">
+          <circle cx="90"  cy="112" r="5"/><circle cx="150" cy="112" r="5"/><circle cx="210" cy="112" r="5"/>
+          <circle cx="270" cy="112" r="5"/><circle cx="330" cy="112" r="5"/><circle cx="390" cy="112" r="5"/>
+          <circle cx="450" cy="112" r="5"/><circle cx="510" cy="112" r="5"/><circle cx="570" cy="112" r="5"/>
+        </g>
+        <rect x="68" y="46" width="404" height="34" rx="3" fill="#1F3A4D" opacity=".18"/>
+        <rect x="128" y="86" width="404" height="34" rx="3" fill="#B5471E" opacity=".18"/>
+        <g font-family="SFMono-Regular,Menlo,monospace" font-size="12.5">
+          <text x="486" y="68" fill="#1F3A4D">window at t</text>
+          <text x="546" y="108" fill="#B5471E">window at t+1</text>
+        </g>
+        <circle cx="90"  cy="63" r="7" fill="#B5471E"/>
+        <circle cx="510" cy="103" r="7" fill="#B5471E"/>
+        <g font-family="SFMono-Regular,Menlo,monospace" font-size="11.5" fill="#B5471E" text-anchor="middle">
+          <text x="90" y="40">dropped</text>
+          <text x="510" y="142">added</text>
+        </g>
+        <path d="M128 150 H472" stroke="#6B7F5E" stroke-width="2.4" fill="none"/>
+        <text x="300" y="170" text-anchor="middle" fill="#6B7F5E"
+              font-family="SFMono-Regular,Menlo,monospace" font-size="12.5">six points shared by both windows</text>
+      </svg>
+      <div class="figrow">
+        <p class="step"><b>Why the curve is smooth</b>One point leaves, one arrives, and the other six are unchanged. The average can only move a little on any one step.</p>
+        <p class="step t"><b>Why the ends are empty</b>Near the start there is nothing to the left to put in the window. A 7-MA loses its first three and last three values.</p>
+      </div>
+    </figure>
+    <p class="punch step wide">Both of Monday's loose ends, answered by the same picture. Keep the diagram: the second half of this session is nothing but it with the window widths changed.</p>
+  </div>
+  <aside class="notes">The count generalizes: an <code>m-MA</code> loses <code>(m-1)/2</code> values at each end, so a 13-MA gives up six at each end and a 2&times;12-MA gives up six as well. The script prints these counts for every window it builds, and it is worth checking the arithmetic against the output once.<br><br>Missing values at the ends are not a defect to be fixed. They are an honest statement that the estimate needs neighbours on both sides and does not have them there. Slide 16 comes back to what that costs you, because it is the most consequential limitation in this block.</aside>
+</section>
+
+<!-- ---------- 5 ---------- -->
+<section class="slide" data-section="2" data-title="The formula">
+  <div class="inner">
+    <p class="kicker">Notation for a centered window</p>
+    <h1 class="sowhat"><code>m</code> has to be odd, so that the window has a middle.</h1>
+    <div class="console">m-MA_t  =  (1/m) <span class="dim">*</span>  sum of  y_{t+j}   <span class="dim">for</span> j = -k .. +k
+
+<span class="hl">m = 2k + 1</span>
+
+<span class="dim"># the 7-MA, written out</span>
+7-MA_t  =  (1/7)(y_{t-3} + y_{t-2} + y_{t-1} + y_t + y_{t+1} + y_{t+2} + y_{t+3})</div>
+    <ul class="build">
+      <li class="step"><b><code>k</code> points on each side, plus the point itself.</b> That is where <code>2k + 1</code> comes from, and why it can never be even.</li>
+      <li class="step"><b>In R this is <code>slider::slide_dbl()</code></b>, with <code>.before = k</code> and <code>.after = k</code>. The argument names are the notation.</li>
+      <li class="step"><b><code>.complete = TRUE</code> is the right setting.</b> It computes no average on a partial window and returns <code>NA</code> instead.</li>
+    </ul>
+    <p class="punch step wide">Hold on to the word <i>odd</i>. In ten minutes it becomes a problem, because the seasonal periods we care about are twelve and four.</p>
+  </div>
+  <aside class="notes">Do not skip past <code>.complete = TRUE</code>. Set it to <code>FALSE</code> and R averages whatever part of the window exists, so the first value of a 7-MA would be the mean of four points rather than seven. You get a series with no gaps and a quietly different definition at each end, which is worse than a gap because nothing tells you it happened.<br><br>The word for an odd-numbered window in some other languages translates as &ldquo;uneven&rdquo;, and you will see that word in older course material. In English <i>uneven</i> means not level. The word here is <b>odd</b>.</aside>
+</section>
+
+<!-- ---------- 6 ---------- -->
+<section class="slide" data-section="2" data-title="Switch: a 7-MA">
+  <div class="inner">
+    <p class="kicker">Now we compute</p>
+    <h1 class="sowhat">Open <code>06_B</code></h1>
+    <ul class="build plain" style="margin-top:1.8rem">
+      <li>Filter <code>global_economy</code> to Australia &rarr; <code>aus_exports</code></li>
+      <li><code>slide_dbl(Exports, mean, .before = 3, .after = 3, .complete = TRUE)</code></li>
+      <li>Print it and count the <code>NA</code>s at the top before plotting anything</li>
+      <li>Plot the 7-MA over the series</li>
+    </ul>
+    <div class="callout"><b>One library again.</b> <code>fpp3</code>, plus <code>slider</code>, which comes with it. No data files.</div>
+  </div>
+  <aside class="notes"><code>slider::slide_dbl()</code> is written with the double colon on purpose. It says take the <code>slide_dbl</code> function from the <code>slider</code> package, and it works whether or not you have run <code>library(slider)</code>. In a notebook that already loads a dozen packages, naming the source of an unfamiliar function is a kindness to whoever reads it next, including you.<br><br>The <code>_dbl</code> suffix means the function promises to return a double, one per window. Its siblings <code>slide_int()</code> and <code>slide_chr()</code> promise other types, and the promise is checked: if your function returns something else, you get an error rather than a silently strange column.</aside>
+</section>
+
+<!-- ---------- 7 ---------- -->
+<section class="slide" data-section="2" data-title="Check the first value by hand">
+  <div class="inner">
+    <p class="kicker">06_B &nbsp;&middot;&nbsp; the habit from Monday, reused</p>
+    <h1 class="sowhat wide">Average seven numbers yourself. Ask R whether it agrees.</h1>
+    <div class="console">mean(aus_exports$Exports[1:7])
+aus_exports$`7-MA`[[<span class="hl">4</span>]]
+
+all.equal(mean(aus_exports$Exports[1:7]), aus_exports$`7-MA`[[4]])
+<span class="hl">isTRUE</span>(all.equal(mean(aus_exports$Exports[1:7]), aus_exports$`7-MA`[[4]]))</div>
+    <ul class="build">
+      <li class="step"><b>Why element 4 and not element 1.</b> The first three windows are incomplete, so the first number a 7-MA can produce sits in row four.</li>
+      <li class="step"><b>This is Monday's idiom, on its first real job.</b> <code>all.equal()</code> alone returns <code>TRUE</code> or a sentence; <code>isTRUE()</code> turns it into something you can act on.</li>
+      <li class="step"><b>Do this at every step in Session 7.</b> Four steps, four checks. A decomposition that fails at step 3 is much cheaper to find at step 3.</li>
+    </ul>
+    <p class="punch step wide">Work out which element to compare before you run it. Getting the index right is most of the exercise, and it is the same reasoning that tells you how many values are missing.</p>
+  </div>
+  <aside class="notes">If you do reach for <code>==</code> here it will probably return <code>TRUE</code>, because both sides happen to be computed by very similar arithmetic. That is luck, not correctness, and it will run out in Session 7 where your route to a number and R's differ by several steps.<br><br>A second check worth running yourself: compare <code>mean(Exports[2:8])</code> against element 5, and satisfy yourself that the window really has moved by one and not by seven. It is a thirty-second experiment that settles the difference between a moving average and a block average for good.</aside>
+</section>
+
+<!-- ---------- 8 ---------- -->
+<section class="slide" data-section="2" data-title="What the width buys">
+  <div class="inner">
+    <p class="kicker">06_B &nbsp;&middot;&nbsp; 3-MA through 13-MA &nbsp;&middot;&nbsp; on the RStudio screen</p>
+    <h1 class="sowhat">A wider window buys smoothness and pays for it at the ends.</h1>
+    <figure>
+      <svg viewBox="0 0 760 206" role="img" aria-label="One noisy series drawn in grey with two moving averages over it. A narrow three point average follows the wiggles closely and spans almost the whole width. A wide thirteen point average is much smoother but stops well short of both ends">
+        <g stroke="#E4DFD5" stroke-width="1.2" fill="none"><path d="M30 168 H734"/></g>
+        <polyline fill="none" stroke="#C9C3B8" stroke-width="1.8" stroke-linejoin="round"
+          points="44,120 75,78 106,132 137,66 168,126 199,60 230,118 261,72 292,128 323,58 354,112 385,74 416,124 447,54 478,108 509,70 540,118 571,50 602,104 633,66 664,110 695,56 726,100"/>
+        <polyline fill="none" stroke="#D55E00" stroke-width="2.4" stroke-linejoin="round"
+          points="75,110 106,92 137,108 168,84 199,101 230,83 261,106 292,86 323,99 354,81 385,103 416,84 447,95 478,77 509,99 540,79 571,91 602,73 633,93 664,77 695,89"/>
+        <polyline fill="none" stroke="#1F3A4D" stroke-width="3" stroke-linejoin="round"
+          points="230,96 261,95 292,94 323,93 354,92 385,90 416,89 447,88 478,87 509,86 540,85"/>
+        <g stroke="#B5471E" stroke-width="1.4" stroke-dasharray="4 4" fill="none" opacity=".8">
+          <path d="M230 40 V168"/><path d="M540 40 V168"/>
+        </g>
+        <g font-family="SFMono-Regular,Menlo,monospace" font-size="12">
+          <text x="44" y="192" fill="#C9C3B8">data</text>
+          <text x="140" y="192" fill="#D55E00">3-MA</text>
+          <text x="240" y="192" fill="#1F3A4D">13-MA</text>
+          <text x="385" y="34" text-anchor="middle" fill="#B5471E">all the 13-MA can reach</text>
+        </g>
+      </svg>
+      <div class="figrow">
+        <p class="step"><b>The 3-MA</b>Still wiggly. It has only three points to average, so a single unusual value moves it a third of the way.</p>
+        <p class="step t"><b>The 13-MA</b>Genuinely smooth, and six values shorter at each end. The dashed lines are where it has to stop.</p>
+      </div>
+    </figure>
+    <p class="punch step wide">There is no free smoothing. Every point you add to the window is a point you lose from each end of the answer.</p>
+  </div>
+  <aside class="notes">The script prints <code>colSums(is.na(...))</code> across all six moving averages so you can read the cost straight off: 2, 4, 6, 8, 10, 12 missing values in total, which is <code>(m-1)/2</code> at each end. Check one of them by hand against the rule.<br><br>This is a genuine trade-off rather than a setting with a right answer, and it is worth being suspicious of anyone who smooths a series without saying how much. A long enough moving average will make any series look like it has a clean trend, including one that is pure noise. Session 4's correlogram is the check on whether there was anything there to smooth.</aside>
+</section>
+
+<!-- ---------- 9 ---------- -->
+<section class="slide" data-section="3" data-title="Why the season sets the width">
+  <div class="inner">
+    <p class="kicker">The reason this session is not just about smoothing</p>
+    <h1 class="sowhat wide">Average over exactly one seasonal period and the season cancels itself out.</h1>
+    <figure>
+      <svg viewBox="0 0 760 208" role="img" aria-label="A seasonal wave. A window spanning exactly one full seasonal period is shaded, and the area above the center line inside it is marked as equal to the area below it. The average is marked as a dot on the center line">
+        <g stroke="#E4DFD5" stroke-width="1.2" fill="none"><path d="M30 178 H734"/></g>
+        <path d="M40 108 H730" stroke="#6B665E" stroke-width="1.4" stroke-dasharray="5 4" fill="none"/>
+        <rect x="214" y="34" width="186" height="148" fill="#B5471E" opacity=".10"/>
+        <rect x="214" y="34" width="186" height="148" fill="none" stroke="#B5471E" stroke-width="1.8"/>
+        <path d="M214 108 C245 48 276 48 307 108 C338 168 369 168 400 108"
+              fill="none" stroke="#1F3A4D" stroke-width="2.6"/>
+        <path d="M40 108 C71 48 102 48 133 108 C164 168 195 168 214 108" fill="none" stroke="#1F3A4D" stroke-width="2.6" opacity=".35"/>
+        <path d="M400 108 C420 68 445 48 462 52 C493 48 524 168 555 108 C586 48 617 48 648 108 C679 168 710 168 730 120" fill="none" stroke="#1F3A4D" stroke-width="2.6" opacity=".35"/>
+        <path d="M214 108 C245 48 276 48 307 108 Z" fill="#6B7F5E" opacity=".28"/>
+        <path d="M307 108 C338 168 369 168 400 108 Z" fill="#B5471E" opacity=".28"/>
+        <text x="260" y="86" fill="#6B7F5E" font-family="SFMono-Regular,Menlo,monospace" font-size="12.5">above</text>
+        <text x="352" y="142" fill="#B5471E" font-family="SFMono-Regular,Menlo,monospace" font-size="12.5">below</text>
+        <text x="307" y="26" text-anchor="middle" fill="#B5471E"
+              font-family="SFMono-Regular,Menlo,monospace" font-size="12">window of exactly m points = one full seasonal period</text>
+        <circle cx="307" cy="108" r="6" fill="#D55E00"/>
+        <text x="600" y="100" fill="#D55E00" font-family="SFMono-Regular,Menlo,monospace" font-size="12">the average lands here</text>
+      </svg>
+    </figure>
+    <ul class="build">
+      <li class="step"><b>One full seasonal period contains every phase once.</b> Every high month and every low month, exactly once each, so they offset.</li>
+      <li class="step"><b>So the width is not a free choice.</b> Pick <code>m</code> equal to the seasonal period and the moving average returns the trend with the season removed.</li>
+    </ul>
+    <p class="punch step wide">This is why Session 7 can estimate the trend first and the season second. The window does the separating.</p>
+  </div>
+  <aside class="notes">The cancellation is exact only if the seasonal pattern repeats identically from one period to the next, for monthly data from year to year, which is the assumption classical decomposition makes and where it is weakest. Session 7 names that limitation and STL is the method that relaxes it.<br><br>This also explains a detail from Session 5 that may have looked arbitrary. The trend column from <code>classical_decomposition()</code> on monthly data was missing six values at each end, not five or seven, because the window it used spans thirteen points. The next two slides are where that thirteen comes from.</aside>
+</section>
+
+<!-- ---------- 10 ---------- -->
+<section class="slide" data-section="3" data-title="The awkward arithmetic">
+  <div class="inner">
+    <p class="kicker">The problem this session exists to solve</p>
+    <h1 class="sowhat">The seasonal periods that matter are even. Even windows have no middle.</h1>
+    <figure>
+      <svg viewBox="0 0 760 176" role="img" aria-label="Two rows of points. In the top row a window of seven points has a clearly marked center point with three on each side. In the bottom row a window of four points has no center: the marker falls between two points, and the window is shown twice, once leaning left and once leaning right">
+        <g fill="#98928a">
+          <circle cx="72" cy="56" r="5"/><circle cx="118" cy="56" r="5"/><circle cx="164" cy="56" r="5"/>
+          <circle cx="210" cy="56" r="5"/><circle cx="256" cy="56" r="5"/><circle cx="302" cy="56" r="5"/>
+          <circle cx="348" cy="56" r="5"/>
+        </g>
+        <circle cx="210" cy="56" r="8" fill="#6B7F5E"/>
+        <rect x="56" y="38" width="308" height="36" rx="3" fill="none" stroke="#6B7F5E" stroke-width="1.8"/>
+        <text x="384" y="61" fill="#6B7F5E" font-family="SFMono-Regular,Menlo,monospace" font-size="12.5">m = 7 &nbsp; 3 left, 3 right, one middle</text>
+        <g fill="#98928a">
+          <circle cx="72" cy="132" r="5"/><circle cx="118" cy="132" r="5"/><circle cx="164" cy="132" r="5"/>
+          <circle cx="210" cy="132" r="5"/><circle cx="256" cy="132" r="5"/><circle cx="302" cy="132" r="5"/>
+        </g>
+        <rect x="56" y="114" width="170" height="36" rx="3" fill="none" stroke="#B5471E" stroke-width="1.8" stroke-dasharray="5 4"/>
+        <path d="M141 106 V98" stroke="#B5471E" stroke-width="1.6" fill="none"/>
+        <text x="141" y="92" text-anchor="middle" fill="#B5471E"
+              font-family="SFMono-Regular,Menlo,monospace" font-size="11.5">middle falls between two points</text>
+        <text x="384" y="137" fill="#B5471E" font-family="SFMono-Regular,Menlo,monospace" font-size="12.5">m = 4 &nbsp; no middle to sit on</text>
+        <text x="56" y="170" fill="#98928a" font-family="SFMono-Regular,Menlo,monospace" font-size="11.5">quarterly m = 4 &nbsp;&middot;&nbsp; monthly m = 12 &nbsp;&middot;&nbsp; both even</text>
+      </svg>
+    </figure>
+    <ul class="build">
+      <li class="step"><b>Weekly data is fine.</b> A seven-day seasonal period gives an odd window, three days each side, and everything above applies unchanged.</li>
+      <li class="step"><b>Quarterly and monthly are not.</b> Four and twelve are even, so any window of that width has one more point on one side than the other.</li>
+    </ul>
+    <p class="punch step wide">Two requirements that will not both hold: the window must span one seasonal period, and the window must be centered. The next slide keeps both.</p>
+  </div>
+  <aside class="notes">You could simply accept the imbalance and use a window with one extra point on the right. The result is a trend estimate shifted half a step in time, and half a step of bias in every value of a component you are about to subtract from the data. Small, systematic, and avoidable, which is the worst kind of error to leave in.<br><br>Note which cases are affected. Daily data with weekly seasonality is odd and needs nothing. Monthly, quarterly, and half-hourly data with daily seasonality are all even. In practice the even case is the common one, which is why this is a section of the course rather than a footnote.</aside>
+</section>
+
+<!-- ---------- 11 ---------- -->
+<section class="slide" data-section="3" data-title="Refusing to choose">
+  <div class="inner">
+    <p class="kicker">The fix, in three steps</p>
+    <h1 class="sowhat wide">Lean left. Lean right. Average the two, and you are centered again.</h1>
+    <ul class="build">
+      <li class="step"><b>Compute an <code>m</code>-MA leaning one way</b>: one point to the left, two to the right for <code>m = 4</code>. Call it <code>4-MA R</code>.</li>
+      <li class="step"><b>Compute an <code>m</code>-MA leaning the other way</b>: two to the left, one to the right. Call it <code>4-MA L</code>.</li>
+      <li class="step"><b>Average those two series.</b> One leans forward by half a step, the other leans back by half a step, and the two errors cancel exactly.</li>
+    </ul>
+    <div class="callout"><b>Written <code>2 &times; m-MA</code>.</b> The 2 counts how many moving averages were averaged, not how many points are in the window. <code>2&times;4-MA</code> and <code>2&times;12-MA</code> are the two you will use.</div>
+    <p class="punch step wide">Nothing subtle is happening here. It is the same trick as taking the mean of two estimates that are wrong in opposite directions.</p>
+  </div>
+  <aside class="notes">The naming trips people up every year, so read it carefully: in <code>2&times;4-MA</code> the 4 is the window width and the 2 is the number of passes. It is not a window of eight points. The next slide shows that it actually spans five.<br><br>The same construction generalizes: a <code>p&times;m-MA</code> means take an <code>m</code>-MA and then a <code>p</code>-MA of that, and the result spans <code>p + m - 1</code> points. Exercises 3 and 4 are two instances of exactly this, which is why they can be done on paper.</aside>
+</section>
+
+<!-- ---------- 12 ---------- -->
+<section class="slide" data-section="4" data-title="Where the weights come from">
+  <div class="inner">
+    <p class="kicker">The algebra, done once</p>
+    <h1 class="sowhat">Average two four-point windows and you get a five-point weighted one.</h1>
+    <div class="console tight">4-MA_t R  =  (1/4)[ y_{t-1} + y_t + y_{t+1} + y_{t+2} ]
+4-MA_t L  =  (1/4)[ y_{t-2} + y_{t-1} + y_t + y_{t+1} ]
+
+(1/2)[ R + L ]  =  <span class="hl">(1/8)</span>y_{t-2} + (1/4)y_{t-1} + (1/4)y_t + (1/4)y_{t+1} + <span class="hl">(1/8)</span>y_{t+2}</div>
+    <figure>
+      <svg viewBox="0 0 760 118" role="img" aria-label="Five bars of unequal height representing the weights one eighth, one quarter, one quarter, one quarter, one eighth. The three middle bars are twice the height of the two end bars">
+        <g stroke="#E4DFD5" stroke-width="1.2" fill="none"><path d="M120 96 H640"/></g>
+        <rect x="140" y="66" width="60" height="30" fill="#B5471E" opacity=".75"/>
+        <rect x="260" y="36" width="60" height="60" fill="#1F3A4D"/>
+        <rect x="350" y="36" width="60" height="60" fill="#1F3A4D"/>
+        <rect x="440" y="36" width="60" height="60" fill="#1F3A4D"/>
+        <rect x="560" y="66" width="60" height="30" fill="#B5471E" opacity=".75"/>
+        <g font-family="SFMono-Regular,Menlo,monospace" font-size="12" text-anchor="middle">
+          <text x="170" y="58" fill="#B5471E">1/8</text>
+          <text x="290" y="28" fill="#1F3A4D">1/4</text><text x="380" y="28" fill="#1F3A4D">1/4</text>
+          <text x="470" y="28" fill="#1F3A4D">1/4</text>
+          <text x="590" y="58" fill="#B5471E">1/8</text>
+        </g>
+        <g font-family="SFMono-Regular,Menlo,monospace" font-size="11.5" fill="#98928a" text-anchor="middle">
+          <text x="170" y="112">t-2</text><text x="290" y="112">t-1</text><text x="380" y="112">t</text>
+          <text x="470" y="112">t+1</text><text x="590" y="112">t+2</text>
+        </g>
+      </svg>
+    </figure>
+    <ul class="build">
+      <li class="step"><b>Symmetric, and they sum to 1.</b> Both properties are what make this an average at all rather than an arbitrary combination.</li>
+      <li class="step"><b>The general rule:</b> a <code>2&times;m-MA</code> spans <code>m+1</code> points, every weight <code>1/m</code>, except the two ends at <code>1/(2m)</code>.</li>
+    </ul>
+    <p class="punch step wide">The ends carry half weight because each of them appeared in only one of the two windows. Nothing was chosen; it fell out of the arithmetic.</p>
+  </div>
+  <aside class="notes">For monthly data the same rule gives a 2&times;12-MA spanning thirteen points, with weights of 1/12 in the middle and 1/24 at each end. Thirteen points, six on each side, which is exactly the six missing values you counted at each end of Session 5's trend column.<br><br>Half weight at the ends makes sense for monthly data. January appears twice in a thirteen-month window centered on July, once at each end, and giving each appearance half weight counts it exactly once overall. The season is still cancelled, and the window is still centered.</aside>
+</section>
+
+<!-- ---------- 13 ---------- -->
+<section class="slide" data-section="4" data-title="Switch: the 2x4-MA">
+  <div class="inner">
+    <p class="kicker">Now we compute &nbsp;&middot;&nbsp; quarterly beer, m = 4</p>
+    <h1 class="sowhat">Two imbalanced windows, then their mean</h1>
+    <div class="console">`4-MA_R` = slide_dbl(Beer, mean, .before = 1, .after = 2, .complete = TRUE)
+`4-MA_L` = slide_dbl(Beer, mean, .before = 2, .after = 1, .complete = TRUE)
+
+`2x4-MA` = 0.5 * (`4-MA_R` + `4-MA_L`)</div>
+    <ul class="build">
+      <li class="step"><b>Read <code>head()</code> and <code>tail()</code> before the plot.</b> Watch where each of the three columns starts and stops, and check the gaps against the rule.</li>
+      <li class="step"><b>The two one-sided columns die at different ends.</b> Their average is defined only where both are, which is what makes the final gap symmetric.</li>
+    </ul>
+    <p class="punch step wide">Quarterly beer is the same series Session 4 used for the correlogram. Same data, third tool, and the seasonal period is still four.</p>
+  </div>
+  <aside class="notes">Work through the <code>.before</code> and <code>.after</code> numbers rather than memorizing them. For <code>4-MA R</code> we want four points with one extra on the right, so one before and two after, plus the point itself: 1 + 1 + 2 = 4. For <code>4-MA L</code>, two before and one after: 2 + 1 + 1 = 4. The arithmetic is trivial and the slip is common.<br><br>Anyone confident with dplyr may notice that <code>classical_decomposition()</code> and STL do all of this internally and you will never write these two lines in anger. That is true, and beside the point. Session 7 asks you to build the whole algorithm, and this is the step that makes the others possible.</aside>
+</section>
+
+<!-- ---------- 14 ---------- -->
+<section class="slide" data-section="4" data-title="Two routes, one answer">
+  <div class="inner">
+    <p class="kicker">06_B &nbsp;&middot;&nbsp; the check worth running</p>
+    <h1 class="sowhat wide">Build it from the weights instead, and confirm the two agree.</h1>
+    <div class="console tight">`2x4-MA_weights` =
+    (1/8) * lag(Beer, 2) +
+    (1/4) * lag(Beer, 1) +
+    (1/4) * Beer +
+    (1/4) * lead(Beer, 1) +
+    (1/8) * lead(Beer, 2)
+
+<span class="hl">isTRUE</span>(all.equal(beer$`2x4-MA`, beer$`2x4-MA_weights`))</div>
+    <ul class="build">
+      <li class="step"><b>This is the slide 12 algebra, run as code.</b> Two independent routes to the same column, and no reason beyond the derivation to expect them to match.</li>
+      <li class="step"><b><code>lag()</code> and <code>lead()</code> are Session 4's tools.</b> <code>lag(Beer, 2)</code> is <code>y_{t-2}</code>, and if you find the direction confusing you are in good company.</li>
+      <li class="step"><b>It returns <code>TRUE</code>.</b> That is the point: derivations you have checked are derivations you can use in an exam without anxiety.</li>
+    </ul>
+    <p class="punch step wide">This is the whole method of the block in miniature. Derive on paper, implement twice, compare. Session 7 does it four times over.</p>
+  </div>
+  <aside class="notes">Note that this only works at all because of <code>.complete = TRUE</code>. The two-step route produces <code>NA</code> wherever a window was incomplete; the weighted route produces <code>NA</code> wherever <code>lag()</code> or <code>lead()</code> ran off the end of the column. Those are the same places, which is itself a small confirmation that the two constructions describe the same object.<br><br>If you want to see the check fail, change one weight from <code>1/8</code> to <code>1/7</code> and run it again. You will get a character string back, describing a mean relative difference somewhere around a thousandth. Seeing the failure mode once is worth more than being told about it.</aside>
+</section>
+
+<!-- ---------- 15 ---------- -->
+<section class="slide" data-section="5" data-title="One-sided windows">
+  <div class="inner">
+    <p class="kicker">The alternative we are not using</p>
+    <h1 class="sowhat">A one-sided window reaches the end of the series. It pays with a lag.</h1>
+    <div class="console tight"><span class="dim"># left: the point and the m-1 points before it</span>
+left  m-MA_t  =  (1/m) * sum of y_{t+j}  <span class="dim">for</span> j = -(m-1) .. 0
+
+<span class="dim"># right: the point and the m-1 points after it</span>
+right m-MA_t  =  (1/m) * sum of y_{t+j}  <span class="dim">for</span> j = 0 .. (m-1)</div>
+    <ul class="build">
+      <li class="step"><b>The left version can be computed at the final observation</b>, because everything it needs is already in the past. That is why trading and monitoring dashboards use it.</li>
+      <li class="step"><b>It sits behind the data.</b> Its value at time <code>t</code> describes a window whose center was half a window ago, so it turns late at every turning point.</li>
+      <li class="step"><b>This course uses centered windows only.</b> Classical decomposition needs the season cancelled without a time shift, and only a centered window does that.</li>
+    </ul>
+    <p class="punch step wide">Run the two lines in the script once and watch the orange line lag and the blue line lead. Nothing on this slide makes the case as well.</p>
+  </div>
+  <aside class="notes">The fifty-day moving average quoted on financial charts is a left moving average, and the lag is not a flaw in that setting: the whole point is that it uses no information from the future, because in trading there is none to be had. Different job, different window.<br><br>Some implementations shift gradually to a one-sided window as they approach the ends, so that the trend estimate reaches the last observation. That buys you a number where you had a gap, at the cost of a value computed by a different rule from all the others. <code>classical_decomposition()</code> does not do this, and leaves the gaps instead.</aside>
+</section>
+
+<!-- ---------- 16 ---------- -->
+<section class="slide" data-section="5" data-title="The cost of the gaps">
+  <div class="inner">
+    <p class="kicker">The limitation that matters most</p>
+    <h1 class="sowhat wide">The trend value you most want is the one you cannot have.</h1>
+    <figure>
+      <svg viewBox="0 0 760 186" role="img" aria-label="A series running left to right with a trend line drawn over its middle section only. Shaded bands at both ends mark where no trend value exists, and the right hand band is labelled where you are standing today">
+        <g stroke="#E4DFD5" stroke-width="1.2" fill="none"><path d="M30 148 H734"/></g>
+        <rect x="40" y="26" width="120" height="122" fill="#B5471E" opacity=".10"/>
+        <rect x="600" y="26" width="120" height="122" fill="#B5471E" opacity=".18"/>
+        <polyline fill="none" stroke="#C9C3B8" stroke-width="1.8" stroke-linejoin="round"
+          points="46,110 92,74 138,116 184,68 230,110 276,62 322,104 368,56 414,98 460,50 506,92 552,44 598,86 644,38 690,80 720,46"/>
+        <polyline fill="none" stroke="#D55E00" stroke-width="3" stroke-linejoin="round"
+          points="160,96 230,92 300,87 370,82 440,76 510,70 580,64 600,62"/>
+        <g font-family="SFMono-Regular,Menlo,monospace" font-size="11.5" text-anchor="middle">
+          <text x="100" y="168" fill="#B5471E">no trend</text>
+          <text x="380" y="168" fill="#D55E00">trend estimated here</text>
+          <text x="660" y="168" fill="#B5471E">no trend</text>
+          <text x="660" y="18" fill="#B5471E">today</text>
+        </g>
+      </svg>
+    </figure>
+    <ul class="build">
+      <li class="step"><b>Both gaps are the same size.</b> Only one of them hurts. Nobody needs the trend in 1990; everybody wants it for last month.</li>
+      <li class="step"><b>This is why commentary on recent data goes wrong.</b> The seasonally adjusted series does reach today, but it carries the remainder, which is Session 5's slide 14.</li>
+    </ul>
+    <p class="punch step wide">Decomposition is a tool for understanding what a series has done, not for calling what it is doing right now. Forecasting, from Session 8, is the tool for the second question.</p>
+  </div>
+  <aside class="notes">The same shape recurs throughout the course. Anything estimated from a symmetric window of neighbours is weakest where the neighbours run out, and the end of a series is always where the decisions are being made. It is worth stating out loud when you present any decomposition to somebody who will act on it.<br><br>This is also the answer to a question that comes up in Group Assignment 1: no, you cannot fix it by using a shorter window at the ends, or at least not without changing what the number means. What you can do is say clearly that the last few points carry no trend estimate, and let the reader draw their own conclusion about the most recent months.</aside>
+</section>
+
+<!-- ---------- 17 ---------- -->
+<section class="slide" data-section="6" data-title="Exercises 3 and 4 in class">
+  <div class="inner">
+    <p class="kicker">Start these here &nbsp;&middot;&nbsp; pen and paper</p>
+    <h1 class="sowhat">Two derivations, same method as slide 12.</h1>
+    <ul class="build">
+      <li class="step"><b>Exercise 3, the <code>3&times;7-MA</code>.</b> Take a 7-MA, then average three neighboring 7-MA windows centered at <code>t-1</code>, <code>t</code> and <code>t+1</code>. Collect the coefficient on each <code>y</code>.</li>
+      <li class="step"><b>Exercise 4, the <code>2&times;8-MA</code>.</b> Same job, following the <code>2&times;4-MA</code> derivation exactly.</li>
+      <li class="step"><b>Check both against the two properties</b>, symmetric and summing to 1, and then against the <code>2&times;m</code> rule from slide 12. One of the two obeys it and one does not. Working out which, and why, is the point of doing both.</li>
+    </ul>
+    <div class="callout"><b>There is a blank figure at the end of the notebook.</b> Print it or draw on screen. Sketching the overlapping windows is faster than manipulating the sums, and it is how the 2&times;4 result was found on slide 12.</div>
+  </div>
+  <aside class="notes">A prediction you can check as you go: <code>p&times;m-MA</code> spans <code>p + m - 1</code> points. So the 3&times;7 spans 9 and the 2&times;8 spans 9 as well. Two different constructions landing on the same width, with different weights inside.<br><br>The fastest route is bookkeeping rather than algebra. Write the three windows as three rows offset by one, then count how many rows each column appears in. The counts are the numerators and the denominator is the product of the two orders. For the 3&times;7 that denominator is 21.</aside>
+</section>
+
+<!-- ---------- 18 ---------- -->
+<section class="slide" data-section="6" data-title="Homework">
+  <div class="inner">
+    <p class="kicker">Due Sunday 27 September, 23:59</p>
+    <h1 class="sowhat">Homework.</h1>
+    <ul class="build">
+      <li><b>Exercise 1.</b> The <code>2&times;12-MA</code> of <code>us_retail_employment</code>. Work out <code>.before</code> and <code>.after</code> for both windows before typing, then plot it over the series.</li>
+      <li>One sentence on Exercise 1: how many values are missing at each end, and why that number.</li>
+      <li><b>Exercises 3 and 4.</b> The two derivations from the previous slide, on paper. A photograph of clear handwriting is a perfectly good submission. Between them they are half the marks.</li>
+      <li><b>Exercise 2 is not assigned.</b> It is in the notebook as optional practice if you want a second <code>2&times;m-MA</code> to work through.</li>
+    </ul>
+    <div class="callout slate"><b>No data files.</b> The series ships inside <code>fpp3</code>. Same deadline as Session 5's homework; both fall in this teaching week.</div>
+  </div>
+  <aside class="notes">Graded on completion and genuine effort, not correctness. For exercises 3 and 4 that matters more than usual: a derivation that goes wrong in an interesting place and says so is worth full marks. An answer copied from somewhere with no working shown is worth less, and is easy to spot.<br><br>The two derivations carry 2.5 marks each, against 5 for the coded exercise. That is deliberate. They are the part that tells you whether the 2&times;m construction is understood or memorized, and they take a fraction of the time the code does.<br><br>Submit on Blackboard, under Assignments. Multiple files are fine, so a script plus a photograph of the paper work is the natural shape for this one.</aside>
+</section>
+
+<!-- ---------- 19 ---------- -->
+<section class="slide" data-section="6" data-title="Next session">
+  <div class="inner">
+    <p class="kicker">Session 7 &nbsp;&middot;&nbsp; Monday</p>
+    <h1 class="sowhat">You can now build <code>T_t</code>. Next session you use it four times.</h1>
+    <p class="lead wide">Classical decomposition from scratch: trend by moving average, detrend, seasonal component, remainder. Then <code>classical_decomposition()</code> to check every step, the criteria for a good decomposition, and STL.</p>
+    <ul class="build">
+      <li class="step"><b>Step 1 of next session is this entire session.</b> A <code>2&times;m-MA</code> if <code>m</code> is even, an <code>m</code>-MA if it is odd. Nothing new.</li>
+      <li class="step"><b>Group Assignment 1 launches.</b> It is the same algorithm on a series of your choosing.</li>
+    </ul>
+    <p class="punch step wide">Read fpp3 3.4 and 3.6 before Monday. Section 3.5 is X-11 and SEATS, and this course does not cover it.</p>
+    <p class="url" style="font-size:clamp(0.95rem,1.7vw,1.9rem)">aberrizbeitia@faculty.ie.edu</p>
+  </div>
+  <aside class="notes">Session 7 is the heaviest of the block, and it is heavy mainly because it has four steps rather than because any one of them is hard. Arriving with today's material solid is what makes it manageable.<br><br>One thing to bring: the <code>isTRUE(all.equal(x, y))</code> idiom. You will write it four times on Monday, once per step, and each check tells you whether to keep going or to stop and find the mistake while it is still cheap.</aside>
+</section>
+
+<!-- lives inside the stage so it is positioned against it, not the viewport,
+     and therefore never covers the rail -->
+<div id="notepane"><h4>Going further</h4><div class="body"></div></div>
+
+</main>
+
+
+<!-- ============================== CHROME ============================== -->
+<div id="overview">
+  <h3>Jump to a slide</h3>
+  <ul id="ovlist"></ul>
+</div>
+
+<div id="hud">
+  <span id="count">1 / 19</span>
+  <button id="prev" title="Previous">&larr;</button>
+  <button id="next" title="Next">&rarr;</button>
+</div>
+
+
+<script>
+(function(){
+  "use strict";
+
+  var SECTIONS = [
+    {name:"The one move",        from:1,  to:4},
+    {name:"Odd windows",         from:5,  to:8,  live:true},
+    {name:"The season sets m",   from:9,  to:11},
+    {name:"The 2xm trick",       from:12, to:14, live:true},
+    {name:"The ends",            from:15, to:16},
+    {name:"Close",               from:17, to:19}
+  ];
+
+  var slides = Array.prototype.slice.call(document.querySelectorAll(".slide"));
+  var toc    = document.getElementById("toc");
+  var ovlist = document.getElementById("ovlist");
+  var bar    = document.querySelector("#bar i");
+  var count  = document.getElementById("count");
+  var noteBody = document.querySelector("#notepane .body");
+
+  var si = 0;
+  var sti = 0;
+
+  SECTIONS.forEach(function(sec, i){
+    var li = document.createElement("li");
+    li.innerHTML = '<span class="num">' + (i+1) + '</span><span>' + sec.name + '</span>' +
+                   (sec.live ? '<span class="live" title="RStudio screen"></span>' : '');
+    li.addEventListener("click", function(){ go(sec.from - 1, 0); });
+    toc.appendChild(li);
+  });
+
+  SECTIONS.forEach(function(sec){
+    var head = document.createElement("li");
+    head.className = "head";
+    head.textContent = sec.name + (sec.live ? " \u00b7 RStudio" : "");
+    ovlist.appendChild(head);
+    for (var n = sec.from; n <= sec.to; n++){
+      (function(idx){
+        var li = document.createElement("li");
+        li.innerHTML = '<span class="n">' + (idx+1) + '</span><span>' +
+                       (slides[idx].getAttribute("data-title") || "") + '</span>';
+        li.addEventListener("click", function(){
+          document.body.classList.remove("ov-on");
+          go(idx, "all");
+        });
+        ovlist.appendChild(li);
+      })(n - 1);
+    }
+  });
+  var ovItems = Array.prototype.slice.call(ovlist.querySelectorAll("li:not(.head)"));
+
+  function steps(i){
+    return Array.prototype.slice.call(slides[i].querySelectorAll(".step"));
+  }
+
+  function paint(){
+    slides.forEach(function(s, i){ s.classList.toggle("active", i === si); });
+
+    var num = si + 1;
+    var active = 0;
+    SECTIONS.forEach(function(sec, i){
+      if (num >= sec.from && num <= sec.to) active = i;
+    });
+    Array.prototype.slice.call(toc.children).forEach(function(li, i){
+      li.classList.toggle("on", i === active);
+      li.classList.toggle("done", i < active);
+    });
+    ovItems.forEach(function(li, i){ li.classList.toggle("on", i === si); });
+
+    bar.style.width = (num / slides.length * 100) + "%";
+    count.textContent = num + " / " + slides.length;
+
+    var n = slides[si].querySelector(".notes");
+    noteBody.innerHTML = n ? n.innerHTML : "<i>Nothing further for this slide.</i>";
+
+    if (history.replaceState) history.replaceState(null, "", "#" + num);
+  }
+
+  function go(i, mode){
+    if (i < 0 || i >= slides.length) return;
+    si = i;
+    var st = steps(si);
+    if (mode === "all"){
+      st.forEach(function(e){ e.classList.add("on"); });
+      sti = st.length;
+    } else {
+      st.forEach(function(e){ e.classList.remove("on"); });
+      sti = 0;
+    }
+    paint();
+  }
+
+  function next(){
+    var st = steps(si);
+    if (sti < st.length){ st[sti].classList.add("on"); sti++; }
+    else go(si + 1, 0);
+  }
+
+  function prev(){
+    if (sti > 0){ sti--; steps(si)[sti].classList.remove("on"); }
+    else go(si - 1, "all");
+  }
+
+  document.getElementById("next").addEventListener("click", next);
+  document.getElementById("prev").addEventListener("click", prev);
+
+  document.addEventListener("keydown", function(e){
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    var k = e.key;
+
+    if (document.body.classList.contains("ov-on")){
+      if (k === "Escape" || k === "o" || k === "O"){
+        document.body.classList.remove("ov-on"); e.preventDefault();
+      }
+      return;
+    }
+
+    if (k === "ArrowRight" || k === " " || k === "PageDown" || k === "ArrowDown"){ next(); e.preventDefault(); }
+    else if (k === "ArrowLeft" || k === "PageUp" || k === "ArrowUp"){ prev(); e.preventDefault(); }
+    else if (k === "Home"){ go(0, 0); e.preventDefault(); }
+    else if (k === "End"){ go(slides.length - 1, "all"); e.preventDefault(); }
+    else if (k === "n" || k === "N"){ toggleNotes(); e.preventDefault(); }
+    else if (k === "o" || k === "O"){ document.body.classList.add("ov-on"); e.preventDefault(); }
+    else if (k === "[" || k === "]"){ document.body.classList.toggle("rail-hidden"); e.preventDefault(); }
+    else if (k === "f" || k === "F"){
+      if (document.fullscreenElement) document.exitFullscreen();
+      else document.documentElement.requestFullscreen();
+      e.preventDefault();
+    }
+  });
+
+  function toggleNotes(){
+    var on = document.body.classList.toggle("notes-on");
+    document.documentElement.style.setProperty("--notes-h", on ? "212px" : "0px");
+  }
+
+  var start = parseInt((location.hash || "").replace("#", ""), 10);
+  go(isNaN(start) ? 0 : Math.min(Math.max(start - 1, 0), slides.length - 1),
+     isNaN(start) ? 0 : "all");
+})();
+</script>
+</body>
+</html>

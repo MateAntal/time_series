@@ -4,6 +4,15 @@ format: html
 editor: source
 ---
 
+**Released:** Session 7, Monday 28 September 2026.
+**Due:** Sunday 25 October 2026, 23:59, on Blackboard.
+
+Four weeks, and the deadline falls after the midterm on purpose: revising for the exam and
+building a decomposition from scratch are different activities, and they should not compete
+for the same week.
+
+This is group work and it receives detailed written feedback, unlike the weekly homework.
+
 ```{r}
 library(fpp3)
 ```

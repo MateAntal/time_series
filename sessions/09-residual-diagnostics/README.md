@@ -16,4 +16,8 @@ testing, and hence portmanteau tests; Ljung–Box.
 **Outcome:** Student runs a full residual diagnosis and judges whether a model has captured the
 signal.
 
-> The session closes with a revision sweep of Sessions 1–9, ahead of the midterm.
+> The session closes with a revision sweep of Sessions 1–8, ahead of the midterm.
+
+> **This session is not on the midterm.** Residual diagnostics is examined in the final, together with
+> train/test accuracy (Session 13) and cross-validation (Session 14) — the evaluation arc it opens.
+> Revise it for the final, not for 14 October.

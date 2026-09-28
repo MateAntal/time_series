@@ -2377,7 +2377,7 @@ window.Quarto = {
   </ul></li>
   <li><a href="#step-4---compute-the-remainder-component-1" id="toc-step-4---compute-the-remainder-component-1" class="nav-link" data-scroll-target="#step-4---compute-the-remainder-component-1">Step 4 - Compute the remainder component</a></li>
   </ul></li>
-  <li><a href="#example-1-computation-using-the-function-classical_decomposition" id="toc-example-1-computation-using-the-function-classical_decomposition" class="nav-link" data-scroll-target="#example-1-computation-using-the-function-classical_decomposition">Example 1: computation using the function <code>classical_decomposition()</code>:</a></li>
+  <li><a href="#example-1-the-same-thing-with-classical_decomposition" id="toc-example-1-the-same-thing-with-classical_decomposition" class="nav-link" data-scroll-target="#example-1-the-same-thing-with-classical_decomposition">Example 1: the same thing with <code>classical_decomposition()</code></a></li>
   <li><a href="#exercise-1" id="toc-exercise-1" class="nav-link" data-scroll-target="#exercise-1">Exercise 1</a>
   <ul>
   <li><a href="#well-discuss-potential-solutions-during-the-live-session." id="toc-well-discuss-potential-solutions-during-the-live-session." class="nav-link" data-scroll-target="#well-discuss-potential-solutions-during-the-live-session.">We’ll discuss potential solutions during the live session.</a></li>
@@ -2429,11 +2429,11 @@ window.Quarto = {
 </section>
 <section id="classical-decomposition" class="level1">
 <h1>Classical decomposition</h1>
-<p>It is the starting point for most other methods of time series decomposition. In addition, it is simple enough that it can be easily implemented from scratch, which is something we are going to do in class.</p>
-<p>Classical decomposition has two variants:</p>
+<p>Classical decomposition is where most other decomposition methods start. It is also simple enough to build from scratch, which is what we do in this session.</p>
+<p>It has two variants:</p>
 <ul>
-<li>Classical decomposition of <strong>aditive schemes</strong></li>
-<li>Classical decomposition of <strong>multiplicative schemes</strong></li>
+<li>classical decomposition of an <strong>additive scheme</strong></li>
+<li>classical decomposition of a <strong>multiplicative scheme</strong></li>
 </ul>
 <p>The algorithm depends on <strong>whether the length of the seasonal period is even or odd.</strong> Examples:</p>
 <ul>
@@ -2445,7 +2445,7 @@ window.Quarto = {
 <li>If we have quarterly data, we could consider a yearly seasonal period. That seasonal period would be of length 4 (4 quarters).</li>
 <li>…</li>
 </ul>
-<p>Because the algorithm <strong>approximates the trend with a centered moving average</strong>, whether the seasonal period is even or odd matters. See the separate notebook on moving averages, which has an associated video explaining this:</p>
+<p>The algorithm <strong>estimates the trend with a centered moving average</strong>, so whether the seasonal period is even or odd changes step 1. Session 6 and notebook <code>06_B</code> cover this:</p>
 <ul>
 <li><strong>Even seasonal period (<span class="math inline">\(m\)</span> even):</strong> trend approximated by a 2 x <span class="math inline">\(m\)</span> moving average.</li>
 <li><strong>Odd seasonal period <span class="math inline">\(m\)</span>:</strong> trend approximated by an <span class="math inline">\(m\)</span> moving average.</li>
@@ -2469,16 +2469,16 @@ window.Quarto = {
 </section>
 <section id="step-3---compute-seasonal-component" class="level2">
 <h2 class="anchored" data-anchor-id="step-3---compute-seasonal-component">Step 3 - Compute seasonal component</h2>
-<p>In classical decomposition, the seasonal component is assumed to <strong>remain constant over time</strong>. The process therefore consists of two steps:</p>
+<p>Classical decomposition assumes the seasonal component <strong>never changes</strong>. So there are two jobs:</p>
 <ol type="1">
-<li>Compute the shape of the seasonal component over a single season (steps 3.1 and 3.2 below).</li>
-<li>Chain the previous output to cover the entire timespan of the time series.</li>
+<li>Work out the shape of the season over a single cycle (steps 3.1 and 3.2).</li>
+<li>Repeat that shape across the whole series (step 3.3).</li>
 </ol>
-<p>Remember that, in our notation, <strong>the length of a season (number of timesteps in a season) is denoted with the letter <span class="math inline">\(m\)</span></strong></p>
+<p>As always, <strong><span class="math inline">\(m\)</span> is the length of one season</strong>, counted in timesteps.</p>
 <p><br></p>
 <section id="step-3.1-unadjusted-seasonal-component" class="level4">
 <h4 class="anchored" data-anchor-id="step-3.1-unadjusted-seasonal-component">Step 3.1: Unadjusted seasonal component</h4>
-<p>Obtain the unadjusted seasonal component <span class="math inline">\(S_{unadj}\)</span> by averaging the values of the detrended series over the season. This is best explained with an example. Imagine we have monthly data and we have already computed the detrended series. We may add an additional column signaling the month of the year of each datapoint. If we assume that we have <span class="math inline">\(T\)</span> datapoints, our data thus far would have the following structure:</p>
+<p>Get the unadjusted seasonal component <span class="math inline">\(S_{unadj}\)</span> by averaging the detrended series within each position of the season. An example makes this clearer. Say the data is monthly and the detrended series is already computed. Add a column holding the month of the year for each row. With <span class="math inline">\(T\)</span> datapoints, the table looks like this:</p>
 <div style="width: fit-content; margin: auto;">
 <table class="caption-top table">
 <colgroup>
@@ -2663,7 +2663,7 @@ window.Quarto = {
 </tbody>
 </table>
 </div>
-<p>In this monthly data example, we obtain <span class="math inline">\(S_{unadj}\)</span> by computing the mean value of the detrended time series for each month of the year. That is, we average all the January detrended values, all the February detrended values, … The period or length of the seasonal component in this case is <span class="math inline">\(m=12\)</span>. For each month of the year we would have a value for <span class="math inline">\(S_{unadj}\)</span>. For the previous monthly example, it would look as follows:</p>
+<p>Now average the detrended values within each month of the year: all the Januaries together, all the Februaries together, and so on. Here the season has length <span class="math inline">\(m=12\)</span>, so this gives twelve numbers, one per month:</p>
 <div style="width: fit-content; margin: auto;">
 <table class="caption-top table">
 <thead>
@@ -2738,22 +2738,22 @@ window.Quarto = {
 <p>Adjust <span class="math inline">\(S_{unadj}\)</span>, the output of step 3.1, so that the sum of its values equals 0.</p>
 <p>If we call this adjusted seasonal component <span class="math inline">\(S\)</span>, in classical decomposition it will be a vector of length <span class="math inline">\(m\)</span>, just like <strong><span class="math inline">\(S_{unadj}\)</span></strong>. In the additive case, we want the components of that vector to add up to 0:</p>
 <p><span class="math display">\[
-\text{Condition we want to attain:  }\sum_{i=1}^{m} S_i= 0
+\text{The condition we want:  }\sum_{i=1}^{m} S_i= 0
 \]</span></p>
-<p>Note that the previous condition is equivalent to centering the seasonal component around 0. Its values will be equally distributed above and below 0. This is interesting because, if this is the case, the seasonal component of the resulting decomposition does not contribute to the average of the time series over one period:</p>
+<p>That condition centers the seasonal component on 0, with its values spread evenly above and below. It matters because it means the seasonal component contributes nothing to the average of the series over one full period:</p>
 <p><span class="math display">\[
 \frac{\sum_{i=1}^my_i}{m} = \frac{\sum_{i=1}^m(T_i + S_i + R_i)}{m} \underset{\underset{\sum_{i=1}^mS_i = 0}{\uparrow}}{=} \frac{\sum_{i=1}^m(T_i + R_i)}{m}
 \]</span></p>
-<p>The vector resulting from step 3.1, <span class="math inline">\(S_{unadj \ i}\)</span> does not satisfy this condition. We are going to <strong>correct each of the components of <span class="math inline">\(S_{unadj \ i}\)</span> by adding to each of them the same amount <span class="math inline">\(x\)</span> in order to fulfil the condition above</strong>. That is, each <span class="math inline">\(S_i\)</span> (adjusted) will be obtained from each <span class="math inline">\(Sunadj_i\)</span> as follows:</p>
+<p>The vector from step 3.1 does not satisfy that condition yet. We <strong>add the same amount <span class="math inline">\(x\)</span> to every component</strong> until it does. So each adjusted <span class="math inline">\(S_i\)</span> comes from <span class="math inline">\(Sunadj_i\)</span> as:</p>
 <p><span class="math display">\[
 S_i = S_{Unadj \ i} + x \ \ \ \ \ \ \  (\text{with x being the same constant } \forall
 \ i )
 \]</span></p>
-<p><strong>To determine x we simply use the equation of the condition we want to attain</strong>, rewriting <span class="math inline">\(S_i\)</span> as the addition <span class="math inline">\(S_{Unadj \ i} + x\)</span>:</p>
+<p><strong>To find <span class="math inline">\(x\)</span>, write the condition out</strong> with <span class="math inline">\(S_i\)</span> replaced by <span class="math inline">\(S_{Unadj \ i} + x\)</span>:</p>
 <p><span class="math display">\[
 \sum_{i=1}^{m} S_i = 0 \rightarrow \sum_{i=1}^{m} (S_{Unadj \ i} + x) = \sum_{i=1}^{m}S_{Unadj \ i} + \sum_{i=1}^{m}x \underset{\begin{array}{c} \uparrow \\ \text{condition} \\ \text{imposed} \end{array}}{=} 0
 \]</span></p>
-<p>Since <span class="math inline">\(x\)</span> is the same constant <span class="math inline">\(\forall \ i\)</span>, we may take it out of its sum operator as a factor:</p>
+<p>Since <span class="math inline">\(x\)</span> is the same for every <span class="math inline">\(i\)</span>, it comes out of the sum as a factor:</p>
 <p><span class="math display">\[
 \sum_{i=1}^{m}S_{Unadj \ i} + \sum_{i=1}^{m}x = \sum_{i=1}^{m}S_{Unadj \ i} + x\sum_{i=1}^{m}1 = \sum_{i=1}^{m}S_{Unadj \ i} + x \cdot m \underset{\begin{array}{c} \uparrow \\ \text{condition} \\ \text{imposed} \end{array}}{=} 0
 \]</span></p>
@@ -2764,11 +2764,11 @@ S_i = S_{Unadj \ i} + x \ \ \ \ \ \ \  (\text{with x being the same constant } \
 <p><span class="math display">\[
 S_i = S_{Unadj \ i} + x = S_{Unadj \ i} - mean(S_{unadj})
 \]</span></p>
-<p>In other words, by <strong>subtracting the mean of Sunadj from Sunadj we center it around 0</strong>, so that the result satisfies the condition we wanted to attain.</p>
+<p>In other words, <strong>subtracting the mean of <span class="math inline">\(S_{unadj}\)</span> from <span class="math inline">\(S_{unadj}\)</span> centers it on 0</strong>, which is exactly the condition we wanted.</p>
 <p><span class="math display">\[
 \sum_{i=1}^{m} S_i= 0
 \]</span></p>
-<p>Note that <strong>this is a general procedure to center any time series <span class="math inline">\(y_t\)</span> around 0</strong>. That is, if you compute the series <span class="math inline">\(y_t - mean(y_t)\)</span> the components of the resulting series will add up to 0. If <span class="math inline">\(y_t\)</span> has <span class="math inline">\(T\)</span> datapoints and <span class="math inline">\(z_t\)</span> is the time series resulting from removing the mean, each element <span class="math inline">\(z_{i}\)</span> of <span class="math inline">\(z_t\)</span> is computed as:</p>
+<p><strong>This works for any series, not just this one.</strong> Compute <span class="math inline">\(y_t - mean(y_t)\)</span> and the result always sums to 0. If <span class="math inline">\(y_t\)</span> has <span class="math inline">\(T\)</span> datapoints and <span class="math inline">\(z_t\)</span> is the time series resulting from removing the mean, each element <span class="math inline">\(z_{i}\)</span> of <span class="math inline">\(z_t\)</span> is computed as:</p>
 <p><span class="math display">\[
 z_{i} = y_{i} - mean(y_t)
 \]</span></p>
@@ -2859,8 +2859,7 @@ mean(z_t) = \frac{\sum_{i=1}^{T}z_{i}}{T} = \frac{\sum_{i=1}^{T}(y_{i} - mean(y_
 <section id="step-3.3-extend-the-seasonal-component-across-the-full-series" class="level4">
 <h4 class="anchored" data-anchor-id="step-3.3-extend-the-seasonal-component-across-the-full-series">Step 3.3: Extend the seasonal component across the full series</h4>
 <p>Chain the adjusted seasonal component to cover the entire timespan of the time series.</p>
-<p>Thus far we have obtained a seasonal component <span class="math inline">\(S\)</span> of length <span class="math inline">\(m\)</span>. However, the time series for which we are performing the decomposition is longer. Let us assume it has <span class="math inline">\(T\)</span> datapoints.</p>
-<p>To cover the entire timespan of the time series, we chain the adjusted seasonal component to cover the entire timespan of the time series. For our previous monthly example, the result would look as follows:</p>
+<p>So far the seasonal component <span class="math inline">\(S\)</span> has length <span class="math inline">\(m\)</span>, while the series has <span class="math inline">\(T\)</span> datapoints. Repeat <span class="math inline">\(S\)</span> along the whole series, matching each row to its position in the season. For the monthly example:</p>
 <div style="width: fit-content; margin: auto;">
 <table class="caption-top table">
 <colgroup>
@@ -3077,7 +3076,7 @@ mean(z_t) = \frac{\sum_{i=1}^{T}z_{i}}{T} = \frac{\sum_{i=1}^{T}(y_{i} - mean(y_
 </section>
 <section id="multiplicative-scheme---classical-decomposition" class="level1">
 <h1>Multiplicative scheme - classical decomposition</h1>
-<p>In this case, the process is very similar. However, now subtractions are replaced by divisions. There are also some differences in the adjustment of the seasonal component.</p>
+<p>The process is the same shape, with divisions in place of subtractions. The seasonal adjustment in step 3.2 also changes.</p>
 <section id="step-1---estimate-trend-1" class="level2">
 <h2 class="anchored" data-anchor-id="step-1---estimate-trend-1">Step 1 - Estimate trend</h2>
 <p><span class="math inline">\(m\)</span>: length of the seasonal period.</p>
@@ -3093,16 +3092,16 @@ mean(z_t) = \frac{\sum_{i=1}^{T}z_{i}}{T} = \frac{\sum_{i=1}^{T}(y_{i} - mean(y_
 </section>
 <section id="step-3---compute-seasonal-component-1" class="level2">
 <h2 class="anchored" data-anchor-id="step-3---compute-seasonal-component-1">Step 3 - Compute seasonal component</h2>
-<p>In classical decomposition, the seasonal component is assumed to <strong>remain constant over time</strong>. The process therefore consists of two steps:</p>
+<p>Classical decomposition assumes the seasonal component <strong>never changes</strong>. So there are two jobs:</p>
 <ol type="1">
-<li>Compute the shape of the seasonal component over a single season (steps 3.1 and 3.2 below).</li>
-<li>Chain the previous output to cover the entire timespan of the time series.</li>
+<li>Work out the shape of the season over a single cycle (steps 3.1 and 3.2).</li>
+<li>Repeat that shape across the whole series (step 3.3).</li>
 </ol>
-<p>Remember that, in our notation, <strong>the length of a season (number of timesteps in a season) is denoted with the letter <span class="math inline">\(m\)</span></strong></p>
+<p>As always, <strong><span class="math inline">\(m\)</span> is the length of one season</strong>, counted in timesteps.</p>
 <p><br></p>
 <section id="step-3.1-unadjusted-seasonal-component-1" class="level4">
 <h4 class="anchored" data-anchor-id="step-3.1-unadjusted-seasonal-component-1">Step 3.1: Unadjusted seasonal component</h4>
-<p>Obtain the unadjusted seasonal component <span class="math inline">\(S_{unadj}\)</span> by averaging the values of the detrended series over the season. This is best explained with an example. Imagine we have monthly data and we have already computed the detrended series. We may add an additional column signaling the month of the year of each datapoint. If we assume that we have <span class="math inline">\(T\)</span> datapoints, our data thus far would have the following structure:</p>
+<p>Get the unadjusted seasonal component <span class="math inline">\(S_{unadj}\)</span> by averaging the detrended series within each position of the season. An example makes this clearer. Say the data is monthly and the detrended series is already computed. Add a column holding the month of the year for each row. With <span class="math inline">\(T\)</span> datapoints, the table looks like this:</p>
 <div style="width: fit-content; margin: auto;">
 <table class="caption-top table">
 <colgroup>
@@ -3287,7 +3286,7 @@ mean(z_t) = \frac{\sum_{i=1}^{T}z_{i}}{T} = \frac{\sum_{i=1}^{T}(y_{i} - mean(y_
 </tbody>
 </table>
 </div>
-<p>In this monthly data example, we obtain <span class="math inline">\(S_{unadj}\)</span> by computing the mean value of the detrended time series for each month of the year. That is, we average all the January detrended values, all the February detrended values, … The period or length of the seasonal component in this case is <span class="math inline">\(m=12\)</span>. For each month of the year we would have a value for <span class="math inline">\(S_{unadj}\)</span>. For the previous monthly example, it would look as follows:</p>
+<p>Now average the detrended values within each month of the year: all the Januaries together, all the Februaries together, and so on. Here the season has length <span class="math inline">\(m=12\)</span>, so this gives twelve numbers, one per month:</p>
 <div style="width: fit-content; margin: auto;">
 <table class="caption-top table">
 <thead>
@@ -3361,26 +3360,26 @@ mean(z_t) = \frac{\sum_{i=1}^{T}z_{i}}{T} = \frac{\sum_{i=1}^{T}(y_{i} - mean(y_
 <h4 class="anchored" data-anchor-id="step-3.2-adjust-the-seasonal-component-to-sum-to-m">Step 3.2: Adjust the seasonal component to sum to m</h4>
 <p>Adjust <span class="math inline">\(S_{unadj}\)</span>, the output of step 3.1, so that the sum of its values equals <span class="math inline">\(m\)</span>.</p>
 <p><span class="math display">\[
-\text{Condition we want to attain: } \sum_{i=1}^{m}S_i = m
+\text{The condition we want: } \sum_{i=1}^{m}S_i = m
 \]</span></p>
 <p>This condition can also be written as:</p>
 <p><span class="math display">\[
-\text{Condition we want to attain: } \frac{\sum_{i=1}^{m}S_i}{m} = mean(Si) = 1
+\text{The condition we want: } \frac{\sum_{i=1}^{m}S_i}{m} = mean(Si) = 1
 \]</span></p>
-<p>That is, we want <strong>the adjusted seasonal component <span class="math inline">\(Si\)</span> to be centered around 1</strong>. We want its values distributed equally above and below 1. This is interesting because, if this is the case, the average of the time series over a seasonal period becomes a weighted average of <span class="math inline">\(T_iR_i\)</span> in which <span class="math inline">\(S_i/m\)</span> is the percent weight of each <span class="math inline">\(T_iR_i\)</span>:</p>
+<p>So we want <strong>the adjusted seasonal component centered on 1</strong>, with its values spread evenly above and below. That makes the average of the series over one season a weighted average of <span class="math inline">\(T_iR_i\)</span>, with <span class="math inline">\(S_i/m\)</span> as the weight on each:</p>
 <p><span class="math display">\[
 \frac{\sum_{i=1}^my_t}{m} = \frac{\sum_{i=1}^m(T_i S_i R_i)}{m} = \underbrace{\sum_{i=1}^m\frac{S_i}{m}(T_i R_i) }_{\text{weighted avg.} \\ \text{of } R_iT_i \text{ since } \sum_{i=1}^mS_i/m = 1}
 \]</span></p>
-<p>The vector resulting from step 3.1, <span class="math inline">\(S_{unadj}\)</span> does not satisfy this condition. We are going to <strong>correct each of its components <span class="math inline">\(Sunadj_i\)</span> by scaling them with a constant factor x so that the condition is satisfied</strong>. That is, each <span class="math inline">\(S_i\)</span> (adjusted) will be obtained from each <span class="math inline">\(Sunadj_i\)</span> as follows:</p>
+<p>The vector from step 3.1 does not satisfy that condition yet. We <strong>divide every component by the same constant <span class="math inline">\(x\)</span></strong> until it does:</p>
 <p><span class="math display">\[
 S_i = \frac{S_{Unadj \ i}}{x} \ \ \ \ \ \ \  (\text{with x being the same constant } \forall
 \ i )
 \]</span></p>
-<p><strong>To determine x we simply use the equation of the condition we want to attain</strong>, rewriting <span class="math inline">\(S_i\)</span> in terms of <span class="math inline">\(S_{Unadj \ i}\)</span> as <span class="math inline">\(S_{Unadj \ i}/x\)</span>:</p>
+<p><strong>To find <span class="math inline">\(x\)</span>, write the condition out</strong> with <span class="math inline">\(S_i\)</span> replaced by <span class="math inline">\(S_{Unadj \ i}/x\)</span>:</p>
 <p><span class="math display">\[
 \sum_{i=1}^{m}S_i = \sum_{i=1}^{m}\frac{S_{Unadj \ i}}{x} \underset{\begin{array}{c} \uparrow \\ \text{condition} \\ \text{imposed} \end{array}}{=} m
 \]</span></p>
-<p>Since <span class="math inline">\(x\)</span> is the same constant <span class="math inline">\(\forall \ i\)</span> it may be taken out of the sum operator as a multiplicative factor:</p>
+<p>Since <span class="math inline">\(x\)</span> is the same for every <span class="math inline">\(i\)</span>, it comes out of the sum as a factor:</p>
 <p><span class="math display">\[
 \sum_{i=1}^{m}\frac{S_{Unadj \ i}}{x} =\frac{1}{x}\sum_{i=1}^{m}S_{Unadj \ i} \underset{\begin{array}{c} \uparrow \\ \text{condition} \\ \text{imposed} \end{array}}{=} m
 \]</span></p>
@@ -3392,11 +3391,11 @@ x = \frac{\sum_{i=1}^{m}S_{Unadj \ i}}{m} = mean(S_{unadj})
 <p><span class="math display">\[
 S_i = \frac{S_{Unadj \ i}}{x} = \frac{S_{Unadj \ i}}{mean(S_{unadj})}
 \]</span></p>
-<p>In other words, by <strong>scaling Sunadj using its mean we center it around 1</strong>, since the condition we wanted to attain results in this property</p>
+<p>In other words, <strong>dividing <span class="math inline">\(S_{unadj}\)</span> by its own mean centers it on 1</strong>, which is the condition we wanted:</p>
 <p><span class="math display">\[
 \sum_{i=1}^{m} S_i= m  \iff \frac{\sum_{i=1}^{m}S_i}{m} = mean(Si) = 1
 \]</span></p>
-<p>Note that <strong>this is a general procedure to center any time series <span class="math inline">\(y_t\)</span> around 1</strong>. That is, if you compute the series <span class="math inline">\(y_t / mean(y_t)\)</span> the average of the resulting time series will have mean 1, its values will be equally distributed above and below 1. If <span class="math inline">\(y_t\)</span> has <span class="math inline">\(T\)</span> datapoints and <span class="math inline">\(z_t\)</span> is the time series resulting from scaling <span class="math inline">\(y_t\)</span> with its mean, each element <span class="math inline">\(z_{i}\)</span> of <span class="math inline">\(z_t\)</span> is computed as:</p>
+<p><strong>This works for any series too.</strong> Compute <span class="math inline">\(y_t / mean(y_t)\)</span> and the result always has mean 1. If <span class="math inline">\(y_t\)</span> has <span class="math inline">\(T\)</span> datapoints and <span class="math inline">\(z_t\)</span> is the time series resulting from scaling <span class="math inline">\(y_t\)</span> with its mean, each element <span class="math inline">\(z_{i}\)</span> of <span class="math inline">\(z_t\)</span> is computed as:</p>
 <p><span class="math display">\[
 z_{i} = \frac{y_{i}}{mean(y_t)}
 \]</span></p>
@@ -3484,8 +3483,7 @@ mean(z_t) = \frac{\sum_{i=1}^{T}z_{i}}{T} = \frac{\sum_{i=1}^{T}y_{i} / mean(y_t
 <section id="step-3.3-extend-the-seasonal-component-across-the-full-series-1" class="level4">
 <h4 class="anchored" data-anchor-id="step-3.3-extend-the-seasonal-component-across-the-full-series-1">Step 3.3: Extend the seasonal component across the full series</h4>
 <p>Chain the adjusted seasonal component to cover the entire timespan of the time series.</p>
-<p>Thus far we have obtained a seasonal component <span class="math inline">\(S\)</span> of length <span class="math inline">\(m\)</span>. However, the time series for which we are performing the decomposition is longer. Let us assume it has <span class="math inline">\(T\)</span> datapoints.</p>
-<p>To cover the entire timespan of the time series, we chain the adjusted seasonal component to cover the entire timespan of the time series. For our previous monthly example, the result would look as follows:</p>
+<p>So far the seasonal component <span class="math inline">\(S\)</span> has length <span class="math inline">\(m\)</span>, while the series has <span class="math inline">\(T\)</span> datapoints. Repeat <span class="math inline">\(S\)</span> along the whole series, matching each row to its position in the season. For the monthly example:</p>
 <div style="width: fit-content; margin: auto;">
 <table class="caption-top table">
 <colgroup>
@@ -3700,8 +3698,8 @@ mean(z_t) = \frac{\sum_{i=1}^{T}z_{i}}{T} = \frac{\sum_{i=1}^{T}y_{i} / mean(y_t
 <p><span class="math inline">\(R_t = \frac{y_t}{T_tS_t} = \frac{D_t}{S_t}\)</span></p>
 </section>
 </section>
-<section id="example-1-computation-using-the-function-classical_decomposition" class="level1">
-<h1>Example 1: computation using the function <code>classical_decomposition()</code>:</h1>
+<section id="example-1-the-same-thing-with-classical_decomposition" class="level1">
+<h1>Example 1: the same thing with <code>classical_decomposition()</code></h1>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter the series and select relevant columns</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>us_retail_employment <span class="ot">&lt;-</span> </span>
@@ -3709,7 +3707,7 @@ mean(z_t) = \frac{\sum_{i=1}^{T}z_{i}}{T} = \frac{\sum_{i=1}^{T}y_{i} / mean(y_t
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">year</span>(Month) <span class="sc">&gt;=</span> <span class="dv">1990</span>, Title <span class="sc">==</span> <span class="st">&quot;Retail Trade&quot;</span>) <span class="sc">|&gt;</span></span>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>Series_ID)</span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Let us compute the classical decomposition using the function in the feasts library:</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co"># The classical decomposition, using the function from the feasts package:</span></span>
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>classical_dec <span class="ot">&lt;-</span> us_retail_employment <span class="sc">|&gt;</span></span>
 <span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Fit the classical decomposition model specifying an additive scheme</span></span>
