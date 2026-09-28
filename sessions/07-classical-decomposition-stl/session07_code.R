@@ -292,14 +292,16 @@ stl_trend <- function(w) {
 
 trend_windows <- c(21, 13, 9, 5)
 
-# Two numbers per setting: how big the remainder is, and how much
-# autocorrelation is left in it.
+ci <- 1.96 / sqrt(nrow(us_retail_employment))
+
+# Two numbers per setting: how big the remainder is, and how many of
+# its first 24 autocorrelations fall outside the white noise bounds.
 bind_rows(lapply(trend_windows, function(w) {
   cp <- stl_trend(w)
   tibble(
     trend_window  = w,
     var_remainder = round(var(cp$remainder)),
-    acf_lag1      = round(ACF(cp, remainder, lag_max = 1)$acf[1], 3)
+    acf_bars_out  = sum(abs(ACF(cp, remainder, lag_max = 24)$acf) > ci)
   )
 }))
 
@@ -315,8 +317,6 @@ remainder_acfs <- bind_rows(lapply(trend_windows, function(w) {
     as_tibble() |>
     mutate(lag = as.numeric(lag), window = window_label(w))
 }))
-
-ci <- 1.96 / sqrt(nrow(us_retail_employment))
 
 remainder_acfs |>
   ggplot(aes(x = lag, y = acf)) +

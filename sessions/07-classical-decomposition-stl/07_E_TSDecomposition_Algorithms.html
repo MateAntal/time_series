@@ -2719,7 +2719,7 @@ Attaching package: &#39;seasonal&#39;</code></pre>
 </div>
 <section id="step-a-the-trend-window" class="level3">
 <h3 class="anchored" data-anchor-id="step-a-the-trend-window">Step A: the trend window</h3>
-<p>Run the decomposition four times, at <code>trend(window = )</code> of <strong>21, 13, 9 and 5</strong>, leaving <code>season(window = 11)</code> alone throughout. Record two numbers each time: the variance of the remainder, and its autocorrelation at lag 1.</p>
+<p>Run the decomposition four times, at <code>trend(window = )</code> of <strong>21, 13, 9 and 5</strong>, leaving <code>season(window = 11)</code> alone throughout. Each time, record the variance of the remainder and look at the remainder’s correlogram.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>stl_trend <span class="ot">&lt;-</span> <span class="cf">function</span>(w) {</span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  us_retail_employment <span class="sc">|&gt;</span></span>
