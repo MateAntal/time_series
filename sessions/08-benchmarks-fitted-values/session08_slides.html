@@ -531,7 +531,7 @@ y&#770;<span class="hl">_{T+h | T}</span>     the value at T+h, given everything
 y&#770;<span class="hl">_{t | t-1}</span>     the value at t,   given everything up to t-1</div>
     <ul class="build">
       <li class="step"><b>Left of the bar: when.</b> Right of the bar: what information was available. That reading works for every model in this course.</li>
-      <li class="step"><b>A fitted value is a one-step-ahead forecast</b>, made on data the model has already seen, for a point it was not allowed to look at.</li>
+      <li class="step"><b>A forecast is an estimate of <code>y<sub>t</sub></code> that was not allowed to see <code>y<sub>t</sub></code>.</b> A fitted value is the case where the point sits inside the data and the model looks one step back.</li>
       <li class="step"><b>That is what makes a residual honest.</b> If the fitted value could see <code>y<sub>t</sub></code>, the residual would measure memorization rather than error.</li>
     </ul>
     <p class="punch step wide">Both get written <code>y&#770;<sub>t</sub></code> when nobody is being careful. The book does it, this course does it, and the subscript is where you recover the meaning.</p>
@@ -542,22 +542,23 @@ y&#770;<span class="hl">_{t | t-1}</span>     the value at t,   given everything
 <!-- ---------- 6 ---------- -->
 <section class="slide" data-section="2" data-title="Side by side">
   <div class="inner">
-    <p class="kicker">And the one method that breaks the rule</p>
-    <h1 class="sowhat">Three differences, and one exception worth knowing.</h1>
+    <p class="kicker">And the fine print on "not allowed to look"</p>
+    <h1 class="sowhat">Three differences, and one caveat worth knowing.</h1>
     <table class="traps">
       <tr><td class="os"></td><td><b>Forecast</b> &nbsp; y&#770;<sub>T+h|T</sub></td><td class="fix"><b>Fitted value</b> &nbsp; y&#770;<sub>t|t-1</sub></td></tr>
       <tr><td class="os">Where</td><td>Beyond the data, after <code>T</code></td><td class="fix">Inside the data, <code>t &le; T</code></td></tr>
       <tr><td class="os">How far</td><td>Any horizon <code>h</code></td><td class="fix">Always one step</td></tr>
       <tr><td class="os">Compared with</td><td>A future observation &rarr; forecast error</td><td class="fix">The observation at <code>t</code> &rarr; residual</td></tr>
     </table>
-    <div class="callout"><b>The mean model breaks this.</b> Its fitted value at <code>t</code> is the average of the <i>whole</i> series, so it uses observations from after <code>t</code>. It is not a one-step-ahead forecast, and it is the only benchmark today that is not.</div>
+    <div class="callout"><b>Parameters are estimated once, from the whole series.</b> So a model with parameters builds each fitted value from past observations, but with numbers that were computed using <code>y<sub>t</sub></code> and everything after it.</div>
     <ul class="build">
-      <li class="step"><b>Which makes its residuals flattering.</b> The model saw the answer, in the sense that <code>y<sub>t</sub></code> is one of the values it averaged.</li>
-      <li class="step"><b>The definition still holds for the other three</b>, and for everything from Session 15 onward. Exceptions get named when they arrive.</li>
+      <li class="step"><b>Naive and seasonal naive have no parameters.</b> Their fitted values are genuine one-step forecasts.</li>
+      <li class="step"><b>Drift, and every model from Session 15 onward, peek a little.</b> The drift slope is computed from <code>y<sub>T</sub></code>.</li>
+      <li class="step"><b>The mean model peeks the most.</b> Its fitted value is the average of the <i>whole</i> series, so <code>y<sub>t</sub></code> is one of the values it averaged. That makes its residuals flattering.</li>
     </ul>
-    <p class="punch step wide">Worth carrying into Session 9: diagnostics can only read residuals; they cannot repair them. A residual is honest only if the fitted value it was subtracted from never saw <code>y<sub>t</sub></code>.</p>
+    <p class="punch step wide">Worth carrying into Session 9: diagnostics can only read residuals; they cannot repair them. A residual is only fully honest if the fitted value it was subtracted from never saw <code>y<sub>t</sub></code>, directly or through a parameter.</p>
   </div>
-  <aside class="notes">How much the mean model actually gains from this is small when <code>T</code> is large, because one observation out of several hundred barely moves the average. On a very short series it is not negligible at all.<br><br>You will meet the same idea in a much sharper form in Session 14. Cross-validation exists to stop a model being judged on data it was fitted to, and the mean model here is the mildest possible version of that problem.</aside>
+  <aside class="notes">How much a model gains from this is small when <code>T</code> is large, because one observation out of several hundred barely moves an estimated parameter. On a very short series it is not negligible at all.<br><br>You will meet the same idea in a much sharper form in Session 14. Cross-validation exists to stop a model being judged on data it was fitted to, and fitted values built from full-sample parameters are the mildest possible version of that problem.</aside>
 </section>
 
 <!-- ---------- 7 ---------- -->

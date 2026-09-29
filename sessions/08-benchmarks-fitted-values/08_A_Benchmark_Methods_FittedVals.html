@@ -2562,12 +2562,14 @@ y_t - \hat{y_t} = \varepsilon_t
 <p>More on these concepts later in the notebook.</p>
 <section id="forecasts---haty_tht" class="level3">
 <h3 class="anchored" data-anchor-id="forecasts---haty_tht">Forecasts - <span class="math inline">\(\hat{y}_{T+h|T}\)</span></h3>
-<p>When fitting a time series model to a given realization of a time series - that is, to our <strong>training data</strong> - the goal is to produce estimates of the model parameters. Once the model is fitted (once we have those estimates), we can produce <strong>forecasts beyond the training data</strong>. Let us assume that:</p>
+<p>A <strong>forecast</strong> is an estimate of the value of the series at some time, <strong>using only the information available up to an earlier time</strong>. We write <span class="math inline">\(\hat{y}_{t|s}\)</span> for the forecast of <span class="math inline">\(y_t\)</span> made with the observations <span class="math inline">\(y_1, \dots, y_s\)</span>, where <span class="math inline">\(s &lt; t\)</span>. Read the subscript as “the value at <span class="math inline">\(t\)</span>, given everything up to <span class="math inline">\(s\)</span>”.</p>
+<p>Nothing in this definition says whether <span class="math inline">\(t\)</span> lies inside or beyond the data. What matters is only that <span class="math inline">\(y_t\)</span> itself was not available to produce the estimate.</p>
+<p>When fitting a time series model to our <strong>training data</strong>, the goal is to produce estimates of the model parameters. Once the model is fitted (once we have those estimates), we can produce <strong>forecasts beyond the training data</strong>. Let us assume that:</p>
 <ul>
 <li>The <strong>training data</strong> starts at <strong><span class="math inline">\(t=1\)</span></strong> and ends at <strong><span class="math inline">\(t=T\)</span></strong>.</li>
 <li>The <strong>forecasts</strong> are produced for a <strong>horizon <span class="math inline">\(h\)</span></strong>.</li>
 </ul>
-<p>The notation for <strong>the forecast at <span class="math inline">\(T+h\)</span> given everything that has occurred up to time <span class="math inline">\(T\)</span></strong> (end of the training data) is:</p>
+<p>Forecasting beyond the data is the case <span class="math inline">\(s = T\)</span> and <span class="math inline">\(t = T+h\)</span>. The notation for <strong>the forecast at <span class="math inline">\(T+h\)</span> given everything that has occurred up to time <span class="math inline">\(T\)</span></strong> (end of the training data) is:</p>
 <p><span class="math display">\[
 \begin{align*}
 \text{Forecast at time T+h based on what has happened up to time T:} &amp;&amp; \hat{y}_{T+h|T}
@@ -2576,9 +2578,9 @@ y_t - \hat{y_t} = \varepsilon_t
 </section>
 <section id="fitted-values---haty_tt-1" class="level3">
 <h3 class="anchored" data-anchor-id="fitted-values---haty_tt-1">Fitted values - <span class="math inline">\(\hat{y}_{t|t-1}\)</span></h3>
-<p>Fitted values are <strong>one-step in-sample (i.e., in the time region of the training data) “forecasts”</strong> (we will see some exceptions to this definition):</p>
+<p>Fitted values are the other case of the same definition: <strong>one-step in-sample forecasts</strong>, with <span class="math inline">\(s = t-1\)</span> and <span class="math inline">\(t\)</span> inside the training data.</p>
 <ul>
-<li><strong>one-step ahead</strong> means that the forecast only extend one time step into the future (<span class="math inline">\(h=1\)</span>).
+<li><strong>one-step ahead</strong> means that the forecast only extends one time step into the future (<span class="math inline">\(h=1\)</span>).
 <ul>
 <li><strong>To produce the one-step ahead forecast at time <span class="math inline">\(t\)</span></strong>, only information up to <span class="math inline">\(t-1\)</span> is considered.</li>
 </ul></li>
@@ -2605,10 +2607,20 @@ y_t - \hat{y_t} = \varepsilon_t
 \hat{y}_{T+1|T} \underset{\substack{\uparrow \\ \text{C.V:} \\ T = t-1}}{=} \hat{y}_{t-1+1|t-1} = \hat{y}_{t|t-1}
 \end{equation}
 \]</span></p>
+<p><strong>A caveat on “only information up to <span class="math inline">\(t-1\)</span>”.</strong> Most models have parameters, and those parameters are estimated once, from the whole training series <span class="math inline">\(y_1, \dots, y_T\)</span>. The fitted value at <span class="math inline">\(t\)</span> then applies the one-step formula to <span class="math inline">\(y_1, \dots, y_{t-1}\)</span>, but with parameters that were computed using <span class="math inline">\(y_t\)</span> and every observation after it. So fitted values are often <strong>not true forecasts</strong>: the model has had a small look at the answer through its parameters.</p>
+<ul>
+<li>Methods with no parameters to estimate, such as the naïve and seasonal naïve methods below, produce fitted values that are genuine one-step forecasts.</li>
+<li>Methods with estimated parameters, such as the drift method below and every model from Session 15 onward, produce fitted values that are one-step forecasts in form, with parameters estimated on the full sample.</li>
+<li>The mean method is the extreme case: its fitted value at every <span class="math inline">\(t\)</span> is the parameter itself, the average of the whole series.</li>
+</ul>
+<p>With a long series the effect of this is usually small. It is the reason residuals tend to look slightly better than genuine forecast errors, and the reason we will later evaluate models on data they were not fitted to.</p>
 <p>The graph below shows an example of all these concepts:</p>
 <ul>
 <li>The black line represents the <code>bricks</code> time series.</li>
-<li>The dashed red line represents the fitted values resulting from fitting the <code>Naive</code> model to this time series. As we will see later, these are <strong>one-step ahead forecasts</strong>.</li>
+<li>The dashed red line represents the fitted values resulting from fitting the <code>Naive</code> model to this time series. As we will see later, these are <strong>one-step ahead forecasts</strong>.
+<ul>
+<li>The naïve method forecasts the next value as the last observed value, <span class="math inline">\(\hat{y}_{t|t-1} = y_{t-1}\)</span>. That is why the red line is the black line shifted one quarter to the right: at every point in time, the fitted value is last quarter’s observation.</li>
+</ul></li>
 <li>The blue line represents the forecasts given by the <code>Naive</code> model fitted to the data. These extend several time steps into the future.
 <ul>
 <li>Prediction intervals of 80% and 95% are also depicted.</li>
@@ -2659,7 +2671,7 @@ y_t - \hat{y_t} = \varepsilon_t
 </tr>
 </tbody>
 </table>
-<p><strong>Note that</strong> sometimes fitted values will not be strictly one-step ahead forecasts (for example in the mean model). When we encounter examples of this, I will mention it explicitly. But the definition holds for the general case.</p>
+<p><strong>Note that</strong> fitted values are strictly one-step ahead forecasts only when the model has no parameters estimated from the data. For most models the parameters were estimated using the whole training series, including <span class="math inline">\(y_t\)</span> (see the caveat above). The mean model is the most extreme example.</p>
 </section>
 <section id="point-forecast-and-forecast-distribution" class="level2">
 <h2 class="anchored" data-anchor-id="point-forecast-and-forecast-distribution">Point Forecast and Forecast Distribution</h2>
@@ -2784,10 +2796,10 @@ e_{t} = y_{t}-\hat{y}_{t}.
 6 mean   1971 Q2    433    451.  -17.9  -17.9</code></pre>
 </div>
 </div>
-<p><strong>The mean model is a good example in which fitted values are not one-step-ahead forecasts on the training data</strong>, because it uses data beyond the point at which the fitted value is computed.</p>
+<p><strong>The mean model is the most extreme example in which fitted values are not one-step-ahead forecasts on the training data</strong>, because it uses data beyond the point at which the fitted value is computed.</p>
 <ul>
 <li>The fitted value at every point is computed using all the available data at <span class="math inline">\(t=1, 2, 3, \cdots, T\)</span>, by computing the mean <span class="math inline">\((y_1 + y_2 + y_3 +\dots + y_{T})/T\)</span>.</li>
-<li>As an example, the fitted value at <span class="math inline">\(t=3\)</span> (<span class="math inline">\(\hat{y}_{3|2}\)</span>) is not computed solely using <span class="math inline">\(y_1\)</span> and <span class="math inline">\(y_2\)</span>, as the strict definition says, but rather using all the information from <span class="math inline">\(t=1, 2, 3, \cdots, T\)</span>. That is why the mean model is an exception to the definition of fitted values.</li>
+<li>As an example, the fitted value at <span class="math inline">\(t=3\)</span> (<span class="math inline">\(\hat{y}_{3|2}\)</span>) is not computed solely using <span class="math inline">\(y_1\)</span> and <span class="math inline">\(y_2\)</span>, as the strict definition says, but rather using all the information from <span class="math inline">\(t=1, 2, 3, \cdots, T\)</span>. Here the fitted value is nothing but the estimated parameter, so the model’s whole output depends on data from after <span class="math inline">\(t\)</span>.</li>
 </ul>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>fitted_vals <span class="sc">|&gt;</span> </span>
@@ -3408,7 +3420,7 @@ Setting `level = NULL` will remove the intervals from the plot.</code></pre>
 </div>
 </div>
 <ol start="2" type="1">
-<li>The fitted values are very similar to those of the Naïve Method. Nonetheless, they are not the same. In this case each fitted value is generated by a one-step forecast using the drift method. That is, the previous observation moved one step along the drift slope, the slope of the line joining the first and last observations of the training data.</li>
+<li>The fitted values are very similar to those of the Naïve Method. Nonetheless, they are not the same. In this case each fitted value is generated by a one-step forecast using the drift method. That is, the previous observation moved one step along the drift slope, the slope of the line joining the first and last observations of the training data. Because that slope is computed using <span class="math inline">\(y_T\)</span>, these fitted values are one-step forecasts in form but not true forecasts: every fitted value uses the last observation of the series.</li>
 </ol>
 </section>
 <section id="estimates-of-the-model-parameters-3" class="level2">
