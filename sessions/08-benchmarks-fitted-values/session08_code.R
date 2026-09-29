@@ -44,9 +44,10 @@ fit_mean |>
   geom_line(aes(y = .fitted), colour = "#0072B2", linetype = "dashed") +
   labs(title = "Mean model: the fitted value is the same number everywhere")
 
-# WATCH THIS ONE. The mean model is the exception: its fitted value
+# WATCH THIS ONE. The mean model is the extreme case: its fitted value
 # at t uses the whole series, including points after t, so it is NOT
-# a one-step-ahead forecast. The definition holds for the other three.
+# a one-step-ahead forecast. Drift peeks too, through a slope computed
+# from the last observation. Only naive and seasonal naive are clean.
 
 
 # ---- the naive model ----
