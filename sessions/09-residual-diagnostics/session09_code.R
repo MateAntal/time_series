@@ -8,8 +8,8 @@
 # carries the code and stops where the exercises begin.
 #
 # NOT examined in the midterm (coverage runs Sessions 1 to 8).
-# This session also doubles as the midterm revision session: the
-# second half of class is yours to bring questions about
+# The session closes with a short revision sweep: the last
+# quarter of an hour is yours to bring questions about
 # Sessions 1 to 8.
 #
 # Set the working directory to this file's folder before you
