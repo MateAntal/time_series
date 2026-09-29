@@ -555,7 +555,7 @@ y&#770;<span class="hl">_{t | t-1}</span>     the value at t,   given everything
       <li class="step"><b>Which makes its residuals flattering.</b> The model saw the answer, in the sense that <code>y<sub>t</sub></code> is one of the values it averaged.</li>
       <li class="step"><b>The definition still holds for the other three</b>, and for everything from Session 15 onward. Exceptions get named when they arrive.</li>
     </ul>
-    <p class="punch step wide">Worth carrying into Session 9: a diagnostic run on residuals is only as honest as the fitted values underneath it.</p>
+    <p class="punch step wide">Worth carrying into Session 9: diagnostics can only read residuals; they cannot repair them. A residual is honest only if the fitted value it was subtracted from never saw <code>y<sub>t</sub></code>.</p>
   </div>
   <aside class="notes">How much the mean model actually gains from this is small when <code>T</code> is large, because one observation out of several hundred barely moves the average. On a very short series it is not negligible at all.<br><br>You will meet the same idea in a much sharper form in Session 14. Cross-validation exists to stop a model being judged on data it was fitted to, and the mean model here is the mildest possible version of that problem.</aside>
 </section>
