@@ -81,6 +81,16 @@ fit_snaive |> augment() |> head(14)
 # Monthly data, so the fitted value at t is y_{t-12}. The first twelve
 # rows have no fitted value: there is nothing to look back at yet.
 
+# The series trends up, so last year's value is always too low. Every
+# residual is positive: the method is biased on this series.
+fit_snaive |>
+  augment() |>
+  as_tibble() |>
+  summarise(
+    mean_resid = mean(.resid, na.rm = TRUE),
+    share_positive = mean(.resid > 0, na.rm = TRUE)
+  )
+
 
 # ---- the drift method ----
 
