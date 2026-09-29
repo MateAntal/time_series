@@ -1,49 +1,22 @@
 # ============================================================
 # Session 07 - Classical decomposition from scratch, and STL
 #
-# Runnable companion to the two notebooks in this folder:
+# Companion to the two notebooks in this folder:
 #   07_D_ClassicalDecomposition_fromScratch
 #   07_E_TSDecomposition_Algorithms
-# The notebooks carry the derivations. This script carries the
-# code, and stops where the exercises begin.
+# The notebooks carry the derivations. This script carries the code and
+# stops where the exercises begin.
 #
-# Part 3 of the decomposition block, and the one that assembles
-# the other two.
-#   Session 5  the scheme: plus or times
-#   Session 6  the trend, by moving average
-#   Session 7  all four steps, then STL          <- you are here
-#
-# Set the working directory to this file's folder before you
-# start.
-#   RStudio:  Session > Set Working Directory > To Source File Location
-#   console:  setwd("<repo>/sessions/07-classical-decomposition-stl")
+# Set the working directory to this file's folder first:
+#   Session > Set Working Directory > To Source File Location
 # ============================================================
 
 library(fpp3)
 
 
-# ============================================================
-# 1. THE ALGORITHM, IN FOUR STEPS
-#
-# Additive scheme, y_t = T_t + S_t + R_t:
-#
-#   1. Trend      T_t by centered moving average
-#                   m even -> 2xm-MA
-#                   m odd  -> m-MA
-#   2. Detrend    D_t = y_t - T_t
-#   3. Season     average D_t within each position of the
-#                 season, then shift so the m values sum to 0,
-#                 then repeat that shape along the series
-#   4. Remainder  R_t = D_t - S_t = y_t - T_t - S_t
-#
-# Multiplicative scheme, y_t = T_t * S_t * R_t: the same four
-# steps with divisions in place of subtractions, and the m
-# seasonal values scaled to average 1 rather than shifted to
-# sum to 0.
-#
-# Check each step against classical_decomposition() before you
-# build the next one on top of it.
-# ============================================================
+# ---- 1. the algorithm, in four steps ----
+# Additive scheme, y_t = T_t + S_t + R_t. Check each step against
+# classical_decomposition() before building the next on it.
 
 us_retail_employment <-
   us_employment |>
@@ -63,8 +36,6 @@ reference
 
 # ---- step 1: the trend, by 2x12-MA ----
 
-# Monthly data, so m = 12, which is even. This is Session 6's
-# 2xm construction, unchanged.
 scratch <-
   us_retail_employment |>
   mutate(
@@ -76,20 +47,17 @@ scratch <-
   )
 
 # CHECK 1. Does our trend match the one the function produced?
+# If not TRUE, stop and fix step 1: everything below is built on it.
 isTRUE(all.equal(scratch$trend_manual, reference$trend))
-
-# If that returned a character string instead of TRUE, stop here
-# and fix step 1. Everything below is built on it.
 
 
 # ---- step 2: detrend ----
 
-# Additive scheme, so subtract.
 scratch <- scratch |>
   mutate(detrended_manual = Employed - trend_manual)
 
-# CHECK 2. The function does not expose a detrended column, so
-# compare against what it implies: y - trend.
+# CHECK 2. The function exposes no detrended column, so compare
+# against what it implies: y - trend.
 isTRUE(all.equal(scratch$detrended_manual,
                  reference$Employed - reference$trend))
 
@@ -97,7 +65,6 @@ isTRUE(all.equal(scratch$detrended_manual,
 # ---- step 3.1: the unadjusted seasonal component ----
 
 # Average the detrended values within each month of the year.
-# Twelve numbers out, one per calendar month.
 s_unadj <-
   scratch |>
   as_tibble() |>
@@ -113,22 +80,18 @@ sum(s_unadj$s_unadj)
 
 # ---- step 3.2: adjust so the season sums to zero ----
 
-# Subtracting the mean centers any vector on zero. The notebook
-# derives why this is the right correction.
 s_adj <- s_unadj |>
   mutate(seasonal = s_unadj - mean(s_unadj))
 
 s_adj
 
-# SANITY CHECK. Must be zero, up to floating point, which is
-# exactly the case all.equal() was built for.
+# SANITY CHECK. Must be zero up to floating point.
 isTRUE(all.equal(sum(s_adj$seasonal), 0))
 
 
 # ---- step 3.3: repeat the season along the series ----
 
-# left_join() matches each row to its month of the year and
-# carries the right seasonal value across.
+# left_join() matches each row to its month of the year.
 scratch <- scratch |>
   mutate(month_of_year = month(Month)) |>
   left_join(s_adj |> select(month_of_year, seasonal),
@@ -161,24 +124,10 @@ scratch |>
   labs(y = NULL, title = "Classical decomposition, built by hand")
 
 
-# ============================================================
-# 2. WHAT MAKES A DECOMPOSITION GOOD
-#
-# Two criteria, both about the remainder:
-#
-#   1. Its variance should be SMALLER than the variance of the
-#      trend and the seasonal components. The trend and the
-#      season should be doing most of the explaining.
-#   2. It should carry AS LITTLE AUTOCORRELATION AS POSSIBLE.
-#      Structure left in the remainder is structure the model
-#      failed to capture.
-#
-# Criterion 2 is Session 4's correlogram, pointed at what the
-# model missed. That is also what Session 9 does with residuals.
-#
-# Sometimes no decomposition satisfies both across the whole
-# series. Take the closest one, and say where it falls short.
-# ============================================================
+# ---- 2. what makes a decomposition good ----
+# Both criteria are about the remainder: its variance should be
+# smaller than the trend and seasonal variances, and it should
+# carry as little autocorrelation as possible.
 
 # Criterion 1, as numbers.
 scratch |>
@@ -196,61 +145,11 @@ scratch |>
   labs(title = "Correlogram of the remainder")
 
 
-# ============================================================
-# 3. THE LIMITATIONS OF CLASSICAL DECOMPOSITION
-#
-#   - No trend estimate for the first and last few points, which
-#     is Session 6's ends problem.
-#   - The seasonal component is forced to repeat unchanged from
-#     year to year, so it cannot follow a season that evolves.
-#   - It is not robust to outliers. An unusual value in the
-#     middle of the series contaminates the trend, then the
-#     detrended series, then the seasonal component.
-#
-# The third one is worth seeing rather than being told, which is
-# what exercise 1 is for.
-# ============================================================
+# ---- 3. the limitations of classical decomposition ----
+# See the notebook. Exercise 1 makes the outlier problem visible.
 
 
-# ============================================================
-# 4. STL
-#
-# "Seasonal and Trend decomposition using LOESS". LOESS is local
-# regression: to fit a value at a point, take its nearest
-# neighbours, weight them by how close they are, and fit a low
-# degree polynomial to that neighbourhood. Do that at every
-# point and you get a smooth curve with no global formula.
-#
-# STL applies LOESS repeatedly to separate the components.
-#
-# WHAT IT BUYS YOU
-#   - the seasonal component is allowed to change over time, and
-#     you control how fast
-#   - any seasonal period, not just monthly or quarterly
-#   - multiple seasonal periods at once
-#   - you control the smoothness of the trend
-#   - it can be made robust to outliers
-#
-# WHAT IT COSTS
-#   - additive only. For a multiplicative series, take logs
-#     first, which is Session 5's identity.
-#   - no automatic handling of calendar effects
-#   - the windows usually need tuning by hand
-#
-# THE TWO WINDOWS
-#   trend(window = )   how fast the trend may change.
-#                      Smaller = more flexible. Must be ODD.
-#                      No fixed default: it is computed from the
-#                      seasonal period. Works out at 21 for
-#                      monthly data, 13 for daily data with a
-#                      weekly season.
-#   season(window = )  how fast the season may change.
-#                      Smaller = more flexible. Must be ODD.
-#                      Default 11.
-#                      "periodic" makes it infinite, which
-#                      forces a constant season, like classical
-#                      decomposition.
-# ============================================================
+# ---- 4. STL ----
 
 # ---- STL with the defaults ----
 
@@ -268,8 +167,8 @@ stl_default |> autoplot()
 
 # ---- STL with the windows written out ----
 
-# Pass the defaults explicitly once, so the syntax is familiar
-# before you start changing the numbers.
+# The defaults, passed explicitly once, so the syntax is familiar
+# before the numbers change.
 us_retail_employment |>
   model(
     stl = STL(Employed ~ trend(window = 21) + season(window = 11))
@@ -279,10 +178,8 @@ us_retail_employment |>
 
 
 # ---- tuning, step A: the trend window ----
-
-# Two rules. Move one window at a time, or you cannot tell which
-# one helped. And judge the result on the remainder's correlogram,
-# not on whether the trend line looks nicer.
+# Move one window at a time, and judge the result on the remainder's
+# correlogram, not on whether the trend line looks nicer.
 
 stl_trend <- function(w) {
   us_retail_employment |>
@@ -325,16 +222,12 @@ remainder_acfs |>
   facet_wrap(~ window) +
   labs(title = "Remainder correlogram at four trend windows", y = "ACF")
 
-# Read the table and the plot together, and come to the session
-# with a window chosen and a reason for it. One question to have an
-# answer to: the narrowest setting gives the smallest remainder of
-# the four. Does that make it the best decomposition of the four?
+# Read the table and the plot together, and come to the session with
+# a window chosen and a reason for it.
 
 
 # ---- tuning, step B: the seasonal window ----
-
-# The other knob, and this one is judged on the SEASONAL component
-# rather than on the remainder. Track one seasonal factor across
+# Judged on the SEASONAL component: track one seasonal factor across
 # the years and see what each window lets it do.
 
 # Replace this with the trend window you settled on in step A.
@@ -369,10 +262,8 @@ december_factors |>
 
 # ---- an aside on robust = TRUE ----
 
-# STL() also takes a robust argument, and a series with a recession
-# in it looks like exactly the place to reach for it. Run it both
-# ways. Before you look at the numbers, think about what robustness
-# is being asked to do to the 2008 observations.
+# Run it both ways. Before you look at the numbers, think about what
+# robustness is being asked to do to the 2008 observations.
 us_retail_employment |>
   model(
     stl = STL(Employed ~ trend(window = chosen_trend) + season(window = 11),
@@ -384,9 +275,8 @@ us_retail_employment |>
 
 # ---- the decomposition this arrives at ----
 
-# Put your two chosen windows together and plot the components one
-# last time. Check it against the two criteria from section 2, and
-# be ready to say which window earned which part of the improvement.
+# Put your two chosen windows together and check the result against
+# the two criteria from section 2.
 chosen_season <- 11
 
 us_retail_employment |>
@@ -399,8 +289,6 @@ us_retail_employment |>
 
 # ============================================================
 # EXERCISES
-#
-# From here the script sets each exercise up and stops.
 #
 # ASSIGNED: exercise 1, exercise 2, and exercise 3 item 2.1.
 # ============================================================
@@ -432,7 +320,7 @@ gas
 # Loading fma prints "The following object is masked _by_
 # '.GlobalEnv': gas". That is expected and harmless: fma also
 # ships a dataset called gas, and your own `gas` from exercise 1
-# wins. Session 4's lag() masking was the same mechanism.
+# wins.
 library(fma)
 labour_tsibble <- as_tsibble(labour)
 labour_tsibble |> autoplot(value)
@@ -455,10 +343,9 @@ vic_elec_d <-
 
 vic_elec_d |> autoplot(avg_demand)
 
-# The default decomposition, and the ACF of its remainder.
-# Daily data with a weekly season has period 7, so the defaults
-# here are trend(window = 13) and season(window = 11). Passing no
-# arguments at all, STL(avg_demand), gives exactly this result.
+# Daily data with a weekly season: the defaults are trend(window = 13)
+# and season(window = 11). Passing no arguments, STL(avg_demand),
+# gives exactly this result.
 dcmp_1 <-
   vic_elec_d |>
   model(decomp = STL(avg_demand ~ trend(window = 13) + season(window = 11))) |>
