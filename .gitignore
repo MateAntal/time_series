@@ -13,3 +13,7 @@ Thumbs.db
 # Agent guidance must never ship to students: this repo is the source of the
 # public instance. Keep a local untracked AGENTS.md here if you want one.
 AGENTS.md
+
+# Your own work. If you keep homework, notes and drafts in a homework/ folder
+# in the repo root, git ignores it, so a pull can never touch anything there.
+homework/
