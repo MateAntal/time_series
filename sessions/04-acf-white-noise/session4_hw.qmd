@@ -1,0 +1,275 @@
+---
+title: "Session4_hw"
+author: "Máté Antal"
+format: html
+---
+```{r}
+library(readr)
+library(readxl)
+library(fpp3)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+04_C_TSGraphs_Lagplots_Autocorrelation
+
+exercise 1 - matching
+1- b -  the autocorrelations are positive but gradually fade, showing persistence without strong seasonality, which we can see on the graph
+
+2 - a  - the ACF has a clear spike around lag 12, meaning yearly seasonality in monthly data
+
+3 - d - the ACF stays very high and decreases slowly, which is what usually happens for strong upward trends, and the ACF crosses the blue line by far which show very strong significance (very strong trend in graph)
+
+4 - c - the ACF alternates between positive and negative values, matching the cyclic rises and falls in the series.
+
+
+```{r}
+total_private <- us_employment |>
+  filter(Title == "Total Private")
+
+total_private |>
+  autoplot(Employed) +
+  labs(
+    title = "Total Private Employment",
+    y = "Employment"
+  )
+
+total_private |>
+  ACF(Employed) |>
+  autoplot() +
+  labs(
+    title = "ACF of Total Private Employment"
+  )
+```
+Total private employment shows a very strong long-term upward trend with some downturns during recessions like 2008, and the ACF decays slowly because nearby employment values are persistent over time, so even a few months later the data will be quite similar, but the earliest data being the best predictor. 
+
+
+Exercise 3
+
+```{r}
+PBS |>
+  filter(ATC2 == "H02") |>
+  select(ATC2, Month, Cost, everything()) |>
+  arrange(Month)
+```
+```{r}
+PBS_H02_monthly <- PBS |>
+  filter(ATC2 == "H02") |>
+  index_by(Month) |>
+  summarise(total_cost = sum(Cost, na.rm = TRUE))
+
+PBS_H02_monthly
+```
+```{r}
+PBS_H02_monthly |>
+  autoplot(total_cost) +
+  scale_x_yearmonth(
+    date_breaks = "1 year",
+    date_minor_breaks = "1 month"
+  ) +
+  theme(axis.text.x = element_text(angle = 90)) +
+  labs(
+    title = "Monthly total cost of H02 prescriptions",
+    y = "Total cost"
+  )
+
+PBS_H02_monthly |>
+  gg_lag(total_cost, geom = "point", lags = 1:16)
+
+PBS_H02_monthly |>
+  ACF(total_cost) |>
+  autoplot() +
+  labs(title = "ACF of monthly H02 prescription cost")
+```
+The H02 prescription cost series shows yearly seasonality. We can see this in the repeated monthly pattern and the stronger ACF/lag relationship around lag 12.
+
+```{r}
+head(us_gasoline)
+```
+```{r}
+us_gasoline |>
+  autoplot(Barrels) +
+  scale_x_yearweek(
+    date_breaks = "1 year"
+  ) +
+  theme(axis.text.x = element_text(angle = 90)) +
+  labs(
+    title = "Weekly US gasoline supply",
+    y = "Million barrels per day"
+  )
+
+us_gasoline |>
+  gg_lag(Barrels, geom = "point")
+
+us_gasoline |>
+  ACF(Barrels, lag_max = 52 * 4) |>
+  autoplot() +
+  labs(title = "ACF of weekly US gasoline supply")
+
+#data is weekly, one yearly seasonal cycle is about 52 lags, so using 52 * 4 shows about four years of seasonal autocorrelation
+```
+Time plot:
+Gasoline supply has repeated up-and-down movement within each year, so it suggests possible yearly seasonality
+Lag plots:
+The lag plots show positive relationships at nearby lags: points slope upward, meaning weeks close together tend to have similar gasoline supply. But this plot is too crowded to clearly identify yearly seasonality by itself.
+ACF plot:
+Correlation rises very clearly every 52 weeks (a year), whcih makes seasonality evident
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+04_D_TSGraphs_MoreExercises
+
+Exercise 1
+```{r}
+pollution <- 
+  
+  # Read the file
+  read_csv("../../data/Beijing_Pollution_TSeries.csv") |> 
+
+  #Step 1: create the time_stamp
+  mutate(time_stamp = make_datetime(year, month, day, hour)) |>
+  
+  #Step 2: reorder columns and drop timestamp components (keep only the newly created timestamp)
+  select(time_stamp, everything(), -c(No, year, month, day, hour))  |>
+
+  #Step 3: convert to tsibble
+  as_tsibble(index = time_stamp)
+  
+pollution
+
+
+autoplot(pollution, NO2)
+
+# it looks like there is seasonal variance but it's hard to tell from this grpah how it exactly is
+```
+```{r}
+NO2_weekly <- pollution |>
+  index_by(week = yearweek(time_stamp)) |>
+  summarise(NO2_weekly = mean(NO2, na.rm = TRUE)) |>
+  mutate(year_month = yearmonth(week)) |>
+  filter(year_month >= yearmonth("2013 Mar") &
+           year_month < yearmonth("2014 Mar"))
+
+NO2_weekly
+```
+Exercise 1.2 - plotting
+```{r}
+NO2_weekly |>
+  autoplot(NO2_weekly) +
+  scale_x_yearweek(
+    date_breaks = "1 month"
+  ) +
+  theme(axis.text.x = element_text(angle = 90))
+```
+Weekly NO2 levels fluctuate strongly but there is no clear long-term trend only sharp spikes and drops
+
+```{r}
+NO2_monthly <- pollution |>
+  index_by(month = yearmonth(time_stamp)) |>
+  summarise(NO2_monthly = mean(NO2, na.rm = TRUE)) |>
+  mutate(year_month = month) |>
+  filter(year_month >= yearmonth("2013 Mar") &
+           year_month < yearmonth("2014 Mar"))
+
+NO2_monthly |>
+  autoplot(NO2_monthly) +
+  scale_x_yearmonth(
+    date_breaks = "1 month"
+  ) +
+  theme(axis.text.x = element_text(angle = 90))
+```
+There is a slight overall upward trend in pollution, with around every 3-4 months having a spike.
+
+
+Exercise 2
+```{r}
+fuel_prices <- 
+  
+  # Read excel file
+  read_xlsx("../../data/Weekly Fuel Prices.xlsx",
+            col_types = c ("date", "numeric", "numeric")) |> 
+  
+  filter(!is.na(Date)) |>
+  
+  pivot_longer(cols = c("Petrol (USD)", "Diesel (USD)"),
+               names_to = "fuel_type",
+               values_to = "price_USD"
+               ) |> 
+  
+  as_tsibble(key =  fuel_type, regular = FALSE, index = Date)
+
+fuel_prices
+```
+```{r}
+fuel_quarterly <- 
+  
+  fuel_prices |> 
+  
+  # Use group_by so that the subsequent index_by is applied
+  # group-wise.
+  group_by(fuel_type) |>
+
+  # Index by yearquarter 
+  index_by(yq = yearquarter(Date)) |> 
+  
+  # Summarise
+  summarise(
+      # One mean per fuel_type per quarter, so the name must not say "petrol"
+      mean_price_USD = mean(price_USD, na.rm = TRUE)
+  ) |> 
+
+  ungroup()
+
+fuel_quarterly
+```
+With group_by(fuel_type) there is quarterly data both for petrol and diesel separately.
+Without it they are averaged together into one combined series.
+
+```{r}
+fuel_quarterly_2004_2008 <- fuel_quarterly |>
+  filter(year(yq) >= 2004 & year(yq) <= 2008)
+
+fuel_quarterly_2004_2008 |>
+  autoplot(mean_price_USD) +
+  scale_x_yearquarter(
+    date_breaks = "1 year",
+    minor_breaks = "3 months"
+  ) +
+  theme(axis.text.x = element_text(angle = 90))
+```
+First of all we can see that diesel and petrol prices are highly correlated and move almost perfectly together. 
+Secondly, there has been a strong trend of price increase form 2004 until 2008 Q3, which was followed by a sharp drop (likely due to 2008 financial crisis). 
+
+
+
+
+
+

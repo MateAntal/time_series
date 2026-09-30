@@ -1,0 +1,133 @@
+---
+title: "session5_hw"
+format: html
+
+---
+
+```{r}
+library(fpp3)
+library(fma)
+```
+Example 1 
+```{r}
+us_retail_employment <- us_employment |>
+  filter(year(Month) >= 1990, Title == "Retail Trade") |>
+  select(-Series_ID)
+
+retail_decomp <- us_retail_employment |>
+  model(classical_decomposition(Employed, type="additive")) |>
+  components() |>
+  mutate(
+    detrended=Employed-trend,
+    season_adjust_manual=Employed - seasonal
+  )
+```
+
+```{r}
+retail_decomp |>
+  autoplot(detrended) +
+  labs(title = "Detrended US retail employment")
+```
+In this plot we removed the trend so the big up and down movement is gone. What remained is the repeating seasonal fluctuation, which seems very relevant in the retail employment, I think for example during holidays they can increase and decrease in other times. Other than that what remained are random components like short-term noise.
+
+```{r}
+retail_decomp |>
+  ggplot(aes(x = Month)) +
+  geom_line(aes(y = Employed), colour = "grey") +
+  geom_line(aes(y = season_adjust_manual), colour = "#144161") +
+  labs(title = "Original and seasonally adjusted employment")
+```
+
+```{r}
+retail_decomp |>
+  ggplot(aes(x = Month)) +
+  geom_line(aes(y = Employed), colour = "grey") +
+  geom_line(aes(y = trend), colour = "brown") +
+  labs(title = "Original employment and trend")
+```
+The seasonally adjusted series (blue) still follows the month-to-month movement and fluctuation of the original data, while the trend (brown) is much smoother because it removes both the seasonality and short-term random variation.
+
+It's interesting for future predictions, because if my goal is two just get the overall tendency I would use the only trend line, but if small nuances matter then I might be interested in the seasonality adjsuted series.
+
+
+
+
+
+Example 2
+```{r}
+a10_ts <- as_tsibble(a10) |>
+  select(Month, Cost)
+
+a10_decomp <- a10_ts |>
+  model(classical_decomposition(Cost, type = "multiplicative")) |>
+  components() |>
+  mutate(
+    detrended = Cost / trend,
+    season_adjust_manual = Cost / seasonal
+  )
+```
+
+
+```{r}
+a10_decomp |>
+  autoplot(detrended) +
+  labs(title = "Detrended a10 series")
+```
+Here dividing by the trend will remove the long term-growth trend, as it was an originally multiplicative series. So without the trend we can see the seasonal and random components, which cause the seasonal up and downs and the irregular changes. 
+
+
+```{r}
+a10_decomp |>
+  ggplot(aes(x = Month)) +
+  geom_line(aes(y = Cost), colour = "grey") +
+  geom_line(aes(y = season_adjust_manual), colour = "#144161") +
+  labs(title = "Original and seasonally adjusted a10")
+```
+
+
+
+```{r}
+a10_decomp |>
+  ggplot(aes(x = Month)) +
+  geom_line(aes(y = Cost), colour = "grey") +
+  geom_line(aes(y = trend), colour = "brown") +
+  labs(title = "Original a10 and trend")
+```
+The seasonally adjusted series keeps the overall growth but removes the regular seasonal peaks, while the trend is smoother and shows only the long-term movement.
+
+Verify:
+
+Additive:
+
+```{r}
+all.equal(retail_decomp$season_adjust_manual, retail_decomp$season_adjust)
+
+isTRUE(all.equal(
+  retail_decomp$season_adjust_manual,
+  retail_decomp$season_adjust
+))
+```
+
+
+Multiplicative:
+```{r}
+all.equal(a10_decomp$season_adjust_manual, a10_decomp$season_adjust)
+
+isTRUE(all.equal(
+  a10_decomp$season_adjust_manual,
+  a10_decomp$season_adjust
+))
+```
+
+Manual formula gives the same result as R built-in decomposition output.
+
+
+
+Final sentence:
+When I used additive arithmetic on the multiplicative series, the graph showed unrealistically large fluctuations, including negative values, because subtraction does not remove seasonality correctly when the seasonal effect changes with the level of the series.
+
+
+
+
+
+

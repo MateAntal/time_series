@@ -1,0 +1,72 @@
+---
+title: "session6_hw_tsa"
+format: html
+---
+
+
+```{r}
+library(fpp3)
+```
+
+
+Exercise 1
+
+Using us_retail_employment, compute the 2×12 moving average of Employed.
+The data is monthly, so the seasonal period is m = 12, which is even. Work out .before and.after for each of the two imbalanced windows before you type anything.
+Plot the result over the original series.
+
+```{r}
+# Filter the series and select relevant columns
+us_retail_employment <- 
+  us_employment |>
+  filter(year(Month) >= 1990, Title == "Retail Trade") |>
+  select(-Series_ID)
+
+
+us_retail_ma <- us_retail_employment |>
+  mutate(
+    MA_12_R = slider::slide_dbl(Employed, mean,
+                                .before = 5, .after = 6, .complete = TRUE),
+    MA_12_L = slider::slide_dbl(Employed, mean,
+                                .before = 6, .after = 5, .complete = TRUE),
+    MA_2x12 = 0.5 * (MA_12_R + MA_12_L)
+  )
+
+
+
+
+```
+
+```{r}
+us_retail_ma |>
+  select(Month, Employed, MA_12_R, MA_12_L, MA_2x12) |>
+  head(10)
+```
+```{r}
+us_retail_ma |>
+  select(Month, Employed, MA_12_R, MA_12_L, MA_2x12) |>
+  tail(10)
+```
+
+At the beginning:
+- MA_12_R needs 5 months before + current + 6 after, so it becomes available after 5 missing rows.
+- MA_12_L needs 6 months before + current + 5 after, so it becomes available after 6 missing rows.
+- Since MA_2x12 needs both, it starts only when both exist.
+At the end:
+- One of them runs out 5 months before the end.
+- The other runs out 6 months before the end.
+- So the combined MA_2x12 also has missing values near the end.
+
+So the final MA_2x12 loses first 6 and last 6 rows. 
+
+```{r}
+us_retail_ma |>
+  autoplot(Employed, colour = "grey") +
+  geom_line(aes(y = MA_2x12), colour = "brown") +
+  labs(
+    title = "US retail employment with 2x12 moving average",
+    y = "People employed"
+  )
+```
+
+

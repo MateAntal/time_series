@@ -1,0 +1,130 @@
+---
+title: "session7_hw_tsa"
+author: "Máté"
+format: html
+---
+
+```{r}
+library(fpp3)
+library(fma)
+```
+
+Exercise 1
+```{r}
+gas <- tail(aus_production, 5 * 4) |>
+  select(Gas)
+
+gas_decomp <- gas |>
+  model(dcmp = classical_decomposition(Gas, type = "multiplicative")) |>
+  components() |>
+  mutate(
+    detrended = Gas / trend,
+    season_adjust_manual = Gas / seasonal
+  )
+
+gas_decomp |>
+  ggplot(aes(x = Quarter)) +
+  geom_line(aes(y = Gas), colour = "grey") +
+  geom_line(aes(y = season_adjust_manual), colour = "brown") +
+  labs(title = "Original and seasonally adjusted gas")
+```
+The seasonally adjusted series removes the repeating quarterly pattern, while the original series still contains both trend and seasonality.
+
+
+I wanted to explore a bit mroe and understnad visually how it looks like when removing trend, and seasonality seperately, so I did this graph
+
+```{r}
+gas_decomp |>
+  autoplot() +
+  labs(title = "Multiplicative decomposition")
+  
+```
+
+
+
+Now to see when the outlier is in the middle
+
+```{r}
+gas_middle_outlier <- gas
+gas_middle_outlier$Gas[10] <- gas_middle_outlier$Gas[10] + 300
+
+gas_middle_decomp <- gas_middle_outlier |>
+  model(dcmp = classical_decomposition(Gas, type = "multiplicative")) |>
+  components() |>
+  mutate(
+    detrended = Gas / trend,
+    season_adjust_manual = Gas / seasonal
+  )
+```
+
+```{r}
+gas_middle_decomp |>
+  autoplot() +
+  labs(title = "Multiplicative decomposition with middle outlier")
+```
+So here I interpret this so trend is the biggest factor, and because we put the outlier the seasonality effect became less signifacnt according to the graph (the grey rectnagle got bigger compared to before).
+
+Also interestingly the model correctly identifies that randomness has more of a role, which is basically the expected result. 
+
+
+```{r}
+gas_middle_decomp |>
+  ggplot(aes(x = Quarter)) +
+  geom_line(aes(y = Gas), colour = "grey") +
+  geom_line(aes(y = season_adjust_manual), colour = "blue") +
+  labs(title = "Seasonally adjusted Gas with middle outlier")
+```
+With the middle outlier, the trend moves because the centered moving average can use observations on both sides of the outlier. Since the trend changes, the detrended series also changes because it is calculated as Gas / trend. The seasonal component also changes because it is estimated from the detrended values, so the outlier contaminates the trend, detrended, and seasonal components instead of appearing only in the random component.
+
+
+
+
+When the outlier is near the end:
+
+```{r}
+gas_end_outlier <- gas
+gas_end_outlier$Gas[19] <- gas_end_outlier$Gas[19] + 300
+
+gas_end_decomp <- gas_end_outlier |>
+  model(dcmp = classical_decomposition(Gas, type = "multiplicative")) |>
+  components() |>
+  mutate(
+    detrended = Gas / trend,
+    season_adjust_manual = Gas / seasonal
+  )
+```
+
+```{r}
+gas_end_decomp |>
+  autoplot() +
+  labs(title = "Multiplicative decomposition with end outlier")
+```
+I feel like here the model is not able to tell that well that it was mre likely becasue if randomness effect the change happened at the end. Sesasonality is still reduced effect. 
+
+
+```{r}
+gas_end_decomp |>
+  ggplot(aes(x = Quarter)) +
+  geom_line(aes(y = Gas), colour = "grey") +
+  geom_line(aes(y = season_adjust_manual), colour = "blue") +
+  labs(title = "Seasonally adjusted Gas with end outlier")
+```
+Before moving the outlier near the end, I expected it to affect the decomposition less broadly than the middle outlier, because the centered moving average cannot be computed at the edges of the series.
+
+So after researching more I found that the end outlier still changes the decomposition, and visually it can look like the final movement is partly absorbed into the trend. However, because a centered moving average cannot be computed all the way to the end, the outlier affects fewer trend estimates than a middle outlier, so its effect is less spread through the trend, detrended, and seasonal components.
+
+
+
+
+
+Exercise 2
+```{r}
+
+```
+
+
+
+Exercise 3
+```{r}
+
+```
