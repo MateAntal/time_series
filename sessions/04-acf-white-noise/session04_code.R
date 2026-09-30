@@ -1,17 +1,14 @@
 # ============================================================
 # Session 04 - Lag plots, autocorrelation, white noise
 #
-# Runnable companion to the two notebooks in this folder:
+# Companion to the notebooks in this folder:
 #   04_C_TSGraphs_Graphs_Lagplots_Autocorrelation
 #   04_D_TSGraphs_MoreExercises
-# The notebooks carry the explanations. This script carries the
-# code they show and the exercise set-ups, and stops where the
-# exercises begin: the answers are yours to write.
+# The notebooks carry the explanations. This script carries the code and
+# stops where the exercises begin.
 #
-# Set the working directory to this file's folder before you
-# start, so the ../../data/ paths further down resolve.
-#   RStudio:  Session > Set Working Directory > To Source File Location
-#   console:  setwd("<repo>/sessions/04-acf-white-noise")
+# Set the working directory to this file's folder first, so the ../../data/
+# paths resolve: Session > Set Working Directory > To Source File Location
 # ============================================================
 
 library(fpp3)
@@ -26,8 +23,7 @@ recent_beer <- aus_production |>
 
 recent_beer
 
-# lag() here is dplyr::lag(), which shifts a vector by position.
-# It masks stats::lag(), which does something else entirely.
+# dplyr::lag(), which masks stats::lag()
 for (i in seq(1, 4)) {
   lag_name = paste0("Beer_lag", as.character(i))
   recent_beer[[lag_name]] = lag(recent_beer[["Beer"]], i)
@@ -37,8 +33,7 @@ recent_beer
 
 recent_beer |> select(Beer, Beer_lag4)
 
-# Change n_lag to overlay a different lag: 1 and 3 drift apart,
-# 2 lands peaks on troughs. Only four lags were built above.
+# Change n_lag to overlay a different lag. Only four lags were built above.
 n_lag = 4
 lag_name = paste0("Beer_lag", n_lag)
 
@@ -69,8 +64,7 @@ recent_beer |>
   ACF() |>
   autoplot()
 
-# lag_max counts in the units of the index: 24 here is 24
-# quarters, i.e. six years.
+# lag_max counts in units of the index: 24 quarters = 6 years here.
 recent_beer |>
   ACF(lag_max = 24) |>
   autoplot()
@@ -88,16 +82,16 @@ y |>
   ACF(wn) |>
   autoplot() + labs(title = "White noise")
 
-# Worth doing once: drop set.seed(30) and re-run the two chunks
-# above a few times, watching which spikes cross the bounds.
+# Worth doing once: drop set.seed(30) and re-run, watching which
+# spikes cross the bounds.
 
 
 # ============================================================
 # EXERCISES - 04_C
 #
-# From here the code sets up each exercise and stops. For every
-# correlogram you produce, write one sentence: which pattern
-# dominates, and whether another could be hiding under it.
+# The code sets up each exercise and stops. For every correlogram you
+# produce, write one sentence: which pattern dominates, and whether
+# another could be hiding under it.
 # ============================================================
 
 # ---- exercise 1: ACF plot patterns ----
@@ -144,22 +138,17 @@ head(us_gasoline)
 # ============================================================
 # 04_D - aggregation and time plots
 #
-# No ACF work here: this is the setup the correlogram depends
-# on. index_by() plus summarise() changes the unit of the index,
-# and with it the lag that matters, the length T, and the
-# white-noise bounds.
+# index_by() plus summarise() changes the unit of the index, and with
+# it the lag that matters, the length T, and the white-noise bounds.
 #
-# Data paths are relative to this file. The script sits in
-# sessions/04-acf-white-noise/, so ../../data/ reaches the
-# repository's data/ folder.
+# Data paths are relative to this file: ../../data/ is the repo's
+# data/ folder.
 # ============================================================
 
 library(readr)
 library(readxl)
 
 # ---- Beijing pollution ----
-# Hourly readings from an air-quality station: particulate
-# matter, gaseous pollutants and basic weather variables.
 pollution <-
 
   # Read the file
@@ -190,9 +179,8 @@ autoplot(pollution, NO2)
 # The scale function has to match the type of the time index.
 
 # ---- weekly fuel prices ----
-# Reshaped long and keyed by fuel_type so the two series stay
-# separate. The spreadsheet ends with a navigation row rather
-# than data, which is what filter(!is.na(Date)) drops.
+# Long and keyed by fuel_type. The spreadsheet ends with a navigation
+# row rather than data, which is what filter(!is.na(Date)) drops.
 fuel_prices <-
 
   # Read excel file

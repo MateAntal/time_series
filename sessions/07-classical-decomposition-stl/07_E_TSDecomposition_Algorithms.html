@@ -2639,6 +2639,7 @@ Attaching package: &#39;seasonal&#39;</code></pre>
 </section>
 <section id="stl-main-parameters" class="level2">
 <h2 class="anchored" data-anchor-id="stl-main-parameters">STL main parameters</h2>
+<p>Both windows answer the same question: <strong>how slowly do you believe this component should be allowed to change?</strong> Everything below is that question, written twice.</p>
 <ul>
 <li><strong>Trend-cycle window</strong> <code>trend(window = ?)</code>
 <ul>
@@ -2652,6 +2653,7 @@ Attaching package: &#39;seasonal&#39;</code></pre>
 <li>Controls how rapidly the seasonal component changes</li>
 <li>Smaller values for more rapid changes.</li>
 <li>Number of consecutive seasons to be used in estimating each value of the seasonal component.</li>
+<li>That counts <strong>seasons, not observations</strong>. With monthly data, <code>season(window = 11)</code> estimates each December’s effect from a neighbourhood of 11 Decembers, which is 11 years of them.</li>
 <li>Must be an ODD number.</li>
 <li><code>season(window = &#39;periodic&#39;)</code> makes the seasonal window <em>infinite</em>: every value of the seasonal component is computed from the whole series, so the same points go into every window and the seasonal component comes out constant.
 <ul>
@@ -2716,6 +2718,7 @@ Attaching package: &#39;seasonal&#39;</code></pre>
 <section id="step-a-the-trend-window" class="level3">
 <h3 class="anchored" data-anchor-id="step-a-the-trend-window">Step A: the trend window</h3>
 <p>Run the decomposition four times, at <code>trend(window = )</code> of <strong>21, 13, 9 and 5</strong>, leaving <code>season(window = 11)</code> alone throughout. Each time, record the variance of the remainder and look at the remainder’s correlogram.</p>
+<p>Before you run anything, write down which window you expect to give the smallest remainder variance. That prediction is the point of this step.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>stl_trend <span class="ot">&lt;-</span> <span class="cf">function</span>(w) {</span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  us_retail_employment <span class="sc">|&gt;</span></span>

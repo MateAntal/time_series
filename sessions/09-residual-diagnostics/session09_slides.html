@@ -395,7 +395,7 @@ body.ov-on #overview{display:block}
     <p class="who"><b>Session 9.</b> Residual diagnostics, and midterm revision.<br>
     Alejandro Berrizbeitia · aberrizbeitia@faculty.ie.edu</p>
   </div>
-  <aside class="notes">The deck is self-contained: press <b>N</b> at any time to open or close this panel, and <b>O</b> for a list of every slide.<br><br>Today is fpp3 section 5.4, notebook <code>09_B</code>, and the one-page residuals summary on Blackboard, which is the spine of the first half.<br><br><b>Two things to know before we start.</b> This session is <b>not examined in the midterm</b>: coverage there is Sessions 1 to 8. And the second half of today is revision for that midterm, so bring questions rather than notes.</aside>
+  <aside class="notes">The deck is self-contained: press <b>N</b> at any time to open or close this panel, and <b>O</b> for a list of every slide.<br><br>Today is fpp3 section 5.4, notebook <code>09_B</code>, and the one-page residuals summary <code>09_A</code> in this folder, which is the spine of the teaching part.<br><br><b>Two things to know before we start.</b> This session is <b>not examined in the midterm</b>: coverage there is Sessions 1 to 8. And the last quarter of an hour today is revision for that midterm, so bring questions rather than notes.</aside>
 </section>
 
 <!-- ---------- 2 ---------- -->
@@ -406,9 +406,9 @@ body.ov-on #overview{display:block}
     <ul class="build">
       <li class="step"><b>A model that runs is not a model that works.</b> Today is the first of three sessions about telling the difference.</li>
       <li class="step"><b>This session is not on the midterm.</b> It opens the evaluation block: today, then train and test splits in Session 13 and cross-validation in Session 14, and those are examined together in the final.</li>
-      <li class="step"><b>Which is why the second half of today is revision.</b> Sessions 1 to 8, driven by your questions.</li>
+      <li class="step"><b>Which is why today closes with revision.</b> A short sweep of Sessions 1 to 8, driven by your questions.</li>
     </ul>
-    <div class="callout"><b>Do not let the exam news change how you treat the first half.</b> Residual diagnostics is the most-used skill in the second half of this course, and Group Assignment 2 depends on it.</div>
+    <div class="callout"><b>Do not let the exam news change how you treat the rest of today.</b> Residual diagnostics is the most-used skill in the second half of this course, and Group Assignment 2 depends on it.</div>
     <p class="punch step wide">The midterm is Wednesday 14 October. Twenty multiple-choice questions, Sessions 1 to 8, no retake.</p>
   </div>
   <aside class="notes">The coverage change is deliberate rather than administrative. Session 8 closes the decomposition arc and opens forecasting; Session 9 opens the evaluation arc and runs through Sessions 13 and 14. Splitting the exams at that seam keeps each one testing a coherent body of material rather than stopping halfway through an idea.<br><br>It also fixes a scheduling problem. The session after this one is the midterm itself, so there was no room for the usual start-of-session homework review. Tonight's homework is reviewed at the start of Session 11 instead, and slide 18 has the details.</aside>
@@ -448,7 +448,7 @@ body.ov-on #overview{display:block}
     </figure>
     <p class="punch step wide">Four properties, two questions. Knowing which question a failure belongs to tells you whether to change the model or change what you claim.</p>
   </div>
-  <aside class="notes">The one-page PDF on Blackboard sets these out with what to do about each failure, and it is the single most useful thing to have beside you during Group Assignment 2. Print it.<br><br>A point about ordering that is easy to miss: properties 1 and 2 are checked to decide whether a model is <i>finished</i>, and properties 3 and 4 to decide what you are entitled to <i>say</i>. A model can pass 1 and 2 and still leave you unable to quote an honest interval, and that is not a failure of the forecast. It is a limit on the claim.</aside>
+  <aside class="notes">The one-page PDF in this folder, <code>09_A</code>, sets these out with what to do about each failure, and it is the single most useful thing to have beside you during Group Assignment 2. Print it.<br><br>A point about ordering that is easy to miss: properties 1 and 2 are checked to decide whether a model is <i>finished</i>, and properties 3 and 4 to decide what you are entitled to <i>say</i>. A model can pass 1 and 2 and still leave you unable to quote an honest interval, and that is not a failure of the forecast. It is a limit on the claim.</aside>
 </section>
 
 <!-- ---------- 4 ---------- -->
@@ -492,7 +492,7 @@ body.ov-on #overview{display:block}
     </ul>
     <p class="punch step wide">If you understood Session 4, you already know how to read this plot. What is new is what a crossing now implies: not a feature of the data, but a shortcoming of the model.</p>
   </div>
-  <aside class="notes">Run the correlogram on <code>.innov</code> rather than <code>.resid</code>. With no transformation they are identical, so it makes no difference today, but from Session 11 on the innovation residuals are the ones the model actually worked with, and those are the ones whose structure is meaningful.<br><br>This is also the point where Session 4's white noise stops being an abstraction. The null hypothesis of the whole course was that a series has no memory; the hope for a set of residuals is that they do not either. Same statement, opposite sign of hope.</aside>
+  <aside class="notes">Run the correlogram on <code>.innov</code> rather than <code>.resid</code>. With no transformation they are identical, so it makes no difference today, but from Session 11 on the innovation residuals are the ones the model actually worked with, and those are the ones whose structure is meaningful.<br><br>This is also the point where Session 4's white noise stops being an abstraction. The null hypothesis of the whole course was that a series has no memory; the hope for a set of residuals is that they do not either. Same statement, opposite sign of hope.<br><br>The middle panel and the right one look alike but hold different things. A decomposition remainder is what is left of the series once the trend and season are taken out, and the trend came from a centered window that used values after each point, so the remainder describes the series rather than recording an error. Nothing requires it to be white noise. A residual is the gap between each observation and its fitted value, a one-step forecast from earlier data only, so it is the model's error, and a good model should leave white noise behind.</aside>
 </section>
 
 <!-- ---------- 5 ---------- -->

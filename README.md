@@ -40,6 +40,17 @@ Click the green **Code** button at the top of this page → **Download ZIP** →
 
 This repo is **updated throughout the term.** If you cloned it, run `git pull` before each class to get the latest materials. If you downloaded the ZIP, re-download every week or so.
 
+### Your own files and `git pull`
+
+`git pull` only ever updates the course materials. Files you create yourself — your homework `.qmd`, rendered `.html`, notes — are not tracked by git, so a pull never touches, overwrites or deletes them. If git ever refuses to pull with an *"untracked working tree file would be overwritten"* error, it is protecting one of your files: that file has the same name as something newly added to the course materials. Rename or move your file and pull again; nothing is lost.
+
+Two optional habits, if you feel so inclined:
+
+* **Keep your own work in a `homework/` folder in the repo root.** Git ignores that folder (it is in `.gitignore`), so nothing you put there can ever collide with course materials, even by name.
+* **Never discard changes to make an error go away.** If a pull fails because you edited a course file (say, a session notebook) and it was also updated upstream, the safe move is `git stash`, pull, and then `git stash pop` to recover your edit. Clicking *Discard all changes* in RStudio's Git pane or GitHub Desktop deletes your edits for real.
+
+Re-downloading the ZIP instead of pulling is also safe, but unzip it to a fresh folder rather than over the old one, and carry your `homework/` folder across with you.
+
 ## How the repo is organized
 
 ```
