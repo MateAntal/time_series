@@ -65,6 +65,10 @@ changes from lag 5 to lag 8.
 
 That observation is true. It is also an answer to a different question.
 
+**What a loess curve is.** A loess curve is a smoother: a line drawn through a scatterplot that
+follows the data wherever it goes, without being forced into a straight line. It is many local
+regressions stitched together, where a correlation coefficient describes one global line.
+
 **The distinction.**
 
 | The correlation coefficient tells you | The scatterplot tells you |
