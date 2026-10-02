@@ -238,7 +238,6 @@ for the stochastic-process framing.
 
 ### Session 10 — Midterm exam
 
-- A revision sweep of Sessions 1 to 8, ahead of the exam
 - Coverage: Sessions 1 to 8
 - Residual diagnostics (Session 9) is **not** examined here; it belongs to the evaluation block and is
   examined in the final
