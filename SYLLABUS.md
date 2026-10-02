@@ -233,12 +233,12 @@ for the stochastic-process framing.
 - Residual mean, residual ACF, qq-plots and boxplots
 - Why inspecting each ACF bar individually is multiple hypothesis testing, and hence portmanteau tests
 - The Ljung–Box test
-- Closing revision sweep of Sessions 1 to 8, ahead of the midterm
 
 **Reading:** fpp3 5.4
 
 ### Session 10 — Midterm exam
 
+- A revision sweep of Sessions 1 to 8, ahead of the exam
 - Coverage: Sessions 1 to 8
 - Residual diagnostics (Session 9) is **not** examined here; it belongs to the evaluation block and is
   examined in the final

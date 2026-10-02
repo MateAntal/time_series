@@ -14,5 +14,8 @@ belong together and are examined in the **final**.
 
 An optional online prep tutorial runs in the preceding week.
 
+**Slides:** [`session10_slides.html`](session10_slides.html) — exam logistics and the one-line spine of
+Sessions 1–8, then questions.
+
 > There is **no retake for the midterm.** If a student cannot attend for personal or work reasons, the
 > final exam carries 60 % instead of 30 %. See [`SYLLABUS.md`](../../SYLLABUS.md).
