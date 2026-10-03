@@ -532,7 +532,7 @@ y&#770;<span class="hl">_{t | t-1}</span>     the value at t,   given everything
     <ul class="build">
       <li class="step"><b>Left of the bar: when.</b> Right of the bar: what information was available. That reading works for every model in this course.</li>
       <li class="step"><b>A forecast is an estimate of <code>y<sub>t</sub></code> that was not allowed to see <code>y<sub>t</sub></code>.</b> A fitted value is the case where the point sits inside the data and the model looks one step back.</li>
-      <li class="step"><b>That is what makes a residual honest.</b> If the fitted value could see <code>y<sub>t</sub></code>, the residual would measure memorization rather than error.</li>
+      <li class="step"><b>That is what makes a residual a measure of error rather than of memorization</b>, at least for methods with no estimated parameters. Slide 6 has the exception.</li>
     </ul>
     <p class="punch step wide">Both get written <code>y&#770;<sub>t</sub></code> when nobody is being careful. The book does it, this course does it, and the subscript is where you recover the meaning.</p>
   </div>
@@ -548,17 +548,18 @@ y&#770;<span class="hl">_{t | t-1}</span>     the value at t,   given everything
       <tr><td class="os"></td><td><b>Forecast</b> &nbsp; y&#770;<sub>T+h|T</sub></td><td class="fix"><b>Fitted value</b> &nbsp; y&#770;<sub>t|t-1</sub></td></tr>
       <tr><td class="os">Where</td><td>Beyond the data, after <code>T</code></td><td class="fix">Inside the data, <code>t &le; T</code></td></tr>
       <tr><td class="os">How far</td><td>Any horizon <code>h</code></td><td class="fix">Always one step</td></tr>
-      <tr><td class="os">Compared with</td><td>A future observation &rarr; forecast error</td><td class="fix">The observation at <code>t</code> &rarr; residual</td></tr>
+      <tr><td class="os">Compared with</td><td>A future value, not seen yet &rarr; forecast error</td><td class="fix"><code>y<sub>t</sub></code>, already in the data &rarr; residual</td></tr>
+      <tr><td class="os">Naive, for example</td><td><code>y<sub>T</sub></code>, the last observation, for every <code>h</code></td><td class="fix"><code>y<sub>t-1</sub></code>, the observation just before <code>t</code></td></tr>
     </table>
     <div class="callout"><b>Parameters are estimated once, from the whole series.</b> So a model with parameters builds each fitted value from past observations, but with numbers that were computed using <code>y<sub>t</sub></code> and everything after it.</div>
     <ul class="build">
-      <li class="step"><b>Naive and seasonal naive have no parameters.</b> Their fitted values are genuine one-step forecasts.</li>
-      <li class="step"><b>Drift, and every model from Session 15 onward, peek a little.</b> The drift slope is computed from <code>y<sub>T</sub></code>.</li>
-      <li class="step"><b>The mean model peeks the most.</b> Its fitted value is the average of the <i>whole</i> series, so <code>y<sub>t</sub></code> is one of the values it averaged. That makes its residuals flattering.</li>
+      <li class="step"><b>Naive and seasonal naive have no parameters to estimate.</b> Each fitted value uses only observations before <code>t</code>, so it is a true one-step forecast.</li>
+      <li class="step"><b>Drift has quietly seen the last observation.</b> Its slope <code>(y<sub>T</sub> - y<sub>1</sub>)/(T-1)</code> uses <code>y<sub>T</sub></code>, which comes after every <code>t</code> inside the data. Its fitted values are not true forecasts.</li>
+      <li class="step"><b>Mean has seen the most.</b> Its fitted value is the average of all <code>T</code> observations, <code>y<sub>t</sub></code> and everything after it included. Its fitted values are the least true forecasts of the four.</li>
     </ul>
-    <p class="punch step wide">Worth carrying into Session 9: diagnostics can only read residuals; they cannot repair them. A residual is only fully honest if the fitted value it was subtracted from never saw <code>y<sub>t</sub></code>, directly or through a parameter.</p>
+    <p class="punch step wide">Worth carrying into Session 9: residuals exist only for fitted values. A forecast has no residual, because there is no observation to subtract it from yet. And for mean and drift the residuals are optimistic: they look a little better than the model really is.</p>
   </div>
-  <aside class="notes">How much a model gains from this is small when <code>T</code> is large, because one observation out of several hundred barely moves an estimated parameter. On a very short series it is not negligible at all.<br><br>You will meet the same idea in a much sharper form in Session 14. Cross-validation exists to stop a model being judged on data it was fitted to, and fitted values built from full-sample parameters are the mildest possible version of that problem.</aside>
+  <aside class="notes">fpp3 5.3 puts it this way: when an estimated parameter involves observations after time <code>t</code>, the fitted values are not true forecasts. Every model from Session 15 onward has estimated parameters, so the same caveat applies to all of them.<br><br>The difference is not that one formula uses <code>T</code> observations and the other <code>T-1</code>. It is where the forecast origin sits. A forecast keeps the origin at <code>T</code> and looks <code>h</code> steps ahead. A fitted value moves the origin back to <code>t-1</code> and looks one step ahead, and that is repeated for every <code>t</code> from 1 to <code>T</code>. Each fitted value lies inside the data, so the actual <code>y<sub>t</sub></code> is there to compare it with. That comparison is the residual. A forecast has nothing to compare with until the future arrives, or until Session 13 holds some data back.<br><br>Singular or plural: <i>a fitted value</i> is one number at one time point; <i>the fitted values</i> are all of them, one per observation, which is the <code>.fitted</code> column <code>augment()</code> returns. A forecast is not built out of fitted values. It is the other way round: each fitted value is a one-step forecast made from inside the data.<br><br>How much a model gains from this is small when <code>T</code> is large, because one observation out of several hundred barely moves an estimated parameter. On a very short series it is not negligible at all.<br><br>You will meet the same idea in a much sharper form in Session 14. Cross-validation exists to stop a model being judged on data it was fitted to, and fitted values built from full-sample parameters are the mildest possible version of that problem.</aside>
 </section>
 
 <!-- ---------- 7 ---------- -->
