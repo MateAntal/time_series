@@ -406,8 +406,8 @@ body.ov-on #overview{display:block}
       <li class="step"><b>This session is not on the midterm.</b> It opens the evaluation block: today, then train and test splits in Session 13 and cross-validation in Session 14, and those are examined together in the final.</li>
       <li class="step"><b>Do not skip it for that reason.</b> Residual diagnostics is the most-used skill in the second half of this course, and Group Assignment 2 depends on it.</li>
     </ul>
-    <div class="callout"><b>Deferred is not disposable.</b> The evaluation block is examined in the final, and today is the first third of it. Group Assignment 2 depends on it too.</div>
-    <p class="punch step wide">Skip today and the final costs you a third of the evaluation block. The midterm is Wednesday; the revision sweep for it runs in Session 10.</p>
+    <div class="callout"><b>Residuals exist only for fitted values.</b> <code>e<sub>t</sub> = y<sub>t</sub> - y&#770;<sub>t|t-1</sub></code>: each fitted value sits inside the data, so there is an observation to subtract it from. A forecast has none yet. Everything today reads that one column.</div>
+    <p class="punch step wide">Skip today and the final costs you a third of the evaluation block. The midterm is Wednesday 14 October.</p>
   </div>
   <aside class="notes">The coverage change is deliberate rather than administrative. Session 8 closes the decomposition arc and opens forecasting; Session 9 opens the evaluation arc and runs through Sessions 13 and 14. Splitting the exams at that seam keeps each one testing a coherent body of material rather than stopping halfway through an idea.<br><br>It also fixes a scheduling problem. The session after this one is the midterm itself, so there was no room for the usual start-of-session homework review. Tonight's homework is reviewed at the start of Session 11 instead, and slide 15 has the details. The revision sweep itself now lives in the Session 10 deck.</aside>
 </section>
@@ -590,7 +590,7 @@ body.ov-on #overview{display:block}
           </g>
           <text x="562" y="146" text-anchor="middle" fill="#6B665E" font-size="10.5">a funnel: too narrow late, too wide early</text>
 
-          <text x="380" y="172" text-anchor="middle" fill="#98928a" font-size="11.5">the usual cause: a multiplicative series fitted additively &#8212; Session 11's transformation is the first thing to try</text>
+          <text x="380" y="172" text-anchor="middle" fill="#98928a" font-size="11.5">the usual cause: a multiplicative series fitted additively; Session 11's transformation is the first thing to try</text>
         </g>
       </svg>
     </figure>
@@ -658,7 +658,7 @@ body.ov-on #overview{display:block}
           </g>
           <text x="716" y="176" text-anchor="end" fill="#6B7F5E" font-size="11.5" font-weight="700">4 &#183; normality</text>
 
-          <text x="380" y="236" text-anchor="middle" fill="#98928a" font-size="11.5">one call, three panels: properties 1, 2 and 4 &#8212; the spread (3) is only half-visible in the top panel</text>
+          <text x="380" y="236" text-anchor="middle" fill="#98928a" font-size="11.5">one call, three panels: properties 1, 2 and 4; the spread (3) is only half-visible in the top panel</text>
         </g>
       </svg>
     </figure>
@@ -691,7 +691,7 @@ body.ov-on #overview{display:block}
           <rect x="280" y="30" width="200" height="88" rx="5" fill="#1F3A4D" opacity=".07"/>
           <rect x="280" y="30" width="200" height="88" rx="5" fill="none" stroke="#1F3A4D" stroke-width="1.8"/>
           <text x="380" y="56" text-anchor="middle" fill="#1F3A4D" font-size="12.5" font-weight="700">2 &#183; TIME PLOT: MEAN</text>
-          <text x="380" y="78" text-anchor="middle" fill="#161513" font-size="11">bias &#8212; cheap to fix,</text>
+          <text x="380" y="78" text-anchor="middle" fill="#161513" font-size="11">bias: cheap to fix,</text>
           <text x="380" y="92" text-anchor="middle" fill="#161513" font-size="11">one subtraction</text>
           <text x="380" y="108" text-anchor="middle" fill="#98928a" font-size="10">are the forecasts aimed right?</text>
 
