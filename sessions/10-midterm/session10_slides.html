@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Session 10 · Time Series Analysis · Fall 2026</title>
+<title>Midterm revision · Time Series Analysis · Fall 2026</title>
 <style>
 /* ============================================================
    Session 10 slides. Same self-contained shell as Sessions 01
@@ -369,7 +369,7 @@ body.ov-on #overview{display:block}
 <nav id="rail">
   <div class="brand">
     <b>Time Series Analysis</b>
-    <span>Session 10 · Fall 2026</span>
+    <span>Midterm revision · Fall 2026</span>
   </div>
   <ul id="toc"></ul>
   <div class="foot">
@@ -388,79 +388,81 @@ body.ov-on #overview{display:block}
     <p class="kicker">IE University · Dual Degree BBA &amp; Data and Business Analytics</p>
     <h1>Everything<br>so far.</h1>
     <div class="rule"></div>
-    <p class="who"><b>Session 10.</b> Midterm revision: Sessions 1 to 8 in one line each.<br>
+    <p class="who"><b>Midterm revision.</b> Sessions 1 to 8, for the prep tutorial and office hours.<br>
     Alejandro Berrizbeitia · aberrizbeitia@faculty.ie.edu</p>
   </div>
-  <aside class="notes">The deck is self-contained: press <b>N</b> at any time to open or close this panel, and <b>O</b> for a list of every slide.<br><br>Nothing new is taught today. The session is the exam logistics (slide 3), the one-line spine of Sessions 1 to 8 (slide 4), and then questions until the room runs out of them. The homework from Session 9 is due Sunday 11 October; its review happens at the start of Session 11, and slide 5 says so again.</aside>
+  <aside class="notes">The deck is self-contained: press <b>N</b> at any time to open or close this panel, and <b>O</b> for a list of every slide.<br><br>Nothing new is taught here. Slide 2 is how the exam works, slide 3 what is on it, slide 4 a one-line check of each session, and slide 5 what comes after. Use it in the week before the exam, alone or with your questions in the prep tutorial.</aside>
 </section>
-<section class="slide" data-section="1" data-title="How today runs">
+
+<!-- ---------- 2 ---------- -->
+<section class="slide" data-section="1" data-title="How the exam works">
   <div class="inner">
-    <p class="kicker">How today runs</p>
-    <h1 class="sowhat">The exam is Wednesday. Today is for closing gaps, not for new material.</h1>
+    <p class="kicker">Wednesday 14 October &nbsp;&middot;&nbsp; 9:00&ndash;10:20 &nbsp;&middot;&nbsp; IE Tower, T-05.02</p>
+    <h1 class="sowhat">Twenty questions, eighty minutes, one calculator.</h1>
     <ul class="build">
-      <li class="step"><b>Twenty multiple-choice questions, Sessions 1 to 8, no retake.</b> Conceptual recall rather than code you have to write from memory.</li>
-      <li class="step"><b>Nothing from Session 9 is examined.</b> Residual diagnostics belongs to the evaluation block, which is examined in the final together with Sessions 13 and 14.</li>
-      <li class="step"><b>So the plan is short.</b> The spine of Sessions 1 to 8 on one slide, then your questions for the rest of the session.</li>
+      <li class="step"><b>13 concept questions, four options each.</b> Say what a tool is for and what its output means. Nothing asks you to write or read R.</li>
+      <li class="step"><b>7 calculation questions, five options each.</b> Short calculations by hand, most of them on one small quarterly table: the steps of a classical decomposition, moving averages, benchmark forecasts. Round every step to two decimals.</li>
+      <li class="step"><b>Bring a non-programmable, non-graphing calculator.</b> No phones, watches or other devices. Answers go on a separate answer sheet, one letter per question.</li>
     </ul>
-    <div class="callout slate"><b>An optional online prep tutorial runs in the week before the exam.</b> Come to it with questions as well: it is tutorial-style by design, not a lecture.</div>
-    <p class="punch step wide">A revision session driven by your questions beats one driven by slides. Ask early; eighty minutes is shorter than it looks.</p>
+    <div class="callout slate"><b>There is no retake.</b> If you cannot attend for personal or work reasons, the final carries 60% instead of 30% (see the syllabus).</div>
+    <p class="punch step wide">Wrong answers cost nothing, so answer every question.</p>
   </div>
-  <aside class="notes">Because the questions are multiple choice, the useful preparation is being able to say what each tool <i>is for</i> and what its output <i>means</i>, rather than being able to type the function call unaided. A student who can explain why a 2&times;12-MA spans thirteen points is in much better shape than one who has memorized the call.<br><br>State the coverage boundary once more before the session ends. Anything after Session 8 is examined in the final, so Session 9's material is not wasted; it is deferred.</aside>
+  <aside class="notes">Being able to type a function call from memory earns nothing on this paper. Being able to say why a 2&times;12-MA spans thirteen points, and to compute one by hand, earns a great deal.<br><br>The calculations use only addition, subtraction and division. A basic calculator is all you need; practice with the one you will bring.</aside>
 </section>
+
 <!-- ---------- 3 ---------- -->
-<section class="slide" data-section="2" data-title="The midterm">
+<section class="slide" data-section="1" data-title="What is on it">
   <div class="inner">
-    <p class="kicker">Wednesday 14 October</p>
-    <h1 class="sowhat">Twenty questions, Sessions 1 to 8, no retake.</h1>
+    <p class="kicker">Coverage</p>
+    <h1 class="sowhat">Sessions 1 to 8, on paper.</h1>
     <div class="cards">
-      <div class="card sage"><h3>On the exam</h3><p>Sessions 1&ndash;8. R and tsibbles, graphics and the ACF, the whole decomposition block, benchmarks and fitted values, forecasting through a decomposition.</p></div>
-      <div class="card terra"><h3>Not on the exam</h3><p>Today. Residual diagnostics belongs to the evaluation block with Sessions 13 and 14, and those are examined in the final.</p></div>
+      <div class="card sage"><h3>On the exam</h3><p>The stochastic-process framing, graphics and the ACF, the whole decomposition block (classical decomposition by hand as well as in R, and STL), benchmarks and fitted values, forecasting through a decomposition.</p></div>
+      <div class="card terra"><h3>Not on the exam</h3><p>Session 9's residual diagnostics, examined in the final with Sessions 13 and 14. Box&ndash;Cox and everything from Session 11 on.</p></div>
     </div>
     <ul class="build">
-      <li class="step"><b>Twenty multiple-choice questions, four options each.</b> Conceptual recall rather than code you have to write from memory.</li>
-      <li class="step"><b>There is no retake.</b> If you cannot attend for personal or work reasons the final carries 60% instead of 30% (see the syllabus).</li>
-      <li class="step"><b>An optional online prep tutorial runs in the week before it.</b> Come with questions to it as well.</li>
+      <li class="step"><b>Practice the hand calculations before the day.</b> The prep tutorial works one table through, step by step, in the exam's format.</li>
+      <li class="step"><b>Group Assignment 1 is due Sunday 25 October, after the exam.</b> That is deliberate: revision and a from-scratch implementation should not compete for the same week.</li>
     </ul>
-    <p class="punch step wide">Group Assignment 1 is due Sunday 25 October, after the exam. That is deliberate: revision and a from-scratch implementation should not compete for the same week.</p>
+    <p class="punch step wide">If you did the homework yourself, the only new thing on the paper is doing by hand what R did for you.</p>
   </div>
-  <aside class="notes">Because the questions are multiple choice, the useful preparation is being able to say what each tool <i>is for</i> and what its output <i>means</i>, rather than being able to type the function call unaided. A student who can explain why a 2&times;12-MA spans thirteen points is in much better shape than one who has memorized the call.<br><br>State the coverage boundary once more before the class ends. Anything after Session 8 is examined in the final, so today's material is not wasted; it is deferred.</aside>
+  <aside class="notes">Session 9 is deferred, not dropped. It opens the evaluation block, which is examined in the final, and Group Assignment 2 depends on it.</aside>
 </section>
-
 
 <!-- ---------- 4 ---------- -->
-<section class="slide" data-section="3" data-title="Revision: the spine">
+<section class="slide" data-section="2" data-title="Check yourself">
   <div class="inner">
-    <p class="kicker">The rest of today is yours</p>
-    <h1 class="sowhat wide">Eight sessions, one line each. For every line: what is it, and what is the R?</h1>
+    <p class="kicker">One line per session</p>
+    <h1 class="sowhat wide">For every line: can you explain it, and can you compute it by hand?</h1>
     <table class="traps compact">
-      <tr><td class="os">S1</td><td>R, RStudio, projects, packages.</td><td class="fix">setup</td></tr>
-      <tr><td class="os">S2</td><td>Stochastic processes; tsibbles; index, key, measured variables.</td><td class="fix"><code>as_tsibble()</code></td></tr>
-      <tr><td class="os">S3</td><td>Time, seasonal, subseries and scatterplots. Trend vs seasonality vs cycle.</td><td class="fix"><code>gg_season()</code></td></tr>
-      <tr><td class="os">S4</td><td>Lag plots, the ACF, the correlogram, white noise, <code>&plusmn;2/&radic;T</code>.</td><td class="fix"><code>ACF()</code></td></tr>
-      <tr><td class="os">S5</td><td>Additive vs multiplicative; detrended and seasonally adjusted; <code>isTRUE(all.equal())</code>.</td><td class="fix">the scheme</td></tr>
-      <tr><td class="os">S6</td><td>Moving averages; centered windows; odd <code>m</code> and the <code>2&times;m</code> construction; the missing ends.</td><td class="fix"><code>slide_dbl()</code></td></tr>
-      <tr><td class="os">S7</td><td>Classical decomposition in four steps; the two criteria; STL and its two windows.</td><td class="fix"><code>STL()</code></td></tr>
-      <tr><td class="os">S8</td><td>Fitted values vs forecasts; four benchmarks; forecast distributions; decomposition forecasting.</td><td class="fix"><code>model()</code></td></tr>
+      <tr><td class="os"></td><td><b>Explain</b></td><td class="fix"><b>Compute by hand</b></td></tr>
+      <tr><td class="os">S1</td><td>R, RStudio, projects, packages: the tools, not examined on paper.</td><td class="fix"></td></tr>
+      <tr><td class="os">S2</td><td>A time series as a stochastic process: each <code>y<sub>t</sub></code> one realization of <code>Y<sub>t</sub></code>. Tsibbles, index and key.</td><td class="fix"></td></tr>
+      <tr><td class="os">S3</td><td>Time, seasonal, subseries and scatterplots. Trend vs seasonality vs cycle. What a correlation coefficient misses.</td><td class="fix"></td></tr>
+      <tr><td class="os">S4</td><td>Lag plots and the ACF; how trend and seasonality show in a correlogram; white noise.</td><td class="fix">the bounds <code>&plusmn;2/&radic;T</code></td></tr>
+      <tr><td class="os">S5</td><td>Additive vs multiplicative; the ladder, square root, cube root, log, inverse, weakest to strongest; detrended vs seasonally adjusted.</td><td class="fix"><code>y<sub>t</sub> - T<sub>t</sub></code> and <code>y<sub>t</sub> - S<sub>t</sub></code></td></tr>
+      <tr><td class="os">S6</td><td>Centered moving averages; odd <code>m</code> vs the <code>2&times;m</code> construction; why the ends are missing.</td><td class="fix">a <code>2&times;m</code>-MA and a <code>3&times;3</code>-MA; the values missing at each end</td></tr>
+      <tr><td class="os">S7</td><td>Classical decomposition in four steps, and how one outlier spreads through them; the two criteria; STL and its two windows.</td><td class="fix">the seasonal component: average by quarter, then center</td></tr>
+      <tr><td class="os">S8</td><td>Fitted values vs forecasts; residuals exist only for fitted values; four benchmarks; forecasting through a decomposition.</td><td class="fix">each benchmark's forecast from a table</td></tr>
     </table>
-    <p class="punch step wide">Work down it and mark the lines you cannot explain out loud. Those are your questions for the rest of this session.</p>
+    <p class="punch step wide">Mark the lines you cannot explain out loud or work on paper. Those are your questions.</p>
   </div>
-  <aside class="notes">The same list is at the bottom of <code>session09_code.R</code>, so you can keep it beside the console rather than beside the slides.<br><br>Three things reliably cause trouble every year, and they are worth checking first: the difference between seasonality and a cycle (Session 3), why the seasonal period must be even or odd for different moving averages (Session 6), and the difference between a fitted value and a forecast (Session 8). If you are solid on those three, the rest tends to follow.</aside>
+  <aside class="notes">Three things cause trouble every year, and they are worth checking first: the difference between seasonality and a cycle (Session 3), why an even seasonal period needs the <code>2&times;m</code> construction (Session 6), and the difference between a fitted value and a forecast (Session 8). If you are solid on those three, the rest tends to follow.</aside>
 </section>
 
-
-<section class="slide" data-section="4" data-title="After the exam">
+<!-- ---------- 5 ---------- -->
+<section class="slide" data-section="3" data-title="After the exam">
   <div class="inner">
     <p class="kicker">Session 11 &nbsp;&middot;&nbsp; Monday 19 October</p>
-    <h1 class="sowhat">After Wednesday, the course picks back up.</h1>
+    <h1 class="sowhat">After the exam, the course picks back up.</h1>
     <p class="lead wide">Session 11 is transformations to even out variance: logarithms, power, and the Box&ndash;Cox family, the principled version of the transformation ladder you met in Session 5. It also carries Session 9's homework review.</p>
     <ul class="build">
-      <li class="step"><b>Session 11 is where Group Assignment 1 questions get answered</b>, before its Sunday 25 October deadline. The assignment sits after the exam by design: revision and a from-scratch implementation should not compete for the same week.</li>
+      <li class="step"><b>Session 11 is where Group Assignment 1 questions get answered</b>, before its Sunday 25 October deadline.</li>
       <li class="step"><b>The evaluation block resumes at Session 13.</b> Session 9's diagnostics, then train and test splits, then cross-validation, all examined together in the final.</li>
     </ul>
-    <p class="punch step wide">Read the four-property residuals summary sheet once more this week. Not because it is examined on Wednesday, but because it is the clearest one page in the course.</p>
+    <p class="punch step wide">The four-property residuals summary sheet is not on the midterm, but it is the clearest one page in the course, and Session 11 builds on it.</p>
     <p class="url" style="font-size:clamp(0.95rem,1.7vw,1.9rem)">aberrizbeitia@faculty.ie.edu</p>
   </div>
-  <aside class="notes">Good luck on Wednesday. The cohort common-errors note on Session 9's homework goes up in writing on Monday 12 October, two days before the exam, so you can use it while revising; the live review happens at the start of Session 11.<br><br>Session 11's transformation topic is where Session 9's diagnostics pay off immediately: a funnel-shaped residual plot is the symptom, and the Box&ndash;Cox family is the principled remedy. Pointing that out today is the one sentence worth saying about material that is not examined this week.</aside>
+  <aside class="notes">The cohort common-errors note on Session 9's homework goes up in writing on Monday 12 October, two days before the exam, so you can use it while revising; the live review happens at the start of Session 11.<br><br>Session 11's transformation topic is where Session 9's diagnostics pay off immediately: a funnel-shaped residual plot is the symptom, and the Box&ndash;Cox family is the principled remedy.</aside>
 </section>
 
 <div id="notepane"><h4>Going further</h4><div class="body"></div></div>
@@ -482,7 +484,7 @@ body.ov-on #overview{display:block}
 (function(){
   "use strict";
 
-  var SECTIONS = [{"name":"Where we are","from":1,"to":2},{"name":"The midterm","from":3,"to":3},{"name":"Revision: the spine","from":4,"to":4},{"name":"Close","from":5,"to":5}];
+  var SECTIONS = [{"name":"The exam","from":1,"to":3},{"name":"Check yourself","from":4,"to":4},{"name":"Close","from":5,"to":5}];
 var slides = Array.prototype.slice.call(document.querySelectorAll(".slide"));
   var toc    = document.getElementById("toc");
   var ovlist = document.getElementById("ovlist");

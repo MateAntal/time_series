@@ -16,8 +16,8 @@ testing, and hence portmanteau tests; Ljung–Box.
 **Outcome:** Student runs a full residual diagnosis and judges whether a model has captured the
 signal.
 
-> The midterm revision sweep lives in [Session 10](../10-midterm/) — this session's deck is
-> diagnostics only.
+> The midterm revision deck is in the [Session 10 folder](../10-midterm/), for the prep tutorial
+> and office hours. This session's deck is diagnostics only.
 
 > **This session is not on the midterm.** Residual diagnostics is examined in the final, together with
 > train/test accuracy (Session 13) and cross-validation (Session 14) — the evaluation arc it opens.

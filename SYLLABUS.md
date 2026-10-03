@@ -241,7 +241,9 @@ for the stochastic-process framing.
 - Coverage: Sessions 1 to 8
 - Residual diagnostics (Session 9) is **not** examined here; it belongs to the evaluation block and is
   examined in the final
-- Format: 20 multiple-choice questions, four options each
+- Format: 20 multiple-choice questions: 13 concept questions with four options each, and 7 short
+  calculation questions by hand with five options each. A non-programmable, non-graphing calculator
+  is allowed; no phones, watches or other devices. Answers go on a separate answer sheet
 - An optional online preparation tutorial is offered in the preceding week
 
 ### Session 11 — Transformations to even out variance: logarithms, power, Box–Cox
@@ -344,7 +346,8 @@ for the stochastic-process framing.
 ### Session 20 — Final exam
 
 - Coverage: the whole course, Sessions 1 to 19
-- Format: 20 multiple-choice questions, four options each
+- Format: 20 multiple-choice questions: four options on concept questions, five on calculation
+  questions
 - An optional online preparation tutorial is offered in the preceding week
 
 ---
@@ -375,7 +378,8 @@ on a rotating sample of submissions.
 discussions.
 
 **Intermediate tests** is the midterm exam, held in Session 10. Both exams are 20 multiple-choice
-questions with four options each.
+questions: four options on concept questions, five on calculation questions done by hand with a
+non-programmable, non-graphing calculator.
 
 Homework and assignments are submitted on **Blackboard**, not in this repository.
 

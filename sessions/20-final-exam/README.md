@@ -4,7 +4,8 @@
 
 **Coverage:** the whole course, S1–S19.
 
-**Format:** 20 multiple-choice questions, 4 options each.
+**Format:** 20 multiple-choice questions: four options on concept questions, five on calculation
+questions.
 
 An optional online prep tutorial runs in the preceding week.
 
