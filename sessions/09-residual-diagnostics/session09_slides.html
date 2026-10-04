@@ -147,6 +147,7 @@ h2.sub{
 .lead{font-size:var(--fs-lead);line-height:1.4;color:var(--muted);max-width:44ch;margin:1.3rem 0 0}
 .lead.wide{max-width:58ch}
 .small{font-size:var(--fs-small);color:var(--faint);line-height:1.55;margin:1.5rem 0 0;max-width:60ch}
+a{color:var(--slate);text-decoration-thickness:1px;text-underline-offset:.15em}
 .hr{height:1px;background:var(--hair);border:0;margin:1.9rem 0 0}
 
 /* inline code sits inside serif headlines and sans body alike, so it is
@@ -416,7 +417,7 @@ body.ov-on #overview{display:block}
 <!-- ---------- 3 ---------- -->
 <section class="slide" data-section="2" data-title="Four properties">
   <div class="inner">
-    <p class="kicker">fpp3 5.4 &nbsp;&middot;&nbsp; the summary sheet in one slide</p>
+    <p class="kicker">fpp3 5.4 &nbsp;&middot;&nbsp; the <code>09_A</code> summary sheet in one slide</p>
     <h1 class="sowhat wide">A model has done its job when nothing but noise is left.</h1>
     <figure>
       <svg viewBox="0 0 760 208" role="img" aria-label="Four properties the residuals of a good model should have, in two groups. The first group, about the model, contains no autocorrelation and zero mean: if the residuals fail these, the model can be improved. The second group, about the intervals, contains constant variance and normal distribution: if the residuals fail these, the prediction intervals are wrong">
@@ -701,13 +702,14 @@ body.ov-on #overview{display:block}
       </svg>
     </figure>
     <ul class="build">
-      <li class="step"><b>QQ plot for normality.</b> Residual quantiles against normal quantiles. On the line means normal; curving away at both ends means heavy tails.</li>
+      <li class="step"><b>QQ plot for normality.</b> Your sorted residuals (vertical axis) against where they would sit if they were exactly normal (horizontal axis). On the line means normal; curving away at both ends means heavy tails.</li>
       <li class="step"><b>Boxplots by year for constant variance.</b> Boxes of similar height mean the spread is stable. A steady climb in box height is a funnel you might have missed.</li>
       <li class="step"><b>Neither replaces the three panels.</b> They sharpen them: the QQ plot sharpens the histogram, the boxplots sharpen the time plot. The panels tell you whether to look harder; these tell you what you are looking at.</li>
     </ul>
-    <p class="punch step wide">Four properties, four questions, and no single plot answers all of them. That is why the summary sheet exists.</p>
+    <p class="small">New to QQ plots? fpp3 does not cover them. Read the <a href="https://en.wikipedia.org/wiki/Q%E2%80%93Q_plot#Definition_and_construction" target="_blank" rel="noopener">Definition and construction</a> and <a href="https://en.wikipedia.org/wiki/Q%E2%80%93Q_plot#Interpretation" target="_blank" rel="noopener">Interpretation</a> sections of Wikipedia&#39;s Q&ndash;Q plot article before Session 17, which uses them again.</p>
+    <p class="punch step wide">Four properties, four questions, and no single plot answers all of them. That is why the one-page summary sheet, <code>09_A</code> in this folder, exists.</p>
   </div>
-  <aside class="notes">A QQ plot is worth understanding rather than pattern-matching. It sorts your residuals, sorts an equal number of draws from a normal distribution, and plots one against the other. If your residuals really are normal the two sorted lists agree and the points fall on a straight line. Deviation at the ends is the usual finding, and it means the tails are heavier or lighter than normal.<br><br>The boxplot-by-year construction is the same <code>index_by()</code> thinking from Session 4, used for a different purpose: group the residuals into calendar blocks and compare the blocks.</aside>
+  <aside class="notes">What the two axes hold. The <b>vertical axis</b> is your residuals, sorted from smallest to largest: the sample quantiles, labeled "Sample" in the script. The <b>horizontal axis</b> is where those same points would sit if they came from a normal distribution, meaning the Gaussian bell curve: the theoretical quantiles of a standard normal, labeled "Theoretical". They are fixed values, not random draws. If your residuals really are normal the two agree up to scale and the points fall on a straight line; the line's slope and intercept only reflect the residuals' spread and center. Deviation at the ends is the usual finding: ends bending away from the line in opposite directions, an S shape, means heavier tails than normal, and both ends bending the same way means skew.<br><br>fpp3 checks normality with the histogram alone and does not cover QQ plots. The <a href="https://en.wikipedia.org/wiki/Q%E2%80%93Q_plot" target="_blank" rel="noopener">Wikipedia article</a> is the reference, sections <i>Definition and construction</i> and <i>Interpretation</i>.<br><br>The boxplot-by-year construction is the same <code>index_by()</code> thinking from Session 4, used for a different purpose: group the residuals into calendar blocks and compare the blocks.</aside>
 </section>
 
 
@@ -820,7 +822,7 @@ Ljung-Box    Q* = T(T+2) &middot; sum over k=1..l of  r_k&#178; / (T &minus; k)
 <!-- ---------- 14 ---------- -->
 <section class="slide" data-section="5" data-title="What to do when each fails">
   <div class="inner">
-    <p class="kicker">The summary sheet, condensed</p>
+    <p class="kicker">The <code>09_A</code> summary sheet, condensed</p>
     <h1 class="sowhat">Each failure has a different answer. Knowing which is the skill.</h1>
     <table class="traps compact">
       <tr><td class="os">Autocorrelation</td><td>The model missed usable structure.</td><td class="fix">Richer model. Hard. Sessions 15&ndash;19.</td></tr>
