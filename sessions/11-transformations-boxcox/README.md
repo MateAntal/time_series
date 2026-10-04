@@ -15,8 +15,8 @@ four worked examples (US GDP, Victorian bulls/bullocks, tobacco, retail).
 **Homework:** The notebook's own Homework section — Exercise 1 (Australian imports from Japan) and
 Exercise 2 (US private housing starts, non-deterministic seasonality).
 
-**Outcome:** Student picks and justifies a transformation, and recognizes multiplicative
-heteroskedasticity.
+**Outcome:** Student picks and justifies a transformation, and recognizes variance that
+grows with the level of the series.
 
 > Box–Cox is taught here, not back in the decomposition block, so that it sits adjacent to S12. [fpp3](https://otexts.com/fpp3/index.html)
 > separates 3.1 from 5.6 by two chapters; this ordering reunites them into one argument. Keep the

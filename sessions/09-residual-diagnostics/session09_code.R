@@ -3,14 +3,11 @@
 #
 # Runnable companion to the notebook in this folder:
 #   09_B_ResidualsAnalysis
-# plus the one-page summary PDF, which is the spine of the
+# plus the 09_A summary sheet, which is the spine of the
 # session. The notebook carries the explanations; this script
 # carries the code and stops where the exercises begin.
 #
 # NOT examined in the midterm (coverage runs Sessions 1 to 8).
-# The session closes with a short revision sweep: the last
-# quarter of an hour is yours to bring questions about
-# Sessions 1 to 8.
 #
 # Set the working directory to this file's folder before you
 # start.
@@ -42,7 +39,7 @@ head(bricks_aug)
 
 # ---- 2. the one function that does most of it ----
 # gg_tsresiduals() draws the residuals over time, their
-# correlogram, and their histogram. It needs a single model.
+# ACF plot, and their histogram. It needs a single model.
 
 bricks_fit |> select(Nv) |> gg_tsresiduals()
 
@@ -65,7 +62,7 @@ bricks_aug |>
   filter(.model == "Nv") |>
   ACF(.innov) |>
   autoplot() +
-  labs(title = "Residual correlogram, naive model on bricks")
+  labs(title = "ACF plot of the residuals, naive model on bricks")
 
 
 # ---- 5. properties 3 and 4: variance and normality ----
@@ -79,7 +76,7 @@ resid_nv |>
   stat_qq_line(colour = "#D55E00") +
   labs(title = "QQ plot of the residuals", x = "Theoretical", y = "Sample")
 
-# Constant variance: boxes of the same height means homoscedastic.
+# Constant variance: boxes of similar height mean the spread is stable.
 resid_nv |>
   as_tibble() |>
   mutate(yr = year(Quarter)) |>
@@ -99,20 +96,23 @@ resid_nv |>
 
 # lag: how many autocorrelations to include.
 #      fpp3 suggests 10 for non-seasonal data, 2m for seasonal.
-# dof: how many model parameters were estimated. Benchmarks
-#      estimate none, so dof = 0 here.
+#      Bricks is quarterly, m = 4, so lag = 8.
+# dof: how many parameters the model estimated. tidy() lists
+#      them: none for naive, one (the mean) for the mean model.
+
+tidy(bricks_fit)
 
 bricks_aug |>
   filter(.model == "Nv") |>
-  features(.innov, ljung_box, lag = 10, dof = 0)
+  features(.innov, ljung_box, lag = 8, dof = 0)
 
 bricks_aug |>
   filter(.model == "Nv") |>
-  features(.innov, box_pierce, lag = 10, dof = 0)
+  features(.innov, box_pierce, lag = 8, dof = 0)
 
-# Both models at once, which is the useful form.
 bricks_aug |>
-  features(.innov, ljung_box, lag = 10, dof = 0)
+  filter(.model == "Mean") |>
+  features(.innov, ljung_box, lag = 8, dof = 1)
 
 
 # ---- 7. why squaring matters ----
@@ -140,8 +140,6 @@ tibble(
 # need to have done 08_A Exercise 1 first.
 #
 # Note log(Turnover) inside STL(): the series is multiplicative.
-# This is also the first model in the course whose .resid and
-# .innov columns DIFFER, because a transformation is involved.
 
 retail_series <- aus_retail |>
   filter(`Series ID` == "A3349767W")
@@ -169,9 +167,8 @@ fit_dcmp
 #   4. Run that test. Monthly data, so work out lag from m, and
 #      work out dof from how many parameters the model estimates.
 #      Say why you chose each.
-#
-# Check whether .resid and .innov are still identical here. They
-# are not, and the reason is the log.
+#   5. Compare .resid and .innov for this model. Are they
+#      identical? Explain in one sentence.
 
 # ---- exercise 2: Australian exports ----
 #
