@@ -18,11 +18,16 @@ the whole course, Sessions 1 to 19.
   steps of a classical decomposition, moving averages and benchmark forecasts. Round every step to
   two decimals.
 - Bring a **non-programmable, non-graphing calculator**. No phones, watches or other devices.
-- Answers go on a separate answer sheet, one letter per question. Wrong answers cost nothing.
+- Answers go on the answer sheet at the back of the booklet: fill in one circle per question with a
+  black or dark blue pen. Wrong answers cost nothing.
 
 **Slides:** [`session10_slides.html`](session10_slides.html): midterm revision for your own study
 and office hours. How the exam works, what is on it, and a one-line check of each session: what to
 explain and what to compute by hand.
+
+**Exam rules:** [`session10_exam_rules.html`](session10_exam_rules.html) is on screen for the whole exam.
+No questions are answered during the exam, and you may not leave the room and come back, not even
+to go to the bathroom.
 
 > There is **no retake for the midterm.** If a student cannot attend for personal or work reasons, the
 > final exam carries 60 % instead of 30 %. See [`SYLLABUS.md`](../../SYLLABUS.md).
