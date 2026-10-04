@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Session 7 · Time Series Analysis · Fall 2026</title>
+<title>Session 7 · Time Series Analysis</title>
 <style>
 /* ============================================================
    Session 07 slides. Same self-contained shell as Sessions 01
@@ -371,7 +371,7 @@ body.ov-on #overview{display:block}
 <nav id="rail">
   <div class="brand">
     <b>Time Series Analysis</b>
-    <span>Session 7 · Fall 2026</span>
+    <span>Session 7</span>
   </div>
   <ul id="toc"></ul>
   <div class="foot">
@@ -778,14 +778,14 @@ S_i  =  S_unadj_i  <span class="hl">/</span>  mean(S_unadj)          <span class
 <!-- ---------- 16 ---------- -->
 <section class="slide" data-section="6" data-title="Group Assignment 1">
   <div class="inner">
-    <p class="kicker">Launches today &nbsp;&middot;&nbsp; due Sunday 25 October, 23:59</p>
+    <p class="kicker">Launches today &nbsp;&middot;&nbsp; due after the midterm</p>
     <h1 class="sowhat">Classical decomposition, from scratch, on Victorian liquor retailing.</h1>
     <ul class="build">
       <li class="step"><b>It is the same four steps from earlier</b>, on a series nobody has walked you through, with every step checked against <code>classical_decomposition()</code>.</li>
       <li class="step"><b>The marks are in the explanation</b>, not in the code. Every component has to be interpreted, and every choice defended: the scheme, the value of <code>m</code>, the reading of the remainder.</li>
       <li class="step"><b>It gets detailed written feedback</b>, unlike the weekly homework. It is one of only two pieces of work in the course that does.</li>
     </ul>
-    <div class="callout"><b>Four weeks, and the deadline is after the midterm.</b> The reason: revising for the exam and building a decomposition from scratch are different activities and should not compete for the same week.</div>
+    <div class="callout"><b>The deadline is after the midterm, and the exact date is in this session&#39;s announcements.</b> The reason: revising for the exam and building a decomposition from scratch are different activities and should not compete for the same week.</div>
     <div class="callout slate"><b>The brief is in <code>assignments/</code> in the course repo.</b> Read it this week, not the night before. The series and the object names are given, and the data comes from <code>fpp3</code>, so there is nothing to download and nothing to choose.</div>
   </div>
   <aside class="notes">The series is fixed, and that is deliberate. Every component you build is compared against <code>classical_decomposition()</code> with <code>all.equal()</code>, so the reference has to be the same for everybody. It also means your effort goes into the algorithm and the interpretation rather than into hunting for a dataset.<br><br>What is still yours is the reading. Look at the time plot before you write any code and form an expectation about the scheme, using Session 5&#39;s eye test. Part 3 asks you to defend that judgment with numbers, and a verdict you predicted and then confirmed reads very differently from one you discovered at the end.<br><br>You will hit the limitations from slide 8 on this data, and that is expected. Naming a limitation you ran into, and showing what it did to your components, reads far better than a report that pretends the method worked perfectly.</aside>
@@ -794,7 +794,7 @@ S_i  =  S_unadj_i  <span class="hl">/</span>  mean(S_unadj)          <span class
 <!-- ---------- 17 ---------- -->
 <section class="slide" data-section="6" data-title="Homework">
   <div class="inner">
-    <p class="kicker">Due Sunday 4 October, 23:59</p>
+    <p class="kicker">Due date in this session&#39;s announcements</p>
     <h1 class="sowhat">Homework.</h1>
     <ul class="build">
       <li><b><code>07_D</code> Exercise 1.</b> Gas, multiplicative, seasonally adjusted, then the outlier in the middle and at the end. Explain every component that moved.</li>
@@ -802,7 +802,7 @@ S_i  =  S_unadj_i  <span class="hl">/</span>  mean(S_unadj)          <span class
       <li><b><code>07_E</code> Exercise 2, item 2.1 only.</b> Daily electricity demand: what is wrong with the default decomposition. A diagnosis, not a tuning task. Item 2.2 is not assigned.</li>
       <li>For the tuning task, report what you <i>tried</i>, not only what you kept. Two rejected settings and why is worth more than one accepted setting on its own.</li>
     </ul>
-    <div class="callout slate"><b><code>07_E</code> needs the <code>fma</code> package</b> for the <code>labour</code> series. Install it before Sunday, not on Sunday.</div>
+    <div class="callout slate"><b><code>07_E</code> needs the <code>fma</code> package</b> for the <code>labour</code> series. Install it now, not the night before the deadline.</div>
   </div>
   <aside class="notes">Graded on completion and genuine effort. On the tuning task that is the point: there is no window setting that earns full marks and none that loses them. What earns marks is showing the search and judging it against the two criteria rather than against the look of the plot.<br><br>Item 2.2 on the electricity series is not assigned this term. The tuning mechanics are already exercised on <code>labour</code>, and on the electricity series no setting reaches white noise anyway, so the diagnosis in 2.1 already reaches the conclusion the tuning would.<br><br>Submit on Blackboard, under Assignments, as many files as you need. These exercises produce a lot of plots, so a single rendered document that keeps each plot next to the sentence about it is easier to read than a folder of images.</aside>
 </section>

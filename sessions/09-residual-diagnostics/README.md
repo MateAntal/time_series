@@ -2,6 +2,8 @@
 
 **Date:** Monday, 5 October 2026, 9:00–10:20 — IE Tower, room T-05.02
 
+**Announcements:** this session's dates and deadlines are in [`announcements.md`](announcements.md).
+
 **[fpp3](https://otexts.com/fpp3/index.html):** 5.4
 
 **Focus:** The properties good residuals must have and what to do when each fails (the 1-page summary

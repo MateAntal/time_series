@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Session 4 · Time Series Analysis · Fall 2026</title>
+<title>Session 4 · Time Series Analysis</title>
 <style>
 /* ============================================================
    Session 04 slides. Same self-contained shell as Sessions 01,
@@ -370,7 +370,7 @@ body.ov-on #overview{display:block}
 <nav id="rail">
   <div class="brand">
     <b>Time Series Analysis</b>
-    <span>Session 4 · Fall 2026</span>
+    <span>Session 4</span>
   </div>
   <ul id="toc"></ul>
   <div class="foot">
@@ -533,7 +533,7 @@ body.ov-on #overview{display:block}
       <li class="step"><b><code>n_lag = 2</code>.</b> Something different: the peaks land on the <i>troughs</i>. That is not &ldquo;no relationship&rdquo;, it is an upside-down one.</li>
       <li class="step"><b><code>n_lag = 4</code>.</b> The lines snap back into phase.</li>
     </ul>
-    <p class="punch step wide">You found this period by eye last week with <code>gg_season()</code>. The same fact is now visible on an ordinary time plot, and in a moment it will be a number.</p>
+    <p class="punch step wide">You found this period by eye in Session 3 with <code>gg_season()</code>. The same fact is now visible on an ordinary time plot, and in a moment it will be a number.</p>
   </div>
   <aside class="notes">The loop only built four lags, so <code>n_lag = 5</code> throws an error rather than drawing anything. Widen <code>seq(1, 4)</code> if you want to go further.<br><br>Worth noticing while the plot is on screen: the red line is the dark line translated to the <i>right</i>, not to the left. <code>lag()</code> moves a value forward in time so that it can sit beside a later observation. If you find yourself drawing it the other way, you have written <code>lead()</code>.</aside>
 </section>
