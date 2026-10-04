@@ -451,7 +451,7 @@ body.ov-on #overview{display:block}
       </svg>
       <div class="figrow">
         <p class="step t"><b>Left pair: can I do better?</b>Autocorrelation and bias both say the model missed something. Both are worth acting on.</p>
-        <p class="step"><b>Right pair: can I quote a range?</b>Variance and normality decide whether a prediction interval means what it claims. Session 12's problem.</p>
+        <p class="step"><b>Right pair: can I quote a range?</b>Variance and normality decide whether a prediction interval means what it claims. They return when Session 12 builds those intervals.</p>
       </div>
     </figure>
     <p class="punch step wide">Four properties, two questions. Knowing which question a failure belongs to tells you whether to change the model or change what you claim.</p>
@@ -550,12 +550,12 @@ body.ov-on #overview{display:block}
 
 
 <!-- ---------- 6 ---------- -->
-<section class="slide" data-section="2" data-title="Variance and normality">
+<section class="slide" data-section="2" data-title="Constant variance">
   <div class="inner">
-    <p class="kicker">Properties 3 and 4 &nbsp;&middot;&nbsp; about what you are entitled to claim</p>
-    <h1 class="sowhat">These two do not judge the forecast. They judge the interval around it.</h1>
+    <p class="kicker">Property 3 &nbsp;&middot;&nbsp; the first of two about the interval, not the forecast</p>
+    <h1 class="sowhat">If the spread drifts, no single interval width is honest.</h1>
     <figure>
-      <svg viewBox="0 0 760 198" role="img" aria-label="Two residual time plots. On the left the spread of the residuals stays the same width across the whole horizon, so one interval width is honest everywhere. On the right the spread widens like a funnel, so an interval computed from the whole history is too narrow at the end and too wide at the start. The usual cause is a multiplicative series fitted additively, and the first thing to try is the transformation in Session 11">
+      <svg viewBox="0 0 760 198" role="img" aria-label="Two residual time plots. On the left the spread of the residuals stays the same width across the whole horizon, so one interval width is honest everywhere. On the right the spread widens like a funnel, so an interval computed from the whole history is too narrow at the end and too wide at the start. The usual cause is a multiplicative series fitted additively, and the first thing to try is a log transformation, which Session 11 makes systematic with Box–Cox">
         <g font-family="SFMono-Regular,Menlo,monospace">
           <rect x="24" y="24" width="348" height="106" rx="5" fill="#6B7F5E" opacity=".10"/><rect x="24" y="24" width="348" height="106" rx="5" fill="none" stroke="#6B7F5E" stroke-width="1.8"/>
           <text x="198" y="46" text-anchor="middle" fill="#6B7F5E" font-size="12.5" font-weight="700">CONSTANT VARIANCE</text>
@@ -570,23 +570,64 @@ body.ov-on #overview{display:block}
           <g fill="#B5471E"><circle cx="422" cy="90" r="3"/><circle cx="444" cy="97" r="3"/><circle cx="466" cy="90" r="3"/><circle cx="488" cy="99" r="3"/><circle cx="510" cy="81" r="3"/><circle cx="532" cy="97" r="3"/><circle cx="554" cy="80" r="3"/><circle cx="576" cy="108" r="3"/><circle cx="598" cy="83" r="3"/><circle cx="620" cy="109" r="3"/><circle cx="642" cy="72" r="3"/><circle cx="664" cy="106" r="3"/><circle cx="686" cy="73" r="3"/><circle cx="708" cy="117" r="3"/></g>
           <text x="562" y="148" text-anchor="middle" fill="#6B665E" font-size="10.5">a funnel: too narrow late, too wide early</text>
           <text x="380" y="174" text-anchor="middle" fill="#98928a" font-size="11.5">usual cause: a multiplicative series fitted additively</text>
-          <text x="380" y="191" text-anchor="middle" fill="#98928a" font-size="11.5">first thing to try: the transformation in Session 11</text>
+          <text x="380" y="191" text-anchor="middle" fill="#98928a" font-size="11.5">first thing to try: a log transformation (Box&#8211;Cox, Session 11)</text>
         </g>
       </svg>
     </figure>
     <ul class="build">
-      <li class="step"><b>Constant variance</b> (homoscedasticity). If the residual spread grows over time, an interval computed from the whole history is too narrow at the end and too wide at the start.</li>
-      <li class="step"><b>Normality</b>, which the interval arithmetic in Session 12 assumes. Without it the stated 95% is not 95%.</li>
-      <li class="step"><b>Both are harder to fix than bias.</b> A transformation sometimes helps, which is Session 11. Beyond that, changing the model may be the only option.</li>
+      <li class="step"><b>What it means.</b> The residuals spread about as widely at the end of the series as at the start (homoscedasticity). A prediction interval uses one width, estimated from the whole history, so it is only honest if that holds.</li>
+      <li class="step"><b>What a failure does.</b> If the spread grows, that one width is too wide at the start and too narrow at the end, which is exactly where the forecast begins.</li>
+      <li class="step"><b>How to fix it.</b> The usual cause is a multiplicative series fitted additively, so a log transformation is the first thing to try. Session 11, Box&ndash;Cox transformations, turns that into a principled choice.</li>
     </ul>
-    <div class="callout"><b>There is a way out.</b> Bootstrapped intervals need uncorrelated residuals with constant variance, but <i>not</i> normal ones. So a normality failure is survivable; a variance failure is harder.</div>
-    <p class="punch step wide">A point forecast can be genuinely good while the interval around it is a fiction. Reporting the first without checking the second is where forecasts mislead people.</p>
+    <p class="punch step wide">A drifting spread does not move the point forecast. It makes the range you quote around it too narrow where it matters most.</p>
   </div>
-  <aside class="notes">Non-constant variance in a residual plot usually looks like a funnel: the spread widening left to right. It very often means the series is multiplicative and was fitted additively, which is Session 5's question arriving with a consequence. A log transformation is the first thing to try.<br><br>The tools for these two are a QQ plot and a set of boxplots, and both appear in the script. A QQ plot puts the residual quantiles against the quantiles of a normal distribution: points on the line means normal, and systematic curvature at the ends means heavy tails.</aside>
+  <aside class="notes">Non-constant variance in a residual plot usually looks like a funnel: the spread widening left to right. It very often means the series is multiplicative and was fitted additively, which is Session 5's question arriving with a consequence. A log transformation is the first thing to try.<br><br>The residual time plot shows the spread only partly. Later today, on the QQ plots and boxplots slide, boxplots of the residuals by year make a drifting spread much easier to see.</aside>
 </section>
 
 
 <!-- ---------- 7 ---------- -->
+<section class="slide" data-section="2" data-title="Normality">
+  <div class="inner">
+    <p class="kicker">Property 4 &nbsp;&middot;&nbsp; the second about the interval, and the forgiving one</p>
+    <h1 class="sowhat wide">Normality is what turns a standard deviation into a 95% range.</h1>
+    <figure>
+      <svg viewBox="0 0 760 198" role="img" aria-label="Two residual histograms, each with the same dashed normal curve over it and two vertical lines at plus and minus 1.96 standard deviations. On the left the histogram is bell-shaped and follows the curve, so about 2.5% of the residuals fall outside each line, as a 95% interval promises. On the right the histogram has the same standard deviation but is skewed: nothing falls below the lower line and too much falls above the upper one. A 95% interval is the forecast plus or minus 1.96 standard deviations, and the 1.96 comes from the bell curve, so skewed or heavy-tailed residuals put its ends in the wrong places">
+        <g font-family="SFMono-Regular,Menlo,monospace">
+          <rect x="24" y="24" width="348" height="106" rx="5" fill="#6B7F5E" opacity=".10"/><rect x="24" y="24" width="348" height="106" rx="5" fill="none" stroke="#6B7F5E" stroke-width="1.8"/>
+          <text x="198" y="46" text-anchor="middle" fill="#6B7F5E" font-size="12.5" font-weight="700">BELL-SHAPED</text>
+          <g fill="#6B7F5E"><rect x="83" y="115" width="22" height="3"/><rect x="109" y="108" width="22" height="10"/><rect x="135" y="94" width="22" height="24"/><rect x="161" y="78" width="22" height="40"/><rect x="187" y="70" width="22" height="48"/><rect x="213" y="78" width="22" height="40"/><rect x="239" y="94" width="22" height="24"/><rect x="265" y="108" width="22" height="10"/><rect x="291" y="115" width="22" height="3"/></g>
+          <polyline points="78,117.0 84,116.5 90,115.9 96,115.1 102,114.0 108,112.5 114,110.7 120,108.5 126,105.9 132,102.9 138,99.4 144,95.6 150,91.6 156,87.5 162,83.4 168,79.5 174,76.0 180,73.0 186,70.8 192,69.5 198,69.1 204,69.6 210,71.1 216,73.4 222,76.4 228,80.0 234,83.9 240,88.0 246,92.2 252,96.2 258,99.9 264,103.3 270,106.3 276,108.8 282,111.0 288,112.7 294,114.1 300,115.2 306,116.0 312,116.6" fill="none" stroke="#1F3A4D" stroke-width="1.5" stroke-dasharray="5 3"/>
+          <g stroke="#6B7F5E" stroke-width="1.3" fill="none"><path d="M114 60 V118"/><path d="M282 60 V118"/></g>
+          <text x="114" y="56" text-anchor="middle" fill="#98928a" font-size="9.5">-1.96 sd</text><text x="282" y="56" text-anchor="middle" fill="#98928a" font-size="9.5">+1.96 sd</text>
+          <path d="M73 118 H323" stroke="#6B665E" stroke-width="1" fill="none"/>
+          <text x="198" y="148" text-anchor="middle" fill="#6B665E" font-size="10.5">follows the curve &#183; 2.5% outside each line</text>
+          <rect x="388" y="24" width="348" height="106" rx="5" fill="#B5471E" opacity=".07"/><rect x="388" y="24" width="348" height="106" rx="5" fill="none" stroke="#B5471E" stroke-width="1.8"/>
+          <text x="562" y="46" text-anchor="middle" fill="#B5471E" font-size="12.5" font-weight="700">SKEWED</text>
+          <g fill="#98928a"><rect x="499" y="96" width="22" height="22"/><rect x="525" y="68" width="22" height="50"/><rect x="551" y="78" width="22" height="40"/><rect x="577" y="92" width="22" height="26"/><rect x="603" y="103" width="22" height="15"/></g>
+          <g fill="#B5471E"><rect x="629" y="110" width="22" height="8"/><rect x="655" y="113" width="22" height="5"/></g>
+          <polyline points="442,117.6 448,117.4 454,117.0 460,116.5 466,115.8 472,114.8 478,113.5 484,111.8 490,109.8 496,107.2 502,104.2 508,100.8 514,97.0 520,93.0 526,88.9 532,84.9 538,81.3 544,78.2 550,75.9 556,74.4 562,74.0 568,74.6 574,76.1 580,78.6 586,81.8 592,85.5 598,89.5 604,93.5 610,97.5 616,101.3 622,104.6 628,107.6 634,110.1 640,112.1 646,113.7 652,115.0 658,115.9 664,116.6 670,117.1 676,117.4" fill="none" stroke="#1F3A4D" stroke-width="1.5" stroke-dasharray="5 3"/>
+          <g stroke="#B5471E" stroke-width="1.3" fill="none"><path d="M485 60 V118"/><path d="M639 60 V118"/></g>
+          <text x="485" y="56" text-anchor="middle" fill="#98928a" font-size="9.5">-1.96 sd</text><text x="639" y="56" text-anchor="middle" fill="#98928a" font-size="9.5">+1.96 sd</text>
+          <path d="M437 118 H687" stroke="#6B665E" stroke-width="1" fill="none"/>
+          <text x="562" y="148" text-anchor="middle" fill="#6B665E" font-size="10.5">same sd &#183; nothing below, too much above</text>
+          <text x="380" y="174" text-anchor="middle" fill="#98928a" font-size="11.5">a 95% interval is forecast &#177; 1.96 &#215; sd, and the 1.96 comes from the bell curve</text>
+          <text x="380" y="191" text-anchor="middle" fill="#98928a" font-size="11.5">skewed or heavy-tailed residuals put its two ends in the wrong places</text>
+        </g>
+      </svg>
+    </figure>
+    <ul class="build">
+      <li class="step"><b>Why it matters.</b> A 95% prediction interval is the forecast &plusmn; 1.96 &times; the residual standard deviation. The 1.96 is a fact about the bell curve: it is where the normal distribution leaves 2.5% in each tail. Session 12, prediction intervals, builds them exactly this way.</li>
+      <li class="step"><b>What a failure does.</b> If the residuals are skewed or heavy-tailed, the same arithmetic still runs, but the stated 95% is no longer guaranteed.</li>
+      <li class="step"><b>How to check.</b> The histogram in the residual panels, then a QQ plot, both later today.</li>
+    </ul>
+    <div class="callout"><b>Why it is the forgiving one.</b> If only normality fails, R can build the interval without the bell curve: it simulates many possible futures by reusing the model&#39;s own past residuals, drawn at random, and keeps the middle 95%. That is a <i>bootstrapped</i> interval. It still needs constant variance, so a variance failure stays the harder problem. Outside this course&#39;s scope; just know it exists.</div>
+    <p class="punch step wide">A point forecast can be genuinely good while the interval around it is a fiction. Reporting the first without checking the second is where forecasts mislead people.</p>
+  </div>
+  <aside class="notes">A QQ plot, later today on the QQ plots and boxplots slide, puts the residual quantiles against the quantiles of a normal distribution: points on the line means normal, and systematic curvature at the ends means heavy tails.<br><br>Why "no longer guaranteed" rather than "wrong": with heavy tails the 95% interval can come out roughly right by luck while the 99% one is far too narrow, and with skew the misses all land on one side. Either way the coverage is no longer the number on the label.<br><br>For the curious: in <code>fable</code> the bootstrapped version is one argument, <code>forecast(h = 8, bootstrap = TRUE)</code>, and fpp3 5.5 covers it under "Prediction intervals from bootstrapped residuals". It also needs the residuals to be uncorrelated, but that is property 1, which you would fix first anyway. Not examined.</aside>
+</section>
+
+
+<!-- ---------- 8 ---------- -->
 <section class="slide" data-section="3" data-title="Switch: gg_tsresiduals()">
   <div class="inner">
     <a class="nb" href="09_B_ResidualsAnalysis.html#bricks-mean-panels" target="_blank" rel="noopener" title="Open the notebook at this section">09_B &rsaquo; Example 1 &rsaquo; Residual panels</a>
@@ -628,11 +669,11 @@ body.ov-on #overview{display:block}
     </ul>
     <div class="callout"><b>It needs one model.</b> <code>select()</code> a single column from the mable first, or it will not know which set of residuals you mean.</div>
   </div>
-  <aside class="notes">This is the one place where <code>select()</code> on a mable is the right move, in contrast with Session 8's warning about it: here you are not forecasting afterwards, so losing the key columns costs nothing.<br><br>Property 3, constant variance, is only half visible in the top panel. A set of boxplots by year makes a drifting spread much easier to see, and the script builds them. Use the three-panel plot as the first look and the boxplots when the top panel leaves you unsure.</aside>
+  <aside class="notes">This is the one place where <code>select()</code> on a mable is the right move, in contrast with Session 8's warning about it: here you are not forecasting afterwards, so losing the key columns costs nothing.<br><br>Property 3, constant variance, is only half visible in the top panel. A set of boxplots by year makes a drifting spread much easier to see, and we build them two slides from now. Use the three-panel plot as the first look and the boxplots when the top panel leaves you unsure.</aside>
 </section>
 
 
-<!-- ---------- 8 ---------- -->
+<!-- ---------- 9 ---------- -->
 <section class="slide" data-section="3" data-title="Reading the panels in order">
   <div class="inner">
     <a class="nb" href="09_B_ResidualsAnalysis.html#bricks-mean-reading" target="_blank" rel="noopener" title="Open the notebook at this section">09_B &rsaquo; Example 1 &rsaquo; Reading the four properties</a>
@@ -679,7 +720,7 @@ body.ov-on #overview{display:block}
 </section>
 
 
-<!-- ---------- 9 ---------- -->
+<!-- ---------- 10 ---------- -->
 <section class="slide" data-section="3" data-title="Switch: QQ plots and boxplots">
   <div class="inner">
     <a class="nb" href="09_B_ResidualsAnalysis.html#bricks-mean-qq" target="_blank" rel="noopener" title="Open the notebook at this section">09_B &rsaquo; Example 1 &rsaquo; QQ plot and boxplot</a>
@@ -723,7 +764,7 @@ body.ov-on #overview{display:block}
 </section>
 
 
-<!-- ---------- 10 ---------- -->
+<!-- ---------- 11 ---------- -->
 <section class="slide" data-section="4" data-title="Twenty tests at once">
   <div class="inner">
     <p class="kicker">The problem with reading bars</p>
@@ -763,7 +804,7 @@ body.ov-on #overview{display:block}
 </section>
 
 
-<!-- ---------- 11 ---------- -->
+<!-- ---------- 12 ---------- -->
 <section class="slide" data-section="4" data-title="Box-Pierce and Ljung-Box">
   <div class="inner">
     <p class="kicker">Two statistics, the same idea</p>
@@ -786,7 +827,7 @@ Ljung-Box    Q* = T(T+2) &middot; sum over k=1..l of  r_k&#178; / (T &minus; k)
 </section>
 
 
-<!-- ---------- 12 ---------- -->
+<!-- ---------- 13 ---------- -->
 <section class="slide" data-section="4" data-title="Why squaring">
   <div class="inner">
     <p class="kicker">The detail that makes it work</p>
@@ -808,7 +849,7 @@ Ljung-Box    Q* = T(T+2) &middot; sum over k=1..l of  r_k&#178; / (T &minus; k)
 </section>
 
 
-<!-- ---------- 13 ---------- -->
+<!-- ---------- 14 ---------- -->
 <section class="slide" data-section="4" data-title="Switch: running the test">
   <div class="inner">
     <a class="nb" href="09_B_ResidualsAnalysis.html#running-the-test" target="_blank" rel="noopener" title="Open the notebook at this section">09_B &rsaquo; Portmanteau tests &rsaquo; Running the test</a>
@@ -832,7 +873,7 @@ bricks_aug |&gt; filter(.model == "Mean") |&gt; features(.innov, ljung_box, lag 
 </section>
 
 
-<!-- ---------- 14 ---------- -->
+<!-- ---------- 15 ---------- -->
 <section class="slide" data-section="5" data-title="What to do when each fails">
   <div class="inner">
     <p class="kicker">The <code>09_A</code> summary sheet, condensed</p>
@@ -853,7 +894,7 @@ bricks_aug |&gt; filter(.model == "Mean") |&gt; features(.innov, ljung_box, lag 
 </section>
 
 
-<!-- ---------- 15 ---------- -->
+<!-- ---------- 16 ---------- -->
 <section class="slide" data-section="6" data-title="Homework">
   <div class="inner">
     <a class="nb" href="09_B_ResidualsAnalysis.html#exercise-1" target="_blank" rel="noopener" title="Open the notebook at this section">09_B &rsaquo; Exercise 1</a>
@@ -869,7 +910,7 @@ bricks_aug |&gt; filter(.model == "Mean") |&gt; features(.innov, ljung_box, lag 
 </section>
 
 
-<!-- ---------- 16 ---------- -->
+<!-- ---------- 17 ---------- -->
 <section class="slide" data-section="6" data-title="Next session">
   <div class="inner">
     <p class="kicker">What comes next</p>
@@ -937,7 +978,7 @@ bricks_aug |&gt; filter(.model == "Mean") |&gt; features(.innov, ljung_box, lag 
 </div>
 
 <div id="hud">
-  <span id="count">1 / 16</span>
+  <span id="count">1 / 17</span>
   <button id="prev" title="Previous">&larr;</button>
   <button id="next" title="Next">&rarr;</button>
 </div>
@@ -946,7 +987,7 @@ bricks_aug |&gt; filter(.model == "Mean") |&gt; features(.innov, ljung_box, lag 
 (function(){
   "use strict";
 
-  var SECTIONS = [{"name":"Where we are","from":1,"to":2},{"name":"The four properties","from":3,"to":6},{"name":"Diagnosing","from":7,"to":9,"live":true},{"name":"Portmanteau tests","from":10,"to":13,"live":true},{"name":"The summary sheet","from":14,"to":14},{"name":"Close","from":15,"to":16}];
+  var SECTIONS = [{"name":"Where we are","from":1,"to":2},{"name":"The four properties","from":3,"to":7},{"name":"Diagnosing","from":8,"to":10,"live":true},{"name":"Portmanteau tests","from":11,"to":14,"live":true},{"name":"The summary sheet","from":15,"to":15},{"name":"Close","from":16,"to":17}];
 var slides = Array.prototype.slice.call(document.querySelectorAll(".slide"));
   var toc    = document.getElementById("toc");
   var ovlist = document.getElementById("ovlist");
