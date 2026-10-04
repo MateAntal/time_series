@@ -254,6 +254,13 @@ table.traps.compact td{padding:.42rem .9rem .42rem 0;font-size:var(--fs-small)}
   border-radius:100px;padding:.34em .95em;color:var(--slate);letter-spacing:.02em;
 }
 
+/* notebook cue: on a slide that carries one, switch to the 09_B notebook at that section */
+.nb{display:inline-flex;align-items:center;gap:.55em;margin:0 0 1.1rem;padding:.38em 1em;border-radius:100px;
+  background:var(--slate);color:var(--paper);text-decoration:none;font-family:var(--mono);
+  font-size:var(--fs-kicker);letter-spacing:.03em}
+.nb::before{content:"\25B6";font-size:.75em}
+.nb:hover{background:var(--terra)}
+
 figure{margin:1.7rem 0 0}
 figure svg{width:100%;height:auto;max-height:44vh;display:block}
 figcaption{
@@ -572,16 +579,17 @@ body.ov-on #overview{display:block}
       <li class="step"><b>Normality</b>, which the interval arithmetic in Session 12 assumes. Without it the stated 95% is not 95%.</li>
       <li class="step"><b>Both are harder to fix than bias.</b> A transformation sometimes helps, which is Session 11. Beyond that, changing the model may be the only option.</li>
     </ul>
-    <div class="callout"><b>There is a way out.</b> Bootstrapped intervals need uncorrelated, homoscedastic residuals but <i>not</i> normal ones. So a normality failure is survivable; a variance failure is harder.</div>
+    <div class="callout"><b>There is a way out.</b> Bootstrapped intervals need uncorrelated residuals with constant variance, but <i>not</i> normal ones. So a normality failure is survivable; a variance failure is harder.</div>
     <p class="punch step wide">A point forecast can be genuinely good while the interval around it is a fiction. Reporting the first without checking the second is where forecasts mislead people.</p>
   </div>
-  <aside class="notes">Heteroscedasticity in a residual plot usually looks like a funnel: the spread widening left to right. It very often means the series is multiplicative and was fitted additively, which is Session 5's question arriving with a consequence. A log transformation is the first thing to try.<br><br>The tools for these two are a QQ plot and a set of boxplots, and both appear in the script. A QQ plot puts the residual quantiles against the quantiles of a normal distribution: points on the line means normal, and systematic curvature at the ends means heavy tails.</aside>
+  <aside class="notes">Non-constant variance in a residual plot usually looks like a funnel: the spread widening left to right. It very often means the series is multiplicative and was fitted additively, which is Session 5's question arriving with a consequence. A log transformation is the first thing to try.<br><br>The tools for these two are a QQ plot and a set of boxplots, and both appear in the script. A QQ plot puts the residual quantiles against the quantiles of a normal distribution: points on the line means normal, and systematic curvature at the ends means heavy tails.</aside>
 </section>
 
 
 <!-- ---------- 7 ---------- -->
 <section class="slide" data-section="3" data-title="Switch: gg_tsresiduals()">
   <div class="inner">
+    <a class="nb" href="09_B_ResidualsAnalysis.html#bricks-mean-panels" target="_blank" rel="noopener" title="Open the notebook at this section">09_B &rsaquo; Example 1 &rsaquo; Residual panels</a>
     <p class="kicker">Now we compute</p>
     <h1 class="sowhat">One function, three panels, three of the four properties</h1>
     <div class="console">bricks_fit |&gt; select(Nv) |&gt; gg_tsresiduals()</div>
@@ -627,7 +635,8 @@ body.ov-on #overview{display:block}
 <!-- ---------- 8 ---------- -->
 <section class="slide" data-section="3" data-title="Reading the panels in order">
   <div class="inner">
-    <p class="kicker">09_B &nbsp;&middot;&nbsp; bricks, naive and mean</p>
+    <a class="nb" href="09_B_ResidualsAnalysis.html#bricks-mean-reading" target="_blank" rel="noopener" title="Open the notebook at this section">09_B &rsaquo; Example 1 &rsaquo; Reading the four properties</a>
+    <p class="kicker">Bricks, naive and mean</p>
     <h1 class="sowhat wide">Read them in the order of the four properties, not the order they are drawn.</h1>
     <figure>
       <svg viewBox="0 0 760 168" role="img" aria-label="Three boxes in a left to right flow, the first two grouped as about the model and the third as about the intervals. Box one, the ACF plot, is the finding that changes what you do next. Box two, the time plot read for its mean, is bias and cheap to fix. Box three, spread and shape, properties three and four, is about the interval you are entitled to quote">
@@ -673,7 +682,8 @@ body.ov-on #overview{display:block}
 <!-- ---------- 9 ---------- -->
 <section class="slide" data-section="3" data-title="Switch: QQ plots and boxplots">
   <div class="inner">
-    <p class="kicker">09_B &nbsp;&middot;&nbsp; on the RStudio screen</p>
+    <a class="nb" href="09_B_ResidualsAnalysis.html#bricks-mean-qq" target="_blank" rel="noopener" title="Open the notebook at this section">09_B &rsaquo; Example 1 &rsaquo; QQ plot and boxplot</a>
+    <p class="kicker">Now we compute</p>
     <h1 class="sowhat">Two plots for the two properties the three panels only half-answer.</h1>
     <figure>
       <svg viewBox="0 0 760 204" role="img" aria-label="Two diagnostic plots. Left, a QQ plot: the middle points sit on the diagonal line, meaning normal, while the points at both ends bend away from it, below the line on the left and above it on the right, meaning heavy tails. Right, boxplots by year centered on zero: the boxes and whiskers grow taller each year, fanning out like a funnel, which is a drifting spread">
@@ -772,7 +782,7 @@ Ljung-Box    Q* = T(T+2) &middot; sum over k=1..l of  r_k&#178; / (T &minus; k)
     </ul>
     <p class="punch step wide">Read the p-value, not the statistic. The statistic has no meaning on its own scale.</p>
   </div>
-  <aside class="notes">Two arguments to choose. <code>lag</code> is <code>l</code>: fpp3 suggests 10 for non-seasonal data and <code>2m</code> for seasonal. <code>dof</code> is the number of parameters the model estimated, which is 0 for all four benchmarks, because none of them estimates anything except drift, and even drift is a single parameter, so <code>dof = 1</code> there if you want to be exact.<br><br>Why <code>dof</code> matters at all: a model with more parameters can fit noise, so its residuals look more like white noise than they should. Subtracting the degrees of freedom is the correction for that, and it will matter properly once ETS models arrive in Session 19 with several parameters each.</aside>
+  <aside class="notes">Two arguments to choose. <code>lag</code> is <code>l</code>: fpp3 suggests 10 for non-seasonal data and <code>2m</code> for seasonal. <code>dof</code> is the number of parameters the model estimated: one for the mean model (the mean) and one for drift, none for naive and seasonal naive. <code>tidy()</code> on the fitted model lists them.<br><br>Why <code>dof</code> matters at all: a model with more parameters can fit noise, so its residuals look more like white noise than they should. Subtracting the degrees of freedom is the correction for that, and it will matter properly once ETS models arrive in Session 19 with several parameters each.</aside>
 </section>
 
 
@@ -801,16 +811,19 @@ Ljung-Box    Q* = T(T+2) &middot; sum over k=1..l of  r_k&#178; / (T &minus; k)
 <!-- ---------- 13 ---------- -->
 <section class="slide" data-section="4" data-title="Switch: running the test">
   <div class="inner">
+    <a class="nb" href="09_B_ResidualsAnalysis.html#running-the-test" target="_blank" rel="noopener" title="Open the notebook at this section">09_B &rsaquo; Portmanteau tests &rsaquo; Running the test</a>
     <p class="kicker">Now we compute</p>
-    <h1 class="sowhat"><code>features(.innov, ljung_box, lag, dof)</code></h1>
-    <div class="console">bricks_aug |&gt; features(.innov, ljung_box, lag = 10, dof = 0)
+    <h1 class="sowhat wide" style="font-size:clamp(1.5rem,2.9vw,3.2rem)"><code>features(.innov, ljung_box, lag, dof)</code></h1>
+    <div class="console tight">bricks_aug |&gt; filter(.model == "Nv")   |&gt; features(.innov, ljung_box, lag = 8, dof = 0)
+bricks_aug |&gt; filter(.model == "Mean") |&gt; features(.innov, ljung_box, lag = 8, dof = 1)
 
 <span class="dim"># .model    lb_stat   lb_pvalue</span>
-<span class="dim"># Mean      274.2     0</span>
-<span class="dim"># Nv        245.1     0</span></div>
+<span class="dim"># Nv        206.0     0</span>
+<span class="dim"># Mean      269.5     0</span></div>
     <ul class="build">
       <li class="step"><b>Both p-values are zero to the printed precision.</b> Reject <code>H&#8320;</code> comfortably: neither benchmark has captured the structure in this series.</li>
       <li class="step"><b>Which is the right answer.</b> A naive model on strongly seasonal quarterly data should fail this, and a diagnostic that let it pass would be the broken thing.</li>
+      <li class="step"><b><code>lag = 8</code> because the data is quarterly</b>, so 2m = 8. <b><code>dof</code> counts the parameters the model estimated</b>: none for naive, one (the mean) for the mean model. <code>tidy()</code> lists them.</li>
       <li class="step"><b>Run it on <code>.innov</code>, not <code>.resid</code>.</b> Identical today, and the habit is what you want before Session 11.</li>
     </ul>
     <p class="punch step wide">You now have the full instrument. Session 13 asks the other question: not whether structure is left, but how large the errors are.</p>
@@ -836,13 +849,14 @@ Ljung-Box    Q* = T(T+2) &middot; sum over k=1..l of  r_k&#178; / (T &minus; k)
     </ul>
     <p class="punch step wide">Keep the <code>09_A</code> summary sheet beside you for Group Assignment 2, printed or open in the browser. It is the most used page in the course.</p>
   </div>
-  <aside class="notes">The third row is worth pausing on, because it closes a loop. A funnel-shaped residual plot usually means the series is multiplicative and you fitted it additively, which is Session 5's very first question back four sessions later with a consequence attached. The eye test you learned for choosing a scheme is the same eye test that reads this plot.<br><br>The fourth row is the most survivable. Bootstrapped prediction intervals need residuals that are uncorrelated and homoscedastic but make no normality assumption at all, so a normality failure limits which method you use rather than whether you can quote an interval.</aside>
+  <aside class="notes">The third row is worth pausing on, because it closes a loop. A funnel-shaped residual plot usually means the series is multiplicative and you fitted it additively, which is Session 5's very first question back four sessions later with a consequence attached. The eye test you learned for choosing a scheme is the same eye test that reads this plot.<br><br>The fourth row is the most survivable. Bootstrapped prediction intervals need residuals that are uncorrelated with constant variance, but make no normality assumption at all, so a normality failure limits which method you use rather than whether you can quote an interval.</aside>
 </section>
 
 
 <!-- ---------- 15 ---------- -->
 <section class="slide" data-section="6" data-title="Homework">
   <div class="inner">
+    <a class="nb" href="09_B_ResidualsAnalysis.html#exercise-1" target="_blank" rel="noopener" title="Open the notebook at this section">09_B &rsaquo; Exercise 1</a>
     <p class="kicker">Due date in this session&#39;s announcements</p>
     <h1 class="sowhat">Homework: one model, all four properties.</h1>
     <ul class="build">

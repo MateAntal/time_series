@@ -2874,8 +2874,8 @@ window.Quarto = {
 </section>
 <section id="more-general-approach---bootstrap-residuals" class="level4">
 <h4 class="anchored" data-anchor-id="more-general-approach---bootstrap-residuals">More general approach - Bootstrap residuals</h4>
-<p>The prediction intervals returned by the <code>fable()</code> package we are using can be relied upon as long as the residuals fulfill the corresponding normality and homoskedasticity conditions.</p>
-<p>When this is not the case, we may resort to <a href="https://otexts.com/fpp3/prediction-intervals.html#prediction-intervals-from-bootstrapped-residuals"><strong>bootstrapping</strong></a> to obtain the multi-step forecast variances of a given method. This assumes <strong>uncorrelated residuals with constant variance (homoskedastic residuals)</strong>, but makes no assumption about normality.</p>
+<p>The prediction intervals returned by the <code>fable()</code> package we are using can be trusted as long as the residuals are normal and have constant variance.</p>
+<p>When this is not the case, we may resort to <a href="https://otexts.com/fpp3/prediction-intervals.html#prediction-intervals-from-bootstrapped-residuals"><strong>bootstrapping</strong></a> to obtain the multi-step forecast variances of a given method. This assumes <strong>uncorrelated residuals with constant variance</strong>, but not normal ones.</p>
 </section>
 </section>
 <section id="computing-prediction-intervals-with-the-fable-package" class="level3">
@@ -3145,8 +3145,8 @@ window.Quarto = {
 <pre><code>[1] TRUE</code></pre>
 </div>
 </div>
-<p>To compute intervals beyond a horizon of 1, we need to have the value of the estimation of the std. deviation of the forecast distribution for the particular forecast horizon. As we noted previously in this notebook, explicit formulas exist for the benchmark methods (Mean, Naive, SNaive and Drift). For more complex methods there is not such a general solution, but computational approaches tailored for every method exist. As long as the residuals meet the uncorrelated, normality and homoskedasticity assumptions, the returned intervals are reasonable.</p>
-<p>Prediction intervals can also be computed from bootstrapped residuals as we also noted earlier in the notebook. This assumes uncorrelated and homoskedastic residuals, but makes no assumption regarding normality.</p>
+<p>To compute intervals beyond a horizon of 1, we need to have the value of the estimation of the std. deviation of the forecast distribution for the particular forecast horizon. As we noted previously in this notebook, explicit formulas exist for the benchmark methods (Mean, Naive, SNaive and Drift). For more complex methods there is not such a general solution, but computational approaches tailored for every method exist. As long as the residuals are uncorrelated, normal and have constant variance, the returned intervals are reasonable.</p>
+<p>Prediction intervals can also be computed from bootstrapped residuals as we also noted earlier in the notebook. This assumes uncorrelated residuals with constant variance, but not normal ones.</p>
 </section>
 </section>
 </section>
