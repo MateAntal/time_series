@@ -393,7 +393,7 @@ body.ov-on #overview{display:block}
     <p class="who"><b>Session 9.</b> Residual diagnostics.<br>
     Alejandro Berrizbeitia · aberrizbeitia@faculty.ie.edu</p>
   </div>
-  <aside class="notes">The deck is self-contained: press <b>N</b> at any time to open or close this panel, and <b>O</b> for a list of every slide.<br><br>Today is fpp3 section 5.4, notebook <code>09_B</code>, and the one-page residuals summary <code>09_A</code> in this folder, which is the spine of the teaching part.<br><br><b>Two things to know before we start.</b> This session is <b>not examined in the midterm</b>: coverage there is Sessions 1 to 8. The midterm revision deck is in the Session 10 folder, for the prep tutorial and office hours; this deck is diagnostics only.</aside>
+  <aside class="notes">The deck is self-contained: press <b>N</b> at any time to open or close this panel, and <b>O</b> for a list of every slide.<br><br>Today is fpp3 section 5.4, notebook <code>09_B</code>, and the residuals summary sheet <code>09_A</code> in this folder, which is the spine of the teaching part.<br><br><b>Two things to know before we start.</b> This session is <b>not examined in the midterm</b>: coverage there is Sessions 1 to 8. The midterm revision deck is in the Session 10 folder; this deck is diagnostics only.</aside>
 </section>
 
 
@@ -410,7 +410,7 @@ body.ov-on #overview{display:block}
     <div class="callout"><b>Residuals exist only for fitted values.</b> <code>e<sub>t</sub> = y<sub>t</sub> - y&#770;<sub>t|t-1</sub></code>: each fitted value sits inside the data, so there is an observation to subtract it from. A forecast has none yet. Everything today reads that one column.</div>
     <p class="punch step wide">Not on the midterm is not the same as not examined. Today comes back in the final and in Group Assignment 2.</p>
   </div>
-  <aside class="notes">The coverage change is deliberate rather than administrative. Session 8 closes the decomposition arc and opens forecasting; Session 9 opens the evaluation arc and runs through Sessions 13 and 14. Splitting the exams at that seam keeps each one testing a coherent body of material rather than stopping halfway through an idea.<br><br>It also fixes a scheduling problem. The session after this one is the midterm itself, so there was no room for the usual start-of-session homework review. Tonight's homework is reviewed at the start of Session 11 instead, and slide 15 has the details. The revision deck is in the Session 10 folder, for the prep tutorial and office hours.</aside>
+  <aside class="notes">The midterm stops at Session 8 on purpose. Session 8 closes the decomposition arc and opens forecasting; Session 9 opens the evaluation arc and runs through Sessions 13 and 14. Splitting the exams at that seam keeps each one testing a coherent body of material rather than stopping halfway through an idea.</aside>
 </section>
 
 
@@ -449,7 +449,7 @@ body.ov-on #overview{display:block}
     </figure>
     <p class="punch step wide">Four properties, two questions. Knowing which question a failure belongs to tells you whether to change the model or change what you claim.</p>
   </div>
-  <aside class="notes">The one-page PDF in this folder, <code>09_A</code>, sets these out with what to do about each failure, and it is the single most useful thing to have beside you during Group Assignment 2. Print it.<br><br>A point about ordering that is easy to miss: properties 1 and 2 are checked to decide whether a model is <i>finished</i>, and properties 3 and 4 to decide what you are entitled to <i>say</i>. A model can pass 1 and 2 and still leave you unable to quote an honest interval, and that is not a failure of the forecast. It is a limit on the claim.<br><br>All four properties are properties of the <b>residuals</b>, not of the series and not of the forecasts. Strictly, fpp3 states them for the <i>innovation</i> residuals, the <code>.innov</code> column; until Session 11 that column is identical to <code>.resid</code>, so "the residuals" is exact for today.</aside>
+  <aside class="notes">The summary sheet in this folder, <code>09_A</code> (a web page, with the handwritten PDF original beside it), sets these out with what to do about each failure, and it is the single most useful thing to have beside you during Group Assignment 2. Print it.<br><br>A point about ordering that is easy to miss: properties 1 and 2 are checked to decide whether a model is <i>finished</i>, and properties 3 and 4 to decide what you are entitled to <i>say</i>. A model can pass 1 and 2 and still leave you unable to quote an honest interval, and that is not a failure of the forecast. It is a limit on the claim.<br><br>All four properties are properties of the <b>residuals</b>, not of the series and not of the forecasts. Strictly, fpp3 states them for the <i>innovation</i> residuals, the <code>.innov</code> column; until Session 11 that column is identical to <code>.resid</code>, so "the residuals" is exact for today.</aside>
 </section>
 
 
@@ -834,7 +834,7 @@ Ljung-Box    Q* = T(T+2) &middot; sum over k=1..l of  r_k&#178; / (T &minus; k)
       <li class="step"><b>Only the first one questions the model itself.</b> The other three are about presentation and arithmetic, not about whether the forecast is well aimed.</li>
       <li class="step"><b>None of them is a reason to hide the diagnostic.</b> A reported failure you cannot fix is a legitimate finding, and Session 7 made the same argument about decompositions.</li>
     </ul>
-    <p class="punch step wide">Print the one-page summary and keep it beside you for Group Assignment 2. It is the most used page in the course.</p>
+    <p class="punch step wide">Keep the <code>09_A</code> summary sheet beside you for Group Assignment 2, printed or open in the browser. It is the most used page in the course.</p>
   </div>
   <aside class="notes">The third row is worth pausing on, because it closes a loop. A funnel-shaped residual plot usually means the series is multiplicative and you fitted it additively, which is Session 5's very first question back four sessions later with a consequence attached. The eye test you learned for choosing a scheme is the same eye test that reads this plot.<br><br>The fourth row is the most survivable. Bootstrapped prediction intervals need residuals that are uncorrelated and homoscedastic but make no normality assumption at all, so a normality failure limits which method you use rather than whether you can quote an interval.</aside>
 </section>
@@ -844,34 +844,72 @@ Ljung-Box    Q* = T(T+2) &middot; sum over k=1..l of  r_k&#178; / (T &minus; k)
 <section class="slide" data-section="6" data-title="Homework">
   <div class="inner">
     <p class="kicker">Due date in this session&#39;s announcements</p>
-    <h1 class="sowhat">Homework, and one scheduling exception.</h1>
+    <h1 class="sowhat">Homework: one model, all four properties.</h1>
     <ul class="build">
       <li><b><code>09_B</code> Exercise 1, and only that.</b> Diagnose the decomposition model from <code>08_A</code>: STL on <code>log(Turnover)</code>, drift on the seasonally adjusted part, seasonal naive on the season. The fitting code is in the notebook.</li>
       <li>All four properties, one sentence each. Then a Ljung&ndash;Box test, working out <code>lag</code> and <code>dof</code> yourself and saying why.</li>
-      <li><b>One extra check:</b> are <code>.resid</code> and <code>.innov</code> still identical here? They are not. Say why in one sentence.</li>
-      <li>Then revise. The midterm is the next session.</li>
+      <li><b>One extra check:</b> compare <code>.resid</code> and <code>.innov</code> for this model. Are they identical? Explain in one sentence.</li>
     </ul>
-    <div class="callout"><b>Feedback works differently for this one, and only this one.</b> The next session is the midterm itself, so there is no start-of-session slot to review it in.</div>
-    <div class="callout slate"><b>The cohort common-errors note goes up in writing before the exam</b>, so you can use it while revising. The live review happens at the start of <b>Session 11</b>. The dates are in this session&#39;s announcements.</div>
   </div>
-  <aside class="notes">That last check is the first time in the course those two columns differ, and the reason is the <code>log()</code> inside <code>STL()</code>. Session 8 told you the distinction existed and that it would not matter yet; this is where it starts to.<br><br>This is the only homework in the course whose review is not at the start of the next session. The written note arrives before the midterm precisely because it is useful for revision; the discussion waits until there is a session to have it in.<br><br>Graded on completion and genuine effort as usual. For these two exercises, working through all four properties and being honest about which ones fail is the whole assignment. Both models are benchmarks on series with real structure, so expect failures and report them.</aside>
+  <aside class="notes">For the last check, Session 8&#39;s slide on residuals and innovation residuals is the place to start.<br><br>Graded on completion and genuine effort as usual. Working through all four properties and being honest about which ones fail is the whole assignment. The model is built from benchmarks on a series with real structure, so expect failures and report them.</aside>
 </section>
 
 
 <!-- ---------- 16 ---------- -->
 <section class="slide" data-section="6" data-title="Next session">
   <div class="inner">
-    <p class="kicker">Session 10</p>
+    <p class="kicker">What comes next</p>
     <h1 class="sowhat">Next session is the midterm.</h1>
-    <p class="lead wide">Twenty multiple-choice questions on Sessions 1 to 8. After it, Session 11 picks the course back up with transformations and the Box&ndash;Cox family, the principled version of the transformation ladder you met in Session 5.</p>
-    <ul class="build">
-      <li class="step"><b>Session 11 also carries this homework's review</b>, and is where Group Assignment 1 questions get answered before its deadline.</li>
-      <li class="step"><b>The evaluation block resumes at Session 13.</b> Today's diagnostics, then train and test splits, then cross-validation, all examined together in the final.</li>
-    </ul>
+    <p class="lead wide">Twenty multiple-choice questions on Sessions 1 to 8. Today&#39;s material is not on it: it comes back in the final, with Sessions 13 and 14.</p>
+    <figure>
+      <svg viewBox="0 0 760 158" role="img" aria-label="A roadmap of Sessions 9 to 14. Session 9, today, residual diagnostics. Session 10, the midterm on Sessions 1 to 8. Session 11, Box–Cox transformations. Session 12, prediction intervals. Session 13, train and test accuracy. Session 14, cross-validation. Sessions 9, 13 and 14 are marked as the evaluation block, examined together in the final">
+        <g font-family="SFMono-Regular,Menlo,monospace">
+          <rect x="6" y="36" width="112" height="76" rx="5" fill="#B5471E" opacity=".09"/>
+          <rect x="6" y="36" width="112" height="76" rx="5" fill="none" stroke="#B5471E" stroke-width="1.6"/>
+          <text x="62" y="62" text-anchor="middle" fill="#B5471E" font-size="18" font-weight="700">9</text>
+          <text x="62" y="84" text-anchor="middle" fill="#161513" font-size="11">Residual</text>
+          <text x="62" y="99" text-anchor="middle" fill="#161513" font-size="11">diagnostics</text>
+          <path d="M120 74 H129" stroke="#98928a" stroke-width="1.4" fill="none"/>
+          <rect x="131" y="36" width="112" height="76" rx="5" fill="#1F3A4D" opacity=".10"/>
+          <rect x="131" y="36" width="112" height="76" rx="5" fill="none" stroke="#1F3A4D" stroke-width="1.6"/>
+          <text x="187" y="62" text-anchor="middle" fill="#1F3A4D" font-size="18" font-weight="700">10</text>
+          <text x="187" y="84" text-anchor="middle" fill="#161513" font-size="11">Midterm</text>
+          <text x="187" y="99" text-anchor="middle" fill="#6B665E" font-size="10">Sessions 1–8</text>
+          <path d="M245 74 H254" stroke="#98928a" stroke-width="1.4" fill="none"/>
+          <rect x="256" y="36" width="112" height="76" rx="5" fill="#98928a" opacity=".08"/>
+          <rect x="256" y="36" width="112" height="76" rx="5" fill="none" stroke="#98928a" stroke-width="1.6"/>
+          <text x="312" y="62" text-anchor="middle" fill="#6B665E" font-size="18" font-weight="700">11</text>
+          <text x="312" y="84" text-anchor="middle" fill="#161513" font-size="11">Box–Cox</text>
+          <text x="312" y="99" text-anchor="middle" fill="#161513" font-size="11">transformations</text>
+          <path d="M370 74 H379" stroke="#98928a" stroke-width="1.4" fill="none"/>
+          <rect x="381" y="36" width="112" height="76" rx="5" fill="#98928a" opacity=".08"/>
+          <rect x="381" y="36" width="112" height="76" rx="5" fill="none" stroke="#98928a" stroke-width="1.6"/>
+          <text x="437" y="62" text-anchor="middle" fill="#6B665E" font-size="18" font-weight="700">12</text>
+          <text x="437" y="84" text-anchor="middle" fill="#161513" font-size="11">Prediction</text>
+          <text x="437" y="99" text-anchor="middle" fill="#161513" font-size="11">intervals</text>
+          <path d="M495 74 H504" stroke="#98928a" stroke-width="1.4" fill="none"/>
+          <rect x="506" y="36" width="112" height="76" rx="5" fill="#B5471E" opacity=".09"/>
+          <rect x="506" y="36" width="112" height="76" rx="5" fill="none" stroke="#B5471E" stroke-width="1.6"/>
+          <text x="562" y="62" text-anchor="middle" fill="#B5471E" font-size="18" font-weight="700">13</text>
+          <text x="562" y="84" text-anchor="middle" fill="#161513" font-size="11">Train/test</text>
+          <text x="562" y="99" text-anchor="middle" fill="#161513" font-size="11">accuracy</text>
+          <path d="M620 74 H629" stroke="#98928a" stroke-width="1.4" fill="none"/>
+          <rect x="631" y="36" width="112" height="76" rx="5" fill="#B5471E" opacity=".09"/>
+          <rect x="631" y="36" width="112" height="76" rx="5" fill="none" stroke="#B5471E" stroke-width="1.6"/>
+          <text x="687" y="62" text-anchor="middle" fill="#B5471E" font-size="18" font-weight="700">14</text>
+          <text x="687" y="84" text-anchor="middle" fill="#161513" font-size="11">Cross-</text>
+          <text x="687" y="99" text-anchor="middle" fill="#161513" font-size="11">validation</text>
+          <text x="62" y="24" text-anchor="middle" fill="#B5471E" font-size="11" font-weight="700">today</text>
+          <path d="M62 28 V34" stroke="#B5471E" stroke-width="1.4" fill="none"/>
+          <rect x="200" y="136" width="12" height="12" rx="2" fill="#B5471E" opacity=".25" stroke="#B5471E"/>
+          <text x="220" y="146" fill="#6B665E" font-size="11">the evaluation block: examined together in the final</text>
+        </g>
+      </svg>
+    </figure>
     <p class="punch step wide">Today you learned how to tell whether a model is finished. Session 13 asks how wrong it is, which turns out to be a different question with a different answer.</p>
     <p class="url" style="font-size:clamp(0.95rem,1.7vw,1.9rem)">aberrizbeitia@faculty.ie.edu</p>
   </div>
-  <aside class="notes">The distinction in the closing line is the one that organizes the rest of the course. Residual diagnostics asks whether anything is <i>left</i>; accuracy measures ask how <i>large</i> the errors are. A model can pass the first and still forecast badly, and a model can fail the first and still be the most accurate thing available.<br><br>Good luck in the midterm. Come to the optional prep tutorial with questions, and read the four-property summary sheet once more before the exam, not because it is examined, but because it is the clearest one page in the course.</aside>
+  <aside class="notes">The distinction in the closing line is the one that organizes the rest of the course. Residual diagnostics asks whether anything is <i>left</i>; accuracy measures ask how <i>large</i> the errors are. A model can pass the first and still forecast badly, and a model can fail the first and still be the most accurate thing available.<br><br>The two sessions in between are where properties 3 and 4 from today pay off. Session 11 is Box&ndash;Cox, the principled version of the transformation ladder from Session 5 and the first fix for a drifting spread. Session 12 builds prediction intervals, which is where constant variance and normality decide whether the stated 95% is really 95%.<br><br>Good luck in the midterm.</aside>
 </section>
 
 <!-- lives inside the stage so it is positioned against it, not the viewport,
