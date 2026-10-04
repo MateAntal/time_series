@@ -109,7 +109,7 @@ Plan for roughly 1.5 hours per session outside class, covering the pre-session r
 homework. The decomposition block (Sessions 5 to 7) and the weeks around each group assignment run
 heavier than that.
 
-An optional online preparation tutorial is offered before the final exam.
+Office hours are available to students who bring concrete questions; times are posted on Blackboard.
 
 | Learning Activity | Weighting | Estimated hours |
 |---|---|---|
@@ -347,7 +347,6 @@ for the stochastic-process framing.
 - Coverage: the whole course, Sessions 1 to 19
 - Format: 20 multiple-choice questions: four options on concept questions, five on calculation
   questions
-- An optional online preparation tutorial is offered in the preceding week
 
 ---
 
