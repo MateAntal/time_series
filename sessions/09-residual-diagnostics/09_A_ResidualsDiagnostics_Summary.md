@@ -7,7 +7,7 @@ Prof. Juan Garbayo de Pablo and Prof. Alejandro Berrizbeitia.*
 All four properties are about the **innovation residuals**, the `.innov` column from `augment()`.
 With no transformation (and additive errors) they are identical to `.resid`.
 
-$$e_t = y_t - \hat{y}_{t|t-1}$$
+> e<sub>t</sub> = y<sub>t</sub> − ŷ<sub>t|t−1</sub> &nbsp; (the observation minus its fitted value)
 
 ---
 
@@ -15,18 +15,19 @@ $$e_t = y_t - \hat{y}_{t|t-1}$$
 
 | | Property | In symbols | The question it answers |
 |---|---|---|---|
-| **1** | Uncorrelated | $`\mathrm{cov}(e_t,\, e_{t-s}) = 0`$ for every lag $`s \neq 0`$ | Is there information left in the residuals? |
-| **2** | Zero mean | $`E[e_t] = 0`$ | Are the forecasts biased? |
-| **3** | Constant variance (homoscedasticity) | $`\mathrm{var}(e_t) = \sigma^2`$ for every $`t`$ | Can one interval width be used everywhere? |
-| **4** | Normally distributed | $`e_t \sim N(0, \sigma^2)`$ | Does the interval arithmetic hold? |
+| **1** | Uncorrelated | cov(e<sub>t</sub>, e<sub>t−s</sub>) = 0 for every lag s ≠ 0 | Is there information left in the residuals? |
+| **2** | Zero mean | E[e<sub>t</sub>] = 0 | Are the forecasts biased? |
+| **3** | Constant variance (homoscedasticity) | var(e<sub>t</sub>) = σ² for every t | Can one interval width be used everywhere? |
+| **4** | Normally distributed | e<sub>t</sub> ~ N(0, σ²) | Does the interval arithmetic hold? |
 
 - **1 and 2 are about the model.** If the residuals fail either, the model can be improved.
 - **3 and 4 are about the prediction intervals.** They are useful but not necessary: if the residuals
   fail them, the point forecasts are unaffected, but the intervals take more work to compute
   honestly.
 
-Why property 2 means unbiased forecasts: since $`e_t = y_t - \hat{y}_t`$, linearity of expectation
-gives $`E[e_t] = E[y_t] - E[\hat{y}_t]`$, so $`E[e_t] = 0 \iff E[y_t] = E[\hat{y}_t]`$.
+Why property 2 means unbiased forecasts: since e<sub>t</sub> = y<sub>t</sub> − ŷ<sub>t</sub>, linearity of expectation
+gives E[e<sub>t</sub>] = E[y<sub>t</sub>] − E[ŷ<sub>t</sub>]. So the residual mean is zero exactly when
+E[y<sub>t</sub>] = E[ŷ<sub>t</sub>]: on average, the fitted values hit the data.
 
 ---
 
