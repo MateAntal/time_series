@@ -109,7 +109,7 @@ Plan for roughly 1.5 hours per session outside class, covering the pre-session r
 homework. The decomposition block (Sessions 5 to 7) and the weeks around each group assignment run
 heavier than that.
 
-Optional online preparation tutorials are offered before the midterm and before the final exam.
+An optional online preparation tutorial is offered before the final exam.
 
 | Learning Activity | Weighting | Estimated hours |
 |---|---|---|
@@ -230,7 +230,7 @@ for the stochastic-process framing.
 ### Session 9 — Residual diagnostics
 
 - The properties that good residuals must have, and what to do when each one fails
-- Residual mean, residual ACF, qq-plots and boxplots
+- Residual mean, residual ACF, QQ plots and boxplots
 - Why inspecting each ACF bar individually is multiple hypothesis testing, and hence portmanteau tests
 - The Ljung–Box test
 
@@ -239,12 +239,11 @@ for the stochastic-process framing.
 ### Session 10 — Midterm exam
 
 - Coverage: Sessions 1 to 8
-- Residual diagnostics (Session 9) is **not** examined here; it belongs to the evaluation block and is
-  examined in the final
+- Residual diagnostics (Session 9) is **not** examined here; it is examined in the final, which covers
+  the whole course
 - Format: 20 multiple-choice questions: 13 concept questions with four options each, and 7 short
   calculation questions by hand with five options each. A non-programmable, non-graphing calculator
   is allowed; no phones, watches or other devices. Answers go on a separate answer sheet
-- An optional online preparation tutorial is offered in the preceding week
 
 ### Session 11 — Transformations to even out variance: logarithms, power, Box–Cox
 
