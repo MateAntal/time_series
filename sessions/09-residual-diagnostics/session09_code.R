@@ -16,9 +16,11 @@ bricks_fit <- bricks |> model(
 
 bricks_fit
 
-model_vals <- 
-  bricks_fit |> 
+model_vals <-
+  bricks_fit |>
   augment()
+
+model_vals
 
 ## Mean model ----
 model_vals |> 
