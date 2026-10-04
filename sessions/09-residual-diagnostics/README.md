@@ -22,6 +22,5 @@ signal.
 > The midterm revision deck is in the [Session 10 folder](../10-midterm/), for office hours and
 > your own revision. This session's deck is diagnostics only.
 
-> **This session is not on the midterm.** Residual diagnostics is examined in the final, together with
-> train/test accuracy (Session 13) and cross-validation (Session 14) — the evaluation arc it opens.
-> Revise it for the final, not for 14 October.
+> **This session is not on the midterm.** Residual diagnostics is examined in the final, which covers
+> the whole course. Revise it for the final, not for the midterm.

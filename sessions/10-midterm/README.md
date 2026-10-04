@@ -8,9 +8,8 @@
 decomposition (classical and STL), benchmark methods, fitted values, and forecasting with a
 decomposition.
 
-**Not examined here:** residual diagnostics (Session 9). That session opens the evaluation arc, which
-continues through train/test accuracy (Session 13) and cross-validation (Session 14). Those three
-belong together and are examined in the **final**.
+**Not examined here:** residual diagnostics (Session 9). It is examined in the **final**, which covers
+the whole course, Sessions 1 to 19.
 
 **Format:** 20 multiple-choice questions.
 
@@ -21,10 +20,7 @@ belong together and are examined in the **final**.
 - Bring a **non-programmable, non-graphing calculator**. No phones, watches or other devices.
 - Answers go on a separate answer sheet, one letter per question. Wrong answers cost nothing.
 
-An optional online prep tutorial runs in the preceding week. It works one table through, step by
-step, in the exam's format.
-
-**Slides:** [`session10_slides.html`](session10_slides.html): midterm revision for the prep tutorial
+**Slides:** [`session10_slides.html`](session10_slides.html): midterm revision for your own study
 and office hours. How the exam works, what is on it, and a one-line check of each session: what to
 explain and what to compute by hand.
 

@@ -411,13 +411,13 @@ body.ov-on #overview{display:block}
     <h1 class="sowhat">In Session 8 you produced forecasts. Nobody asked whether they were any good.</h1>
     <ul class="build">
       <li class="step"><b>A model that runs is not a model that works.</b> Today is the first of three sessions about telling the difference.</li>
-      <li class="step"><b>This session is not on the midterm.</b> It opens the evaluation block: today, then train and test splits in Session 13 and cross-validation in Session 14, and those are examined together in the final.</li>
+      <li class="step"><b>This session is not on the midterm.</b> It is examined in the final, which covers the whole course.</li>
       <li class="step"><b>Do not skip it for that reason.</b> Residual diagnostics is the most-used skill in the second half of this course, and Group Assignment 2 depends on it.</li>
     </ul>
     <div class="callout"><b>Residuals exist only for fitted values.</b> <code>e<sub>t</sub> = y<sub>t</sub> - y&#770;<sub>t|t-1</sub></code>: each fitted value sits inside the data, so there is an observation to subtract it from. A forecast has none yet. Everything today reads that one column.</div>
     <p class="punch step wide">Not on the midterm is not the same as not examined. Today comes back in the final and in Group Assignment 2.</p>
   </div>
-  <aside class="notes">The midterm stops at Session 8 on purpose. Session 8 closes the decomposition arc and opens forecasting; Session 9 opens the evaluation arc and runs through Sessions 13 and 14. Splitting the exams at that seam keeps each one testing a coherent body of material rather than stopping halfway through an idea.</aside>
+  <aside class="notes">The midterm stops at Session 8 on purpose. Sessions 1 to 8 describe a series and produce first forecasts; from Session 9 on, the course asks how good those forecasts are and how to make them better. Splitting the exams at that seam keeps the midterm on one coherent body of material.</aside>
 </section>
 
 
@@ -874,9 +874,9 @@ bricks_aug |&gt; filter(.model == "Mean") |&gt; features(.innov, ljung_box, lag 
   <div class="inner">
     <p class="kicker">What comes next</p>
     <h1 class="sowhat">Next session is the midterm.</h1>
-    <p class="lead wide">Twenty multiple-choice questions on Sessions 1 to 8. Today&#39;s material is not on it: it comes back in the final, with Sessions 13 and 14.</p>
+    <p class="lead wide">Twenty multiple-choice questions on Sessions 1 to 8. Today&#39;s material is not on it; it is examined in the final, which covers the whole course.</p>
     <figure>
-      <svg viewBox="0 0 760 158" role="img" aria-label="A roadmap of Sessions 9 to 14. Session 9, today, residual diagnostics. Session 10, the midterm on Sessions 1 to 8. Session 11, Box–Cox transformations. Session 12, prediction intervals. Session 13, train and test accuracy. Session 14, cross-validation. Sessions 9, 13 and 14 are marked as the evaluation block, examined together in the final">
+      <svg viewBox="0 0 760 118" role="img" aria-label="A roadmap of Sessions 9 to 14. Session 9, today, residual diagnostics. Session 10, the midterm on Sessions 1 to 8. Session 11, Box–Cox transformations. Session 12, prediction intervals. Session 13, train and test accuracy. Session 14, cross-validation">
         <g font-family="SFMono-Regular,Menlo,monospace">
           <rect x="6" y="36" width="112" height="76" rx="5" fill="#B5471E" opacity=".09"/>
           <rect x="6" y="36" width="112" height="76" rx="5" fill="none" stroke="#B5471E" stroke-width="1.6"/>
@@ -890,40 +890,38 @@ bricks_aug |&gt; filter(.model == "Mean") |&gt; features(.innov, ljung_box, lag 
           <text x="187" y="84" text-anchor="middle" fill="#161513" font-size="11">Midterm</text>
           <text x="187" y="99" text-anchor="middle" fill="#6B665E" font-size="10">Sessions 1–8</text>
           <path d="M245 74 H254" stroke="#98928a" stroke-width="1.4" fill="none"/>
-          <rect x="256" y="36" width="112" height="76" rx="5" fill="#98928a" opacity=".08"/>
+          <rect x="256" y="36" width="112" height="76" rx="5" fill="#98928a" opacity=".06"/>
           <rect x="256" y="36" width="112" height="76" rx="5" fill="none" stroke="#98928a" stroke-width="1.6"/>
-          <text x="312" y="62" text-anchor="middle" fill="#6B665E" font-size="18" font-weight="700">11</text>
+          <text x="312" y="62" text-anchor="middle" fill="#161513" font-size="18" font-weight="700">11</text>
           <text x="312" y="84" text-anchor="middle" fill="#161513" font-size="11">Box–Cox</text>
           <text x="312" y="99" text-anchor="middle" fill="#161513" font-size="11">transformations</text>
           <path d="M370 74 H379" stroke="#98928a" stroke-width="1.4" fill="none"/>
-          <rect x="381" y="36" width="112" height="76" rx="5" fill="#98928a" opacity=".08"/>
+          <rect x="381" y="36" width="112" height="76" rx="5" fill="#98928a" opacity=".06"/>
           <rect x="381" y="36" width="112" height="76" rx="5" fill="none" stroke="#98928a" stroke-width="1.6"/>
-          <text x="437" y="62" text-anchor="middle" fill="#6B665E" font-size="18" font-weight="700">12</text>
+          <text x="437" y="62" text-anchor="middle" fill="#161513" font-size="18" font-weight="700">12</text>
           <text x="437" y="84" text-anchor="middle" fill="#161513" font-size="11">Prediction</text>
           <text x="437" y="99" text-anchor="middle" fill="#161513" font-size="11">intervals</text>
           <path d="M495 74 H504" stroke="#98928a" stroke-width="1.4" fill="none"/>
-          <rect x="506" y="36" width="112" height="76" rx="5" fill="#B5471E" opacity=".09"/>
-          <rect x="506" y="36" width="112" height="76" rx="5" fill="none" stroke="#B5471E" stroke-width="1.6"/>
-          <text x="562" y="62" text-anchor="middle" fill="#B5471E" font-size="18" font-weight="700">13</text>
+          <rect x="506" y="36" width="112" height="76" rx="5" fill="#98928a" opacity=".06"/>
+          <rect x="506" y="36" width="112" height="76" rx="5" fill="none" stroke="#98928a" stroke-width="1.6"/>
+          <text x="562" y="62" text-anchor="middle" fill="#161513" font-size="18" font-weight="700">13</text>
           <text x="562" y="84" text-anchor="middle" fill="#161513" font-size="11">Train/test</text>
           <text x="562" y="99" text-anchor="middle" fill="#161513" font-size="11">accuracy</text>
           <path d="M620 74 H629" stroke="#98928a" stroke-width="1.4" fill="none"/>
-          <rect x="631" y="36" width="112" height="76" rx="5" fill="#B5471E" opacity=".09"/>
-          <rect x="631" y="36" width="112" height="76" rx="5" fill="none" stroke="#B5471E" stroke-width="1.6"/>
-          <text x="687" y="62" text-anchor="middle" fill="#B5471E" font-size="18" font-weight="700">14</text>
+          <rect x="631" y="36" width="112" height="76" rx="5" fill="#98928a" opacity=".06"/>
+          <rect x="631" y="36" width="112" height="76" rx="5" fill="none" stroke="#98928a" stroke-width="1.6"/>
+          <text x="687" y="62" text-anchor="middle" fill="#161513" font-size="18" font-weight="700">14</text>
           <text x="687" y="84" text-anchor="middle" fill="#161513" font-size="11">Cross-</text>
           <text x="687" y="99" text-anchor="middle" fill="#161513" font-size="11">validation</text>
           <text x="62" y="24" text-anchor="middle" fill="#B5471E" font-size="11" font-weight="700">today</text>
           <path d="M62 28 V34" stroke="#B5471E" stroke-width="1.4" fill="none"/>
-          <rect x="200" y="136" width="12" height="12" rx="2" fill="#B5471E" opacity=".25" stroke="#B5471E"/>
-          <text x="220" y="146" fill="#6B665E" font-size="11">the evaluation block: examined together in the final</text>
         </g>
       </svg>
     </figure>
-    <p class="punch step wide">Today you learned how to tell whether a model is finished. Session 13 asks how wrong it is, which turns out to be a different question with a different answer.</p>
+    <p class="punch step wide">Today you learned to tell whether a model is finished. The next four sessions build on it: fixing a drifting spread, quoting honest intervals, then measuring how wrong a forecast is.</p>
     <p class="url" style="font-size:clamp(0.95rem,1.7vw,1.9rem)">aberrizbeitia@faculty.ie.edu</p>
   </div>
-  <aside class="notes">The distinction in the closing line is the one that organizes the rest of the course. Residual diagnostics asks whether anything is <i>left</i>; accuracy measures ask how <i>large</i> the errors are. A model can pass the first and still forecast badly, and a model can fail the first and still be the most accurate thing available.<br><br>The two sessions in between are where properties 3 and 4 from today pay off. Session 11 is Box&ndash;Cox, the principled version of the transformation ladder from Session 5 and the first fix for a drifting spread. Session 12 builds prediction intervals, which is where constant variance and normality decide whether the stated 95% is really 95%.<br><br>Good luck in the midterm.</aside>
+  <aside class="notes">Each of the next four sessions picks up something from today. Session 11 is Box&ndash;Cox, the principled version of the transformation ladder from Session 5 and the first fix for a drifting spread (property 3). Session 12 builds prediction intervals, where constant variance and normality (properties 3 and 4) decide whether the stated 95% is really 95%. Sessions 13 and 14 ask a different question from today&#39;s: not whether anything is <i>left</i> in the residuals, but how <i>large</i> the errors are, first on a test set and then by cross-validation. A model can pass today&#39;s checks and still forecast badly, and the reverse.<br><br>Good luck in the midterm.</aside>
 </section>
 
 <!-- lives inside the stage so it is positioned against it, not the viewport,
