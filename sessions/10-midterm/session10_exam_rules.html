@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Exam rules · Time Series Analysis</title>
+<style>
+/* ============================================================
+   Exam rules, on screen for the whole exam. One slide, same
+   palette as the session decks, no fonts or scripts fetched
+   from the network.
+   S starts the countdown, R clears it, F goes full screen.
+   ============================================================ */
+
+:root{
+  --paper:#FAF8F5;
+  --ink:#161513;
+  --muted:#6B665E;
+  --faint:#98928a;
+  --hair:#E4DFD5;
+  --slate:#1F3A4D;
+  --terra:#B5471E;
+  --sand:#EFEAE1;
+
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif;
+  --mono:SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+}
+
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{
+  background:var(--paper);color:var(--ink);font-family:var(--sans);
+  -webkit-font-smoothing:antialiased;
+  display:flex;flex-direction:column;
+  padding:4.5vh 5vw 3.5vh;
+}
+
+header{display:flex;justify-content:space-between;align-items:flex-start;gap:3vw}
+.kicker{
+  margin:0 0 1.1vh;font-size:clamp(.7rem,1vw,1.05rem);letter-spacing:.19em;
+  text-transform:uppercase;color:var(--terra);font-weight:600;
+}
+h1{
+  margin:0;font-family:var(--serif);font-weight:500;
+  font-size:clamp(2.2rem,5.2vw,6rem);line-height:1;letter-spacing:-.015em;
+}
+.time{text-align:right}
+#clock{
+  font-family:var(--mono);font-size:clamp(2.4rem,6.4vw,7.4rem);line-height:1;
+  letter-spacing:-.03em;font-variant-numeric:tabular-nums;color:var(--slate);
+}
+#left{
+  margin-top:1vh;font-size:clamp(.95rem,1.6vw,1.9rem);color:var(--muted);
+  font-variant-numeric:tabular-nums;min-height:1.3em;
+}
+#left b{color:var(--terra);font-weight:700}
+
+.rule{width:84px;height:3px;background:var(--terra);margin:3.2vh 0 3.6vh}
+
+main{
+  flex:1;display:grid;grid-template-columns:repeat(3,1fr);
+  gap:3.4vh 3vw;align-content:start;
+}
+.card{border-top:3px solid var(--slate);padding-top:1.4vh}
+.card.terra{border-top-color:var(--terra)}
+.card h2{
+  margin:0 0 .9vh;font-size:clamp(.85rem,1.35vw,1.6rem);letter-spacing:.1em;
+  text-transform:uppercase;color:var(--slate);font-weight:700;
+}
+.card.terra h2{color:var(--terra)}
+.card p{margin:0;font-size:clamp(1rem,1.75vw,2.05rem);line-height:1.32}
+.card p small{display:block;margin-top:.7vh;font-size:.72em;color:var(--muted);line-height:1.38}
+
+footer{
+  display:flex;justify-content:space-between;align-items:baseline;
+  margin-top:2.4vh;font-size:clamp(.75rem,1vw,1.1rem);color:var(--faint);
+}
+kbd{
+  font-family:var(--mono);font-size:.9em;background:#fff;border:1px solid var(--hair);
+  border-radius:3px;padding:.05em .35em;color:var(--muted);
+}
+body.running #keys{visibility:hidden}
+
+@media (max-width:900px){
+  body{padding:4vh 16px}
+  header{flex-direction:column}
+  .time{text-align:left}
+  main{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <p class="kicker">Time Series Analysis · Midterm</p>
+    <h1>Exam in progress.</h1>
+  </div>
+  <div class="time">
+    <div id="clock">--:--</div>
+    <div id="left"></div>
+  </div>
+</header>
+
+<div class="rule"></div>
+
+<main>
+  <section class="card">
+    <h2>Calculator</h2>
+    <p>A non-programmable, non-graphing calculator only.
+      <small>Basic or scientific. Nothing that stores programs, plots graphs or connects to anything.</small></p>
+  </section>
+  <section class="card terra">
+    <h2>Devices</h2>
+    <p>No phones, tablets, computers or smartwatches.
+      <small>Switched off and stored away in your bag, not on your desk or on you.</small></p>
+  </section>
+  <section class="card terra">
+    <h2>Questions</h2>
+    <p>No questions are answered during the exam.
+      <small>If a question seems ambiguous, choose the option you consider best.</small></p>
+  </section>
+  <section class="card terra">
+    <h2>Leaving the room</h2>
+    <p>No bathroom breaks. If you leave, your exam is over.
+      <small>You may not leave and come back. Nobody leaves in the first 30 minutes.</small></p>
+  </section>
+  <section class="card">
+    <h2>Answer sheet</h2>
+    <p>Fill in one circle per question, black or dark blue pen.
+      <small>Only the answer sheet is marked. To change an answer, cross out the filled circle with an X and fill in the new one.</small></p>
+  </section>
+  <section class="card">
+    <h2>Silence</h2>
+    <p>No communication of any kind with anyone.
+      <small>When you finish, hand in every page, stapled as you received it, and leave quietly.</small></p>
+  </section>
+</main>
+
+<footer>
+  <span>Wrong answers do not subtract points.</span>
+  <span id="keys"><kbd>S</kbd> start 80-minute countdown &nbsp; <kbd>R</kbd> clear &nbsp; <kbd>F</kbd> full screen</span>
+</footer>
+
+<script>
+(function(){
+  var DURATION = 80 * 60 * 1000, KEY = "tsa-exam-end";
+  var clock = document.getElementById("clock"), left = document.getElementById("left");
+  var end = null;
+  try { var saved = Number(localStorage.getItem(KEY)); if (saved > Date.now()) end = saved; } catch (e) {}
+
+  function hm(d){ return String(d.getHours()).padStart(2, "0") + ":" + String(d.getMinutes()).padStart(2, "0"); }
+
+  function tick(){
+    var now = new Date();
+    clock.textContent = hm(now);
+    document.body.classList.toggle("running", end !== null);
+    if (end === null) { left.textContent = ""; return; }
+    var ms = end - now.getTime();
+    if (ms <= 0) { left.innerHTML = "<b>Time is up.</b> Pens down."; return; }
+    var min = Math.ceil(ms / 60000);
+    left.innerHTML = "Ends at " + hm(new Date(end)) + " &middot; <b>" + min + " min</b> left";
+  }
+
+  document.addEventListener("keydown", function(ev){
+    var k = ev.key.toLowerCase();
+    if (k === "s" && end === null) {
+      end = Date.now() + DURATION;
+      try { localStorage.setItem(KEY, String(end)); } catch (e) {}
+    } else if (k === "r") {
+      end = null;
+      try { localStorage.removeItem(KEY); } catch (e) {}
+    } else if (k === "f") {
+      if (!document.fullscreenElement) document.documentElement.requestFullscreen().catch(function(){});
+      else document.exitFullscreen();
+    }
+    tick();
+  });
+
+  tick();
+  setInterval(tick, 1000);
+})();
+</script>
+</body>
+</html>
