@@ -1,209 +1,245 @@
-# ============================================================
-# Session 09 - Residual diagnostics
-#
-# Runnable companion to the notebook in this folder:
-#   09_B_ResidualsAnalysis
-# plus the 09_A summary sheet, which is the spine of the
-# session. The notebook carries the explanations; this script
-# carries the code and stops where the exercises begin.
-#
-# NOT examined in the midterm (coverage runs Sessions 1 to 8).
-#
-# Set the working directory to this file's folder before you
-# start.
-#   RStudio:  Session > Set Working Directory > To Source File Location
-#   console:  setwd("<repo>/sessions/09-residual-diagnostics")
-# ============================================================
+# R code from the 09_B_ResidualsAnalysis notebook, in notebook order.
 
+# Libraries ----
 library(fpp3)
+library(patchwork)
 
-
-# ---- 1. what a residual is, one more time ----
-
+# Example 1: brick production ----
 bricks <- aus_production |>
-  filter_index("1970 Q1" ~ "2004 Q4") |>
+  filter_index("1970 Q1" ~ "2004 Q4") |> # Shorthand for filtering data between 1970 and 2004
   select(Bricks)
 
-bricks_fit <- bricks |>
-  model(
-    Mean = MEAN(Bricks),
-    Nv   = NAIVE(Bricks)
-  )
+bricks_fit <- bricks |> model(
+                                Mean = MEAN(Bricks), # Fit two models at once
+                                Nv = NAIVE(Bricks)
+                               )
 
 bricks_fit
 
+model_vals <- 
+  bricks_fit |> 
+  augment()
+
+## Mean model ----
+model_vals |> 
+  filter(.model == "Mean") |>
+  autoplot(Bricks, colour = "gray") +
+  geom_line(aes(y=.fitted), colour = "blue", linetype = "dashed")
+
+### Residual panels ----
+bricks_fit |> 
+  select(Mean) |> # Selects the Mean model
+  gg_tsresiduals()
+
+# Compute the mean of the residuals
+model_vals |> as_tibble() |>
+  filter(.model == "Mean") |>
+  summarise(mean = mean(.innov, na.rm = TRUE))
+
+### QQ plot and boxplot ----
+mean_vals <- filter(model_vals, .model=="Mean")
+
+# QQ plot
+p1 <- ggplot(mean_vals, aes(sample = .innov))
+p1 <- p1 + stat_qq() + stat_qq_line()
+
+# Boxplot
+p2 <- ggplot(data = mean_vals, aes(y = .innov)) +
+      geom_boxplot(fill="light blue", alpha = 0.7) +
+      stat_summary(aes(x=0), fun="mean", colour= "red") # Include the mean
+
+p1 + p2
+
+### Boxplots by year ----
+model_vals <- 
+  
+  model_vals |> 
+  
+  # Add a column with the year of each observation
+  mutate(
+    year = year(Quarter),
+    year_group = floor((year - 1970) / 2) * 2 + 1970 # Group two consecutive years
+  ) 
+  
+# One boxplot per year
+model_vals |> 
+  
+  # Select the appropriate model within model vals
+  filter(.model == "Mean") |> 
+  
+  # Draw the boxplots
+  ggplot(aes(x = factor(year), y = .innov)) +
+  geom_boxplot() +
+  theme(axis.text.x=element_text(angle = 90))
+
+model_vals |> 
+  
+  # Select the appropriate model within model vals
+  filter(.model == "Mean") |> 
+  
+  # Draw the boxplots
+  ggplot(aes(x = factor(year_group), y = .innov)) +
+  geom_boxplot() +
+  theme(axis.text.x=element_text(angle = 90))
+
+## Naive model ----
+
+### Residual panels ----
+bricks_fit |> 
+  select(Nv) |>
+  gg_tsresiduals()
+
+# Compute the mean of the residuals
+model_vals |> as_tibble() |>
+  filter(.model == "Nv") |>
+  summarise(mean = mean(.innov, na.rm = TRUE))
+
+### QQ plot and boxplot ----
+mean_vals <- filter(model_vals, .model=="Nv")
+
+# QQ plot
+p1 <- ggplot(mean_vals, aes(sample = .innov))
+p1 <- p1 + stat_qq() + stat_qq_line()
+
+# Boxplot
+p2 <- ggplot(data = mean_vals, aes(y = .innov)) +
+      geom_boxplot(fill="light blue", alpha = 0.7) +
+      stat_summary(aes(x=0), fun="mean", colour= "red") # Include the mean
+
+p1 + p2
+
+### Boxplots by year ----
+model_vals <- 
+  
+  model_vals |> 
+  
+  # Add a column with the year of each observation
+  mutate(
+    year = year(Quarter),
+    year_group = floor((year - 1970) / 2) * 2 + 1970 # Group two consecutive years
+  )
+  
+  
+# One boxplot per year
+model_vals |> 
+  
+  # Select the appropriate model within model vals
+  filter(.model == "Nv") |> 
+  
+  ggplot(aes(x = factor(year), y = .innov)) +
+  geom_boxplot() +
+  theme(axis.text.x=element_text(angle = 90))
+
+model_vals |> 
+  
+  # Select the appropriate model within model vals
+  filter(.model == "Nv") |> 
+  
+  ggplot(aes(x = factor(year_group), y = .innov)) +
+  geom_boxplot() +
+  theme(axis.text.x=element_text(angle = 90))
+
+# Example 2: Google stock ----
+# Re-index based on trading days
+google_stock <- gafa_stock |>
+  filter(Symbol == "GOOG", year(Date) >= 2015) |>
+  mutate(day = row_number()) |>
+  update_tsibble(index = day, regular = TRUE)
+
+# Filter the year of interest
+google_2015 <- google_stock |> filter(year(Date) == 2015)
+
+# Fit the models
+google_fit <- google_2015 |>
+  model(
+    Mean = MEAN(Close),
+    Naive = NAIVE(Close)
+  )
+
+# Extract values from the mable:
+model_vals <- google_fit |> augment()
+
+# Plot fitted values for the NAIVE model:
+model_vals |> 
+  filter(.model == "Naive") |>
+  autoplot(Close, colour = "gray") +
+  geom_line(aes(y=.fitted), colour = "blue", linetype = "dashed")
+
+## Naive model ----
+google_fit |> 
+  select(Naive) |> # Selects the Naive model
+  gg_tsresiduals()
+
+# Compute the mean of the residuals
+model_vals |> as_tibble() |>
+  filter(.model == "Naive") |>
+  summarise(mean = mean(.innov, na.rm = TRUE))
+
+mean_vals <- filter(model_vals, .model=="Naive")
+
+# QQ plot
+p1 <- ggplot(mean_vals, aes(sample = .innov))
+p1 <- p1 + stat_qq() + stat_qq_line()
+
+# Boxplot
+p2 <- ggplot(data = mean_vals, aes(y = .innov)) +
+      geom_boxplot(fill="light blue", alpha = 0.7) +
+      stat_summary(aes(x=0), fun="mean", colour= "red") # Include the mean
+
+p1 + p2
+
+## Mean model ----
+google_fit |> 
+  select(Mean) |> # Selects the Mean model
+  gg_tsresiduals()
+
+# Compute the mean of the residuals
+model_vals |> as_tibble() |>
+  filter(.model == "Mean") |>
+  summarise(mean = mean(.innov, na.rm = TRUE))
+
+mean_vals <- filter(model_vals, .model=="Mean")
+
+# QQ plot
+p1 <- ggplot(mean_vals, aes(sample = .innov))
+p1 <- p1 + stat_qq() + stat_qq_line()
+
+# Boxplot
+p2 <- ggplot(data = mean_vals, aes(y = .innov)) +
+      geom_boxplot(fill="light blue", alpha = 0.7) +
+      stat_summary(aes(x=0), fun="mean", colour= "red") # Include the mean
+
+p1 + p2
+
+# Portmanteau tests for autocorrelation ----
+
+## Running the test ----
 bricks_aug <- bricks_fit |> augment()
 
-head(bricks_aug)
+bricks_aug |> filter(.model == "Nv") |> features(.innov, box_pierce, lag = 8, dof = 0)
 
+bricks_aug |> filter(.model == "Nv") |> features(.innov, ljung_box, lag = 8, dof = 0)
+bricks_aug |> filter(.model == "Mean") |> features(.innov, ljung_box, lag = 8, dof = 1)
 
-# ---- 2. the one function that does most of it ----
-# gg_tsresiduals() draws the residuals over time, their
-# ACF plot, and their histogram. It needs a single model.
-
-bricks_fit |> select(Nv) |> gg_tsresiduals()
-
-bricks_fit |> select(Mean) |> gg_tsresiduals()
-
-
-# ---- 3. property 2: zero mean ----
-
-bricks_aug |>
-  as_tibble() |>
-  summarise(mean_resid = mean(.resid, na.rm = TRUE), .by = .model)
-
-# The mean model's residuals average to essentially zero by
-# construction, which is not evidence that it is a good model.
-
-
-# ---- 4. property 1: no autocorrelation ----
-
-bricks_aug |>
-  filter(.model == "Nv") |>
-  ACF(.innov) |>
-  autoplot() +
-  labs(title = "ACF plot of the residuals, naive model on bricks")
-
-
-# ---- 5. properties 3 and 4: variance and normality ----
-
-resid_nv <- bricks_aug |> filter(.model == "Nv")
-
-# Normality: points on the QQ line means normal.
-resid_nv |>
-  ggplot(aes(sample = .innov)) +
-  stat_qq() +
-  stat_qq_line(colour = "#D55E00") +
-  labs(title = "QQ plot of the residuals", x = "Theoretical", y = "Sample")
-
-# Constant variance: boxes of similar height mean the spread is stable.
-resid_nv |>
-  as_tibble() |>
-  mutate(yr = year(Quarter)) |>
-  ggplot(aes(x = factor(yr), y = .innov)) +
-  geom_boxplot() +
-  labs(title = "Residuals by year", x = NULL, y = "Innovation residual") +
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5))
-
-
-# ---- 6. the multiple testing problem ----
-# A portmanteau test asks one question about the first l
-# autocorrelations together. Ljung-Box is the one to use;
-# Box-Pierce is the older version, shown for context.
-#
-#   H0: the residuals are white noise (no autocorrelation)
-#   small p-value -> reject H0 -> structure is left
-
-# lag: how many autocorrelations to include.
-#      fpp3 suggests 10 for non-seasonal data, 2m for seasonal.
-#      Bricks is quarterly, m = 4, so lag = 8.
-# dof: how many parameters the model estimated. tidy() lists
-#      them: none for naive, one (the mean) for the mean model.
-
-tidy(bricks_fit)
-
-bricks_aug |>
-  filter(.model == "Nv") |>
-  features(.innov, ljung_box, lag = 8, dof = 0)
-
-bricks_aug |>
-  filter(.model == "Nv") |>
-  features(.innov, box_pierce, lag = 8, dof = 0)
-
-bricks_aug |>
-  filter(.model == "Mean") |>
-  features(.innov, ljung_box, lag = 8, dof = 1)
-
-
-# ---- 7. why squaring matters ----
-
-tibble(
-  r        = c(0.9, 0.7, 0.5, 0.25, 0.1),
-  r_sq     = c(0.9, 0.7, 0.5, 0.25, 0.1)^2,
-  shrunk_by = 1 - c(0.9, 0.7, 0.5, 0.25, 0.1)
-)
-
-
-# ============================================================
-# EXERCISES
-#
-# ASSIGNED this week: exercise 1 only. Exercise 2 is optional -
-# see the note on it below.
-# ============================================================
-
-# ---- exercise 1: the decomposition model's residuals ----
-#
-# ASSIGNED. This is 09_B Exercise 1. It diagnoses the model that
-# 08_A Exercise 1 built: an STL decomposition of log Turnover,
-# with drift on the seasonally adjusted part and SNAIVE on the
-# seasonal part. The fitting code is given below, so you do not
-# need to have done 08_A Exercise 1 first.
-#
-# Note log(Turnover) inside STL(): the series is multiplicative.
-
+# Exercise 1 ----
 retail_series <- aus_retail |>
-  filter(`Series ID` == "A3349767W")
+  filter(`Series ID` == "A3349767W") 
 
-retail_series |> autoplot(Turnover)
+retail_series |> autoplot()
 
-fit_dcmp <- retail_series |>
+fit_dcmp <- retail_series |> 
   model(
     decomp = decomposition_model(
-      STL(log(Turnover)),
-      RW(season_adjust ~ drift()),
-      SNAIVE(season_year)
-    )
+                # Specify the decomposition scheme to be used.
+                STL(log(Turnover)),
+                # Specify a model for the seasonally adjusted component (in this case, a drift).
+                RW(season_adjust ~ drift()),
+                # Specify a model for the seasonal component (unnecessary, since SNAIVE is the default).
+                SNAIVE(season_year)
+            )
   )
 
 fit_dcmp
 
-# YOUR TURN:
-#   1. gg_tsresiduals() on this model.
-#   2. Work through all four properties in the order used in
-#      class. One sentence each.
-#   3. For the autocorrelation property: several bars cross the
-#      bounds. Say why counting crossings one at a time is the
-#      wrong way to decide, and name the test that fixes it.
-#   4. Run that test. Monthly data, so work out lag from m, and
-#      work out dof from how many parameters the model estimates.
-#      Say why you chose each.
-#   5. Compare .resid and .innov for this model. Are they
-#      identical? Explain in one sentence.
-
-# ---- exercise 2: Australian exports ----
-#
-# NOT ASSIGNED this term. Optional practice: a simpler diagnosis
-# on a model with no transformation in it.
-
-aus_exports <- global_economy |> filter(Country == "Australia")
-
-#   1. Fit a NAIVE model to Exports.
-#   2. Full diagnosis: gg_tsresiduals(), QQ plot, boxplots.
-#   3. A Ljung-Box test. Annual, non-seasonal data and a
-#      benchmark model, so lag and dof differ from exercise 1.
-#   4. Which properties hold, which fail, what you would do.
-
-
-# ============================================================
-# MIDTERM REVISION - SESSIONS 1 TO 8
-#
-# The spine of what is examinable, in order. Use it as a
-# checklist: for each line, can you say what it is and produce
-# the R for it?
-#
-#  S1  R, RStudio, projects, packages
-#  S2  stochastic processes; tsibbles; index, key, measured vars
-#  S3  time plots, seasonal plots, subseries plots, scatterplots
-#      trend / seasonality / cycle - and which is which
-#  S4  lag plots; the ACF and the correlogram; white noise;
-#      the +/- 2/sqrt(T) bounds
-#  S5  additive vs multiplicative schemes; transformations;
-#      detrended and seasonally adjusted series; all.equal()
-#  S6  moving averages; centered windows; odd m and the 2xm
-#      construction; why the ends are missing
-#  S7  classical decomposition in four steps; the two criteria
-#      for a good decomposition; STL and its two windows
-#  S8  fitted values vs forecasts; the four benchmarks;
-#      forecast distributions; forecasting through a
-#      decomposition
-# ============================================================
+# Exercise 2 ----
+aus_exports <- filter(global_economy, Country == "Australia")
