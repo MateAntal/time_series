@@ -15,18 +15,18 @@ $$e_t = y_t - \hat{y}_{t|t-1}$$
 
 | | Property | In symbols | The question it answers |
 |---|---|---|---|
-| **1** | Uncorrelated | $\operatorname{cov}(e_t,\, e_{t-s}) = 0$ for every lag $s \neq 0$ | Is there information left in the residuals? |
-| **2** | Zero mean | $E[e_t] = 0$ | Are the forecasts biased? |
-| **3** | Constant variance (homoscedasticity) | $\operatorname{var}(e_t) = \sigma^2$ for every $t$ | Can one interval width be used everywhere? |
-| **4** | Normally distributed | $e_t \sim N(0, \sigma^2)$ | Does the interval arithmetic hold? |
+| **1** | Uncorrelated | $`\mathrm{cov}(e_t,\, e_{t-s}) = 0`$ for every lag $`s \neq 0`$ | Is there information left in the residuals? |
+| **2** | Zero mean | $`E[e_t] = 0`$ | Are the forecasts biased? |
+| **3** | Constant variance (homoscedasticity) | $`\mathrm{var}(e_t) = \sigma^2`$ for every $`t`$ | Can one interval width be used everywhere? |
+| **4** | Normally distributed | $`e_t \sim N(0, \sigma^2)`$ | Does the interval arithmetic hold? |
 
 - **1 and 2 are about the model.** If the residuals fail either, the model can be improved.
 - **3 and 4 are about the prediction intervals.** They are useful but not necessary: if the residuals
   fail them, the point forecasts are unaffected, but the intervals take more work to compute
   honestly.
 
-Why property 2 means unbiased forecasts: since $e_t = y_t - \hat{y}_t$, linearity of expectation
-gives $E[e_t] = E[y_t] - E[\hat{y}_t]$, so $E[e_t] = 0 \iff E[y_t] = E[\hat{y}_t]$.
+Why property 2 means unbiased forecasts: since $`e_t = y_t - \hat{y}_t`$, linearity of expectation
+gives $`E[e_t] = E[y_t] - E[\hat{y}_t]`$, so $`E[e_t] = 0 \iff E[y_t] = E[\hat{y}_t]`$.
 
 ---
 
@@ -40,8 +40,9 @@ gives $E[e_t] = E[y_t] - E[\hat{y}_t]$, so $E[e_t] = 0 \iff E[y_t] = E[\hat{y}_t
 | **4** Normal | Histogram (or kernel density); QQ plot; boxplots for symmetry | Box–Cox transformation; bootstrapped intervals, which do not assume normality; change the model |
 
 `gg_tsresiduals()` draws the time plot, the ACF plot and the histogram in one call.
-`features(.innov, ljung_box, lag = , dof = )` runs the Ljung–Box test: a small p-value means
-structure is left.
+`features(.innov, ljung_box, lag = 10, dof = 0)` runs the Ljung–Box test: a small p-value means
+structure is left. Use `lag = 10` for non-seasonal data and `2m` for seasonal data with period `m`;
+`dof` is the number of parameters the model estimated (fpp3 5.4).
 
 Formal tests beyond this course, for reference: Breusch–Pagan and McLeod–Li for constant
 variance; Shapiro–Wilk, D'Agostino and Jarque–Bera for normality.
@@ -54,26 +55,28 @@ Check all four every time. A failure tells you what to do next; it never means t
 
 ```mermaid
 flowchart TD
-    S["Fit the model, augment(), take .innov"] --> P1{"1 · Autocorrelation left?<br/>ACF plot, Ljung–Box"}
+    S["Fit the model, augment(), take .innov"] --> P1{"1 · Autocorrelation left?"}
     P1 -- yes --> F1["The model can be improved:<br/>add regressors or change the model"]
-    P1 -- no --> P2{"2 · Mean different from zero?<br/>average of the residuals"}
+    P1 -- no --> P2{"2 · Mean not zero?"}
     F1 --> P2
     P2 -- yes --> F2["Forecasts are biased:<br/>subtract the mean"]
-    P2 -- no --> M["1 and 2 pass: the model has used the information it can.<br/>Other models may pass too, so choose among them on accuracy"]
-    F2 --> M
-    M --> P3{"3 · Spread drifts?<br/>time plot, boxplots by year"}
+    P2 -- no --> P3{"3 · Spread drifts?"}
+    F2 --> P3
     P3 -- yes --> F3["One interval width is wrong:<br/>too narrow in some periods, too wide in others.<br/>Try Box–Cox"]
-    P3 -- no --> P4{"4 · Not normal?<br/>histogram, QQ plot"}
+    P3 -- no --> P4{"4 · Not normal?"}
     F3 --> P4
     P4 -- yes --> F4["Normal-theory intervals do not hold:<br/>Box–Cox, or bootstrap the intervals"]
-    P4 -- no --> I["3 and 4 pass: the usual<br/>prediction intervals are honest"]
-    F4 --> I2["Report the point forecast;<br/>quote intervals with care"]
+    P4 -- no --> E["Report what failed<br/>and what you did about it"]
+    F4 --> E
 
     classDef model fill:#F5E6DF,stroke:#B5471E,color:#161513
     classDef interval fill:#E3E8EC,stroke:#1F3A4D,color:#161513
-    class P1,P2,F1,F2,M model
-    class P3,P4,F3,F4,I,I2 interval
+    class P1,P2,F1,F2 model
+    class P3,P4,F3,F4 interval
 ```
+
+Red steps are about the model; blue steps are about the prediction intervals. How to check each
+one is in the table above.
 
 ---
 
