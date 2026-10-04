@@ -407,7 +407,7 @@ body.ov-on #overview{display:block}
       <li class="step"><b>Do not skip it for that reason.</b> Residual diagnostics is the most-used skill in the second half of this course, and Group Assignment 2 depends on it.</li>
     </ul>
     <div class="callout"><b>Residuals exist only for fitted values.</b> <code>e<sub>t</sub> = y<sub>t</sub> - y&#770;<sub>t|t-1</sub></code>: each fitted value sits inside the data, so there is an observation to subtract it from. A forecast has none yet. Everything today reads that one column.</div>
-    <p class="punch step wide">Skip today and the final costs you a third of the evaluation block. The midterm is the next session.</p>
+    <p class="punch step wide">Not on the midterm is not the same as not examined. Today comes back in the final and in Group Assignment 2.</p>
   </div>
   <aside class="notes">The coverage change is deliberate rather than administrative. Session 8 closes the decomposition arc and opens forecasting; Session 9 opens the evaluation arc and runs through Sessions 13 and 14. Splitting the exams at that seam keeps each one testing a coherent body of material rather than stopping halfway through an idea.<br><br>It also fixes a scheduling problem. The session after this one is the midterm itself, so there was no room for the usual start-of-session homework review. Tonight's homework is reviewed at the start of Session 11 instead, and slide 15 has the details. The revision deck is in the Session 10 folder, for the prep tutorial and office hours.</aside>
 </section>
@@ -419,12 +419,13 @@ body.ov-on #overview{display:block}
     <p class="kicker">fpp3 5.4 &nbsp;&middot;&nbsp; the summary sheet in one slide</p>
     <h1 class="sowhat wide">A model has done its job when nothing but noise is left.</h1>
     <figure>
-      <svg viewBox="0 0 760 208" role="img" aria-label="Four properties in two groups. The first group, about the model, contains no autocorrelation and zero mean. The second group, about the intervals, contains constant variance and normal distribution. The first group is marked as worth fixing, the second as harder to fix">
+      <svg viewBox="0 0 760 208" role="img" aria-label="Four properties the residuals of a good model should have, in two groups. The first group, about the model, contains no autocorrelation and zero mean: if the residuals fail these, the model can be improved. The second group, about the intervals, contains constant variance and normal distribution: if the residuals fail these, the prediction intervals are wrong">
         <g font-family="SFMono-Regular,Menlo,monospace">
+          <text x="380" y="16" text-anchor="middle" fill="#6B665E" font-size="11.5">four properties the residuals of a good model should have</text>
           <rect x="24" y="30" width="348" height="150" rx="5" fill="#B5471E" opacity=".07"/>
           <rect x="24" y="30" width="348" height="150" rx="5" fill="none" stroke="#B5471E" stroke-width="1.8"/>
           <text x="198" y="54" text-anchor="middle" fill="#B5471E" font-size="12.5" font-weight="700">ABOUT THE MODEL</text>
-          <text x="198" y="72" text-anchor="middle" fill="#98928a" font-size="10.5">fails here and the model can be improved</text>
+          <text x="198" y="72" text-anchor="middle" fill="#98928a" font-size="10.5">residuals fail these: improve the model</text>
           <text x="46" y="104" fill="#161513" font-size="13">1 &nbsp; no autocorrelation</text>
           <text x="68" y="122" fill="#98928a" font-size="10.5">nothing left to explain</text>
           <text x="46" y="150" fill="#161513" font-size="13">2 &nbsp; zero mean</text>
@@ -433,7 +434,7 @@ body.ov-on #overview{display:block}
           <rect x="388" y="30" width="348" height="150" rx="5" fill="#1F3A4D" opacity=".07"/>
           <rect x="388" y="30" width="348" height="150" rx="5" fill="none" stroke="#1F3A4D" stroke-width="1.8"/>
           <text x="562" y="54" text-anchor="middle" fill="#1F3A4D" font-size="12.5" font-weight="700">ABOUT THE INTERVALS</text>
-          <text x="562" y="72" text-anchor="middle" fill="#98928a" font-size="10.5">fails here and the intervals are wrong</text>
+          <text x="562" y="72" text-anchor="middle" fill="#98928a" font-size="10.5">residuals fail these: intervals are wrong</text>
           <text x="410" y="104" fill="#161513" font-size="13">3 &nbsp; constant variance</text>
           <text x="432" y="122" fill="#98928a" font-size="10.5">the spread does not drift</text>
           <text x="410" y="150" fill="#161513" font-size="13">4 &nbsp; normally distributed</text>
@@ -441,13 +442,13 @@ body.ov-on #overview{display:block}
         </g>
       </svg>
       <div class="figrow">
-        <p class="step"><b>Left pair: can I do better?</b>Autocorrelation and bias both say the model missed something. Both are worth acting on.</p>
-        <p class="step t"><b>Right pair: can I quote a range?</b>Variance and normality decide whether a prediction interval means what it claims. Session 12's problem.</p>
+        <p class="step t"><b>Left pair: can I do better?</b>Autocorrelation and bias both say the model missed something. Both are worth acting on.</p>
+        <p class="step"><b>Right pair: can I quote a range?</b>Variance and normality decide whether a prediction interval means what it claims. Session 12's problem.</p>
       </div>
     </figure>
     <p class="punch step wide">Four properties, two questions. Knowing which question a failure belongs to tells you whether to change the model or change what you claim.</p>
   </div>
-  <aside class="notes">The one-page PDF in this folder, <code>09_A</code>, sets these out with what to do about each failure, and it is the single most useful thing to have beside you during Group Assignment 2. Print it.<br><br>A point about ordering that is easy to miss: properties 1 and 2 are checked to decide whether a model is <i>finished</i>, and properties 3 and 4 to decide what you are entitled to <i>say</i>. A model can pass 1 and 2 and still leave you unable to quote an honest interval, and that is not a failure of the forecast. It is a limit on the claim.</aside>
+  <aside class="notes">The one-page PDF in this folder, <code>09_A</code>, sets these out with what to do about each failure, and it is the single most useful thing to have beside you during Group Assignment 2. Print it.<br><br>A point about ordering that is easy to miss: properties 1 and 2 are checked to decide whether a model is <i>finished</i>, and properties 3 and 4 to decide what you are entitled to <i>say</i>. A model can pass 1 and 2 and still leave you unable to quote an honest interval, and that is not a failure of the forecast. It is a limit on the claim.<br><br>All four properties are properties of the <b>residuals</b>, not of the series and not of the forecasts. Strictly, fpp3 states them for the <i>innovation</i> residuals, the <code>.innov</code> column; until Session 11 that column is identical to <code>.resid</code>, so "the residuals" is exact for today.</aside>
 </section>
 
 
@@ -455,33 +456,36 @@ body.ov-on #overview{display:block}
 <section class="slide" data-section="2" data-title="No autocorrelation">
   <div class="inner">
     <p class="kicker">Property 1 &nbsp;&middot;&nbsp; the hard one</p>
-    <h1 class="sowhat">This is the correlogram, used for the third time.</h1>
+    <h1 class="sowhat">This is the ACF plot, used for the third time.</h1>
     <figure>
-      <svg viewBox="0 0 760 178" role="img" aria-label="Three panels showing the same correlogram tool applied to three different things: a raw series in session four, a decomposition remainder in session seven, and model residuals in session nine">
+      <svg viewBox="0 0 760 202" role="img" aria-label="Three panels showing the same ACF plot applied to three different things. Session four, a raw series: bars decay slowly and peak again at the seasonal lags. Session seven, a decomposition remainder: small bars with one crossing. Session nine, model residuals: every bar inside the bounds, which is what a finished model should leave">
         <g font-family="SFMono-Regular,Menlo,monospace" font-size="11.5">
-          <rect x="24" y="36" width="216" height="80" rx="4" fill="#1F3A4D" opacity=".07"/>
-          <rect x="24" y="36" width="216" height="80" rx="4" fill="none" stroke="#98928a" stroke-width="1.4"/>
+          <rect x="24" y="36" width="216" height="130" rx="4" fill="#1F3A4D" opacity=".06"/>
+          <rect x="24" y="36" width="216" height="130" rx="4" fill="none" stroke="#98928a" stroke-width="1.6"/>
           <text x="132" y="26" text-anchor="middle" fill="#98928a">SESSION 4</text>
-          <text x="132" y="66" text-anchor="middle" fill="#161513" font-size="12.5">a raw series</text>
-          <text x="132" y="92" text-anchor="middle" fill="#6B665E" font-size="10.5">what patterns are in here?</text>
-
-          <rect x="272" y="36" width="216" height="80" rx="4" fill="#6B7F5E" opacity=".10"/>
-          <rect x="272" y="36" width="216" height="80" rx="4" fill="none" stroke="#6B7F5E" stroke-width="1.4"/>
+          <text x="132" y="60" text-anchor="middle" fill="#161513" font-size="12.5">a raw series</text>
+          <text x="132" y="78" text-anchor="middle" fill="#6B665E" font-size="10.5">what patterns are in here?</text>
+          <path d="M38 126 H226" stroke="#6B665E" stroke-width="1" fill="none"/>
+          <g stroke="#1F3A4D" stroke-width="1" stroke-dasharray="4 3" fill="none" opacity=".7"><path d="M38 111 H226"/><path d="M38 141 H226"/></g>
+          <rect x="46" y="100" width="8" height="26" fill="#6B665E"/><rect x="62" y="105" width="8" height="21" fill="#6B665E"/><rect x="78" y="107" width="8" height="19" fill="#6B665E"/><rect x="94" y="99" width="8" height="27" fill="#6B665E"/><rect x="110" y="108" width="8" height="18" fill="#6B665E"/><rect x="126" y="111" width="8" height="15" fill="#6B665E"/><rect x="142" y="113" width="8" height="13" fill="#6B665E"/><rect x="158" y="105" width="8" height="21" fill="#6B665E"/><rect x="174" y="113" width="8" height="13" fill="#6B665E"/><rect x="190" y="116" width="8" height="10" fill="#6B665E"/><rect x="206" y="118" width="8" height="8" fill="#6B665E"/>
+          <rect x="272" y="36" width="216" height="130" rx="4" fill="#6B7F5E" opacity=".10"/>
+          <rect x="272" y="36" width="216" height="130" rx="4" fill="none" stroke="#6B7F5E" stroke-width="1.6"/>
           <text x="380" y="26" text-anchor="middle" fill="#6B7F5E">SESSION 7</text>
-          <text x="380" y="66" text-anchor="middle" fill="#161513" font-size="12.5">a decomposition remainder</text>
-          <text x="380" y="92" text-anchor="middle" fill="#6B665E" font-size="10.5">what did the split miss?</text>
-
-          <rect x="520" y="36" width="216" height="80" rx="4" fill="#B5471E" opacity=".12"/>
-          <rect x="520" y="36" width="216" height="80" rx="4" fill="none" stroke="#B5471E" stroke-width="1.8"/>
+          <text x="380" y="60" text-anchor="middle" fill="#161513" font-size="12.5">a decomposition remainder</text>
+          <text x="380" y="78" text-anchor="middle" fill="#6B665E" font-size="10.5">what did the split miss?</text>
+          <path d="M286 126 H474" stroke="#6B665E" stroke-width="1" fill="none"/>
+          <g stroke="#1F3A4D" stroke-width="1" stroke-dasharray="4 3" fill="none" opacity=".7"><path d="M286 111 H474"/><path d="M286 141 H474"/></g>
+          <rect x="294" y="116" width="8" height="10" fill="#6B7F5E"/><rect x="310" y="126" width="8" height="6" fill="#6B7F5E"/><rect x="326" y="122" width="8" height="4" fill="#6B7F5E"/><rect x="342" y="126" width="8" height="17" fill="#6B7F5E"/><rect x="358" y="123" width="8" height="3" fill="#6B7F5E"/><rect x="374" y="126" width="8" height="5" fill="#6B7F5E"/><rect x="390" y="120" width="8" height="6" fill="#6B7F5E"/><rect x="406" y="126" width="8" height="3" fill="#6B7F5E"/><rect x="422" y="118" width="8" height="8" fill="#6B7F5E"/><rect x="438" y="126" width="8" height="2" fill="#6B7F5E"/><rect x="454" y="122" width="8" height="4" fill="#6B7F5E"/>
+          <rect x="520" y="36" width="216" height="130" rx="4" fill="#B5471E" opacity=".10"/>
+          <rect x="520" y="36" width="216" height="130" rx="4" fill="none" stroke="#B5471E" stroke-width="1.6"/>
           <text x="628" y="26" text-anchor="middle" fill="#B5471E">SESSION 9</text>
-          <text x="628" y="66" text-anchor="middle" fill="#161513" font-size="12.5">model residuals</text>
-          <text x="628" y="92" text-anchor="middle" fill="#6B665E" font-size="10.5">what did the model miss?</text>
-
-          <g stroke="#98928a" stroke-width="1.6" fill="none">
-            <path d="M240 76 H266"/><path d="M259 70 L268 76 L259 82"/>
-            <path d="M488 76 H514"/><path d="M481 70 L490 76 L481 82"/>
-          </g>
-          <text x="380" y="150" text-anchor="middle" fill="#98928a" font-size="11.5">one instrument, a sharper question each time</text>
+          <text x="628" y="60" text-anchor="middle" fill="#161513" font-size="12.5">model residuals</text>
+          <text x="628" y="78" text-anchor="middle" fill="#6B665E" font-size="10.5">what did the model miss?</text>
+          <path d="M534 126 H722" stroke="#6B665E" stroke-width="1" fill="none"/>
+          <g stroke="#1F3A4D" stroke-width="1" stroke-dasharray="4 3" fill="none" opacity=".7"><path d="M534 111 H722"/><path d="M534 141 H722"/></g>
+          <rect x="542" y="121" width="8" height="5" fill="#B5471E"/><rect x="558" y="126" width="8" height="7" fill="#B5471E"/><rect x="574" y="123" width="8" height="3" fill="#B5471E"/><rect x="590" y="126" width="8" height="4" fill="#B5471E"/><rect x="606" y="118" width="8" height="8" fill="#B5471E"/><rect x="622" y="126" width="8" height="2" fill="#B5471E"/><rect x="638" y="122" width="8" height="4" fill="#B5471E"/><rect x="654" y="126" width="8" height="6" fill="#B5471E"/><rect x="670" y="124" width="8" height="2" fill="#B5471E"/><rect x="686" y="126" width="8" height="3" fill="#B5471E"/><rect x="702" y="121" width="8" height="5" fill="#B5471E"/>
+          <g stroke="#98928a" stroke-width="1.6" fill="none"><path d="M244 101 H266"/><path d="M260 95 L268 101 L260 107"/><path d="M492 101 H514"/><path d="M508 95 L516 101 L508 107"/></g>
+          <text x="380" y="194" text-anchor="middle" fill="#98928a" font-size="11.5">one instrument (the ACF plot, or correlogram), a sharper question each time</text>
         </g>
       </svg>
     </figure>
@@ -492,7 +496,7 @@ body.ov-on #overview{display:block}
     </ul>
     <p class="punch step wide">If you understood Session 4, you already know how to read this plot. What is new is what a crossing now implies: not a feature of the data, but a shortcoming of the model.</p>
   </div>
-  <aside class="notes">Run the correlogram on <code>.innov</code> rather than <code>.resid</code>. With no transformation they are identical, so it makes no difference today, but from Session 11 on the innovation residuals are the ones the model actually worked with, and those are the ones whose structure is meaningful.<br><br>This is also the point where Session 4's white noise stops being an abstraction. The null hypothesis of the whole course was that a series has no memory; the hope for a set of residuals is that they do not either. Same statement, opposite sign of hope.<br><br>The middle panel and the right one look alike but hold different things. A decomposition remainder is what is left of the series once the trend and season are taken out, and the trend came from a centered window that used values after each point, so the remainder describes the series rather than recording an error. Nothing requires it to be white noise. A residual is the gap between each observation and its fitted value, a one-step forecast from earlier data only, so it is the model's error, and a good model should leave white noise behind.</aside>
+  <aside class="notes">Two names, one plot: Session 4 called it the <b>correlogram</b> as well as the <b>ACF plot</b>. This deck says ACF plot, because that is what fpp3 5.4, the <code>09_B</code> notebook and the <code>gg_tsresiduals()</code> panel all say.<br><br>Run the ACF plot on <code>.innov</code> rather than <code>.resid</code>. With no transformation they are identical, so it makes no difference today, but from Session 11 on the innovation residuals are the ones the model actually worked with, and those are the ones whose structure is meaningful.<br><br>This is also the point where Session 4's white noise stops being an abstraction. The null hypothesis of the whole course was that a series has no memory; the hope for a set of residuals is that they do not either. Same statement, opposite sign of hope.<br><br>The middle panel and the right one look alike but hold different things. A decomposition remainder is what is left of the series once the trend and season are taken out, and the trend came from a centered window that used values after each point, so the remainder describes the series rather than recording an error. Nothing requires it to be white noise. A residual is the gap between each observation and its fitted value, a one-step forecast from earlier data only, so it is the model's error, and a good model should leave white noise behind.</aside>
 </section>
 
 
@@ -502,43 +506,25 @@ body.ov-on #overview{display:block}
     <p class="kicker">Property 2 &nbsp;&middot;&nbsp; the easy one</p>
     <h1 class="sowhat wide">A non-zero mean means biased forecasts, and it costs one subtraction to fix.</h1>
     <figure>
-      <svg viewBox="0 0 760 176" role="img" aria-label="Two residual time plots side by side. On the left the residuals scatter evenly around the zero line, so the forecasts are unbiased. On the right the residuals hover above zero around a dashed line marked m, meaning every forecast carries the same upward offset. The whole remedy is one subtraction">
+      <svg viewBox="0 0 760 182" role="img" aria-label="Two residual time plots side by side. On the left the residuals scatter evenly around the zero line, so the forecasts are unbiased. On the right the residuals scatter around a dashed line marked m above zero, meaning every forecast carries the same offset. The whole remedy is one subtraction">
         <g font-family="SFMono-Regular,Menlo,monospace">
-          <rect x="24" y="24" width="348" height="106" rx="5" fill="#1F3A4D" opacity=".07"/>
-          <rect x="24" y="24" width="348" height="106" rx="5" fill="none" stroke="#1F3A4D" stroke-width="1.8"/>
-          <text x="198" y="46" text-anchor="middle" fill="#1F3A4D" font-size="12.5" font-weight="700">PASSING</text>
-          <path d="M44 102 H352" stroke="#1F3A4D" stroke-width="1.4" stroke-dasharray="5 4" fill="none" opacity=".65"/>
-          <text x="352" y="98" text-anchor="end" fill="#98928a" font-size="10.5">0</text>
-          <g fill="#1F3A4D">
-            <circle cx="58" cy="92" r="3"/><circle cx="82" cy="112" r="3"/><circle cx="106" cy="98" r="3"/>
-            <circle cx="130" cy="86" r="3"/><circle cx="154" cy="116" r="3"/><circle cx="178" cy="94" r="3"/>
-            <circle cx="202" cy="104" r="3"/><circle cx="226" cy="84" r="3"/><circle cx="250" cy="110" r="3"/>
-            <circle cx="274" cy="96" r="3"/><circle cx="298" cy="118" r="3"/><circle cx="322" cy="90" r="3"/>
-            <circle cx="342" cy="104" r="3"/>
-          </g>
-          <text x="198" y="146" text-anchor="middle" fill="#6B665E" font-size="10.5">mean zero &#183; forecasts unbiased</text>
-
-          <rect x="388" y="24" width="348" height="106" rx="5" fill="#B5471E" opacity=".07"/>
-          <rect x="388" y="24" width="348" height="106" rx="5" fill="none" stroke="#B5471E" stroke-width="1.8"/>
+          <rect x="24" y="24" width="348" height="106" rx="5" fill="#6B7F5E" opacity=".10"/><rect x="24" y="24" width="348" height="106" rx="5" fill="none" stroke="#6B7F5E" stroke-width="1.8"/>
+          <text x="198" y="46" text-anchor="middle" fill="#6B7F5E" font-size="12.5" font-weight="700">PASSING</text>
+          <path d="M44 100 H356" stroke="#6B7F5E" stroke-width="1.4" stroke-dasharray="5 4" fill="none" opacity=".75"/>
+          <text x="38" y="104" text-anchor="end" fill="#98928a" font-size="10.5">0</text>
+          <g fill="#6B7F5E"><circle cx="58" cy="90" r="3"/><circle cx="82" cy="110" r="3"/><circle cx="106" cy="96" r="3"/><circle cx="130" cy="86" r="3"/><circle cx="154" cy="114" r="3"/><circle cx="178" cy="92" r="3"/><circle cx="202" cy="102" r="3"/><circle cx="226" cy="84" r="3"/><circle cx="250" cy="108" r="3"/><circle cx="274" cy="94" r="3"/><circle cx="298" cy="116" r="3"/><circle cx="322" cy="88" r="3"/><circle cx="346" cy="104" r="3"/></g>
+          <text x="198" y="148" text-anchor="middle" fill="#6B665E" font-size="10.5">mean zero &#183; forecasts unbiased</text>
+          <rect x="388" y="24" width="348" height="106" rx="5" fill="#B5471E" opacity=".07"/><rect x="388" y="24" width="348" height="106" rx="5" fill="none" stroke="#B5471E" stroke-width="1.8"/>
           <text x="562" y="46" text-anchor="middle" fill="#B5471E" font-size="12.5" font-weight="700">FAILING</text>
-          <path d="M408 102 H716" stroke="#98928a" stroke-width="1.4" stroke-dasharray="5 4" fill="none" opacity=".65"/>
-          <text x="716" y="98" text-anchor="end" fill="#98928a" font-size="10.5">0</text>
-          <path d="M408 76 H716" stroke="#B5471E" stroke-width="1.6" stroke-dasharray="5 4" fill="none"/>
-          <text x="716" y="72" text-anchor="end" fill="#B5471E" font-size="11.5" font-weight="700">m</text>
-          <g stroke="#B5471E" stroke-width="1.4" fill="none">
-            <path d="M428 102 V80"/><path d="M422 86 L428 79 L434 86"/>
-          </g>
+          <path d="M408 104 H720" stroke="#98928a" stroke-width="1.4" stroke-dasharray="5 4" fill="none" opacity=".75"/>
+          <text x="402" y="108" text-anchor="end" fill="#98928a" font-size="10.5">0</text>
+          <path d="M408 78 H720" stroke="#B5471E" stroke-width="1.6" stroke-dasharray="5 4" fill="none"/>
+          <text x="402" y="82" text-anchor="end" fill="#B5471E" font-size="11.5" font-weight="700">m</text>
+          <g stroke="#B5471E" stroke-width="1.4" fill="none"><path d="M420 104 V82"/><path d="M414 88 L420 81 L426 88"/></g>
           <text x="428" y="122" fill="#B5471E" font-size="10.5">offset m</text>
-          <g fill="#B5471E">
-            <circle cx="422" cy="66" r="3"/><circle cx="446" cy="84" r="3"/>
-            <circle cx="470" cy="72" r="3"/><circle cx="494" cy="88" r="3"/><circle cx="518" cy="64" r="3"/>
-            <circle cx="542" cy="80" r="3"/><circle cx="566" cy="70" r="3"/><circle cx="590" cy="86" r="3"/>
-            <circle cx="614" cy="66" r="3"/><circle cx="638" cy="82" r="3"/><circle cx="662" cy="72" r="3"/>
-            <circle cx="686" cy="84" r="3"/><circle cx="706" cy="68" r="3"/>
-          </g>
-          <text x="562" y="146" text-anchor="middle" fill="#6B665E" font-size="10.5">every forecast carries +m</text>
-
-          <text x="380" y="172" text-anchor="middle" fill="#98928a" font-size="11.5">the whole remedy: subtract m from every forecast</text>
+          <g fill="#B5471E"><circle cx="446" cy="68" r="3"/><circle cx="468" cy="86" r="3"/><circle cx="490" cy="74" r="3"/><circle cx="512" cy="90" r="3"/><circle cx="534" cy="64" r="3"/><circle cx="556" cy="82" r="3"/><circle cx="578" cy="70" r="3"/><circle cx="600" cy="88" r="3"/><circle cx="622" cy="66" r="3"/><circle cx="644" cy="84" r="3"/><circle cx="666" cy="72" r="3"/><circle cx="688" cy="87" r="3"/><circle cx="710" cy="67" r="3"/></g>
+          <text x="562" y="148" text-anchor="middle" fill="#6B665E" font-size="10.5">every forecast carries +m</text>
+          <text x="380" y="174" text-anchor="middle" fill="#98928a" font-size="11.5">the whole remedy: subtract m from every forecast</text>
         </g>
       </svg>
     </figure>
@@ -560,37 +546,22 @@ body.ov-on #overview{display:block}
     <p class="kicker">Properties 3 and 4 &nbsp;&middot;&nbsp; about what you are entitled to claim</p>
     <h1 class="sowhat">These two do not judge the forecast. They judge the interval around it.</h1>
     <figure>
-      <svg viewBox="0 0 760 176" role="img" aria-label="Two residual time plots. On the left the spread of the residuals stays the same width across the whole horizon, so one interval width is honest everywhere. On the right the spread widens like a funnel, so an interval computed from the whole history is too narrow at the end and too wide at the start">
+      <svg viewBox="0 0 760 198" role="img" aria-label="Two residual time plots. On the left the spread of the residuals stays the same width across the whole horizon, so one interval width is honest everywhere. On the right the spread widens like a funnel, so an interval computed from the whole history is too narrow at the end and too wide at the start. The usual cause is a multiplicative series fitted additively, and the first thing to try is the transformation in Session 11">
         <g font-family="SFMono-Regular,Menlo,monospace">
-          <rect x="24" y="24" width="348" height="106" rx="5" fill="#6B7F5E" opacity=".10"/>
-          <rect x="24" y="24" width="348" height="106" rx="5" fill="none" stroke="#6B7F5E" stroke-width="1.8"/>
+          <rect x="24" y="24" width="348" height="106" rx="5" fill="#6B7F5E" opacity=".10"/><rect x="24" y="24" width="348" height="106" rx="5" fill="none" stroke="#6B7F5E" stroke-width="1.8"/>
           <text x="198" y="46" text-anchor="middle" fill="#6B7F5E" font-size="12.5" font-weight="700">CONSTANT VARIANCE</text>
-          <path d="M44 72 H352" stroke="#6B7F5E" stroke-width="1.3" stroke-dasharray="5 4" fill="none" opacity=".75"/>
-          <path d="M44 112 H352" stroke="#6B7F5E" stroke-width="1.3" stroke-dasharray="5 4" fill="none" opacity=".75"/>
-          <g fill="#6B7F5E">
-            <circle cx="58" cy="80" r="3"/><circle cx="80" cy="104" r="3"/><circle cx="102" cy="90" r="3"/>
-            <circle cx="124" cy="76" r="3"/><circle cx="146" cy="108" r="3"/><circle cx="168" cy="88" r="3"/>
-            <circle cx="190" cy="98" r="3"/><circle cx="212" cy="78" r="3"/><circle cx="234" cy="106" r="3"/>
-            <circle cx="256" cy="86" r="3"/><circle cx="278" cy="100" r="3"/><circle cx="300" cy="76" r="3"/>
-            <circle cx="322" cy="94" r="3"/><circle cx="344" cy="82" r="3"/>
-          </g>
-          <text x="198" y="146" text-anchor="middle" fill="#6B665E" font-size="10.5">same spread throughout &#183; one width is honest everywhere</text>
-
-          <rect x="388" y="24" width="348" height="106" rx="5" fill="#B5471E" opacity=".07"/>
-          <rect x="388" y="24" width="348" height="106" rx="5" fill="none" stroke="#B5471E" stroke-width="1.8"/>
+          <path d="M44 74 H352" stroke="#6B7F5E" stroke-width="1.3" stroke-dasharray="5 4" fill="none" opacity=".75"/>
+          <path d="M44 114 H352" stroke="#6B7F5E" stroke-width="1.3" stroke-dasharray="5 4" fill="none" opacity=".75"/>
+          <g fill="#6B7F5E"><circle cx="58" cy="82" r="3"/><circle cx="80" cy="108" r="3"/><circle cx="102" cy="92" r="3"/><circle cx="124" cy="78" r="3"/><circle cx="146" cy="110" r="3"/><circle cx="168" cy="88" r="3"/><circle cx="190" cy="100" r="3"/><circle cx="212" cy="80" r="3"/><circle cx="234" cy="106" r="3"/><circle cx="256" cy="86" r="3"/><circle cx="278" cy="104" r="3"/><circle cx="300" cy="78" r="3"/><circle cx="322" cy="96" r="3"/><circle cx="344" cy="84" r="3"/></g>
+          <text x="198" y="148" text-anchor="middle" fill="#6B665E" font-size="10.5">same spread throughout &#183; one width is honest everywhere</text>
+          <rect x="388" y="24" width="348" height="106" rx="5" fill="#B5471E" opacity=".07"/><rect x="388" y="24" width="348" height="106" rx="5" fill="none" stroke="#B5471E" stroke-width="1.8"/>
           <text x="562" y="46" text-anchor="middle" fill="#B5471E" font-size="12.5" font-weight="700">DRIFTING VARIANCE</text>
-          <path d="M408 92 L716 58" stroke="#B5471E" stroke-width="1.4" stroke-dasharray="5 4" fill="none"/>
-          <path d="M408 92 L716 148" stroke="#B5471E" stroke-width="1.4" stroke-dasharray="5 4" fill="none"/>
-          <g fill="#B5471E">
-            <circle cx="422" cy="88" r="3"/><circle cx="444" cy="96" r="3"/><circle cx="466" cy="86" r="3"/>
-            <circle cx="488" cy="82" r="3"/><circle cx="510" cy="98" r="3"/><circle cx="532" cy="74" r="3"/>
-            <circle cx="554" cy="100" r="3"/><circle cx="576" cy="68" r="3"/><circle cx="598" cy="108" r="3"/>
-            <circle cx="620" cy="64" r="3"/><circle cx="642" cy="118" r="3"/><circle cx="664" cy="70" r="3"/>
-            <circle cx="686" cy="126" r="3"/><circle cx="704" cy="78" r="3"/>
-          </g>
-          <text x="562" y="146" text-anchor="middle" fill="#6B665E" font-size="10.5">a funnel: too narrow late, too wide early</text>
-
-          <text x="380" y="172" text-anchor="middle" fill="#98928a" font-size="11.5">the usual cause: a multiplicative series fitted additively; Session 11's transformation is the first thing to try</text>
+          <path d="M408 89 L716 64" stroke="#B5471E" stroke-width="1.4" stroke-dasharray="5 4" fill="none"/>
+          <path d="M408 95 L716 120" stroke="#B5471E" stroke-width="1.4" stroke-dasharray="5 4" fill="none"/>
+          <g fill="#B5471E"><circle cx="422" cy="90" r="3"/><circle cx="444" cy="97" r="3"/><circle cx="466" cy="90" r="3"/><circle cx="488" cy="99" r="3"/><circle cx="510" cy="81" r="3"/><circle cx="532" cy="97" r="3"/><circle cx="554" cy="80" r="3"/><circle cx="576" cy="108" r="3"/><circle cx="598" cy="83" r="3"/><circle cx="620" cy="109" r="3"/><circle cx="642" cy="72" r="3"/><circle cx="664" cy="106" r="3"/><circle cx="686" cy="73" r="3"/><circle cx="708" cy="117" r="3"/></g>
+          <text x="562" y="148" text-anchor="middle" fill="#6B665E" font-size="10.5">a funnel: too narrow late, too wide early</text>
+          <text x="380" y="174" text-anchor="middle" fill="#98928a" font-size="11.5">usual cause: a multiplicative series fitted additively</text>
+          <text x="380" y="191" text-anchor="middle" fill="#98928a" font-size="11.5">first thing to try: the transformation in Session 11</text>
         </g>
       </svg>
     </figure>
@@ -600,7 +571,7 @@ body.ov-on #overview{display:block}
       <li class="step"><b>Both are harder to fix than bias.</b> A transformation sometimes helps, which is Session 11. Beyond that, changing the model may be the only option.</li>
     </ul>
     <div class="callout"><b>There is a way out.</b> Bootstrapped intervals need uncorrelated, homoscedastic residuals but <i>not</i> normal ones. So a normality failure is survivable; a variance failure is harder.</div>
-    <p class="punch step wide">A point forecast can be perfectly good while the interval around it is a fiction. Reporting the first without checking the second is where forecasts mislead people.</p>
+    <p class="punch step wide">A point forecast can be genuinely good while the interval around it is a fiction. Reporting the first without checking the second is where forecasts mislead people.</p>
   </div>
   <aside class="notes">Heteroscedasticity in a residual plot usually looks like a funnel: the spread widening left to right. It very often means the series is multiplicative and was fitted additively, which is Session 5's question arriving with a consequence. A log transformation is the first thing to try.<br><br>The tools for these two are a QQ plot and a set of boxplots, and both appear in the script. A QQ plot puts the residual quantiles against the quantiles of a normal distribution: points on the line means normal, and systematic curvature at the ends means heavy tails.</aside>
 </section>
@@ -613,58 +584,36 @@ body.ov-on #overview{display:block}
     <h1 class="sowhat">One function, three panels, three of the four properties</h1>
     <div class="console">bricks_fit |&gt; select(Nv) |&gt; gg_tsresiduals()</div>
     <figure>
-      <svg viewBox="0 0 760 240" role="img" aria-label="A wireframe of the three panels gg_tsresiduals returns. A wide panel on top holds the residuals over time and answers the mean and the spread. Below left, a correlogram answers autocorrelation. Below right, a histogram answers normality">
+      <svg viewBox="0 0 760 276" role="img" aria-label="A wireframe of the three panels gg_tsresiduals returns, each tagged with the property it answers. The wide top panel holds the residuals over time and is tagged 2, mean, for the zero line, and 3, spread, with a dashed tag because it shows the spread only partly. Below left, the ACF plot is tagged 1, autocorrelation. Below right, the histogram is tagged 4, normality">
         <g font-family="SFMono-Regular,Menlo,monospace">
-          <rect x="24" y="28" width="712" height="90" rx="5" fill="#fff" stroke="#E4DFD5" stroke-width="1.4"/>
-          <text x="40" y="48" fill="#98928a" font-size="11">residuals over time</text>
-          <path d="M40 96 H728" stroke="#E4DFD5" stroke-width="1.2"/>
-          <path d="M40 90 H728" stroke="#98928a" stroke-width="1" stroke-dasharray="4 4" opacity=".6"/>
-          <g fill="#1F3A4D">
-            <circle cx="70" cy="86" r="3"/><circle cx="98" cy="92" r="3"/><circle cx="126" cy="80" r="3"/>
-            <circle cx="154" cy="90" r="3"/><circle cx="182" cy="78" r="3"/><circle cx="210" cy="94" r="3"/>
-            <circle cx="238" cy="82" r="3"/><circle cx="266" cy="88" r="3"/><circle cx="294" cy="76" r="3"/>
-            <circle cx="322" cy="90" r="3"/><circle cx="350" cy="86" r="3"/><circle cx="378" cy="94" r="3"/>
-            <circle cx="406" cy="80" r="3"/><circle cx="434" cy="88" r="3"/><circle cx="462" cy="92" r="3"/>
-            <circle cx="490" cy="78" r="3"/><circle cx="518" cy="90" r="3"/><circle cx="546" cy="84" r="3"/>
-            <circle cx="574" cy="88" r="3"/><circle cx="602" cy="76" r="3"/><circle cx="630" cy="92" r="3"/>
-            <circle cx="658" cy="80" r="3"/><circle cx="686" cy="88" r="3"/><circle cx="714" cy="84" r="3"/>
-          </g>
-          <text x="712" y="66" text-anchor="end" fill="#1F3A4D" font-size="11.5" font-weight="700">2 &#183; mean</text>
-          <text x="712" y="82" text-anchor="end" fill="#6B7F5E" font-size="11.5" font-weight="700">3 &#183; spread</text>
-
-          <rect x="24" y="140" width="348" height="80" rx="5" fill="#fff" stroke="#E4DFD5" stroke-width="1.4"/>
-          <text x="40" y="158" fill="#98928a" font-size="11">correlogram</text>
-          <path d="M40 200 H352" stroke="#E4DFD5" stroke-width="1.2"/>
-          <path d="M40 176 H352" stroke="#98928a" stroke-width="1" stroke-dasharray="4 4" opacity=".7"/>
-          <path d="M40 224 H352" stroke="#98928a" stroke-width="1" stroke-dasharray="4 4" opacity=".7"/>
-          <g fill="#1F3A4D">
-            <rect x="56" y="196" width="8" height="8"/><rect x="84" y="200" width="8" height="4"/>
-            <rect x="112" y="192" width="8" height="12"/><rect x="140" y="198" width="8" height="6"/>
-            <rect x="168" y="194" width="8" height="10"/><rect x="196" y="200" width="8" height="3"/>
-            <rect x="224" y="196" width="8" height="8"/><rect x="252" y="199" width="8" height="5"/>
-            <rect x="280" y="193" width="8" height="11"/><rect x="308" y="197" width="8" height="7"/>
-          </g>
-          <text x="352" y="176" text-anchor="end" fill="#B5471E" font-size="11.5" font-weight="700">1 &#183; autocorrelation</text>
-
-          <rect x="388" y="140" width="348" height="80" rx="5" fill="#fff" stroke="#E4DFD5" stroke-width="1.4"/>
-          <text x="404" y="158" fill="#98928a" font-size="11">histogram</text>
-          <path d="M404 200 H716" stroke="#E4DFD5" stroke-width="1.2"/>
-          <g fill="#1F3A4D">
-            <rect x="416" y="194" width="24" height="6"/><rect x="444" y="188" width="24" height="12"/>
-            <rect x="472" y="178" width="24" height="22"/><rect x="500" y="170" width="24" height="30"/>
-            <rect x="528" y="174" width="24" height="26"/><rect x="556" y="184" width="24" height="16"/>
-            <rect x="584" y="192" width="24" height="8"/><rect x="612" y="196" width="24" height="4"/>
-            <rect x="640" y="190" width="24" height="10"/>
-          </g>
-          <text x="716" y="176" text-anchor="end" fill="#6B7F5E" font-size="11.5" font-weight="700">4 &#183; normality</text>
-
-          <text x="380" y="236" text-anchor="middle" fill="#98928a" font-size="11.5">one call, three panels: properties 1, 2 and 4; the spread (3) is only half-visible in the top panel</text>
+          <rect x="24" y="24" width="712" height="104" rx="5" fill="#fff" stroke="#E4DFD5" stroke-width="1.4"/>
+          <text x="40" y="45" fill="#98928a" font-size="11">residuals over time</text>
+          <rect x="40" y="78" width="684" height="32" fill="#1F3A4D" opacity=".07"/>
+          <g stroke="#1F3A4D" stroke-width="1" stroke-dasharray="4 3" fill="none" opacity=".55"><path d="M40 78 H724"/><path d="M40 110 H724"/></g>
+          <path d="M40 94 H724" stroke="#B5471E" stroke-width="1.4" stroke-dasharray="5 4" fill="none"/>
+          <polyline points="52.0,90 79.5,101 107.0,84 134.5,97 162.0,86 189.5,106 217.0,92 244.5,83 272.0,100 299.5,89 327.0,104 354.5,87 382.0,96 409.5,82 437.0,102 464.5,91 492.0,105 519.5,85 547.0,99 574.5,81 602.0,98 629.5,88 657.0,103 684.5,93 712.0,100" fill="none" stroke="#3d3a35" stroke-width="1.2" opacity=".7"/>
+          <g fill="#3d3a35"><circle cx="52.0" cy="90" r="2.6"/><circle cx="79.5" cy="101" r="2.6"/><circle cx="107.0" cy="84" r="2.6"/><circle cx="134.5" cy="97" r="2.6"/><circle cx="162.0" cy="86" r="2.6"/><circle cx="189.5" cy="106" r="2.6"/><circle cx="217.0" cy="92" r="2.6"/><circle cx="244.5" cy="83" r="2.6"/><circle cx="272.0" cy="100" r="2.6"/><circle cx="299.5" cy="89" r="2.6"/><circle cx="327.0" cy="104" r="2.6"/><circle cx="354.5" cy="87" r="2.6"/><circle cx="382.0" cy="96" r="2.6"/><circle cx="409.5" cy="82" r="2.6"/><circle cx="437.0" cy="102" r="2.6"/><circle cx="464.5" cy="91" r="2.6"/><circle cx="492.0" cy="105" r="2.6"/><circle cx="519.5" cy="85" r="2.6"/><circle cx="547.0" cy="99" r="2.6"/><circle cx="574.5" cy="81" r="2.6"/><circle cx="602.0" cy="98" r="2.6"/><circle cx="629.5" cy="88" r="2.6"/><circle cx="657.0" cy="103" r="2.6"/><circle cx="684.5" cy="93" r="2.6"/><circle cx="712.0" cy="100" r="2.6"/></g>
+          <rect x="633" y="32" width="89" height="19" rx="9.5" fill="#fff" stroke="#1F3A4D" stroke-width="1.5" stroke-dasharray="4 3"/><text x="677" y="45.5" text-anchor="middle" fill="#1F3A4D" font-size="11.5" font-weight="700">3 &#183; spread</text>
+          <rect x="552" y="32" width="75" height="19" rx="9.5" fill="#fff" stroke="#B5471E" stroke-width="1.5"/><text x="589" y="45.5" text-anchor="middle" fill="#B5471E" font-size="11.5" font-weight="700">2 &#183; mean</text>
+          <rect x="24" y="142" width="348" height="104" rx="5" fill="#fff" stroke="#E4DFD5" stroke-width="1.4"/>
+          <text x="40" y="163" fill="#98928a" font-size="11">ACF</text>
+          <path d="M40 210 H356" stroke="#6B665E" stroke-width="1" fill="none"/>
+          <g stroke="#B5471E" stroke-width="1.1" stroke-dasharray="4 3" fill="none" opacity=".8"><path d="M40 194 H356"/><path d="M40 226 H356"/></g>
+          <rect x="52" y="203" width="8" height="7" fill="#3d3a35"/><rect x="77" y="210" width="8" height="5" fill="#3d3a35"/><rect x="102" y="206" width="8" height="4" fill="#3d3a35"/><rect x="127" y="210" width="8" height="10" fill="#3d3a35"/><rect x="152" y="207" width="8" height="3" fill="#3d3a35"/><rect x="177" y="210" width="8" height="6" fill="#3d3a35"/><rect x="202" y="201" width="8" height="9" fill="#3d3a35"/><rect x="227" y="210" width="8" height="3" fill="#3d3a35"/><rect x="252" y="205" width="8" height="5" fill="#3d3a35"/><rect x="277" y="210" width="8" height="4" fill="#3d3a35"/><rect x="302" y="208" width="8" height="2" fill="#3d3a35"/><rect x="327" y="210" width="8" height="7" fill="#3d3a35"/><rect x="352" y="206" width="8" height="4" fill="#3d3a35"/>
+          <rect x="205" y="150" width="153" height="19" rx="9.5" fill="#fff" stroke="#B5471E" stroke-width="1.5"/><text x="281" y="163.5" text-anchor="middle" fill="#B5471E" font-size="11.5" font-weight="700">1 &#183; autocorrelation</text>
+          <rect x="388" y="142" width="348" height="104" rx="5" fill="#fff" stroke="#E4DFD5" stroke-width="1.4"/>
+          <text x="404" y="163" fill="#98928a" font-size="11">histogram</text>
+          <path d="M404 236 H720" stroke="#6B665E" stroke-width="1" fill="none"/>
+          <rect x="426" y="232" width="26" height="4" fill="#3d3a35"/><rect x="456" y="226" width="26" height="10" fill="#3d3a35"/><rect x="486" y="216" width="26" height="20" fill="#3d3a35"/><rect x="516" y="205" width="26" height="31" fill="#3d3a35"/><rect x="546" y="198" width="26" height="38" fill="#3d3a35"/><rect x="576" y="206" width="26" height="30" fill="#3d3a35"/><rect x="606" y="217" width="26" height="19" fill="#3d3a35"/><rect x="636" y="227" width="26" height="9" fill="#3d3a35"/><rect x="666" y="232" width="26" height="4" fill="#3d3a35"/>
+          <polyline points="416,235.9 422,235.8 428,235.7 434,235.5 440,235.3 446,234.9 452,234.4 458,233.8 464,232.9 470,231.8 476,230.3 482,228.5 488,226.4 494,223.9 500,221.1 506,218.0 512,214.6 518,211.2 524,207.7 530,204.5 536,201.6 542,199.1 548,197.3 554,196.3 560,196.0 566,196.6 572,197.9 578,199.9 584,202.5 590,205.5 596,208.9 602,212.3 608,215.7 614,219.0 620,222.1 626,224.8 632,227.2 638,229.2 644,230.8 650,232.2 656,233.2 662,234.0 668,234.6 674,235.1 680,235.4 686,235.6 692,235.7 698,235.8" fill="none" stroke="#1F3A4D" stroke-width="1.5" stroke-dasharray="5 3"/>
+          <rect x="611" y="150" width="111" height="19" rx="9.5" fill="#fff" stroke="#1F3A4D" stroke-width="1.5"/><text x="667" y="163.5" text-anchor="middle" fill="#1F3A4D" font-size="11.5" font-weight="700">4 &#183; normality</text>
+          <text x="380" y="268" text-anchor="middle" fill="#98928a" font-size="11.5">1, 2 and 4 are read directly; 3 only partly, hence the dashed label</text>
         </g>
       </svg>
     </figure>
     <ul class="build plain" style="margin-top:1.5rem">
       <li><b>Top:</b> residuals over time &rarr; the mean, and whether the spread drifts</li>
-      <li><b>Bottom left:</b> the correlogram &rarr; autocorrelation</li>
+      <li><b>Bottom left:</b> the ACF plot &rarr; autocorrelation</li>
       <li><b>Bottom right:</b> the histogram &rarr; normality</li>
     </ul>
     <div class="callout"><b>It needs one model.</b> <code>select()</code> a single column from the mable first, or it will not know which set of residuals you mean.</div>
@@ -679,46 +628,43 @@ body.ov-on #overview{display:block}
     <p class="kicker">09_B &nbsp;&middot;&nbsp; bricks, naive and mean</p>
     <h1 class="sowhat wide">Read them in the order of the four properties, not the order they are drawn.</h1>
     <figure>
-      <svg viewBox="0 0 760 158" role="img" aria-label="Three boxes in a left to right flow. Box one, the correlogram, is the finding that changes what you do next. Box two, the time plot read for its mean, is bias and cheap to fix. Box three, spread and shape, is about the interval you are entitled to quote">
+      <svg viewBox="0 0 760 168" role="img" aria-label="Three boxes in a left to right flow, the first two grouped as about the model and the third as about the intervals. Box one, the ACF plot, is the finding that changes what you do next. Box two, the time plot read for its mean, is bias and cheap to fix. Box three, spread and shape, properties three and four, is about the interval you are entitled to quote">
         <g font-family="SFMono-Regular,Menlo,monospace">
-          <rect x="30" y="30" width="200" height="88" rx="5" fill="#B5471E" opacity=".07"/>
-          <rect x="30" y="30" width="200" height="88" rx="5" fill="none" stroke="#B5471E" stroke-width="1.8"/>
-          <text x="130" y="56" text-anchor="middle" fill="#B5471E" font-size="12.5" font-weight="700">1 &#183; CORRELOGRAM</text>
-          <text x="130" y="78" text-anchor="middle" fill="#161513" font-size="11">the finding that changes</text>
-          <text x="130" y="92" text-anchor="middle" fill="#161513" font-size="11">what you do next</text>
-          <text x="130" y="108" text-anchor="middle" fill="#98928a" font-size="10">is the model finished?</text>
-
-          <rect x="280" y="30" width="200" height="88" rx="5" fill="#1F3A4D" opacity=".07"/>
-          <rect x="280" y="30" width="200" height="88" rx="5" fill="none" stroke="#1F3A4D" stroke-width="1.8"/>
-          <text x="380" y="56" text-anchor="middle" fill="#1F3A4D" font-size="12.5" font-weight="700">2 &#183; TIME PLOT: MEAN</text>
-          <text x="380" y="78" text-anchor="middle" fill="#161513" font-size="11">bias: cheap to fix,</text>
-          <text x="380" y="92" text-anchor="middle" fill="#161513" font-size="11">one subtraction</text>
-          <text x="380" y="108" text-anchor="middle" fill="#98928a" font-size="10">are the forecasts aimed right?</text>
-
-          <rect x="530" y="30" width="200" height="88" rx="5" fill="#6B7F5E" opacity=".10"/>
-          <rect x="530" y="30" width="200" height="88" rx="5" fill="none" stroke="#6B7F5E" stroke-width="1.8"/>
-          <text x="630" y="56" text-anchor="middle" fill="#6B7F5E" font-size="12.5" font-weight="700">3 &#183; SPREAD &amp; SHAPE</text>
-          <text x="630" y="78" text-anchor="middle" fill="#161513" font-size="11">about the interval you are</text>
-          <text x="630" y="92" text-anchor="middle" fill="#161513" font-size="11">entitled to quote</text>
-          <text x="630" y="108" text-anchor="middle" fill="#98928a" font-size="10">does the 95% mean 95%?</text>
-
-          <g stroke="#98928a" stroke-width="1.6" fill="none">
-            <path d="M234 74 H272"/><path d="M265 68 L274 74 L265 80"/>
-            <path d="M484 74 H522"/><path d="M515 68 L524 74 L515 80"/>
-          </g>
-          <text x="380" y="148" text-anchor="middle" fill="#98928a" font-size="11.5">read the panels in triage order: whatever changes your next move, first</text>
+          <path d="M30 22 H480" stroke="#B5471E" stroke-width="1.4" fill="none"/><path d="M30 22 V28 M480 22 V28" stroke="#B5471E" stroke-width="1.4" fill="none"/>
+          <rect x="185" y="12" width="140" height="20" fill="#FAF8F5"/>
+          <text x="255" y="26" text-anchor="middle" fill="#B5471E" font-size="10.5" font-weight="700">ABOUT THE MODEL</text>
+          <path d="M530 22 H730" stroke="#1F3A4D" stroke-width="1.4" fill="none"/><path d="M530 22 V28 M730 22 V28" stroke="#1F3A4D" stroke-width="1.4" fill="none"/>
+          <rect x="562" y="12" width="136" height="20" fill="#FAF8F5"/>
+          <text x="630" y="26" text-anchor="middle" fill="#1F3A4D" font-size="10.5" font-weight="700">ABOUT THE INTERVALS</text>
+          <rect x="30" y="40" width="200" height="88" rx="5" fill="#B5471E" opacity=".07"/><rect x="30" y="40" width="200" height="88" rx="5" fill="none" stroke="#B5471E" stroke-width="1.8"/>
+          <text x="130" y="66" text-anchor="middle" fill="#B5471E" font-size="12.5" font-weight="700">1 &#183; ACF PLOT</text>
+          <text x="130" y="88" text-anchor="middle" fill="#161513" font-size="11">the finding that changes</text>
+          <text x="130" y="102" text-anchor="middle" fill="#161513" font-size="11">what you do next</text>
+          <text x="130" y="118" text-anchor="middle" fill="#98928a" font-size="10">is the model finished?</text>
+          <rect x="280" y="40" width="200" height="88" rx="5" fill="#B5471E" opacity=".04"/><rect x="280" y="40" width="200" height="88" rx="5" fill="none" stroke="#B5471E" stroke-width="1.8"/>
+          <text x="380" y="66" text-anchor="middle" fill="#B5471E" font-size="12.5" font-weight="700">2 &#183; TIME PLOT: MEAN</text>
+          <text x="380" y="88" text-anchor="middle" fill="#161513" font-size="11">bias: cheap to fix,</text>
+          <text x="380" y="102" text-anchor="middle" fill="#161513" font-size="11">one subtraction</text>
+          <text x="380" y="118" text-anchor="middle" fill="#98928a" font-size="10">are the forecasts aimed right?</text>
+          <rect x="530" y="40" width="200" height="88" rx="5" fill="#1F3A4D" opacity=".07"/><rect x="530" y="40" width="200" height="88" rx="5" fill="none" stroke="#1F3A4D" stroke-width="1.8"/>
+          <text x="630" y="66" text-anchor="middle" fill="#1F3A4D" font-size="12.5" font-weight="700">3 + 4 &#183; SPREAD &amp; SHAPE</text>
+          <text x="630" y="88" text-anchor="middle" fill="#161513" font-size="11">about the interval you are</text>
+          <text x="630" y="102" text-anchor="middle" fill="#161513" font-size="11">entitled to quote</text>
+          <text x="630" y="118" text-anchor="middle" fill="#98928a" font-size="10">does the 95% mean 95%?</text>
+          <g stroke="#98928a" stroke-width="1.6" fill="none"><path d="M234 84 H272"/><path d="M265 78 L274 84 L265 90"/><path d="M484 84 H522"/><path d="M515 78 L524 84 L515 90"/></g>
+          <text x="380" y="158" text-anchor="middle" fill="#98928a" font-size="11.5">read the panels in triage order: whatever changes your next move, first</text>
         </g>
       </svg>
     </figure>
     <ul class="build">
-      <li class="step"><b>Correlogram first.</b> It is the finding that changes what you do next. Bars well outside the bounds mean the model is not finished.</li>
+      <li class="step"><b>ACF plot first.</b> It is the finding that changes what you do next. Bars well outside the bounds mean the model is not finished.</li>
       <li class="step"><b>Then the mean.</b> Does the top panel sit on zero, or is it mostly above or mostly below? That is bias, and it is cheap to fix.</li>
       <li class="step"><b>Then spread and shape.</b> Does the top panel funnel? Is the histogram symmetric with reasonable tails?</li>
     </ul>
     <div class="callout slate"><b>Both models on bricks fail property 1 badly.</b> That is the expected result, and it is the honest state of a benchmark on a series with real structure in it.</div>
     <p class="punch step wide">A failing diagnostic is not a failed exercise. It is the instrument telling you a benchmark is a benchmark.</p>
   </div>
-  <aside class="notes">Quarterly brick production has a strong season and a long trend, and neither the naive nor the mean model represents either of them. So the seasonal structure walks straight through into the residuals, and the correlogram shows it at the seasonal lags. That is exactly what you would predict from Session 8's table of which method suits which series.<br><br>Worth trying afterwards on your own: fit <code>SNAIVE()</code> to the same series and run the same diagnostic. The seasonal spikes largely disappear and the trend remains. Watching a diagnostic improve when you pick a better-matched model is the fastest way to learn to read one.</aside>
+  <aside class="notes">Quarterly brick production has a strong season and a long trend, and neither the naive nor the mean model represents either of them. So the seasonal structure walks straight through into the residuals, and the ACF plot shows it at the seasonal lags. That is exactly what you would predict from Session 8's table of which method suits which series.<br><br>Worth trying afterwards on your own: fit <code>SNAIVE()</code> to the same series and run the same diagnostic. The seasonal spikes largely disappear and the trend remains. Watching a diagnostic improve when you pick a better-matched model is the fastest way to learn to read one.</aside>
 </section>
 
 
@@ -726,49 +672,37 @@ body.ov-on #overview{display:block}
 <section class="slide" data-section="3" data-title="Switch: QQ plots and boxplots">
   <div class="inner">
     <p class="kicker">09_B &nbsp;&middot;&nbsp; on the RStudio screen</p>
-    <h1 class="sowhat">Two plots for the two properties the histogram half-answers.</h1>
+    <h1 class="sowhat">Two plots for the two properties the three panels only half-answer.</h1>
     <figure>
-      <svg viewBox="0 0 760 200" role="img" aria-label="Two diagnostic plots. Left, a QQ plot: dark points sit on the diagonal line, meaning normal, while marked points curve away above the line at both ends, meaning heavy tails. Right, boxplots by year: the boxes climb steadily in height from one year to the next, which is a drifting spread">
+      <svg viewBox="0 0 760 204" role="img" aria-label="Two diagnostic plots. Left, a QQ plot: the middle points sit on the diagonal line, meaning normal, while the points at both ends bend away from it, below the line on the left and above it on the right, meaning heavy tails. Right, boxplots by year centered on zero: the boxes and whiskers grow taller each year, fanning out like a funnel, which is a drifting spread">
         <g font-family="SFMono-Regular,Menlo,monospace">
-          <rect x="24" y="24" width="348" height="122" rx="5" fill="#fff" stroke="#E4DFD5" stroke-width="1.4"/>
-          <text x="40" y="44" fill="#98928a" font-size="11">QQ plot &#183; normal quantiles vs residual quantiles</text>
-          <path d="M52 132 L344 48" stroke="#98928a" stroke-width="1.4" stroke-dasharray="5 4" fill="none"/>
-          <g fill="#1F3A4D">
-            <circle cx="92" cy="124" r="3.2"/><circle cx="120" cy="119" r="3.2"/><circle cx="148" cy="113" r="3.2"/>
-            <circle cx="176" cy="108" r="3.2"/><circle cx="204" cy="102" r="3.2"/><circle cx="232" cy="96" r="3.2"/>
-            <circle cx="260" cy="90" r="3.2"/><circle cx="288" cy="84" r="3.2"/><circle cx="316" cy="78" r="3.2"/>
-          </g>
-          <g fill="#B5471E">
-            <circle cx="52" cy="118" r="3.2"/><circle cx="66" cy="112" r="3.2"/><circle cx="344" cy="34" r="3.2"/>
-            <circle cx="326" cy="40" r="3.2"/>
-          </g>
-          <text x="180" y="76" fill="#1F3A4D" font-size="10.5">on the line = normal</text>
-          <text x="326" y="62" text-anchor="end" fill="#B5471E" font-size="10.5">curving away = heavy tails</text>
-
-          <rect x="388" y="24" width="348" height="122" rx="5" fill="#fff" stroke="#E4DFD5" stroke-width="1.4"/>
-          <text x="404" y="44" fill="#98928a" font-size="11">boxplots by year &#183; the spread, made visible</text>
-          <path d="M404 118 H716" stroke="#E4DFD5" stroke-width="1.2"/>
-          <g stroke="#6B7F5E" stroke-width="1.4" fill="#6B7F5E" opacity=".9">
-            <line x1="434" y1="98" x2="434" y2="112"/><rect x="426" y="101" width="16" height="8" fill="none"/><line x1="426" y1="105" x2="442" y2="105"/>
-            <line x1="494" y1="94" x2="494" y2="112"/><rect x="486" y="98" width="16" height="10" fill="none"/><line x1="486" y1="103" x2="502" y2="103"/>
-            <line x1="554" y1="88" x2="554" y2="112"/><rect x="546" y="94" width="16" height="12" fill="none"/><line x1="546" y1="100" x2="562" y2="100"/>
-            <line x1="614" y1="80" x2="614" y2="112"/><rect x="606" y="88" width="16" height="16" fill="none"/><line x1="606" y1="96" x2="622" y2="96"/>
-          </g>
-          <path d="M420 108 L630 84" stroke="#B5471E" stroke-width="1.3" stroke-dasharray="5 4" fill="none"/>
-          <text x="434" y="126" fill="#98928a" font-size="10">'22</text>
-          <text x="494" y="126" fill="#98928a" font-size="10">'23</text>
-          <text x="554" y="126" fill="#98928a" font-size="10">'24</text>
-          <text x="614" y="126" fill="#98928a" font-size="10">'25</text>
-          <text x="716" y="76" text-anchor="end" fill="#B5471E" font-size="10.5">climbing box heights</text>
-
-          <text x="380" y="176" text-anchor="middle" fill="#98928a" font-size="11.5">the histogram's two half-answers, made precise: on the line means normal, similar box heights mean constant variance</text>
+          <rect x="24" y="24" width="348" height="146" rx="5" fill="#fff" stroke="#E4DFD5" stroke-width="1.4"/>
+          <text x="40" y="44" fill="#98928a" font-size="11">QQ plot &#183; residual vs normal quantiles</text>
+          <path d="M56 146 L352 62" stroke="#98928a" stroke-width="1.4" stroke-dasharray="5 4" fill="none"/>
+          <g fill="#1F3A4D"><circle cx="112" cy="131.1" r="3.2"/><circle cx="136" cy="122.3" r="3.2"/><circle cx="160" cy="116.5" r="3.2"/><circle cx="184" cy="110.7" r="3.2"/><circle cx="208" cy="101.9" r="3.2"/><circle cx="232" cy="97.1" r="3.2"/><circle cx="256" cy="89.2" r="3.2"/><circle cx="280" cy="81.4" r="3.2"/><circle cx="304" cy="76.6" r="3.2"/></g>
+          <g fill="#B5471E"><circle cx="64" cy="158.7" r="3.2"/><circle cx="88" cy="143.9" r="3.2"/><circle cx="328" cy="61.8" r="3.2"/><circle cx="352" cy="47.0" r="3.2"/></g>
+          <text x="64" y="74" fill="#B5471E" font-size="10.5">off the line at both ends</text>
+          <text x="64" y="88" fill="#B5471E" font-size="10.5">= heavy tails</text>
+          <text x="356" y="160" text-anchor="end" fill="#1F3A4D" font-size="10.5">on the line = normal</text>
+          <rect x="388" y="24" width="348" height="146" rx="5" fill="#fff" stroke="#E4DFD5" stroke-width="1.4"/>
+          <text x="404" y="44" fill="#98928a" font-size="11">boxplots by year</text>
+          <path d="M404 106 H720" stroke="#E4DFD5" stroke-width="1.2" fill="none"/>
+          <g stroke="#1F3A4D" stroke-width="1.4" fill="none"><path d="M432 97 V101 M432 111 V115 M427 97 H437 M427 115 H437"/><rect x="422" y="101" width="20" height="10" fill="#fff"/><path d="M422 105 H442"/><path d="M492 93 V99 M492 113 V119 M487 93 H497 M487 119 H497"/><rect x="482" y="99" width="20" height="14" fill="#fff"/><path d="M482 105 H502"/><path d="M552 88 V96 M552 116 V124 M547 88 H557 M547 124 H557"/><rect x="542" y="96" width="20" height="20" fill="#fff"/><path d="M542 105 H562"/><path d="M612 81 V92 M612 120 V131 M607 81 H617 M607 131 H617"/><rect x="602" y="92" width="20" height="28" fill="#fff"/><path d="M602 105 H622"/><path d="M672 73 V87 M672 125 V139 M667 73 H677 M667 139 H677"/><rect x="662" y="87" width="20" height="38" fill="#fff"/><path d="M662 105 H682"/></g>
+          <g stroke="#B5471E" stroke-width="1.3" stroke-dasharray="5 4" fill="none"><path d="M414 98.8 L690 71.2"/><path d="M414 113.2 L690 140.8"/></g>
+          <text x="720" y="60" text-anchor="end" fill="#B5471E" font-size="10.5">growing boxes = drifting spread</text>
+          <text x="432" y="162" text-anchor="middle" fill="#98928a" font-size="10">'21</text>
+          <text x="492" y="162" text-anchor="middle" fill="#98928a" font-size="10">'22</text>
+          <text x="552" y="162" text-anchor="middle" fill="#98928a" font-size="10">'23</text>
+          <text x="612" y="162" text-anchor="middle" fill="#98928a" font-size="10">'24</text>
+          <text x="672" y="162" text-anchor="middle" fill="#98928a" font-size="10">'25</text>
+          <text x="380" y="196" text-anchor="middle" fill="#98928a" font-size="11.5">on the line means normal; boxes of similar height mean constant variance</text>
         </g>
       </svg>
     </figure>
     <ul class="build">
       <li class="step"><b>QQ plot for normality.</b> Residual quantiles against normal quantiles. On the line means normal; curving away at both ends means heavy tails.</li>
       <li class="step"><b>Boxplots by year for constant variance.</b> Boxes of similar height mean the spread is stable. A steady climb in box height is a funnel you might have missed.</li>
-      <li class="step"><b>Neither replaces the histogram.</b> They sharpen it. The histogram tells you whether to look harder; these tell you what you are looking at.</li>
+      <li class="step"><b>Neither replaces the three panels.</b> They sharpen them: the QQ plot sharpens the histogram, the boxplots sharpen the time plot. The panels tell you whether to look harder; these tell you what you are looking at.</li>
     </ul>
     <p class="punch step wide">Four properties, four questions, and no single plot answers all of them. That is why the summary sheet exists.</p>
   </div>
@@ -782,7 +716,7 @@ body.ov-on #overview{display:block}
     <p class="kicker">The problem with reading bars</p>
     <h1 class="sowhat">Checking twenty bars is running twenty tests, and about one will fail by chance.</h1>
     <figure>
-      <svg viewBox="0 0 760 186" role="img" aria-label="A correlogram of twenty bars with significance bounds. Nineteen are inside the bounds and one crosses. A caption notes that on pure white noise about one crossing in twenty is the expected result rather than a finding">
+      <svg viewBox="0 0 760 186" role="img" aria-label="An ACF plot of twenty bars with significance bounds. Nineteen are inside the bounds and one crosses. A caption notes that on pure white noise about one crossing in twenty is the expected result rather than a finding">
         <g stroke="#E4DFD5" stroke-width="1.2" fill="none"><path d="M40 34 V148"/></g>
         <path d="M40 98 H730" stroke="#6B665E" stroke-width="1.2" fill="none"/>
         <g stroke="#1F3A4D" stroke-width="1.5" stroke-dasharray="6 4" fill="none" opacity=".85">
@@ -812,7 +746,7 @@ body.ov-on #overview{display:block}
     </ul>
     <p class="punch step wide">A <i>portmanteau</i> test, from the French for a rack that carries several items of clothing. One question, many lags.</p>
   </div>
-  <aside class="notes">The multiple-comparisons problem is not specific to time series, and meeting it here is a good opportunity to recognize it elsewhere. Any time somebody runs many tests and reports the one that came out significant, this is the mechanism that should make you suspicious.<br><br>Note what the portmanteau test does <i>not</i> do: it will not tell you <i>which</i> lag carries the structure. It answers "is there autocorrelation anywhere in the first <code>l</code> lags", and if you want to know where, you go back to the correlogram. The two tools are complements.</aside>
+  <aside class="notes">The multiple-comparisons problem is not specific to time series, and meeting it here is a good opportunity to recognize it elsewhere. Any time somebody runs many tests and reports the one that came out significant, this is the mechanism that should make you suspicious.<br><br>Note what the portmanteau test does <i>not</i> do: it will not tell you <i>which</i> lag carries the structure. It answers "is there autocorrelation anywhere in the first <code>l</code> lags", and if you want to know where, you go back to the ACF plot. The two tools are complements.</aside>
 </section>
 
 
@@ -941,9 +875,6 @@ Ljung-Box    Q* = T(T+2) &middot; sum over k=1..l of  r_k&#178; / (T &minus; k)
      and therefore never covers the rail -->
 <div id="notepane"><h4>Going further</h4><div class="body"></div></div>
 
-
-
-<div id="notepane"><h4>Going further</h4><div class="body"></div></div>
 </main>
 
 <!-- ============================== CHROME ============================== -->
