@@ -7,11 +7,12 @@
 **[fpp3](https://otexts.com/fpp3/index.html):** 5.4
 
 **Focus:** The properties good residuals must have and what to do when each fails (the 1-page summary
-sheet is the spine); worked diagnostics on the bricks and stock examples — residual mean, ACF,
+sheet, [`09_A`](09_A_ResidualsDiagnostics_Summary.md), is the spine; the handwritten
+[PDF original](09_A_ResidualsDiagnostics_Summary.pdf) is alongside); worked diagnostics on the bricks and stock examples — residual mean, ACF,
 qq-plots, boxplots, boxplots-by-year; why checking each ACF bar individually is multiple hypothesis
 testing, and hence portmanteau tests; Ljung–Box.
 
-**R:** `gg_tsresiduals()`, `features(.resid, ljung_box)`
+**R:** `gg_tsresiduals()`, `features(.innov, ljung_box)`
 
 **Homework:** `09_B` Exercise 1. Then revise for the midterm.
 
