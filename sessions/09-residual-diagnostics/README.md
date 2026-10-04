@@ -19,6 +19,10 @@ testing, and hence portmanteau tests; Ljung–Box.
 **Outcome:** Student runs a full residual diagnosis and judges whether a model has captured the
 signal.
 
+**Homework review, for self-study:** the most useful lessons from HW05 and HW06, written to be
+read on your own rather than covered in class. See
+[`homework-review-hw05-hw06.md`](homework-review-hw05-hw06.md).
+
 > The midterm revision deck is in the [Session 10 folder](../10-midterm/), for office hours and
 > your own revision. This session's deck is diagnostics only.
 
