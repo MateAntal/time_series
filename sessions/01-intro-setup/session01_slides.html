@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Session 1 · Time Series Analysis · Fall 2026</title>
+<title>Session 1 · Time Series Analysis</title>
 <style>
 /* ============================================================
    Session 01 slides. Self-contained: no fonts, scripts or images
@@ -372,13 +372,13 @@ body.ov-on #overview{display:block}
 <nav id="rail">
   <div class="brand">
     <b>Time Series Analysis</b>
-    <span>Session 1 · Fall 2026</span>
+    <span>Session 1</span>
   </div>
   <ul id="toc"></ul>
   <div class="foot">
     <div id="bar"><i></i></div>
     <div class="keys">
-      <kbd>&rarr;</kbd> next &nbsp; <kbd>&larr;</kbd> back &nbsp; <kbd>N</kbd> notes<br>
+      <kbd>&rarr;</kbd> next &nbsp; <kbd>&larr;</kbd> back &nbsp; <kbd>N</kbd> detail<br>
       <kbd>O</kbd> jump &nbsp; <kbd>F</kbd> full &nbsp; <kbd>[</kbd> hide this pane
     </div>
   </div>
@@ -396,8 +396,7 @@ body.ov-on #overview{display:block}
     <p class="who"><b>Session 1.</b> What forecasting is, and getting your machine ready.<br>
     Alejandro Berrizbeitia · aberrizbeitia@faculty.ie.edu</p>
   </div>
-  <aside class="notes"><span class="clock">0:00 &rarr; 0:09 for this section</span>
-  Do not read the title out loud. Open on slide 2 instead and let the title sit for ten seconds while people settle.</aside>
+  <aside class="notes">The deck is self-contained: press <b>N</b> at any time to open or close this panel, and <b>O</b> for a list of every slide.<br><br>Today is fpp3 sections 1.1 to 1.7 and the script <code>session01.R</code> in this folder. The first half is why forecasting matters and how the course runs; the second half runs the script, and the session ends with a setup clinic.</aside>
 </section>
 
 <!-- ---------- 2 ---------- -->
@@ -412,7 +411,7 @@ body.ov-on #overview{display:block}
     </ul>
     <p class="punch step">The forecast is already inside the decision. The only question is whether anyone checked it.</p>
   </div>
-  <aside class="notes">Ask for a show of hands: who has ever seen a number in a plan and wondered where it came from. Do not take answers yet, just plant it. Keep this slide to about ninety seconds.</aside>
+  <aside class="notes">Next time you read a budget, a hiring plan or a sales target, look for the number nobody explains. It is almost always a forecast, made by someone, with a method nobody wrote down.<br><br>fpp3 section 1.2 draws the line between three words that get used interchangeably: a <em>forecast</em> is what you expect to happen, a <em>goal</em> is what you would like to happen, and a <em>plan</em> is your response to both.</aside>
 </section>
 
 <!-- ---------- 3 ---------- -->
@@ -462,7 +461,7 @@ body.ov-on #overview{display:block}
     </figure>
     <p class="punch step">You cannot opt out of forecasting. You only choose how badly you do it.</p>
   </div>
-  <aside class="notes">The right-hand error is the expensive one and almost nobody measures it, because a sale that never happened leaves no record. Worth saying out loud: <em>the stockout is invisible in your data.</em></aside>
+  <aside class="notes">The right-hand error is the expensive one, and it is rarely measured, because a sale that never happened leaves no record. <em>The stockout is invisible in your data.</em><br><br>A sales history records what you sold, not what customers wanted. When supply ran short, the series understates demand, and a forecast built on it inherits the gap.</aside>
 </section>
 
 <!-- ---------- 4 ---------- -->
@@ -490,7 +489,7 @@ body.ov-on #overview{display:block}
     </figure>
     <p class="punch step">Only one of those can be planned against. You will see it on my screen in about forty minutes.</p>
   </div>
-  <aside class="notes">Do not explain intervals yet. This slide only has to make the shape memorable, so that the <em>N(47, 0.1)</em> moment later in the live run lands as a payoff rather than as new material.</aside>
+  <aside class="notes">Intervals are taught properly in Session 12. For now, keep the shape: a center you plan around, and a spread that tells you how much to hedge.<br><br>fpp3 section 1.7 states the same idea formally: the thing being forecast is a random variable, and the forecast is its distribution given what you know. Later in this session you will see a forecast print as exactly that.</aside>
 </section>
 
 <!-- ---------- 5 ---------- -->
@@ -521,7 +520,7 @@ body.ov-on #overview{display:block}
     </figure>
     <p class="punch step">That single fact breaks most of the toolkit you already have. Rebuilding it is this course. Session 2 starts exactly here.</p>
   </div>
-  <aside class="notes">Leave this one open. Do not mention the central limit theorem or say what replaces the independence assumption. The unanswered question is the hook that Session 2 opens on.</aside>
+  <aside class="notes">The question this slide leaves open is the one Session 2 starts with: if the observations are not independent draws, what kind of object is a time series, and what does one observed series tell you about the process that produced it?</aside>
 </section>
 
 <!-- ---------- 6 ---------- -->
@@ -537,7 +536,7 @@ body.ov-on #overview{display:block}
     </div>
     <p class="punch step">Every one of those is a time series question. None of them is optional.</p>
   </div>
-  <aside class="notes">Pick whichever of the four the room reacts to and give it thirty seconds of a real story. This slide is also the bridge into who you are, so end on the industry you want to open with next.</aside>
+  <aside class="notes">The four questions differ in horizon and in the cost of being wrong: staffing is quarterly, shipments are weekly, driver supply is hourly, revenue is annual.<br><br>fpp3 section 1.3, on deciding what to forecast, is about exactly these choices: which series, at what frequency, and how far ahead.</aside>
 </section>
 
 <!-- ---------- 7 ---------- -->
@@ -551,10 +550,9 @@ body.ov-on #overview{display:block}
       <span class="chip">Marketplaces</span><span class="chip">SaaS</span>
     </div>
     <p class="punch step">I have had to defend forecasts to people who then had to spend real money on them.</p>
-    <p class="small step">This course was created by Prof. Juan Garbayo, who wrote the original materials. I adapted and extended them for 2026.</p>
+    <p class="small step">This course was created by Prof. Juan Garbayo, who wrote the original materials. I adapted and extended them.</p>
   </div>
-  <aside class="notes"><span class="clock">0:09 &rarr; 0:13</span>
-  Keep this short and concrete. One sentence per industry is plenty. The credibility comes from the story on the next slide, not from the CV.</aside>
+  <aside class="notes">Prof. Juan Garbayo built the original course and its materials. This version adapts and extends them, so both of us are behind what you will read in the repo.</aside>
 </section>
 
 <!-- ---------- 8 ---------- -->
@@ -568,7 +566,7 @@ body.ov-on #overview{display:block}
     </ul>
     <p class="punch step">I cannot build ARIMA on a shaky ACF. So I am going to push you here.</p>
   </div>
-  <aside class="notes">This is the honest reason for the demanding tone, and it reads as care rather than as threat. Say it that way.</aside>
+  <aside class="notes">Concretely, Forecasting for Time Series assumes you arrive fluent in the ACF, transformations, residual diagnostics, accuracy measures, cross-validation and exponential smoothing. ARIMA is built directly on the ACF, and its models are chosen with the same information criteria you meet at the end of this course.</aside>
 </section>
 
 <!-- ---------- 9 ---------- -->
@@ -581,8 +579,7 @@ body.ov-on #overview{display:block}
     <div class="callout step"><b>Scope, so nobody worries later.</b> ARIMA is next term's material. It is not on the midterm and it is not on the final.</div>
     <p class="punch step">Read the sections before class. You will get roughly twice as much out of the hour.</p>
   </div>
-  <aside class="notes"><span class="clock">0:13 &rarr; 0:25 for this section</span>
-  State the ARIMA boundary clearly here. It surfaces again in the live run when ARIMA() appears on screen, and if it is unresolved it becomes an exam-scope question later.</aside>
+  <aside class="notes">Chapters 1, 2, 3, 5 and 8 are covered, though not every section in them. Each session&#39;s README lists the exact sections to read.<br><br>You will see <code>ARIMA()</code> fitted in today&#39;s script. That is a preview of next term, not material you are examined on.</aside>
 </section>
 
 <!-- ---------- 10 ---------- -->
@@ -627,7 +624,7 @@ body.ov-on #overview{display:block}
     </div>
     <p class="small">The two flags are the exams. Two group assignments launch in Session 7 and Session 17.</p>
   </div>
-  <aside class="notes">Do not walk through all twenty. Name the four blocks, point at the two flags, and move. The full session list is in SYLLABUS.md and they can read it.</aside>
+  <aside class="notes">The full session list, with the fpp3 sections for each session, is in <b>SYLLABUS.md</b> in the repo. Session 10 is the midterm and Session 20 the final, which is why block C skips Session 10.</aside>
 </section>
 
 <!-- ---------- 11 ---------- -->
@@ -636,20 +633,21 @@ body.ov-on #overview{display:block}
     <p class="kicker">Put these in your calendar before you leave this room</p>
     <div class="dates">
       <div class="date">
-        <h3>Midterm · Session 10</h3>
-        <p class="d">Wed 14 October<br>2026</p>
+        <h3>Midterm</h3>
+        <p class="d">Session 10</p>
         <p class="m">Covers Sessions 1 to 8.</p>
       </div>
       <div class="date">
-        <h3>Final · Session 20</h3>
-        <p class="d">Mon 14 December<br>2026</p>
+        <h3>Final</h3>
+        <p class="d">Session 20</p>
         <p class="m">Covers the whole course.</p>
       </div>
     </div>
     <p class="lead step">Both exams: 20 multiple-choice questions, four options on concept questions and five on calculations. An optional online prep tutorial runs the week before each one.</p>
+    <p class="small step">Dates, times and rooms are in this session&#39;s <code>announcements.md</code> and on Blackboard.</p>
     <div class="callout step"><b>There is no retake for the midterm.</b> If you cannot sit it, the final carries 60% of your grade instead of 30%.</div>
   </div>
-  <aside class="notes">Slow down here and let people actually type the dates into a phone. This is the one slide where phones out is fine. Say so.<br><br>The midterm covers Sessions 1 to 8, which ends with benchmark forecasting methods. Session 9, residual diagnostics, is <i>not</i> on it: that session opens the evaluation block that continues through train and test accuracy in Session 13 and cross-validation in Session 14, and those three are examined together in the final.</aside>
+  <aside class="notes">The midterm covers Sessions 1 to 8, which ends with benchmark forecasting methods. Session 9, residual diagnostics, is <i>not</i> on it: that session opens the evaluation block that continues through train and test accuracy in Session 13 and cross-validation in Session 14, and those three are examined together in the final.</aside>
 </section>
 
 <!-- ---------- 12 ---------- -->
@@ -663,7 +661,7 @@ body.ov-on #overview{display:block}
     </ul>
     <p class="punch step">Anyone can call a function. You are here to know what the function did.</p>
   </div>
-  <aside class="notes">This slide is the setup for the AI rule. Land the last line clearly, then go straight into the rules section without a pause.</aside>
+  <aside class="notes">This is the habit behind most of the homework. Computing something by hand and getting the same answer as the library is the strongest evidence you have that you understand what the library did. When the two disagree, finding out why is usually where the learning happens.</aside>
 </section>
 
 <!-- ---------- 13 ---------- -->
@@ -679,8 +677,7 @@ body.ov-on #overview{display:block}
     </ul>
     <p class="small">Grading weights, attendance and the full policy live in <b>SYLLABUS.md</b> in the repo. Read it this week.</p>
   </div>
-  <aside class="notes"><span class="clock">0:25 &rarr; 0:35 for this section</span>
-  No build on this slide on purpose. Read it fast, thirty seconds, then slow right down for the next one.</aside>
+  <aside class="notes">The grading weights, the attendance rule and the full AI policy are in <b>SYLLABUS.md</b>. Where this slide and the syllabus differ, the syllabus is the authority.</aside>
 </section>
 
 <!-- ---------- 14 ---------- -->
@@ -693,7 +690,7 @@ body.ov-on #overview{display:block}
     </ul>
     <h1 class="sowhat step" style="margin-top:2.1rem;color:var(--terra)">That is exactly why it is banned here.</h1>
   </div>
-  <aside class="notes">Deliver the first line warmly and mean it. The rule only works because the enthusiasm is genuine. Pause a full beat before the third line. Expect questions and let them come, but hold them until after the next slide.</aside>
+  <aside class="notes">The next slide gives the reason, and SYLLABUS.md has the formal wording. The rule applies to every assessment: homework, group assignments and exams.</aside>
 </section>
 
 <!-- ---------- 15 ---------- -->
@@ -741,7 +738,7 @@ body.ov-on #overview{display:block}
       </div>
     </div>
   </div>
-  <aside class="notes">The forklift is the whole argument in one picture. Nobody thinks a forklift in a gym is cheating in a clever way. They think it misses the point of being there. Take questions here.</aside>
+  <aside class="notes">The library rule has a practical reason as well. The same model fitted with a different package can give slightly different numbers, and then your work can no longer be checked against the course&#39;s reference. Use <code>tsibble</code>, <code>feasts</code> and <code>fable</code> as taught.</aside>
 </section>
 
 <!-- ---------- 16 ---------- -->
@@ -754,7 +751,7 @@ body.ov-on #overview{display:block}
     </ul>
     <p class="punch step">I like being challenged. It is how I find out what I have been getting wrong.</p>
   </div>
-  <aside class="notes">Then prove it within ten minutes by actually inviting a challenge on the R versus Python slide. A promise of safety that is never tested is not believed.</aside>
+  <aside class="notes">If something in a slide or a notebook looks wrong to you, say so, in class or by email. Either you have found an error, or you have found a gap in your own understanding, and both are worth finding.</aside>
 </section>
 
 <!-- ---------- 17 ---------- -->
@@ -769,8 +766,7 @@ body.ov-on #overview{display:block}
     </ul>
     <p class="punch step">The concepts transfer. The syntax is a weekend.</p>
   </div>
-  <aside class="notes"><span class="clock">0:35 &rarr; 0:41 for this and the repo slide</span>
-  Good place to make the safe-space promise real. Ask directly whether anyone wants to argue the Python case, and take it seriously if they do.</aside>
+  <aside class="notes">The ideas map directly when you need them in Python: a tsibble is a time-indexed data frame with a key, and the models in this course exist in Python libraries such as <code>statsmodels</code> and <code>statsforecast</code>. Learn the ideas here first; the translation is the easy part.</aside>
 </section>
 
 <!-- ---------- 18 ---------- -->
@@ -785,7 +781,7 @@ body.ov-on #overview{display:block}
     </ul>
     <p class="small">The repo is updated all term. Homework is submitted on Blackboard, not here.</p>
   </div>
-  <aside class="notes">Write the URL on the board too. It is the single most important string of the session and somebody will be sitting behind a pillar.</aside>
+  <aside class="notes">Opening <code>tsa.Rproj</code> matters more than it looks. It sets the working directory to the repo root, so paths to <code>data/</code> resolve without editing any code. If a script cannot find a file, check first that the project is open: its name shows in the top-right corner of RStudio.</aside>
 </section>
 
 <!-- ---------- 19 ---------- -->
@@ -802,8 +798,7 @@ body.ov-on #overview{display:block}
     </ul>
     <div class="callout"><b>Run it one section at a time.</b> Select the section, then <code>Ctrl+Enter</code>, or <code>Cmd+Enter</code> on a Mac. Read the output before moving on.</div>
   </div>
-  <aside class="notes"><span class="clock">0:41 &rarr; 1:05 for the live run</span>
-  Leave this slide up while you switch windows. If anything opens an interactive prompt, the console reads every following line as an answer to it. Type 0 and Enter, or press Esc, to recover.</aside>
+  <aside class="notes">If a line opens an interactive prompt, the console reads every following line as an answer to it, and the output stops making sense. Type <code>0</code> and press Enter, or press Esc, to get back to the <code>&gt;</code> prompt, then run the section again.</aside>
 </section>
 
 <!-- ---------- 20 ---------- -->
@@ -833,7 +828,7 @@ Course packages (installed separately):
     </div>
     <p class="punch step">Already have R running? Check both tables now. No R yet? Do nothing. That is what the clinic at the end is for.</p>
   </div>
-  <aside class="notes">Only walk the room for the students who already have R up. Most will not, and chasing them here burns the live run. They will run this themselves in the clinic. Where you do get a table, glance at the library path: one sitting inside OneDrive or a network share means permission trouble later, even though everything looks fine today.</aside>
+  <aside class="notes">Look at the library path in the output as well. A path inside OneDrive or a network share works at first and causes permission errors later, even when everything looks fine today. If yours does, say so in the clinic and we will move it to a local folder.</aside>
 </section>
 
 <!-- ---------- 21 ---------- -->
@@ -849,7 +844,7 @@ Course packages (installed separately):
     </div>
     <p class="punch step">The <b>index</b> is the time column. The <b>key</b> is what tells the series apart. A plain data frame has neither.</p>
   </div>
-  <aside class="notes">Get a student to read the header out loud. Then filter to Spain and have them notice the key change to Country [1] and the row count drop to 58. The header is the teaching object here, not the data.</aside>
+  <aside class="notes">Try it: filter the table to Spain and print it again. The key line changes to <code>Country [1]</code> and the row count drops to 58, one per year. The header always tells you how many series a tsibble holds and how often each one is observed.</aside>
 </section>
 
 <!-- ---------- 22 ---------- -->
@@ -861,7 +856,7 @@ Course packages (installed separately):
   autoplot(Population)</div>
     <p class="punch step">The tsibble already knows which column is time. That is what the index buys you, and it is why we do not work in plain data frames.</p>
   </div>
-  <aside class="notes">This is the first plot of the course. Let it sit on screen for a moment before saying anything. The payoff is the absence of code, so point at what is not there.</aside>
+  <aside class="notes">In plain ggplot2 you would write <code>ggplot(aes(x = Year, y = Population)) + geom_line()</code>. <code>autoplot()</code> reads the index from the tsibble, so the time axis comes for free. Session 3 covers what else it can draw.</aside>
 </section>
 
 <!-- ---------- 23 ---------- -->
@@ -881,7 +876,7 @@ Course packages (installed separately):
 # A <span class="hl">fable</span>: 40 x 5 [1Y]    5 x 2 x 4 = 40 forecasts</div>
     <div class="callout">ETS is the last block of this course. ARIMA belongs to next term.</div>
   </div>
-  <aside class="notes">Say the word trailer out loud. Without it a few students will quietly panic that they were meant to be following the modeling, and they will stay panicked for the rest of the hour.</aside>
+  <aside class="notes">Nothing on this slide is expected of you yet. ETS models are the last block of this course, Sessions 15 to 19, and ARIMA is next term. Come back to this slide at the end of the term: by then you should be able to explain every entry in the ETS column.</aside>
 </section>
 
 <!-- ---------- 24 ---------- -->
@@ -896,7 +891,7 @@ Course packages (installed separately):
     </div>
     <p class="punch step" style="margin-top:1.5rem;font-size:var(--fs-sowhat);line-height:1.08;max-width:22ch">A forecast is a random variable.</p>
   </div>
-  <aside class="notes">The highest-value sixty seconds of the session. Point at the console, not at the slide. fable prints the distribution and its mean in adjacent columns, so the whole argument is visible in one screenshot on day one. Call back to the cone from the opening.</aside>
+  <aside class="notes">The <code>.mean</code> column is a summary of the distribution next to it, not a separate result. Every prediction interval you compute later in the course comes from that distribution column, which is the subject of Session 12.</aside>
 </section>
 
 <!-- ---------- 25 ---------- -->
@@ -912,7 +907,7 @@ Course packages (installed separately):
     <p class="punch step">Always ask for the third one.</p>
     <p class="small">Then look at Germany around 1990. What should a model do with a jump like that? Hold that thought.</p>
   </div>
-  <aside class="notes">Ask the Germany question and then move on without answering it. Structural breaks are not today's material, but the question is worth carrying for the rest of the term.</aside>
+  <aside class="notes">There is no single right answer to the Germany question yet. Should a model treat a jump like that as signal to follow, or as a one-off to look past? The question comes back whenever a series has a structural break.</aside>
 </section>
 
 <!-- ---------- 26 ---------- -->
@@ -927,7 +922,7 @@ aus_production %&gt;%
     <p class="lead step">If that plot appears in the bottom-right pane, your environment works and you are ready for Session 2.</p>
     <p class="punch step">Run it yourself. Do not watch me run it.</p>
   </div>
-  <aside class="notes">Wait for hands. The stated outcome of this session is that every student can plot a series on their own machine, and this is the evidence. It is the same check as the last step of setup/SETUP.md.</aside>
+  <aside class="notes">This is the same check as the last step of <code>setup/SETUP.md</code>. If the plot does not appear, you are not behind: the clinic at the end of this session is for exactly that.</aside>
 </section>
 
 <!-- ---------- 27 ---------- -->
@@ -942,8 +937,7 @@ aus_production %&gt;%
     </ul>
     <div class="callout"><b>Submit on Blackboard.</b> Write the code yourself.</div>
   </div>
-  <aside class="notes"><span class="clock">1:05 &rarr; 1:08</span>
-  The R primer is mandatory and everything after Session 2 assumes it. Say that plainly, because it looks optional sitting in a folder called self-study.</aside>
+  <aside class="notes">The R primer is mandatory, even though it sits in a folder called <code>self-study</code>. Everything from Session 2 on assumes it, so do it in full before the next session.</aside>
 </section>
 
 <!-- ---------- 28 ---------- -->
@@ -953,7 +947,7 @@ aus_production %&gt;%
     <p class="url">aberrizbeitia@faculty.ie.edu</p>
     <p class="lead">Any time. Stuck on an install, stuck on an idea, or you think I got something wrong in class. Office hours on request, just email me.</p>
   </div>
-  <aside class="notes">Say a realistic reply time and then keep to it. A promise to be reachable is only worth what the first unanswered email says about it.</aside>
+  <aside class="notes">For a technical problem, an email with the full error message and the line of code that produced it gets the fastest useful answer. A screenshot of the whole RStudio window helps too.</aside>
 </section>
 
 <!-- ---------- 29 ---------- -->
@@ -968,8 +962,7 @@ aus_production %&gt;%
       <div class="card"><h3>Everything works</h3><p>Start the homework. The R primer is longer than it looks.</p></div>
     </div>
   </div>
-  <aside class="notes"><span class="clock">1:08 &rarr; 1:20</span>
-  Triage by walking the room rather than by asking for hands. People who are stuck are the least likely to raise one.</aside>
+  <aside class="notes">If something is still broken after the session, email with the exact error message. Most setup problems are one of the six on slide 31, and <code>setup/SETUP.md</code> has the fix for each, by platform.</aside>
 </section>
 
 <!-- ---------- 30 ---------- -->
@@ -993,7 +986,7 @@ install.packages(c(
     <div class="callout"><b>The second line is not optional.</b> None of those nine come with fpp3. <code>tidyverse</code> is needed for your first homework, and <code>urca</code> is needed by <code>ARIMA()</code> today.</div>
     <p class="small">On Linux, install the development headers listed in setup/SETUP.md <b>before</b> any of this. Quarto needs no separate install: RStudio already ships it.</p>
   </div>
-  <aside class="notes">The second line is the one that costs an hour if it is missed, because the failure looks nothing like a missing package. R stops and shows a Selection: prompt, then reads the rest of the script as answers to it, and it looks like the script has gone insane.</aside>
+  <aside class="notes">The second line is the one that costs an hour if it is missed, because the failure looks nothing like a missing package. If R stops at a <code>Selection:</code> prompt, it reads the rest of the script as answers to it. Type <code>0</code> and press Enter, or press Esc.</aside>
 </section>
 
 <!-- ---------- 31 ---------- -->
@@ -1010,12 +1003,12 @@ install.packages(c(
     </table>
     <p class="small">All of this, with the platform-by-platform detail: <b>setup/SETUP.md</b> in the repo.</p>
   </div>
-  <aside class="notes">Leave this slide up for the rest of the clinic. It answers most questions before they get asked, and it means students helping each other have something to point at.</aside>
+  <aside class="notes">When something fails, check this list first, then the platform section of <code>setup/SETUP.md</code>. Helping a classmate through one of these is a good way to make sure you could fix it yourself.</aside>
 </section>
 
 <!-- lives inside the stage so it is positioned against it, not the viewport,
      and therefore never covers the rail -->
-<div id="notepane"><h4>Presenter notes</h4><div class="body"></div></div>
+<div id="notepane"><h4>Going further</h4><div class="body"></div></div>
 
 </main>
 
@@ -1108,7 +1101,7 @@ install.packages(c(
     count.textContent = num + " / " + slides.length;
 
     var n = slides[si].querySelector(".notes");
-    noteBody.innerHTML = n ? n.innerHTML : "<i>No notes for this slide.</i>";
+    noteBody.innerHTML = n ? n.innerHTML : "<i>Nothing further for this slide.</i>";
 
     if (history.replaceState) history.replaceState(null, "", "#" + num);
   }

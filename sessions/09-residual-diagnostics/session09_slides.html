@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Session 9 · Time Series Analysis · Fall 2026</title>
+<title>Session 9 · Time Series Analysis</title>
 <style>
 /* ============================================================
    Session 09 slides. Same self-contained shell as Sessions 01
@@ -369,7 +369,7 @@ body.ov-on #overview{display:block}
 <nav id="rail">
   <div class="brand">
     <b>Time Series Analysis</b>
-    <span>Session 9 · Fall 2026</span>
+    <span>Session 9</span>
   </div>
   <ul id="toc"></ul>
   <div class="foot">
@@ -400,14 +400,14 @@ body.ov-on #overview{display:block}
 <section class="slide" data-section="1" data-title="Where we are">
   <div class="inner">
     <p class="kicker">Where we are &nbsp;&middot;&nbsp; and what is on the exam</p>
-    <h1 class="sowhat">On Wednesday you produced forecasts. Nobody asked whether they were any good.</h1>
+    <h1 class="sowhat">In Session 8 you produced forecasts. Nobody asked whether they were any good.</h1>
     <ul class="build">
       <li class="step"><b>A model that runs is not a model that works.</b> Today is the first of three sessions about telling the difference.</li>
       <li class="step"><b>This session is not on the midterm.</b> It opens the evaluation block: today, then train and test splits in Session 13 and cross-validation in Session 14, and those are examined together in the final.</li>
       <li class="step"><b>Do not skip it for that reason.</b> Residual diagnostics is the most-used skill in the second half of this course, and Group Assignment 2 depends on it.</li>
     </ul>
     <div class="callout"><b>Residuals exist only for fitted values.</b> <code>e<sub>t</sub> = y<sub>t</sub> - y&#770;<sub>t|t-1</sub></code>: each fitted value sits inside the data, so there is an observation to subtract it from. A forecast has none yet. Everything today reads that one column.</div>
-    <p class="punch step wide">Skip today and the final costs you a third of the evaluation block. The midterm is Wednesday 14 October.</p>
+    <p class="punch step wide">Skip today and the final costs you a third of the evaluation block. The midterm is the next session.</p>
   </div>
   <aside class="notes">The coverage change is deliberate rather than administrative. Session 8 closes the decomposition arc and opens forecasting; Session 9 opens the evaluation arc and runs through Sessions 13 and 14. Splitting the exams at that seam keeps each one testing a coherent body of material rather than stopping halfway through an idea.<br><br>It also fixes a scheduling problem. The session after this one is the midterm itself, so there was no room for the usual start-of-session homework review. Tonight's homework is reviewed at the start of Session 11 instead, and slide 15 has the details. The revision deck is in the Session 10 folder, for the prep tutorial and office hours.</aside>
 </section>
@@ -899,42 +899,42 @@ Ljung-Box    Q* = T(T+2) &middot; sum over k=1..l of  r_k&#178; / (T &minus; k)
     </ul>
     <p class="punch step wide">Print the one-page summary and keep it beside you for Group Assignment 2. It is the most used page in the course.</p>
   </div>
-  <aside class="notes">The third row is worth pausing on, because it closes a loop. A funnel-shaped residual plot usually means the series is multiplicative and you fitted it additively, which is Session 5's very first question back four weeks later with a consequence attached. The eye test you learned for choosing a scheme is the same eye test that reads this plot.<br><br>The fourth row is the most survivable. Bootstrapped prediction intervals need residuals that are uncorrelated and homoscedastic but make no normality assumption at all, so a normality failure limits which method you use rather than whether you can quote an interval.</aside>
+  <aside class="notes">The third row is worth pausing on, because it closes a loop. A funnel-shaped residual plot usually means the series is multiplicative and you fitted it additively, which is Session 5's very first question back four sessions later with a consequence attached. The eye test you learned for choosing a scheme is the same eye test that reads this plot.<br><br>The fourth row is the most survivable. Bootstrapped prediction intervals need residuals that are uncorrelated and homoscedastic but make no normality assumption at all, so a normality failure limits which method you use rather than whether you can quote an interval.</aside>
 </section>
 
 
 <!-- ---------- 15 ---------- -->
 <section class="slide" data-section="6" data-title="Homework">
   <div class="inner">
-    <p class="kicker">Due Sunday 11 October, 23:59</p>
+    <p class="kicker">Due date in this session&#39;s announcements</p>
     <h1 class="sowhat">Homework, and one scheduling exception.</h1>
     <ul class="build">
       <li><b><code>09_B</code> Exercise 1, and only that.</b> Diagnose the decomposition model from <code>08_A</code>: STL on <code>log(Turnover)</code>, drift on the seasonally adjusted part, seasonal naive on the season. The fitting code is in the notebook.</li>
       <li>All four properties, one sentence each. Then a Ljung&ndash;Box test, working out <code>lag</code> and <code>dof</code> yourself and saying why.</li>
       <li><b>One extra check:</b> are <code>.resid</code> and <code>.innov</code> still identical here? They are not. Say why in one sentence.</li>
-      <li>Then revise. The midterm is the following Wednesday.</li>
+      <li>Then revise. The midterm is the next session.</li>
     </ul>
     <div class="callout"><b>Feedback works differently for this one, and only this one.</b> The next session is the midterm itself, so there is no start-of-session slot to review it in.</div>
-    <div class="callout slate"><b>The cohort common-errors note goes up in writing on Monday 12 October</b>, two days before the exam, so you can use it while revising. The live review happens at the start of <b>Session 11, Monday 19 October</b>.</div>
+    <div class="callout slate"><b>The cohort common-errors note goes up in writing before the exam</b>, so you can use it while revising. The live review happens at the start of <b>Session 11</b>. The dates are in this session&#39;s announcements.</div>
   </div>
-  <aside class="notes">That last check is the first time in the course those two columns differ, and the reason is the <code>log()</code> inside <code>STL()</code>. Session 8 told you the distinction existed and that it would not matter yet; this is where it starts to.<br><br>This is the only week in the course where the review is not at the start of the next session, and it is worth reading the two dates carefully. The written note arrives before the midterm precisely because it is useful for revision; the discussion waits until there is a session to have it in.<br><br>Graded on completion and genuine effort as usual. For these two exercises, working through all four properties and being honest about which ones fail is the whole assignment. Both models are benchmarks on series with real structure, so expect failures and report them.</aside>
+  <aside class="notes">That last check is the first time in the course those two columns differ, and the reason is the <code>log()</code> inside <code>STL()</code>. Session 8 told you the distinction existed and that it would not matter yet; this is where it starts to.<br><br>This is the only homework in the course whose review is not at the start of the next session. The written note arrives before the midterm precisely because it is useful for revision; the discussion waits until there is a session to have it in.<br><br>Graded on completion and genuine effort as usual. For these two exercises, working through all four properties and being honest about which ones fail is the whole assignment. Both models are benchmarks on series with real structure, so expect failures and report them.</aside>
 </section>
 
 
 <!-- ---------- 16 ---------- -->
 <section class="slide" data-section="6" data-title="Next session">
   <div class="inner">
-    <p class="kicker">Session 10 &nbsp;&middot;&nbsp; Wednesday 14 October</p>
+    <p class="kicker">Session 10</p>
     <h1 class="sowhat">Next session is the midterm.</h1>
     <p class="lead wide">Twenty multiple-choice questions on Sessions 1 to 8. After it, Session 11 picks the course back up with transformations and the Box&ndash;Cox family, the principled version of the transformation ladder you met in Session 5.</p>
     <ul class="build">
-      <li class="step"><b>Session 11 also carries this homework's review</b>, on Monday 19 October, and is where Group Assignment 1 questions get answered before its 25 October deadline.</li>
+      <li class="step"><b>Session 11 also carries this homework's review</b>, and is where Group Assignment 1 questions get answered before its deadline.</li>
       <li class="step"><b>The evaluation block resumes at Session 13.</b> Today's diagnostics, then train and test splits, then cross-validation, all examined together in the final.</li>
     </ul>
     <p class="punch step wide">Today you learned how to tell whether a model is finished. Session 13 asks how wrong it is, which turns out to be a different question with a different answer.</p>
     <p class="url" style="font-size:clamp(0.95rem,1.7vw,1.9rem)">aberrizbeitia@faculty.ie.edu</p>
   </div>
-  <aside class="notes">The distinction in the closing line is the one that organizes the rest of the course. Residual diagnostics asks whether anything is <i>left</i>; accuracy measures ask how <i>large</i> the errors are. A model can pass the first and still forecast badly, and a model can fail the first and still be the most accurate thing available.<br><br>Good luck on Wednesday. Come to the optional prep tutorial with questions, and read the four-property summary sheet once more before the exam, not because it is examined, but because it is the clearest one page in the course.</aside>
+  <aside class="notes">The distinction in the closing line is the one that organizes the rest of the course. Residual diagnostics asks whether anything is <i>left</i>; accuracy measures ask how <i>large</i> the errors are. A model can pass the first and still forecast badly, and a model can fail the first and still be the most accurate thing available.<br><br>Good luck in the midterm. Come to the optional prep tutorial with questions, and read the four-property summary sheet once more before the exam, not because it is examined, but because it is the clearest one page in the course.</aside>
 </section>
 
 <!-- lives inside the stage so it is positioned against it, not the viewport,

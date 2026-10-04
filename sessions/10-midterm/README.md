@@ -2,6 +2,8 @@
 
 **Date:** Wednesday, 14 October 2026, 9:00–10:20 — IE Tower, room T-05.02
 
+**Announcements:** this session's dates and deadlines are in [`announcements.md`](announcements.md).
+
 **Coverage:** S1–S8 — R basics, the stochastic-process framing, tsibbles, graphics and the ACF,
 decomposition (classical and STL), benchmark methods, fitted values, and forecasting with a
 decomposition.

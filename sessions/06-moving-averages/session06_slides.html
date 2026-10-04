@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Session 6 · Time Series Analysis · Fall 2026</title>
+<title>Session 6 · Time Series Analysis</title>
 <style>
 /* ============================================================
    Session 06 slides. Same self-contained shell as Sessions 01
@@ -371,7 +371,7 @@ body.ov-on #overview{display:block}
 <nav id="rail">
   <div class="brand">
     <b>Time Series Analysis</b>
-    <span>Session 6 · Fall 2026</span>
+    <span>Session 6</span>
   </div>
   <ul id="toc"></ul>
   <div class="foot">
@@ -399,10 +399,10 @@ body.ov-on #overview{display:block}
 </section>
 
 <!-- ---------- 2 ---------- -->
-<section class="slide" data-section="1" data-title="The promise from Monday">
+<section class="slide" data-section="1" data-title="The promise from Session 5">
   <div class="inner">
     <p class="kicker">Where we are &nbsp;&middot;&nbsp; part 2 of 3</p>
-    <h1 class="sowhat">You used <code>trend</code> all Monday. Nobody said where it came from.</h1>
+    <h1 class="sowhat">You used <code>trend</code> all through Session 5. Nobody said where it came from.</h1>
     <ul class="build">
       <li class="step"><b>You subtracted it and divided by it</b> to build detrended and seasonally adjusted series. The column was handed to you.</li>
       <li class="step"><b>You saw its edges were missing</b>, at both ends of every plot, and were told twice to wait for today.</li>
@@ -485,7 +485,7 @@ body.ov-on #overview{display:block}
         <p class="step t"><b>Why the ends are empty</b>Near the start there is nothing to the left to put in the window. A 7-MA loses its first three and last three values.</p>
       </div>
     </figure>
-    <p class="punch step wide">Both of Monday's loose ends, answered by the same picture. Keep the diagram: the second half of this session is nothing but it with the window widths changed.</p>
+    <p class="punch step wide">Both of Session 5's loose ends, answered by the same picture. Keep the diagram: the second half of this session is nothing but it with the window widths changed.</p>
   </div>
   <aside class="notes">The count generalizes: an <code>m-MA</code> loses <code>(m-1)/2</code> values at each end, so a 13-MA gives up six at each end and a 2&times;12-MA gives up six as well. The script prints these counts for every window it builds, and it is worth checking the arithmetic against the output once.<br><br>Missing values at the ends are not a defect to be fixed. They are an honest statement that the estimate needs neighbours on both sides and does not have them there. Slide 16 comes back to what that costs you, because it is the most consequential limitation in this block.</aside>
 </section>
@@ -530,7 +530,7 @@ body.ov-on #overview{display:block}
 <!-- ---------- 7 ---------- -->
 <section class="slide" data-section="2" data-title="Check the first value by hand">
   <div class="inner">
-    <p class="kicker">06_B &nbsp;&middot;&nbsp; the habit from Monday, reused</p>
+    <p class="kicker">06_B &nbsp;&middot;&nbsp; the habit from Session 5, reused</p>
     <h1 class="sowhat wide">Average seven numbers yourself. Ask R whether it agrees.</h1>
     <div class="console">mean(aus_exports$Exports[1:7])
 aus_exports$`7-MA`[[<span class="hl">4</span>]]
@@ -539,7 +539,7 @@ all.equal(mean(aus_exports$Exports[1:7]), aus_exports$`7-MA`[[4]])
 <span class="hl">isTRUE</span>(all.equal(mean(aus_exports$Exports[1:7]), aus_exports$`7-MA`[[4]]))</div>
     <ul class="build">
       <li class="step"><b>Why element 4 and not element 1.</b> The first three windows are incomplete, so the first number a 7-MA can produce sits in row four.</li>
-      <li class="step"><b>This is Monday's idiom, on its first real job.</b> <code>all.equal()</code> alone returns <code>TRUE</code> or a sentence; <code>isTRUE()</code> turns it into something you can act on.</li>
+      <li class="step"><b>This is Session 5's idiom, on its first real job.</b> <code>all.equal()</code> alone returns <code>TRUE</code> or a sentence; <code>isTRUE()</code> turns it into something you can act on.</li>
       <li class="step"><b>Do this at every step in Session 7.</b> Four steps, four checks. A decomposition that fails at step 3 is much cheaper to find at step 3.</li>
     </ul>
     <p class="punch step wide">Work out which element to compare before you run it. Getting the index right is most of the exercise, and it is the same reasoning that tells you how many values are missing.</p>
@@ -815,7 +815,7 @@ right m-MA_t  =  (1/m) * sum of y_{t+j}  <span class="dim">for</span> j = 0 .. (
 <!-- ---------- 18 ---------- -->
 <section class="slide" data-section="6" data-title="Homework">
   <div class="inner">
-    <p class="kicker">Due Sunday 27 September, 23:59</p>
+    <p class="kicker">Due date in this session&#39;s announcements</p>
     <h1 class="sowhat">Homework.</h1>
     <ul class="build">
       <li><b>Exercise 1.</b> The <code>2&times;12-MA</code> of <code>us_retail_employment</code>. Work out <code>.before</code> and <code>.after</code> for both windows before typing, then plot it over the series.</li>
@@ -823,7 +823,7 @@ right m-MA_t  =  (1/m) * sum of y_{t+j}  <span class="dim">for</span> j = 0 .. (
       <li><b>Exercises 3 and 4.</b> The two derivations from the previous slide, on paper. A photograph of clear handwriting is a perfectly good submission. Between them they are half the marks.</li>
       <li><b>Exercise 2 is not assigned.</b> It is in the notebook as optional practice if you want a second <code>2&times;m-MA</code> to work through.</li>
     </ul>
-    <div class="callout slate"><b>No data files.</b> The series ships inside <code>fpp3</code>. Same deadline as Session 5's homework; both fall in this teaching week.</div>
+    <div class="callout slate"><b>No data files.</b> The series ships inside <code>fpp3</code>.</div>
   </div>
   <aside class="notes">Graded on completion and genuine effort, not correctness. For exercises 3 and 4 that matters more than usual: a derivation that goes wrong in an interesting place and says so is worth full marks. An answer copied from somewhere with no working shown is worth less, and is easy to spot.<br><br>The two derivations carry 2.5 marks each, against 5 for the coded exercise. That is deliberate. They are the part that tells you whether the 2&times;m construction is understood or memorized, and they take a fraction of the time the code does.<br><br>Submit on Blackboard, under Assignments. Multiple files are fine, so a script plus a photograph of the paper work is the natural shape for this one.</aside>
 </section>
@@ -831,17 +831,17 @@ right m-MA_t  =  (1/m) * sum of y_{t+j}  <span class="dim">for</span> j = 0 .. (
 <!-- ---------- 19 ---------- -->
 <section class="slide" data-section="6" data-title="Next session">
   <div class="inner">
-    <p class="kicker">Session 7 &nbsp;&middot;&nbsp; Monday</p>
+    <p class="kicker">Session 7</p>
     <h1 class="sowhat">You can now build <code>T_t</code>. Next session you use it four times.</h1>
     <p class="lead wide">Classical decomposition from scratch: trend by moving average, detrend, seasonal component, remainder. Then <code>classical_decomposition()</code> to check every step, the criteria for a good decomposition, and STL.</p>
     <ul class="build">
       <li class="step"><b>Step 1 of next session is this entire session.</b> A <code>2&times;m-MA</code> if <code>m</code> is even, an <code>m</code>-MA if it is odd. Nothing new.</li>
       <li class="step"><b>Group Assignment 1 launches.</b> It is the same algorithm, from scratch, on a series you have not met.</li>
     </ul>
-    <p class="punch step wide">Read fpp3 3.4 and 3.6 before Monday. Section 3.5 is X-11 and SEATS, and this course does not cover it.</p>
+    <p class="punch step wide">Read fpp3 3.4 and 3.6 before Session 7. Section 3.5 is X-11 and SEATS, and this course does not cover it.</p>
     <p class="url" style="font-size:clamp(0.95rem,1.7vw,1.9rem)">aberrizbeitia@faculty.ie.edu</p>
   </div>
-  <aside class="notes">Session 7 is the heaviest of the block, and it is heavy mainly because it has four steps rather than because any one of them is hard. Arriving with today's material solid is what makes it manageable.<br><br>One thing to bring: the <code>isTRUE(all.equal(x, y))</code> idiom. You will write it four times on Monday, once per step, and each check tells you whether to keep going or to stop and find the mistake while it is still cheap.</aside>
+  <aside class="notes">Session 7 is the heaviest of the block, and it is heavy mainly because it has four steps rather than because any one of them is hard. Arriving with today's material solid is what makes it manageable.<br><br>One thing to bring: the <code>isTRUE(all.equal(x, y))</code> idiom. You will write it four times in Session 7, once per step, and each check tells you whether to keep going or to stop and find the mistake while it is still cheap.</aside>
 </section>
 
 <!-- lives inside the stage so it is positioned against it, not the viewport,
