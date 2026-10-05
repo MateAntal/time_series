@@ -218,10 +218,10 @@ p1 + p2
 ## Running the test ----
 bricks_aug <- bricks_fit |> augment()
 
-bricks_aug |> filter(.model == "Nv") |> features(.innov, box_pierce, lag = 8, dof = 0)
+bricks_aug |> filter(.model == "Nv") |> features(.innov, box_pierce, lag = 8)
 
-bricks_aug |> filter(.model == "Nv") |> features(.innov, ljung_box, lag = 8, dof = 0)
-bricks_aug |> filter(.model == "Mean") |> features(.innov, ljung_box, lag = 8, dof = 1)
+bricks_aug |> filter(.model == "Nv") |> features(.innov, ljung_box, lag = 8)
+bricks_aug |> filter(.model == "Mean") |> features(.innov, ljung_box, lag = 8)
 
 # Exercise 1 ----
 retail_series <- aus_retail |>

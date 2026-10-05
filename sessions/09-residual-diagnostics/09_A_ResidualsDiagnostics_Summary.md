@@ -41,9 +41,9 @@ E[y<sub>t</sub>] = E[ŷ<sub>t</sub>]: on average, the fitted values hit the data
 | **4** Normal | Histogram (or kernel density); QQ plot; boxplots for symmetry | Box–Cox transformation; bootstrapped intervals, which do not assume normality; change the model |
 
 `gg_tsresiduals()` draws the time plot, the ACF plot and the histogram in one call.
-`features(.innov, ljung_box, lag = 10, dof = 0)` runs the Ljung–Box test: a small p-value means
-structure is left. Use `lag = 10` for non-seasonal data and `2m` for seasonal data with period `m`;
-`dof` is the number of parameters the model estimated (fpp3 5.4).
+`features(.innov, ljung_box, lag = 10)` runs the Ljung–Box test: a small p-value means
+structure is left. Use `lag = 10` for non-seasonal data and `2m` for seasonal data with period `m`,
+but no more than `T/5` (fpp3 5.4).
 
 Formal tests beyond this course, for reference: Breusch–Pagan and McLeod–Li for constant
 variance; Shapiro–Wilk, D'Agostino and Jarque–Bera for normality.

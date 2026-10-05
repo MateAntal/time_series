@@ -823,7 +823,7 @@ Ljung-Box    Q* = T(T+2) &middot; sum over k=1..l of  r_k&#178; / (T &minus; k)
     </ul>
     <p class="punch step wide">Read the p-value, not the statistic. The statistic has no meaning on its own scale.</p>
   </div>
-  <aside class="notes">Two arguments to choose. <code>lag</code> is <code>l</code>: fpp3 suggests 10 for non-seasonal data and <code>2m</code> for seasonal. <code>dof</code> is the number of parameters the model estimated: one for the mean model (the mean) and one for drift, none for naive and seasonal naive. <code>tidy()</code> on the fitted model lists them.<br><br>Why <code>dof</code> matters at all: a model with more parameters can fit noise, so its residuals look more like white noise than they should. Subtracting the degrees of freedom is the correction for that, and it will matter properly once ETS models arrive in Session 19 with several parameters each.</aside>
+  <aside class="notes">One argument to choose. <code>lag</code> is <code>l</code>: fpp3 suggests 10 for non-seasonal data and <code>2m</code> for seasonal, but no more than T/5.</aside>
 </section>
 
 
@@ -854,22 +854,22 @@ Ljung-Box    Q* = T(T+2) &middot; sum over k=1..l of  r_k&#178; / (T &minus; k)
   <div class="inner">
     <a class="nb" href="09_B_ResidualsAnalysis.html#running-the-test" target="_blank" rel="noopener" title="Open the notebook at this section">09_B &rsaquo; Portmanteau tests &rsaquo; Running the test</a>
     <p class="kicker">Now we compute</p>
-    <h1 class="sowhat wide" style="font-size:clamp(1.5rem,2.9vw,3.2rem)"><code>features(.innov, ljung_box, lag, dof)</code></h1>
-    <div class="console tight">bricks_aug |&gt; filter(.model == "Nv")   |&gt; features(.innov, ljung_box, lag = 8, dof = 0)
-bricks_aug |&gt; filter(.model == "Mean") |&gt; features(.innov, ljung_box, lag = 8, dof = 1)
+    <h1 class="sowhat wide" style="font-size:clamp(1.5rem,2.9vw,3.2rem)"><code>features(.innov, ljung_box, lag)</code></h1>
+    <div class="console tight">bricks_aug |&gt; filter(.model == "Nv")   |&gt; features(.innov, ljung_box, lag = 8)
+bricks_aug |&gt; filter(.model == "Mean") |&gt; features(.innov, ljung_box, lag = 8)
 
 <span class="dim"># .model    lb_stat   lb_pvalue</span>
 <span class="dim"># Nv        206.0     0</span>
 <span class="dim"># Mean      269.5     0</span></div>
+    <div class="callout"><b>Read <code>lb_pvalue</code> against 0.05.</b> Below it: reject white noise, structure is left, the model is not finished. At or above it: no structure detected, which is not proof there is none.</div>
     <ul class="build">
       <li class="step"><b>Both p-values are zero to the printed precision.</b> Reject <code>H&#8320;</code> comfortably: neither benchmark has captured the structure in this series.</li>
       <li class="step"><b>Which is the right answer.</b> A naive model on strongly seasonal quarterly data should fail this, and a diagnostic that let it pass would be the broken thing.</li>
-      <li class="step"><b><code>lag = 8</code> because the data is quarterly</b>, so 2m = 8. <b><code>dof</code> counts the parameters the model estimated</b>: none for naive, one (the mean) for the mean model. <code>tidy()</code> lists them.</li>
-      <li class="step"><b>Run it on <code>.innov</code>, not <code>.resid</code>.</b> Identical today, and the habit is what you want before Session 11.</li>
+      <li class="step"><b><code>lag = 8</code> because the data is quarterly</b>, so 2m = 8. The same <code>lag</code> for both models: <b>it depends on the data, not the model</b>.</li>
     </ul>
     <p class="punch step wide">You now have the full instrument. Session 13 asks the other question: not whether structure is left, but how large the errors are.</p>
   </div>
-  <aside class="notes">Reading a p-value of 0 in the output does not mean the probability is exactly zero; it means it is smaller than the print precision. Say "we reject at any conventional level" rather than "the probability is zero".<br><br>A caution that will matter in Group Assignment 2. Passing Ljung-Box is not proof that residuals are white noise; it is a failure to detect otherwise, on a test that is weak for short series. Session 4 made the same point about the visual bounds, and it applies with equal force here. "I could not detect remaining structure" is the honest phrasing.</aside>
+  <aside class="notes">Run it on <code>.innov</code>, not <code>.resid</code>. Identical today, and the habit is what you want before Session 11.<br><br>Reading a p-value of 0 in the output does not mean the probability is exactly zero; it means it is smaller than the print precision. Say "we reject at any conventional level" rather than "the probability is zero".<br><br>A caution that will matter in Group Assignment 2. Passing Ljung-Box is not proof that residuals are white noise; it is a failure to detect otherwise, on a test that is weak for short series. Session 4 made the same point about the visual bounds, and it applies with equal force here. "I could not detect remaining structure" is the honest phrasing.</aside>
 </section>
 
 
@@ -902,7 +902,7 @@ bricks_aug |&gt; filter(.model == "Mean") |&gt; features(.innov, ljung_box, lag 
     <h1 class="sowhat">Homework: one model, all four properties.</h1>
     <ul class="build">
       <li><b><code>09_B</code> Exercise 1, and only that.</b> Diagnose the decomposition model from <code>08_A</code>: STL on <code>log(Turnover)</code>, drift on the seasonally adjusted part, seasonal naive on the season. The fitting code is in the notebook.</li>
-      <li>All four properties, one sentence each. Then a Ljung&ndash;Box test, working out <code>lag</code> and <code>dof</code> yourself and saying why.</li>
+      <li>All four properties, one sentence each. Then a Ljung&ndash;Box test, working out <code>lag</code> yourself and saying why.</li>
       <li><b>One extra check:</b> compare <code>.resid</code> and <code>.innov</code> for this model. Are they identical? Explain in one sentence.</li>
     </ul>
   </div>
