@@ -2378,7 +2378,7 @@ window.Quarto = {
   <ul>
   <li><a href="#statistics" id="toc-statistics" class="nav-link" data-scroll-target="#statistics">Box-Pierce and Ljung-Box statistics</a></li>
   <li><a href="#why-squaring" id="toc-why-squaring" class="nav-link" data-scroll-target="#why-squaring">Why squaring</a></li>
-  <li><a href="#lag-dof" id="toc-lag-dof" class="nav-link" data-scroll-target="#lag-dof">Choosing lag and dof</a></li>
+  <li><a href="#choosing-the-lag" id="toc-choosing-the-lag" class="nav-link" data-scroll-target="#choosing-the-lag">Choosing the lag</a></li>
   <li><a href="#reading-the-test" id="toc-reading-the-test" class="nav-link" data-scroll-target="#reading-the-test">Reading the test</a></li>
   <li><a href="#running-the-test" id="toc-running-the-test" class="nav-link" data-scroll-target="#running-the-test">Running the test</a></li>
   </ul></li>
@@ -2419,7 +2419,6 @@ window.Quarto = {
 <li><a href="https://fable.tidyverts.org/index.html">Link 1</a></li>
 <li><a href="https://fable.tidyverts.org/articles/fable.html">Link 2</a></li>
 </ul></li>
-<li>Hyndman, R. J. (2023, January 28). Degrees of freedom for a Ljung-Box test. Rob J Hyndman. <a href="https://robjhyndman.com/hyndsight/ljung_box_df.html">Link</a></li>
 <li>Bonar, P. A. J., Goodall, G. J., &amp; Armstrong, S. D. (2019). <em>Exploring seasonality and periodicity in time series data</em>. National Center for Biotechnology Information (NCBI). Available at: <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6337927/">Link</a></li>
 <li>Khomyanin, I. (2024, May 17). <em>Tales of the Undead Salmon: Exploring Bonferroni Correction in Multiple Hypothesis Testing</em>. HackerNoon. Available at: <a href="https://hackernoon.com/tales-of-the-undead-salmon-exploring-bonferroni-correction-in-multiple-hypothesis-testing">Link</a></li>
 </ol>
@@ -3050,7 +3049,7 @@ y_t  = y_{t-1} + \varepsilon_t
 </section>
 <section id="portmanteau" class="level1">
 <h1>Portmanteau tests for autocorrelation</h1>
-<p>Checking each bar of the ACF plot against the bounds is the same as running one hypothesis test per bar, each with a small chance of a false positive. Run enough tests and at least one false positive becomes likely. References 4 and 5 explain this multiple-testing problem.</p>
+<p>Checking each bar of the ACF plot against the bounds is the same as running one hypothesis test per bar, each with a small chance of a false positive. Run enough tests and at least one false positive becomes likely. References 3 and 4 explain this multiple-testing problem.</p>
 <p>The fix is one test on the first <span class="math inline">\(l\)</span> autocorrelations together: do they, as a group, look like white noise? A test on several autocorrelations at once is called a <strong>portmanteau test</strong>, from the French for a coat rack that carries several garments.</p>
 <section id="statistics" class="level2">
 <h2 class="anchored" data-anchor-id="statistics">Box-Pierce and Ljung-Box statistics</h2>
@@ -3091,38 +3090,20 @@ Q^* = T(T+2) \sum_{k=1}^\ell (T-k)^{-1}r_k^2.
 </ul>
 <p>In short, squaring makes every term of <span class="math inline">\(Q\)</span> and <span class="math inline">\(Q^*\)</span> non-negative, and it weights each autocorrelation by its size: if every <span class="math inline">\(r_k\)</span> is close to 0 the statistic is small, and if some <span class="math inline">\(r_k\)</span> are large, positive or negative, it is large.</p>
 </section>
-<section id="lag-dof" class="level2">
-<h2 class="anchored" data-anchor-id="lag-dof">Choosing lag and dof</h2>
+<section id="choosing-the-lag" class="level2">
+<h2 class="anchored" data-anchor-id="choosing-the-lag">Choosing the lag</h2>
 <p><strong>The lag, <span class="math inline">\(l\)</span></strong>, is the number of autocorrelations in the sum. fpp3 recommends:</p>
 <ul>
 <li><p><span class="math inline">\(l = 10\)</span> for non-seasonal data</p></li>
 <li><p><span class="math inline">\(l = 2m\)</span> for seasonal data, where <span class="math inline">\(m\)</span> is the period of seasonality</p></li>
 <li><p><strong>Caution:</strong> the test is unreliable if <span class="math inline">\(T/l &lt; 5\)</span>. In that case use <span class="math inline">\(l = T/5\)</span>.</p></li>
 </ul>
-<p><strong>The distribution of the statistic.</strong> We take one result as given: <strong>if the series is white noise, <span class="math inline">\(Q\)</span> and <span class="math inline">\(Q^*\)</span> follow a <span class="math inline">\(\chi^2\)</span> distribution with <span class="math inline">\(l-K\)</span> degrees of freedom</strong>, where:</p>
-<ul>
-<li><span class="math inline">\(l\)</span> is the number of lags in the sum, chosen as above.</li>
-<li><span class="math inline">\(K\)</span> is the number of degrees of freedom the model uses up. With no model, the <span class="math inline">\(l\)</span> autocorrelations have <span class="math inline">\(l\)</span> degrees of freedom; a model that estimates <span class="math inline">\(K\)</span> parameters leaves <span class="math inline">\(l-K\)</span>.</li>
-</ul>
-<p><strong>The right <span class="math inline">\(K\)</span> depends on the model</strong>, and statisticians disagree about it for some models. We follow reference 3:</p>
-<ul>
-<li>To test whether raw data, not residuals, is white noise, use <span class="math inline">\(K=0\)</span>: no model has used up any degrees of freedom.</li>
-<li>For the benchmarks, set <span class="math inline">\(K\)</span> to the number of parameters the model estimates; <code>tidy()</code> lists them. The mean model estimates one (the mean), drift estimates one, and naive and seasonal naive estimate none.</li>
-<li>For other models, reference 3 suggests, from limited evidence:
-<ul>
-<li>For ARIMA models, use <span class="math inline">\(K=p+q\)</span> and hence <span class="math inline">\(l-K=l-p-q\)</span> degrees of freedom for the statistic.</li>
-<li>For seasonal ARIMA models, use <span class="math inline">\(K=p+q\)</span> and hence <span class="math inline">\(l-K=l-p-q\)</span> degrees of freedom for the statistic.</li>
-<li>For regression with ARIMA errors, use <span class="math inline">\(K=p+q\)</span> and hence <span class="math inline">\(l-K=l-p-q\)</span> degrees of freedom for the statistic.</li>
-<li>For OLS regression, use <span class="math inline">\(K=0\)</span> and hence <span class="math inline">\(l\)</span> degrees of freedom for the statistic.</li>
-<li>For non-seasonal ETS models, use <span class="math inline">\(K=\text{number of smoothing parameters}\)</span> and <span class="math inline">\(l-K\)</span> degrees of freedom for the statistic.</li>
-<li>For seasonal ETS models, use <span class="math inline">\(K=0\)</span> and hence <span class="math inline">\(l\)</span> degrees of freedom for the statistic.</li>
-</ul></li>
-</ul>
+<p><strong>The distribution of the statistic.</strong> We take one result as given: <strong>if the series is white noise, <span class="math inline">\(Q\)</span> and <span class="math inline">\(Q^*\)</span> follow a <span class="math inline">\(\chi^2\)</span> distribution with <span class="math inline">\(l\)</span> degrees of freedom</strong>, one for each autocorrelation in the sum.</p>
 </section>
 <section id="reading-the-test" class="level2">
 <h2 class="anchored" data-anchor-id="reading-the-test">Reading the test</h2>
 <ul>
-<li><span class="math inline">\(H_0\)</span>: the residuals are white noise. Then <span class="math inline">\(Q\)</span> and <span class="math inline">\(Q^*\)</span> follow a <span class="math inline">\(\chi^2\)</span> distribution with <span class="math inline">\(l-K\)</span> degrees of freedom.</li>
+<li><span class="math inline">\(H_0\)</span>: the residuals are white noise. Then <span class="math inline">\(Q\)</span> and <span class="math inline">\(Q^*\)</span> follow a <span class="math inline">\(\chi^2\)</span> distribution with <span class="math inline">\(l\)</span> degrees of freedom.</li>
 <li><span class="math inline">\(H_1\)</span>: the residuals are not white noise.</li>
 </ul>
 <p>The test is right-tailed. If the residuals are uncorrelated, the statistic should be small. A large statistic is unlikely under <span class="math inline">\(H_0\)</span>, so we reject <span class="math inline">\(H_0\)</span> when the statistic is large enough, which is the same as a small p-value.</p>
@@ -3140,16 +3121,12 @@ Q^* = T(T+2) \sum_{k=1}^\ell (T-k)^{-1}r_k^2.
 </section>
 <section id="running-the-test" class="level2">
 <h2 class="anchored" data-anchor-id="running-the-test">Running the test</h2>
-<p><code>augment()</code> gives the residuals, and <code>features()</code> runs the test on the innovation residuals. It takes two arguments:</p>
-<ul>
-<li><code>lag</code>: how many autocorrelations to include, <strong><span class="math inline">\(l\)</span> above.</strong></li>
-<li><code>dof</code>: how many degrees of freedom the model uses up, <strong><span class="math inline">\(K\)</span> above.</strong></li>
-</ul>
-<p>Back to the bricks models. The data is quarterly, so <span class="math inline">\(m = 4\)</span> and <span class="math inline">\(l = 2m = 8\)</span>. The naive model estimates no parameters, so <span class="math inline">\(K = 0\)</span>; the mean model estimates one, so <span class="math inline">\(K = 1\)</span>.</p>
+<p><code>augment()</code> gives the residuals, and <code>features()</code> runs the test on the innovation residuals. The one argument to choose is <code>lag</code>: how many autocorrelations to include, <strong><span class="math inline">\(l\)</span> above.</strong></p>
+<p>Back to the bricks models. The data is quarterly, so <span class="math inline">\(m = 4\)</span> and <span class="math inline">\(l = 2m = 8\)</span>.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>bricks_aug <span class="ot">&lt;-</span> bricks_fit <span class="sc">|&gt;</span> <span class="fu">augment</span>()</span>
 <span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>bricks_aug <span class="sc">|&gt;</span> <span class="fu">filter</span>(.model <span class="sc">==</span> <span class="st">&quot;Nv&quot;</span>) <span class="sc">|&gt;</span> <span class="fu">features</span>(.innov, box_pierce, <span class="at">lag =</span> <span class="dv">8</span>, <span class="at">dof =</span> <span class="dv">0</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>bricks_aug <span class="sc">|&gt;</span> <span class="fu">filter</span>(.model <span class="sc">==</span> <span class="st">&quot;Nv&quot;</span>) <span class="sc">|&gt;</span> <span class="fu">features</span>(.innov, box_pierce, <span class="at">lag =</span> <span class="dv">8</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 1 × 3
   .model bp_stat bp_pvalue
@@ -3158,14 +3135,14 @@ Q^* = T(T+2) \sum_{k=1}^\ell (T-k)^{-1}r_k^2.
 </div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>bricks_aug <span class="sc">|&gt;</span> <span class="fu">filter</span>(.model <span class="sc">==</span> <span class="st">&quot;Nv&quot;</span>) <span class="sc">|&gt;</span> <span class="fu">features</span>(.innov, ljung_box, <span class="at">lag =</span> <span class="dv">8</span>, <span class="at">dof =</span> <span class="dv">0</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>bricks_aug <span class="sc">|&gt;</span> <span class="fu">filter</span>(.model <span class="sc">==</span> <span class="st">&quot;Nv&quot;</span>) <span class="sc">|&gt;</span> <span class="fu">features</span>(.innov, ljung_box, <span class="at">lag =</span> <span class="dv">8</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 1 × 3
   .model lb_stat lb_pvalue
   &lt;chr&gt;    &lt;dbl&gt;     &lt;dbl&gt;
 1 Nv        206.         0</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>bricks_aug <span class="sc">|&gt;</span> <span class="fu">filter</span>(.model <span class="sc">==</span> <span class="st">&quot;Mean&quot;</span>) <span class="sc">|&gt;</span> <span class="fu">features</span>(.innov, ljung_box, <span class="at">lag =</span> <span class="dv">8</span>, <span class="at">dof =</span> <span class="dv">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>bricks_aug <span class="sc">|&gt;</span> <span class="fu">filter</span>(.model <span class="sc">==</span> <span class="st">&quot;Mean&quot;</span>) <span class="sc">|&gt;</span> <span class="fu">features</span>(.innov, ljung_box, <span class="at">lag =</span> <span class="dv">8</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 1 × 3
   .model lb_stat lb_pvalue
