@@ -117,14 +117,112 @@ So after researching more I found that the end outlier still changes the decompo
 
 
 
+
+
+-----------------------------------------------------
+
 Exercise 2
 ```{r}
+labour_tsibble <- as_tsibble(labour)
 
+labour_tsibble |>
+  autoplot(value) +
+  labs(title = "Australian civilian labour force")
+```
+```{r}
+labour_default <- labour_tsibble |>
+  model(stl = STL(value)) |>
+  components()
+
+labour_default |>
+  autoplot() +
+  labs(title = "Default STL decomposition of labour")
+```
+From this graph it seems like the 91-92 crises mostly remains in the remainder, trend doesn't change much.
+
+The decomposition is not perfect because the remainder still has visible structure, so the trend and seasonality have not explained everything.
+
+```{r}
+labour_stl_21_11 <- labour_tsibble |>
+  model(stl = STL(value ~ trend(window = 21) + season(window = 11))) |>
+  components()
+
+labour_stl_13_11 <- labour_tsibble |>
+  model(stl = STL(value ~ trend(window = 13) + season(window = 11))) |>
+  components()
+
+labour_stl_9_11 <- labour_tsibble |>
+  model(stl = STL(value ~ trend(window = 9) + season(window = 11))) |>
+  components()
+
+labour_stl_9_5 <- labour_tsibble |>
+  model(stl = STL(value ~ trend(window = 9) + season(window = 5))) |>
+  components()
 ```
 
 
+```{r}
+labour_stl_21_11 |>
+  autoplot() +
+  labs(title = "Labour STL: trend window 21, season window 11")
+```
+
+```{r}
+labour_stl_13_11 |>
+  autoplot() +
+  labs(title = "Labour STL: trend window 13, season window 11")
+```
+
+```{r}
+labour_stl_9_11 |>
+  autoplot() +
+  labs(title = "Labour STL: trend window 9, season window 11")
+```
+
+```{r}
+labour_stl_9_5 |>
+  autoplot() +
+  labs(title = "Labour STL: trend window 9, season window 5")
+```
+
+
+I tried trend(window = 21) first, but the trend was too smooth and the crisis still appeared too strongly in the remainder.
+I tried trend(window = 13), which allowed the trend to bend more around 1991-1992 and moved more of the crisis out of the remainder.
+I tried trend(window = 9), which captured the crisis even more strongly, but it may be too flexible because the trend starts following short-term movements.
+I also tried season(window = 5), but it made the seasonal component change more quickly than I would trust, so I prefer keeping season(window = 11).
+
+OVERALL,the setting I thought was the best is trend(window = 13) and season(window = 11) because it captures more of the 1991-1992 crisis in the trend without making the decomposition too flexible.
 
 Exercise 3
 ```{r}
+vic_elec_d <- vic_elec |>
+  index_by(Date) |>
+  summarise(avg_demand = mean(Demand)) |>
+  filter(year(Date) == 2012)
 
+vic_elec_d |>
+  autoplot(avg_demand) +
+  labs(title = "Daily average electricity demand in Victoria, 2012")
 ```
+```{r}
+vic_decomp <- vic_elec_d |>
+  model(decomp = STL(avg_demand ~ trend(window = 13) + season(window = 11))) |>
+  components()
+
+vic_decomp |>
+  autoplot() +
+  labs(title = "STL decomposition of daily electricity demand")
+```
+
+```{r}
+vic_decomp |>
+  ACF(remainder) |>
+  autoplot() +
+  labs(title = "ACF of the remainder")
+```
+
+This decomposition is not fully successful because the grey scale bars show that the remainder is still large compared with the components, and the ACF plot shows clear autocorrelation left in the remainder. This means the remainder is not white noise, so the decomposition has not captured all the structure in the daily electricity demand series.
+
+
+
+

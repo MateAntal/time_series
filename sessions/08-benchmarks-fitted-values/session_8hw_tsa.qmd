@@ -1,0 +1,32 @@
+---
+title: "session_8hw_tsa"
+author: "Máté"
+format: html
+---
+
+
+```{r}
+library(fpp3)
+
+beer <- aus_production |>
+  filter(year(Quarter) >= 2000) |>
+  select(Quarter, Beer)
+
+fit <- beer |>
+  model(
+    Mean   = MEAN(Beer),
+    Naive  = NAIVE(Beer),
+    SNaive = SNAIVE(Beer),
+    Drift  = RW(Beer ~ drift())
+  )
+
+fit |>
+  forecast(h = 16) |>
+  autoplot(beer, level = NULL) +
+  labs(
+    title = "Four benchmark forecasts for Australian beer production",
+    y = "Beer production"
+  )
+```
+I would defend seasonal naive here, because there is a very strong seasonality in the data, so that seems to be the most likely accurate prediction. (I plotted 4 extra years (16 quarters) to see this even nicer, also I used data after 2000 but checked with starting from earlier and I made the same conclusion)
+
