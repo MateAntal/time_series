@@ -861,15 +861,15 @@ bricks_aug |&gt; filter(.model == "Mean") |&gt; features(.innov, ljung_box, lag 
 <span class="dim"># .model    lb_stat   lb_pvalue</span>
 <span class="dim"># Nv        206.0     0</span>
 <span class="dim"># Mean      269.5     0</span></div>
+    <div class="callout"><b>Read <code>lb_pvalue</code> against 0.05.</b> Below it: reject white noise, structure is left, the model is not finished. At or above it: no structure detected, which is not proof there is none.</div>
     <ul class="build">
       <li class="step"><b>Both p-values are zero to the printed precision.</b> Reject <code>H&#8320;</code> comfortably: neither benchmark has captured the structure in this series.</li>
       <li class="step"><b>Which is the right answer.</b> A naive model on strongly seasonal quarterly data should fail this, and a diagnostic that let it pass would be the broken thing.</li>
       <li class="step"><b><code>lag = 8</code> because the data is quarterly</b>, so 2m = 8. The same <code>lag</code> for both models: <b>it depends on the data, not the model</b>.</li>
-      <li class="step"><b>Run it on <code>.innov</code>, not <code>.resid</code>.</b> Identical today, and the habit is what you want before Session 11.</li>
     </ul>
     <p class="punch step wide">You now have the full instrument. Session 13 asks the other question: not whether structure is left, but how large the errors are.</p>
   </div>
-  <aside class="notes">Reading a p-value of 0 in the output does not mean the probability is exactly zero; it means it is smaller than the print precision. Say "we reject at any conventional level" rather than "the probability is zero".<br><br>A caution that will matter in Group Assignment 2. Passing Ljung-Box is not proof that residuals are white noise; it is a failure to detect otherwise, on a test that is weak for short series. Session 4 made the same point about the visual bounds, and it applies with equal force here. "I could not detect remaining structure" is the honest phrasing.</aside>
+  <aside class="notes">Run it on <code>.innov</code>, not <code>.resid</code>. Identical today, and the habit is what you want before Session 11.<br><br>Reading a p-value of 0 in the output does not mean the probability is exactly zero; it means it is smaller than the print precision. Say "we reject at any conventional level" rather than "the probability is zero".<br><br>A caution that will matter in Group Assignment 2. Passing Ljung-Box is not proof that residuals are white noise; it is a failure to detect otherwise, on a test that is weak for short series. Session 4 made the same point about the visual bounds, and it applies with equal force here. "I could not detect remaining structure" is the honest phrasing.</aside>
 </section>
 
 
