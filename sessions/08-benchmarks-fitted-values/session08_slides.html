@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Session 8 · Time Series Analysis · Fall 2026</title>
+<title>Session 8 · Time Series Analysis</title>
 <style>
 /* ============================================================
    Session 08 slides. Same self-contained shell as Sessions 01
@@ -371,7 +371,7 @@ body.ov-on #overview{display:block}
 <nav id="rail">
   <div class="brand">
     <b>Time Series Analysis</b>
-    <span>Session 8 · Fall 2026</span>
+    <span>Session 8</span>
   </div>
   <ul id="toc"></ul>
   <div class="foot">
@@ -395,7 +395,7 @@ body.ov-on #overview{display:block}
     <p class="who"><b>Session 8.</b> Benchmark methods, fitted values, and forecasting through a decomposition.<br>
     Alejandro Berrizbeitia · aberrizbeitia@faculty.ie.edu</p>
   </div>
-  <aside class="notes">The deck is self-contained: press <b>N</b> at any time to open or close this panel, and <b>O</b> for a list of every slide.<br><br>Today is fpp3 sections 5.1 to 5.3 and 5.7, and notebook <code>08_A</code>.<br><br><b>This is the last session examined in the midterm.</b> Coverage runs Sessions 1 to 8. Session 9 opens the evaluation block and is examined in the final instead, so when you start revising on 14 October, today is the end of the list.</aside>
+  <aside class="notes">The deck is self-contained: press <b>N</b> at any time to open or close this panel, and <b>O</b> for a list of every slide.<br><br>Today is fpp3 sections 5.1 to 5.3 and 5.7, and notebook <code>08_A</code>.<br><br><b>This is the last session examined in the midterm.</b> Coverage runs Sessions 1 to 8. Session 9 opens the evaluation block and is examined in the final instead, so when you start revising for the midterm, today is the end of the list.</aside>
 </section>
 
 <!-- ---------- 2 ---------- -->
@@ -532,7 +532,7 @@ y&#770;<span class="hl">_{t | t-1}</span>     the value at t,   given everything
     <ul class="build">
       <li class="step"><b>Left of the bar: when.</b> Right of the bar: what information was available. That reading works for every model in this course.</li>
       <li class="step"><b>A forecast is an estimate of <code>y<sub>t</sub></code> that was not allowed to see <code>y<sub>t</sub></code>.</b> A fitted value is the case where the point sits inside the data and the model looks one step back.</li>
-      <li class="step"><b>That is what makes a residual honest.</b> If the fitted value could see <code>y<sub>t</sub></code>, the residual would measure memorization rather than error.</li>
+      <li class="step"><b>That is what makes a residual a measure of error rather than of memorization</b>, at least for methods with no estimated parameters. Slide 6 has the exception.</li>
     </ul>
     <p class="punch step wide">Both get written <code>y&#770;<sub>t</sub></code> when nobody is being careful. The book does it, this course does it, and the subscript is where you recover the meaning.</p>
   </div>
@@ -548,17 +548,18 @@ y&#770;<span class="hl">_{t | t-1}</span>     the value at t,   given everything
       <tr><td class="os"></td><td><b>Forecast</b> &nbsp; y&#770;<sub>T+h|T</sub></td><td class="fix"><b>Fitted value</b> &nbsp; y&#770;<sub>t|t-1</sub></td></tr>
       <tr><td class="os">Where</td><td>Beyond the data, after <code>T</code></td><td class="fix">Inside the data, <code>t &le; T</code></td></tr>
       <tr><td class="os">How far</td><td>Any horizon <code>h</code></td><td class="fix">Always one step</td></tr>
-      <tr><td class="os">Compared with</td><td>A future observation &rarr; forecast error</td><td class="fix">The observation at <code>t</code> &rarr; residual</td></tr>
+      <tr><td class="os">Compared with</td><td>A future value, not seen yet &rarr; forecast error</td><td class="fix"><code>y<sub>t</sub></code>, already in the data &rarr; residual</td></tr>
+      <tr><td class="os">Naive, for example</td><td><code>y<sub>T</sub></code>, the last observation, for every <code>h</code></td><td class="fix"><code>y<sub>t-1</sub></code>, the observation just before <code>t</code></td></tr>
     </table>
     <div class="callout"><b>Parameters are estimated once, from the whole series.</b> So a model with parameters builds each fitted value from past observations, but with numbers that were computed using <code>y<sub>t</sub></code> and everything after it.</div>
     <ul class="build">
-      <li class="step"><b>Naive and seasonal naive have no parameters.</b> Their fitted values are genuine one-step forecasts.</li>
-      <li class="step"><b>Drift, and every model from Session 15 onward, peek a little.</b> The drift slope is computed from <code>y<sub>T</sub></code>.</li>
-      <li class="step"><b>The mean model peeks the most.</b> Its fitted value is the average of the <i>whole</i> series, so <code>y<sub>t</sub></code> is one of the values it averaged. That makes its residuals flattering.</li>
+      <li class="step"><b>Naive and seasonal naive have no parameters to estimate.</b> Each fitted value uses only observations before <code>t</code>, so it is a true one-step forecast.</li>
+      <li class="step"><b>Drift has quietly seen the last observation.</b> Its slope <code>(y<sub>T</sub> - y<sub>1</sub>)/(T-1)</code> uses <code>y<sub>T</sub></code>, which comes after every <code>t</code> inside the data. Its fitted values are not true forecasts.</li>
+      <li class="step"><b>Mean has seen the most.</b> Its fitted value is the average of all <code>T</code> observations, <code>y<sub>t</sub></code> and everything after it included. Its fitted values are the least true forecasts of the four.</li>
     </ul>
-    <p class="punch step wide">Worth carrying into Session 9: diagnostics can only read residuals; they cannot repair them. A residual is only fully honest if the fitted value it was subtracted from never saw <code>y<sub>t</sub></code>, directly or through a parameter.</p>
+    <p class="punch step wide">Worth carrying into Session 9: residuals exist only for fitted values. A forecast has no residual, because there is no observation to subtract it from yet. And for mean and drift the residuals are optimistic: they look a little better than the model really is.</p>
   </div>
-  <aside class="notes">How much a model gains from this is small when <code>T</code> is large, because one observation out of several hundred barely moves an estimated parameter. On a very short series it is not negligible at all.<br><br>You will meet the same idea in a much sharper form in Session 14. Cross-validation exists to stop a model being judged on data it was fitted to, and fitted values built from full-sample parameters are the mildest possible version of that problem.</aside>
+  <aside class="notes">fpp3 5.3 puts it this way: when an estimated parameter involves observations after time <code>t</code>, the fitted values are not true forecasts. Every model from Session 15 onward has estimated parameters, so the same caveat applies to all of them.<br><br>The difference is not that one formula uses <code>T</code> observations and the other <code>T-1</code>. It is where the forecast origin sits. A forecast keeps the origin at <code>T</code> and looks <code>h</code> steps ahead. A fitted value moves the origin back to <code>t-1</code> and looks one step ahead, and that is repeated for every <code>t</code> from 1 to <code>T</code>. Each fitted value lies inside the data, so the actual <code>y<sub>t</sub></code> is there to compare it with. That comparison is the residual. A forecast has nothing to compare with until the future arrives, or until Session 13 holds some data back.<br><br>Singular or plural: <i>a fitted value</i> is one number at one time point; <i>the fitted values</i> are all of them, one per observation, which is the <code>.fitted</code> column <code>augment()</code> returns. A forecast is not built out of fitted values. It is the other way round: each fitted value is a one-step forecast made from inside the data.<br><br>How much a model gains from this is small when <code>T</code> is large, because one observation out of several hundred barely moves an estimated parameter. On a very short series it is not negligible at all.<br><br>You will meet the same idea in a much sharper form in Session 14. Cross-validation exists to stop a model being judged on data it was fitted to, and fitted values built from full-sample parameters are the mildest possible version of that problem.</aside>
 </section>
 
 <!-- ---------- 7 ---------- -->
@@ -817,7 +818,7 @@ fit |&gt; forecast(h = 24)     <span class="dim"># 24 months beyond the data</sp
       <li class="step"><b>Compare it against plain drift on the same series.</b> The seasonal shape is back, and the trend is still there.</li>
       <li class="step"><b>The column names are not arbitrary.</b> <code>season_adjust</code> and <code>season_year</code> come out of the STL decomposition, which is why you had to meet them in Session 7.</li>
     </ul>
-    <p class="punch step wide">Everything inside that call is from the last three weeks. The only new thing is the wrapper that holds them together.</p>
+    <p class="punch step wide">Everything inside that call is from the decomposition block. The only new thing is the wrapper that holds them together.</p>
   </div>
   <aside class="notes">Try swapping <code>RW(season_adjust ~ drift())</code> for <code>NAIVE(season_adjust)</code> and watch the forecast go flat while keeping its seasonal shape. That one substitution shows you exactly which part of the final forecast each inner model is responsible for, and it takes ten seconds.<br><br>From Session 15 the inner model on the seasonally adjusted part becomes an exponential smoothing method rather than a benchmark, and the same wrapper still holds. That is the shape worth remembering.</aside>
 </section>
@@ -846,7 +847,7 @@ fit |&gt; forecast(h = 24)     <span class="dim"># 24 months beyond the data</sp
 <!-- ---------- 18 ---------- -->
 <section class="slide" data-section="6" data-title="Homework and the midterm">
   <div class="inner">
-    <p class="kicker">Due Sunday 4 October, 23:59</p>
+    <p class="kicker">Due date in this session&#39;s announcements</p>
     <h1 class="sowhat">Homework. Short on purpose.</h1>
     <ul class="build">
       <li><b>Pick one seasonal series</b> from <code>fpp3</code>. Anything you find interesting.</li>
@@ -854,26 +855,26 @@ fit |&gt; forecast(h = 24)     <span class="dim"># 24 months beyond the data</sp
       <li><b>One sentence</b> on which benchmark you would defend for your series, and which feature of the series makes it so. If none of the four fits, say so, and which feature defeats them.</li>
       <li>That is all. No tuning, no error measures. Measuring which forecast is better is Session 13.</li>
     </ul>
-    <div class="callout"><b>Deliberately about an hour.</b> Group Assignment 1 is running this week and it is due Sunday 25 October. Session 7's homework shares the same Sunday deadline.</div>
+    <div class="callout"><b>Deliberately about an hour.</b> Group Assignment 1 is running alongside it, and it is due after the midterm.</div>
     <div class="callout slate"><b>This is the last session on the midterm.</b> Coverage is Sessions 1 to 8. Session 9 is examined in the final instead, so start your revision list here.</div>
   </div>
-  <aside class="notes">Three things land in the same week on purpose, and the homework is the one that has been shrunk to make room. Group Assignment 1 is the large piece of work; this is a warm-up for the machinery you will use in it.<br><br>On revision: the midterm is 20 multiple-choice questions over Sessions 1 to 8, and there is no retake. The optional online prep tutorial runs in the week before it. Session 9 is a full revision session, so arrive with your questions rather than your notes.</aside>
+  <aside class="notes">Three things overlap here on purpose, and the homework is the one that has been shrunk to make room. Group Assignment 1 is the large piece of work; this is a warm-up for the machinery you will use in it.<br><br>On revision: the midterm is 20 multiple-choice questions over Sessions 1 to 8, and there is no retake. The midterm revision deck is in the Session 10 folder.</aside>
 </section>
 
 <!-- ---------- 19 ---------- -->
 <section class="slide" data-section="6" data-title="Next session">
   <div class="inner">
-    <p class="kicker">Session 9 &nbsp;&middot;&nbsp; Monday</p>
+    <p class="kicker">Session 9</p>
     <h1 class="sowhat">You can produce a forecast. Nobody has asked yet whether it is any good.</h1>
     <p class="lead wide">Residual diagnostics: the four properties good residuals must have, what to do when each one fails, and the portmanteau test that replaces squinting at twenty ACF bars.</p>
     <ul class="build">
       <li class="step"><b>It is the third use of the correlogram.</b> Session 4 on raw series, Session 7 on a decomposition remainder, Session 9 on model residuals. Same instrument, sharper question each time.</li>
-      <li class="step"><b>It is not on the midterm</b>, and it closes with a short revision sweep of Sessions 1 to 8. Bring questions.</li>
+      <li class="step"><b>It is not on the midterm.</b> It opens the evaluation block, examined in the final.</li>
     </ul>
-    <p class="punch step wide">Read fpp3 5.4 before Monday, and the one-page residuals summary in the Session 9 folder of the repo.</p>
+    <p class="punch step wide">Read fpp3 5.4 before Session 9, and the one-page residuals summary in the Session 9 folder of the repo.</p>
     <p class="url" style="font-size:clamp(0.95rem,1.7vw,1.9rem)">aberrizbeitia@faculty.ie.edu</p>
   </div>
-  <aside class="notes">Session 9 opens the evaluation block: residual diagnostics, then train and test splits in Session 13, then cross-validation in Session 14. Those three answer versions of the same question, which is whether a model deserves to be believed, and they are examined together in the final.<br><br>The bridge from today is the blue dots on slide 4. Every residual is one of those gaps, and Monday is about what the whole set of them should look like if the model has done its job.</aside>
+  <aside class="notes">Session 9 opens the evaluation block: residual diagnostics, then train and test splits in Session 13, then cross-validation in Session 14. Those three answer versions of the same question, which is whether a model deserves to be believed, and they are examined together in the final.<br><br>The bridge from today is the blue dots on slide 4. Every residual is one of those gaps, and Session 9 is about what the whole set of them should look like if the model has done its job.</aside>
 </section>
 
 <!-- lives inside the stage so it is positioned against it, not the viewport,

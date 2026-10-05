@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Midterm revision · Time Series Analysis</title>
+<style>
+/* ============================================================
+   Session 10 slides. Same self-contained shell as Sessions 01
+   to 08: no fonts, scripts or images are fetched from the
+   network, so this renders identically on a projector with no
+   internet.
+   ============================================================ */
+
+:root{
+  --paper:#FAF8F5;
+  --ink:#161513;
+  --muted:#6B665E;
+  --faint:#98928a;
+  --hair:#E4DFD5;
+  --slate:#1F3A4D;
+  --terra:#B5471E;
+  --sage:#6B7F5E;
+  --sand:#EFEAE1;
+
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif;
+  --mono:SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+
+  --fs-huge:clamp(3.4rem,9vw,10rem);
+  --fs-sowhat:clamp(2.1rem,4.3vw,4.8rem);
+  --fs-h2:clamp(1.5rem,2.6vw,2.9rem);
+  --fs-lead:clamp(1.05rem,1.62vw,1.95rem);
+  --fs-body:clamp(0.95rem,1.25vw,1.5rem);
+  --fs-small:clamp(0.82rem,0.98vw,1.15rem);
+  --fs-kicker:clamp(0.66rem,0.8vw,0.95rem);
+  --fs-mono:clamp(0.88rem,1.28vw,1.62rem);
+
+  --rail:266px;
+  --notes-h:0px;
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--sans);
+  -webkit-font-smoothing:antialiased;
+  display:flex;
+  overflow:hidden;
+}
+
+/* ---------------- left rail ---------------- */
+
+#rail{
+  width:var(--rail);
+  flex:0 0 var(--rail);
+  border-right:1px solid var(--hair);
+  background:var(--sand);
+  display:flex;
+  flex-direction:column;
+  padding:2.1rem 0 1.1rem;
+  transition:margin-left .25s ease;
+  z-index:5;
+}
+body.rail-hidden #rail{margin-left:calc(-1 * var(--rail))}
+
+#rail .brand{padding:0 1.6rem 1.5rem;border-bottom:1px solid var(--hair)}
+#rail .brand b{
+  display:block;font-family:var(--serif);font-size:1.18rem;
+  font-weight:500;line-height:1.15;letter-spacing:.005em;
+}
+#rail .brand span{
+  display:block;margin-top:.42rem;font-size:.7rem;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--muted);
+}
+
+#toc{list-style:none;margin:0;padding:1rem 0;flex:1;overflow:auto}
+#toc li{
+  display:flex;gap:.72rem;align-items:baseline;
+  padding:.52rem 1.6rem .52rem 1.25rem;
+  font-size:.83rem;line-height:1.3;color:var(--muted);
+  border-left:3px solid transparent;cursor:pointer;
+  transition:color .15s ease,border-color .15s ease;
+}
+#toc li .num{
+  font-variant-numeric:tabular-nums;font-size:.68rem;
+  color:var(--faint);min-width:.9rem;
+}
+#toc li:hover{color:var(--ink)}
+#toc li.on{color:var(--ink);border-left-color:var(--terra);font-weight:600}
+#toc li.on .num{color:var(--terra)}
+#toc li.done{color:var(--faint)}
+/* a dot marks the sections delivered from the RStudio screen */
+#toc li .live{
+  margin-left:auto;width:6px;height:6px;border-radius:50%;
+  background:var(--slate);opacity:.45;flex:0 0 6px;
+}
+#toc li.on .live{opacity:1}
+
+#rail .foot{padding:.9rem 1.6rem 0;border-top:1px solid var(--hair)}
+#bar{height:2px;background:var(--hair);border-radius:2px;overflow:hidden}
+#bar i{display:block;height:100%;width:0;background:var(--terra);transition:width .3s ease}
+#rail .foot .keys{
+  margin-top:.7rem;font-size:.63rem;color:var(--faint);
+  line-height:1.7;letter-spacing:.02em;
+}
+kbd{
+  font-family:var(--mono);font-size:.62rem;background:var(--paper);
+  border:1px solid var(--hair);border-radius:3px;padding:.05em .32em;color:var(--muted);
+}
+
+/* ---------------- stage ---------------- */
+
+#stage{position:relative;flex:1;min-width:0;overflow:hidden}
+
+.slide{
+  position:absolute;inset:0;bottom:var(--notes-h);
+  display:flex;overflow:auto;
+  padding:5vh 5.5vw 5vh 5vw;
+  opacity:0;visibility:hidden;
+  transition:opacity .26s ease;
+}
+.slide.active{opacity:1;visibility:visible}
+.slide > .inner{margin:auto;width:100%;max-width:1240px}
+
+/* ---------------- typography ---------------- */
+
+.kicker{
+  margin:0 0 1.15rem;font-size:var(--fs-kicker);letter-spacing:.19em;
+  text-transform:uppercase;color:var(--terra);font-weight:600;
+}
+.kicker.q{color:var(--muted)}
+
+h1.sowhat{
+  margin:0;font-family:var(--serif);font-weight:500;
+  font-size:var(--fs-sowhat);line-height:1.04;letter-spacing:-.012em;
+  max-width:19ch;
+}
+h1.sowhat.wide{max-width:26ch}
+h2.sub{
+  margin:1.5rem 0 0;font-family:var(--serif);font-weight:500;
+  font-size:var(--fs-h2);line-height:1.15;color:var(--slate);max-width:26ch;
+}
+.lead{font-size:var(--fs-lead);line-height:1.4;color:var(--muted);max-width:44ch;margin:1.3rem 0 0}
+.lead.wide{max-width:58ch}
+.small{font-size:var(--fs-small);color:var(--faint);line-height:1.55;margin:1.5rem 0 0;max-width:60ch}
+.hr{height:1px;background:var(--hair);border:0;margin:1.9rem 0 0}
+
+/* inline code sits inside serif headlines and sans body alike, so it is
+   sized relative to its parent rather than at a fixed size */
+code{
+  font-family:var(--mono);font-size:.86em;letter-spacing:-.01em;
+  background:#fff;border:1px solid var(--hair);border-radius:3px;
+  padding:.08em .34em;color:var(--slate);white-space:nowrap;
+}
+h1.sowhat code{font-size:.82em;padding:.05em .26em;color:var(--ink)}
+.callout code,ul.build code,table.traps code{background:var(--sand);border-color:#DCD5C8}
+
+.punch{
+  font-family:var(--serif);font-size:var(--fs-h2);line-height:1.16;
+  color:var(--terra);margin:1.7rem 0 0;max-width:24ch;font-weight:500;
+}
+.punch.ink{color:var(--ink)}
+.punch.slate{color:var(--slate)}
+.punch.wide{max-width:34ch}
+
+.huge{
+  font-family:var(--mono);font-size:var(--fs-huge);line-height:1;
+  letter-spacing:-.03em;margin:0;color:var(--ink);
+}
+.huge.long{font-size:clamp(2.1rem,5.4vw,5.8rem)}
+.url{
+  font-family:var(--mono);font-size:clamp(1.1rem,2.55vw,3rem);
+  line-height:1.2;color:var(--slate);margin:1.3rem 0 0;word-break:break-word;
+}
+
+/* ---------------- builds ---------------- */
+
+ul.build{list-style:none;margin:1.9rem 0 0;padding:0}
+ul.build li{
+  font-size:var(--fs-lead);line-height:1.34;margin:0 0 1.02rem;
+  padding-left:2.1rem;position:relative;max-width:46ch;
+}
+ul.build.wide li{max-width:58ch}
+ul.build li:last-child{margin-bottom:0}
+ul.build li::before{
+  content:counter(step);counter-increment:step;
+  position:absolute;left:0;top:.24em;
+  font-family:var(--mono);font-size:.62em;color:var(--terra);
+  font-weight:700;letter-spacing:.04em;
+}
+ul.build{counter-reset:step}
+ul.build.plain li::before{content:"·";font-size:1em;top:.02em;color:var(--terra)}
+ul.build li b{font-weight:600}
+
+.step{opacity:0;transform:translateY(6px);transition:opacity .3s ease,transform .3s ease}
+.step.on{opacity:1;transform:none}
+
+/* ---------------- blocks ---------------- */
+
+.console{
+  font-family:var(--mono);font-size:var(--fs-mono);line-height:1.62;
+  background:#fff;border:1px solid var(--hair);border-left:3px solid var(--slate);
+  border-radius:3px;padding:1.05rem 1.3rem;margin:1.7rem 0 0;
+  white-space:pre;overflow-x:auto;color:var(--slate);
+}
+.console .hl{color:var(--terra);font-weight:700}
+.console .dim{color:var(--faint)}
+.console.terra{border-left-color:var(--terra)}
+.console.tight{font-size:clamp(0.78rem,1.05vw,1.32rem);padding:.85rem 1.05rem}
+
+.callout{
+  margin:1.7rem 0 0;padding:.95rem 1.25rem;border-radius:3px;
+  background:#fff;border:1px solid var(--hair);border-left:3px solid var(--terra);
+  font-size:var(--fs-body);line-height:1.45;max-width:52ch;
+}
+.callout b{color:var(--terra)}
+.callout.slate{border-left-color:var(--slate)}
+.callout.slate b{color:var(--slate)}
+
+.cards{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem 1.5rem;margin:1.9rem 0 0}
+.cards.four{grid-template-columns:repeat(4,1fr);gap:1.2rem}
+.card{border-top:2px solid var(--slate);padding:.85rem 0 0}
+.card.terra{border-top-color:var(--terra)}
+.card.sage{border-top-color:var(--sage)}
+.card h3{
+  margin:0 0 .5rem;font-size:var(--fs-small);letter-spacing:.11em;
+  text-transform:uppercase;color:var(--slate);font-weight:700;
+}
+.card.terra h3{color:var(--terra)}
+.card.sage h3{color:var(--sage)}
+.card p{margin:0;font-size:var(--fs-body);line-height:1.38;color:var(--muted)}
+
+table.traps{border-collapse:collapse;margin:1.6rem 0 0;width:100%}
+table.traps td{
+  padding:.58rem .9rem .58rem 0;border-bottom:1px solid var(--hair);
+  font-size:var(--fs-body);line-height:1.35;vertical-align:top;
+}
+table.traps td.os{
+  white-space:nowrap;color:var(--slate);font-weight:700;
+  font-size:var(--fs-small);letter-spacing:.05em;text-transform:uppercase;padding-top:.72rem;
+}
+table.traps td.fix{color:var(--muted)}
+table.traps td code{white-space:nowrap}
+table.traps.compact td{padding:.42rem .9rem .42rem 0;font-size:var(--fs-small)}
+
+.chips{display:flex;flex-wrap:wrap;gap:.5rem;margin:1.5rem 0 0}
+.chip{
+  font-size:var(--fs-small);border:1px solid var(--hair);background:#fff;
+  border-radius:100px;padding:.34em .95em;color:var(--slate);letter-spacing:.02em;
+}
+
+figure{margin:1.7rem 0 0}
+figure svg{width:100%;height:auto;max-height:44vh;display:block}
+figcaption{
+  margin-top:1rem;font-size:var(--fs-body);color:var(--muted);
+  line-height:1.4;max-width:56ch;
+}
+.figrow{display:grid;grid-template-columns:1fr 1fr;gap:1.6rem;margin-top:.9rem}
+.figrow.three{grid-template-columns:repeat(3,1fr);gap:1.3rem}
+.figrow p{margin:0;font-size:var(--fs-body);line-height:1.38}
+.figrow p b{display:block;color:var(--slate);letter-spacing:.05em;font-size:.8em;text-transform:uppercase;margin-bottom:.3rem}
+.figrow p.t b{color:var(--terra)}
+.figrow p.g b{color:var(--sage)}
+
+.split{display:grid;grid-template-columns:1.05fr .95fr;gap:3rem;align-items:center}
+@media (max-width:1080px){.split{grid-template-columns:1fr;gap:1.5rem}.cards.four{grid-template-columns:repeat(2,1fr)}.figrow.three{grid-template-columns:1fr}}
+
+/* ---------------- title slide ---------------- */
+
+.title-slide .inner{max-width:none}
+.title-slide h1{
+  font-family:var(--serif);font-weight:500;margin:0;
+  font-size:clamp(2.6rem,6.4vw,7.2rem);line-height:1;letter-spacing:-.02em;
+}
+.title-slide .rule{width:84px;height:3px;background:var(--terra);margin:2rem 0}
+.title-slide .who{font-size:var(--fs-lead);line-height:1.5;color:var(--muted);margin:0}
+.title-slide .who b{color:var(--ink);font-weight:600}
+
+/* ---------------- HUD ---------------- */
+
+#hud{
+  position:fixed;right:1.1rem;bottom:.85rem;z-index:20;
+  display:flex;align-items:center;gap:.55rem;
+  font-family:var(--mono);font-size:.72rem;color:var(--faint);
+}
+#hud button{
+  font:inherit;border:1px solid var(--hair);background:var(--paper);
+  color:var(--muted);border-radius:3px;width:26px;height:24px;cursor:pointer;line-height:1;
+}
+#hud button:hover{color:var(--ink);border-color:var(--muted)}
+#count{font-variant-numeric:tabular-nums;letter-spacing:.05em}
+
+/* ---------------- notes ---------------- */
+
+.notes{display:none}
+#notepane{
+  position:absolute;left:0;right:0;bottom:0;height:212px;z-index:10;
+  background:#F3EFE7;border-top:1px solid var(--hair);
+  padding:1rem 1.6rem 1.1rem;overflow:auto;display:none;
+}
+body.notes-on #notepane{display:block}
+#notepane h4{
+  margin:0 0 .55rem;font-size:.63rem;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--terra);font-weight:700;
+}
+#notepane .body{font-size:.94rem;line-height:1.58;color:#3d3a35;max-width:96ch}
+#notepane .body em{color:var(--slate);font-style:normal;font-weight:600}
+#notepane .body .clock{
+  font-family:var(--mono);background:var(--paper);border:1px solid var(--hair);
+  border-radius:3px;padding:.05em .4em;font-size:.86em;color:var(--terra);font-weight:700;
+}
+/* screen-switch cue. Loud on purpose: it is the one instruction that costs
+   you the room if you miss it. */
+#notepane .body .switch{
+  display:inline-block;font-family:var(--mono);font-size:.78em;font-weight:700;
+  letter-spacing:.09em;text-transform:uppercase;
+  background:var(--slate);color:var(--paper);border-radius:3px;
+  padding:.18em .62em;margin:0 .5em .2em 0;
+}
+#notepane .body .switch.back{background:var(--terra)}
+
+/* ---------------- overview ---------------- */
+
+#overview{
+  position:fixed;inset:0;z-index:40;background:var(--paper);
+  padding:2.4rem 3vw;overflow:auto;display:none;
+}
+body.ov-on #overview{display:block}
+#overview h3{
+  margin:0 0 1.4rem;font-family:var(--serif);font-weight:500;font-size:1.5rem;
+}
+#ovlist{columns:3;column-gap:2.6rem;list-style:none;margin:0;padding:0}
+@media (max-width:1000px){#ovlist{columns:2}}
+#ovlist li{
+  break-inside:avoid;display:flex;gap:.7rem;padding:.28rem 0;
+  font-size:.86rem;line-height:1.35;color:var(--muted);cursor:pointer;
+}
+#ovlist li:hover{color:var(--ink)}
+#ovlist li.on{color:var(--terra);font-weight:600}
+#ovlist li .n{font-family:var(--mono);font-size:.72rem;color:var(--faint);min-width:1.6rem;text-align:right}
+#ovlist li.head{
+  margin-top:1.1rem;color:var(--slate);font-weight:700;font-size:.68rem;
+  letter-spacing:.16em;text-transform:uppercase;cursor:default;
+}
+#ovlist li.head:first-child{margin-top:0}
+
+/* ---------------- print ---------------- */
+
+@media print{
+  body{display:block;overflow:visible;background:#fff}
+  #rail,#hud,#notepane,#overview{display:none !important}
+  #stage{overflow:visible;position:static}
+  .slide{
+    position:static;visibility:visible;opacity:1;bottom:0;
+    height:auto;min-height:92vh;page-break-after:always;
+    border-bottom:1px solid #ddd;
+  }
+  .step{opacity:1 !important;transform:none !important}
+  figure svg{max-height:32vh}
+}
+</style>
+</head>
+<body>
+
+<nav id="rail">
+  <div class="brand">
+    <b>Time Series Analysis</b>
+    <span>Midterm revision</span>
+  </div>
+  <ul id="toc"></ul>
+  <div class="foot">
+    <div id="bar"><i></i></div>
+    <div class="keys">
+      <kbd>&rarr;</kbd> next &nbsp; <kbd>&larr;</kbd> back &nbsp; <kbd>N</kbd> detail<br>
+      <kbd>O</kbd> jump &nbsp; <kbd>F</kbd> full &nbsp; <kbd>[</kbd> hide this pane
+    </div>
+  </div>
+</nav>
+
+<main id="stage">
+
+<section class="slide title-slide" data-section="1" data-title="Title">
+  <div class="inner">
+    <p class="kicker">IE University · Dual Degree BBA &amp; Data and Business Analytics</p>
+    <h1>Everything<br>so far.</h1>
+    <div class="rule"></div>
+    <p class="who"><b>Midterm revision.</b> Sessions 1 to 8.<br>
+    Alejandro Berrizbeitia · aberrizbeitia@faculty.ie.edu</p>
+  </div>
+  <aside class="notes">The deck is self-contained: press <b>N</b> at any time to open or close this panel, and <b>O</b> for a list of every slide.<br><br>Nothing new is taught here. Slide 2 is how the exam works, slide 3 what is on it, slide 4 a one-line check of each session, and slide 5 what comes after. Use it in the week before the exam, alone or with your questions in office hours.</aside>
+</section>
+
+<!-- ---------- 2 ---------- -->
+<section class="slide" data-section="1" data-title="How the exam works">
+  <div class="inner">
+    <p class="kicker">Session 10 &nbsp;&middot;&nbsp; date and room in this session&#39;s announcements</p>
+    <h1 class="sowhat">Twenty questions, eighty minutes, one calculator.</h1>
+    <ul class="build">
+      <li class="step"><b>13 concept questions, four options each.</b> Say what a tool is for and what its output means. Nothing asks you to write or read R.</li>
+      <li class="step"><b>7 calculation questions, five options each.</b> Short calculations by hand, most of them on one small quarterly table: the steps of a classical decomposition, moving averages, benchmark forecasts. Round every step to two decimals.</li>
+      <li class="step"><b>Bring a non-programmable, non-graphing calculator.</b> No phones, watches or other devices. Answers go on the answer sheet at the back of the booklet: fill in one circle per question.</li>
+    </ul>
+    <div class="callout slate"><b>There is no retake.</b> If you cannot attend for personal or work reasons, the final carries 60% instead of 30% (see the syllabus).</div>
+    <p class="punch step wide">Wrong answers cost nothing, so answer every question.</p>
+  </div>
+  <aside class="notes">Being able to type a function call from memory earns nothing on this paper. Being able to say why a 2&times;12-MA spans thirteen points, and to compute one by hand, earns a great deal.<br><br>The calculations use only addition, subtraction and division. A basic calculator is all you need; practice with the one you will bring.</aside>
+</section>
+
+<!-- ---------- 3 ---------- -->
+<section class="slide" data-section="1" data-title="What is on it">
+  <div class="inner">
+    <p class="kicker">Coverage</p>
+    <h1 class="sowhat">Sessions 1 to 8, on paper.</h1>
+    <div class="cards">
+      <div class="card sage"><h3>On the exam</h3><p>The stochastic-process framing, graphics and the ACF, the whole decomposition block (classical decomposition by hand as well as in R, and STL), benchmarks and fitted values, forecasting through a decomposition.</p></div>
+      <div class="card terra"><h3>Not on the exam</h3><p>Session 9's residual diagnostics, and everything from Session 11 on. All of it is examined in the final, which covers the whole course.</p></div>
+    </div>
+    <ul class="build">
+      <li class="step"><b>Practice the hand calculations before the day.</b> R did them for you in class. Take a few rows from the notebooks and redo them on paper: a 2&times;4-MA from <code>06_B</code>, each step of the classical decomposition in <code>07_D</code>, a benchmark forecast from <code>08_A</code>. Then check every number against R's output.</li>
+      <li class="step"><b>Use the calculator you will bring,</b> and round every step to two decimals, as the exam asks.</li>
+    </ul>
+    <p class="punch step wide">If you did the homework yourself, the only new thing on the paper is doing by hand what R did for you.</p>
+  </div>
+  <aside class="notes">Session 9 is deferred, not dropped: the final covers the whole course, Sessions 1 to 19, and Group Assignment 2 depends on Session 9.<br><br>Redoing a few rows is enough. The exam's calculations follow the same steps on a small table; what it tests is whether you know which numbers to add, subtract and divide.</aside>
+</section>
+
+<!-- ---------- 4 ---------- -->
+<section class="slide" data-section="2" data-title="Check yourself">
+  <div class="inner">
+    <p class="kicker">One line per session</p>
+    <h1 class="sowhat wide">For every line: can you explain it, and can you compute it by hand?</h1>
+    <table class="traps compact">
+      <tr><td class="os"></td><td><b>Explain</b></td><td class="fix"><b>Compute by hand</b></td></tr>
+      <tr><td class="os">S1</td><td>R, RStudio, projects, packages: the tools, not examined on paper.</td><td class="fix"></td></tr>
+      <tr><td class="os">S2</td><td>A time series as a stochastic process: each <code>y<sub>t</sub></code> one realization of <code>Y<sub>t</sub></code>. Tsibbles, index and key.</td><td class="fix"></td></tr>
+      <tr><td class="os">S3</td><td>Time, seasonal, subseries and scatterplots. Trend vs seasonality vs cycle. What a correlation coefficient misses.</td><td class="fix"></td></tr>
+      <tr><td class="os">S4</td><td>Lag plots and the ACF; how trend and seasonality show in a correlogram; white noise.</td><td class="fix">the bounds <code>&plusmn;2/&radic;T</code></td></tr>
+      <tr><td class="os">S5</td><td>Additive vs multiplicative; the ladder, square root, cube root, log, inverse, weakest to strongest; detrended vs seasonally adjusted.</td><td class="fix"><code>y<sub>t</sub> - T<sub>t</sub></code> and <code>y<sub>t</sub> - S<sub>t</sub></code></td></tr>
+      <tr><td class="os">S6</td><td>Centered moving averages; odd <code>m</code> vs the <code>2&times;m</code> construction; why the ends are missing.</td><td class="fix">a <code>2&times;m</code>-MA and a <code>3&times;3</code>-MA; the values missing at each end</td></tr>
+      <tr><td class="os">S7</td><td>Classical decomposition in four steps, and how one outlier spreads through them; the two criteria; STL and its two windows.</td><td class="fix">the seasonal component: average by quarter, then center</td></tr>
+      <tr><td class="os">S8</td><td>Fitted values vs forecasts; residuals exist only for fitted values; four benchmarks; forecasting through a decomposition.</td><td class="fix">each benchmark's forecast from a table</td></tr>
+    </table>
+    <p class="punch step wide">Mark the lines you cannot explain out loud or work on paper. Those are your questions.</p>
+  </div>
+  <aside class="notes">Three things cause trouble every year, and they are worth checking first: the difference between seasonality and a cycle (Session 3), why an even seasonal period needs the <code>2&times;m</code> construction (Session 6), and the difference between a fitted value and a forecast (Session 8). If you are solid on those three, the rest tends to follow.</aside>
+</section>
+
+<!-- ---------- 5 ---------- -->
+<section class="slide" data-section="3" data-title="After the exam">
+  <div class="inner">
+    <p class="kicker">Session 11</p>
+    <h1 class="sowhat">After the exam, the course picks back up.</h1>
+    <p class="lead wide">Session 11 is transformations that even out a series' variance: logarithms, powers, and the Box&ndash;Cox family.</p>
+    <ul class="build">
+      <li class="step"><b>It builds on Session 5's transformation ladder:</b> square root, cube root, log, inverse.</li>
+      <li class="step"><b>It is the first fix for a funnel.</b> A residual plot whose spread widens over time, from Session 9, is the symptom it treats.</li>
+    </ul>
+    <p class="punch step wide">Session 5 chose a transformation by eye. Session 11 chooses it with a number, &lambda;.</p>
+    <p class="url" style="font-size:clamp(0.95rem,1.7vw,1.9rem)">aberrizbeitia@faculty.ie.edu</p>
+  </div>
+  <aside class="notes">Session 11's transformation topic is where Session 9's diagnostics pay off immediately: a funnel-shaped residual plot is the symptom, and the Box&ndash;Cox family is the principled remedy.</aside>
+</section>
+
+<div id="notepane"><h4>Going further</h4><div class="body"></div></div>
+</main>
+
+<!-- ============================== CHROME ============================== -->
+<div id="overview">
+  <h3>Jump to a slide</h3>
+  <ul id="ovlist"></ul>
+</div>
+
+<div id="hud">
+  <span id="count">1 / 5</span>
+  <button id="prev" title="Previous">&larr;</button>
+  <button id="next" title="Next">&rarr;</button>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  var SECTIONS = [{"name":"The exam","from":1,"to":3},{"name":"Check yourself","from":4,"to":4},{"name":"Close","from":5,"to":5}];
+var slides = Array.prototype.slice.call(document.querySelectorAll(".slide"));
+  var toc    = document.getElementById("toc");
+  var ovlist = document.getElementById("ovlist");
+  var bar    = document.querySelector("#bar i");
+  var count  = document.getElementById("count");
+  var noteBody = document.querySelector("#notepane .body");
+
+  var si = 0;
+  var sti = 0;
+
+  SECTIONS.forEach(function(sec, i){
+    var li = document.createElement("li");
+    li.innerHTML = '<span class="num">' + (i+1) + '</span><span>' + sec.name + '</span>' +
+                   (sec.live ? '<span class="live" title="RStudio screen"></span>' : '');
+    li.addEventListener("click", function(){ go(sec.from - 1, 0); });
+    toc.appendChild(li);
+  });
+
+  SECTIONS.forEach(function(sec){
+    var head = document.createElement("li");
+    head.className = "head";
+    head.textContent = sec.name + (sec.live ? " \u00b7 RStudio" : "");
+    ovlist.appendChild(head);
+    for (var n = sec.from; n <= sec.to; n++){
+      (function(idx){
+        var li = document.createElement("li");
+        li.innerHTML = '<span class="n">' + (idx+1) + '</span><span>' +
+                       (slides[idx].getAttribute("data-title") || "") + '</span>';
+        li.addEventListener("click", function(){
+          document.body.classList.remove("ov-on");
+          go(idx, "all");
+        });
+        ovlist.appendChild(li);
+      })(n - 1);
+    }
+  });
+  var ovItems = Array.prototype.slice.call(ovlist.querySelectorAll("li:not(.head)"));
+
+  function steps(i){
+    return Array.prototype.slice.call(slides[i].querySelectorAll(".step"));
+  }
+
+  function paint(){
+    slides.forEach(function(s, i){ s.classList.toggle("active", i === si); });
+
+    var num = si + 1;
+    var active = 0;
+    SECTIONS.forEach(function(sec, i){
+      if (num >= sec.from && num <= sec.to) active = i;
+    });
+    Array.prototype.slice.call(toc.children).forEach(function(li, i){
+      li.classList.toggle("on", i === active);
+      li.classList.toggle("done", i < active);
+    });
+    ovItems.forEach(function(li, i){ li.classList.toggle("on", i === si); });
+
+    bar.style.width = (num / slides.length * 100) + "%";
+    count.textContent = num + " / " + slides.length;
+
+    var n = slides[si].querySelector(".notes");
+    noteBody.innerHTML = n ? n.innerHTML : "<i>Nothing further for this slide.</i>";
+
+    if (history.replaceState) history.replaceState(null, "", "#" + num);
+  }
+
+  function go(i, mode){
+    if (i < 0 || i >= slides.length) return;
+    si = i;
+    var st = steps(si);
+    if (mode === "all"){
+      st.forEach(function(e){ e.classList.add("on"); });
+      sti = st.length;
+    } else {
+      st.forEach(function(e){ e.classList.remove("on"); });
+      sti = 0;
+    }
+    paint();
+  }
+
+  function next(){
+    var st = steps(si);
+    if (sti < st.length){ st[sti].classList.add("on"); sti++; }
+    else go(si + 1, 0);
+  }
+
+  function prev(){
+    if (sti > 0){ sti--; steps(si)[sti].classList.remove("on"); }
+    else go(si - 1, "all");
+  }
+
+  document.getElementById("next").addEventListener("click", next);
+  document.getElementById("prev").addEventListener("click", prev);
+
+  document.addEventListener("keydown", function(e){
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    var k = e.key;
+
+    if (document.body.classList.contains("ov-on")){
+      if (k === "Escape" || k === "o" || k === "O"){
+        document.body.classList.remove("ov-on"); e.preventDefault();
+      }
+      return;
+    }
+
+    if (k === "ArrowRight" || k === " " || k === "PageDown" || k === "ArrowDown"){ next(); e.preventDefault(); }
+    else if (k === "ArrowLeft" || k === "PageUp" || k === "ArrowUp"){ prev(); e.preventDefault(); }
+    else if (k === "Home"){ go(0, 0); e.preventDefault(); }
+    else if (k === "End"){ go(slides.length - 1, "all"); e.preventDefault(); }
+    else if (k === "n" || k === "N"){ toggleNotes(); e.preventDefault(); }
+    else if (k === "o" || k === "O"){ document.body.classList.add("ov-on"); e.preventDefault(); }
+    else if (k === "[" || k === "]"){ document.body.classList.toggle("rail-hidden"); e.preventDefault(); }
+    else if (k === "f" || k === "F"){
+      if (document.fullscreenElement) document.exitFullscreen();
+      else document.documentElement.requestFullscreen();
+      e.preventDefault();
+    }
+  });
+
+  function toggleNotes(){
+    var on = document.body.classList.toggle("notes-on");
+    document.documentElement.style.setProperty("--notes-h", on ? "212px" : "0px");
+  }
+
+  var start = parseInt((location.hash || "").replace("#", ""), 10);
+  go(isNaN(start) ? 0 : Math.min(Math.max(start - 1, 0), slides.length - 1),
+     isNaN(start) ? 0 : "all");
+})();
+</script>
+</body>
+</html>

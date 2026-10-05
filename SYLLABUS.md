@@ -109,7 +109,7 @@ Plan for roughly 1.5 hours per session outside class, covering the pre-session r
 homework. The decomposition block (Sessions 5 to 7) and the weeks around each group assignment run
 heavier than that.
 
-Optional online preparation tutorials are offered before the midterm and before the final exam.
+Office hours are available to students who bring concrete questions; times are posted on Blackboard.
 
 | Learning Activity | Weighting | Estimated hours |
 |---|---|---|
@@ -230,20 +230,20 @@ for the stochastic-process framing.
 ### Session 9 — Residual diagnostics
 
 - The properties that good residuals must have, and what to do when each one fails
-- Residual mean, residual ACF, qq-plots and boxplots
+- Residual mean, residual ACF, QQ plots and boxplots
 - Why inspecting each ACF bar individually is multiple hypothesis testing, and hence portmanteau tests
 - The Ljung–Box test
-- Closing revision sweep of Sessions 1 to 8, ahead of the midterm
 
 **Reading:** fpp3 5.4
 
 ### Session 10 — Midterm exam
 
 - Coverage: Sessions 1 to 8
-- Residual diagnostics (Session 9) is **not** examined here; it belongs to the evaluation block and is
-  examined in the final
-- Format: 20 multiple-choice questions, four options each
-- An optional online preparation tutorial is offered in the preceding week
+- Residual diagnostics (Session 9) is **not** examined here; it is examined in the final, which covers
+  the whole course
+- Format: 20 multiple-choice questions: 13 concept questions with four options each, and 7 short
+  calculation questions by hand with five options each. A non-programmable, non-graphing calculator
+  is allowed; no phones, watches or other devices. Answers go on a separate answer sheet
 
 ### Session 11 — Transformations to even out variance: logarithms, power, Box–Cox
 
@@ -345,8 +345,8 @@ for the stochastic-process framing.
 ### Session 20 — Final exam
 
 - Coverage: the whole course, Sessions 1 to 19
-- Format: 20 multiple-choice questions, four options each
-- An optional online preparation tutorial is offered in the preceding week
+- Format: 20 multiple-choice questions: four options on concept questions, five on calculation
+  questions
 
 ---
 
@@ -376,7 +376,8 @@ on a rotating sample of submissions.
 discussions.
 
 **Intermediate tests** is the midterm exam, held in Session 10. Both exams are 20 multiple-choice
-questions with four options each.
+questions: four options on concept questions, five on calculation questions done by hand with a
+non-programmable, non-graphing calculator.
 
 Homework and assignments are submitted on **Blackboard**, not in this repository.
 

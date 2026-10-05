@@ -4,9 +4,10 @@
 
 **Coverage:** the whole course, S1–S19.
 
-**Format:** 20 multiple-choice questions, 4 options each.
+**Format:** 20 multiple-choice questions: four options on concept questions, five on calculation
+questions.
 
-An optional online prep tutorial runs in the preceding week.
+Office hours are open to anyone who brings a concrete question; times on Blackboard.
 
 > Students scoring below 3.5 / 10 on the final go to the retake, regardless of performance elsewhere.
 > See [`SYLLABUS.md`](../../SYLLABUS.md).
