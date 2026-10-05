@@ -882,10 +882,10 @@ bricks_aug |&gt; filter(.model == "Mean") |&gt; features(.innov, ljung_box, lag 
       <tr><td class="os">Autocorrelation</td><td>The model missed usable structure.</td><td class="fix">Richer model. Hard. Sessions 15&ndash;19.</td></tr>
       <tr><td class="os">Non-zero mean</td><td>Forecasts are biased by a constant.</td><td class="fix">Subtract it. Easy.</td></tr>
       <tr><td class="os">Changing variance</td><td>Often a multiplicative series fitted additively.</td><td class="fix">Transform. Session 11.</td></tr>
-      <tr><td class="os">Not normal</td><td>The interval arithmetic does not hold.</td><td class="fix">Transform, or bootstrap the intervals.</td></tr>
+      <tr><td class="os">Not normal</td><td>The prediction interval arithmetic does not hold.</td><td class="fix">Transform, or bootstrap the intervals.</td></tr>
     </table>
     <ul class="build">
-      <li class="step"><b>Only the first one questions the model itself.</b> The other three are about presentation and arithmetic, not about whether the forecast is well aimed.</li>
+      <li class="step"><b>Only the first one needs a better model.</b> The mean is fixed by a subtraction, and the other two are about the interval, not the aim.</li>
       <li class="step"><b>None of them is a reason to hide the diagnostic.</b> A reported failure you cannot fix is a legitimate finding, and Session 7 made the same argument about decompositions.</li>
     </ul>
     <p class="punch step wide">Keep the <code>09_A</code> summary sheet beside you for Group Assignment 2, printed or open in the browser. It is the most used page in the course.</p>
