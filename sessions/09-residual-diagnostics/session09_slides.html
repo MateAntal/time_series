@@ -845,7 +845,7 @@ Ljung-Box    Q* = T(T+2) &middot; sum over k=1..l of  r_k&#178; / (T &minus; k)
     </ul>
     <p class="punch step wide">The same trick appears everywhere in statistics, from variance to least squares. Squaring is how you make a sum notice the big things and forgive the small ones.</p>
   </div>
-  <aside class="notes">Squaring does a second job here that is easy to overlook: it removes the sign. A strong <i>negative</i> autocorrelation is just as much evidence of structure as a strong positive one (Session 4's anti-phase panels are the picture of that), and without squaring the two would cancel in the sum.<br><br>The extra <code>T(T+2)/(T-k)</code> weighting in Ljung-Box gives more weight to the higher lags, where fewer pairs are available and the estimates are noisier. It is a small-sample correction, and on a long series the two statistics agree closely.</aside>
+  <aside class="notes">Squaring does a second job here that is easy to overlook: it removes the sign. A strong <i>negative</i> autocorrelation is just as much evidence of structure as a strong positive one (Session 4's anti-phase panels are the picture of that), and without squaring the two would cancel in the sum.<br><br>The extra <code>T(T+2)/(T-k)</code> weighting in Ljung-Box gives more weight to the higher lags. A high-lag autocorrelation is built from fewer pairs but divided by a sum over the whole series, so it comes out pulled toward zero, and the weighting scales it back up. It is a small-sample correction, and on a long series the two statistics agree closely.</aside>
 </section>
 
 
